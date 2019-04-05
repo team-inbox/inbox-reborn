@@ -1,3 +1,40 @@
+/* Change font everywhere */
+* {
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 99.1%;
+	letter-spacing: normal;
+}
+
+/* Email subject colour */
+.zA {
+	color: #040404;
+}
+
+/* Header bar */
+header {
+	box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
+}
+
+/* Sidebar: hide the label email counters */
+.bsU {
+	display: none;
+}
+
+/* Sidebar: labels */
+.TO .nU > .n0,
+.ah9 > .CJ {
+	color: #616161;
+}
+
+/* Sidebar: labels */
+.TO .nU > .n0,
+.TO.NQ .nU > .n0,
+.TO.nZ .nU > .n0,
+.ah9 > .CJ,
+.n3 > .CL > .CK {
+	text-shadow: none;
+}
+
 /* Emails */
 .Cp {
 	/*box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24);*/
@@ -234,10 +271,6 @@ td.apU.xY .T-KT.T-KT-Jp::before {
 .aHS-bnr .qj {
   background-image: url("//ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/2x/ic_custom-cluster_24px_g60_r3_2x.png") !important;
 }
-/* Done */
-.aHS-aHO .qj {
-  background-image: url("//ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/2x/ic_done_clr_24dp_r4_2x.png") !important;
-}
 /* Spam */
 .aHS-bnv .qj {
   background-image: url("//ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/2x/ic_spam_g60_24dp_r2_2x.png") !important;
@@ -266,9 +299,8 @@ td.apU.xY .T-KT.T-KT-Jp::before {
   margin-left: -14px;
 }
 
-/* left menu border under done and trash */
-.TN.bzz.aHS-bnx,
-.TN.bzz.aHS-aHO {
+/* left menu border under trash */
+.TN.bzz.aHS-bnx {
 	padding-bottom: 5px;
 	padding-top: 5px;
 	border-bottom: 1px solid #DDDDDD;
@@ -330,11 +362,6 @@ button.gb_lf {
 	margin-top: 0px;
 	margin-left: 30px;
 	height: 36px;
-}
-
-/* email area moves over compose icon */
-.BltHke.nH.oy8Mbf {
-	padding-right: 95px;
 }
 
 /* colapsed main menu */
@@ -516,7 +543,151 @@ header form input {
 	margin-right: -72px;
 }
 
-/* Attachments styling */
+/* --------------------------------------------- */
+/* Hides the pin icon until the mouse is over it */
+/* --------------------------------------------- */
+
+/* Nudges the pin along and then moves the date/time over a bit */
+.zA .apU.xY {
+	margin-right: 2px;
+}
+.zA .xW.xY {
+	margin-left: -32px;
+	margin-right: 10px;
+}
+
+/* Handles the positioning of the quick action icons that appear when you mouse over an email row to make room for the pin */
+.bqY {
+	position: relative;
+	left: -10px;
+}
+
+/* Hides the pin when not pinned, until the cursor is over it */
+.zA .apU.xY .aXw {
+	display: none;
+}
+.zA .apU.xY .T-KT-JW {
+	display: block;
+}
+.aqw .apU.xY .aXw {
+	display: block;
+}
+
+/* --------------------------------------------- */
+/* Inbox and top toolbar layout	    						 */
+/* --------------------------------------------- */
+
+/* Inbox: message list layout */
+.nH .AO .aeF {
+	min-width: 512px;
+	margin-right: 7vw;
+	width: auto;
+}
+@media (min-width: 1650px) {
+	.nH .AO .aeF {
+		min-width: 512px;
+		margin-right: 10vw;
+		width: auto;
+	}
+
+	/* the bar that the menu items typically rest on */
+	.G-atb {
+		height: 0px !important;
+	}
+	.nH.aqK {
+		padding-top: 48px !important;
+	}
+	/* shifts the inbox down */
+	.aeF {
+		margin-top: 18px !important;
+	}
+}
+
+/* Inbox: starred heading space */
+.Cp {
+	margin: 0 5px;
+}
+
+/* Inbox: hide the starred heading */
+.nH.Wg.aAD.aAr {
+	display: none;
+}
+
+/* Inbox: hide the everything else heading */
+.nH.Wg.aAr {
+	display: none;
+}
+
+/* Inbox: date groupings */
+.time {
+	font-size: 13px;
+	padding-top: 13px;
+}
+
+/* Inbox: email rows */
+.zA {
+	padding: 12px 12px 12px 5px;
+}
+
+/* Inbox: email row contents */
+.zA * {
+	font-size: 13px;
+}
+
+/* Moves the selection indicator to the left */
+.PF.xY.PE {
+	margin-left: -5px;
+	margin-right: 5px;
+}
+
+/* Hides the checkbox when not checked */
+.zA .oZ-x3.xY .T-Jo {
+	display: none;
+}
+
+/* Unhides the checkbox when checked */
+.zA.aqw .oZ-x3.xY .T-Jo {
+	display: inline;
+}
+.aqw .yX.xY div:nth-child(n+3)>img {
+	display: none;
+}
+.x7 .yX.xY div:nth-child(n+3)>img {
+	display: none;
+}
+.zA.x7 .oZ-x3.xY .T-Jo {
+	display: inline;
+}
+
+/* */
+/* Rearranges the menu at the top and moves it all to the right corner */
+/* */
+
+/* the bar that the menu items typically rest on */
+.G-atb {
+	height: 48px;
+}
+
+/* shifts the inbox down */
+.aeF {
+	margin-top: -8px;
+}
+
+.nH.aqK {
+	padding-top: 0px;
+}
+
+.Cq.aqL {
+	margin-left: auto;
+	margin-right: -24px;
+}
+
+.Cr.aqJ {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+/* Attachments styles */
 .brd {
 	margin-left: 0px !important;
 }
