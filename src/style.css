@@ -515,3 +515,18 @@ header form input {
 	position: relative !important;
 	margin-right: -72px;
 }
+
+/* Attachments */
+.brd {
+	margin-left: 0px !important;
+}
+.brc {
+	border-radius: 2px !important;
+	background-color: #f7f7f7;
+	padding: 0 6px !important;
+	color: #212121 !important;
+	box-shadow: 0 0 1px rgba(0,0,0,.11), 0 1px 2px rgba(0,0,0,.22) !important;
+}
+.brc .brg {
+	font-size: 13px !important;
+}
