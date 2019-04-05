@@ -418,7 +418,7 @@ a[href='#inbox']::after {
 
 /* Invisible inbox info with huge padding at bottom of email  */
 .pfiaof {
-	display: none;
+	/*display: none;*/
 }
 
 /* Top bar icons */
@@ -516,7 +516,7 @@ header form input {
 	margin-right: -72px;
 }
 
-/* Attachments */
+/* Attachments styling */
 .brd {
 	margin-left: 0px !important;
 }
@@ -529,4 +529,22 @@ header form input {
 }
 .brc .brg {
 	font-size: 13px !important;
+}
+
+/* Snoozed notification styling */
+.cL {
+	font-weight: normal !important;
+	font-size: 13px;
+	margin-left: 0px !important;
+}
+
+/* Add padding at bottom of page */
+.zt>tbody {
+	margin-bottom: 50px;
+}
+
+/* Reminder Icon */
+.zA.reminder .pH.a9q {
+	opacity: 1;
+	background-image: url('//ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/2x/ic_reminder_blue_24dp_r2_2x.png');
 }
