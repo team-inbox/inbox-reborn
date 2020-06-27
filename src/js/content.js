@@ -1,7 +1,7 @@
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-const nameColors = ['1bbc9b','16a086','f1c40f','f39c11','2dcc70','27ae61','d93939','d25400','3598db','297fb8','e84c3d','c1392b','9a59b5','8d44ad','bec3c7','34495e','2d3e50','95a5a4','7e8e8e','ec87bf','d870ad','f69785','9ba37e','b49255','b49255','a94136'];
+const nameColors = ['1bbc9b', '16a086', 'f1c40f', 'f39c11', '2dcc70', '27ae61', 'd93939', 'd25400', '3598db', '297fb8', 'e84c3d', 'c1392b', '9a59b5', '8d44ad', 'bec3c7', '34495e', '2d3e50', '95a5a4', '7e8e8e', 'ec87bf', 'd870ad', 'f69785', '9ba37e', 'b49255', 'b49255', 'a94136'];
 
 const REMINDER_EMAIL_CLASS = 'reminder';
 const CALENDAR_EMAIL_CLASS = 'calendar-event';
@@ -37,10 +37,10 @@ Element.prototype.remove = function () {
 	this.parentElement.removeChild(this);
 };
 
-const getMyEmailAddress = () => { 
-	if (document.querySelector('.gb_hb').innerText) return document.querySelector('.gb_hb').innerText; 
-	if (document.querySelector('.gb_lb').innerText) return document.querySelector('.gb_lb').innerText; 
-	if (document.querySelector('.gb_qb').innerText) return document.querySelector('.gb_qb').innerText; 
+const getMyEmailAddress = () => {
+	if (document.querySelector('.gb_tb') && document.querySelector('.gb_tb').innerText) {
+		return document.querySelector('.gb_tb').innerText;
+	}
 	return '';
 }
 
@@ -214,7 +214,7 @@ const reloadOptions = () => {
 		// Remove avatar elements
 		document.querySelectorAll('.' + AVATAR_CLASS).forEach(avatarEl => avatarEl.remove());
 	}
-	
+
 	// Add option classes to body for css styling, and unbundle emails when disabled
 	if (options.emailBundling === 'enabled' && !document.body.classList.contains(BUNDLING_OPTION_CLASS)) {
 		document.body.classList.add(BUNDLING_OPTION_CLASS);
@@ -441,11 +441,11 @@ const getEmails = () => {
 				}
 			});
 		}
-		
+
 		// Check for labels used for Tabs, and hide them from the row.
-		if ( false != currentTab ) {
+		if (false != currentTab) {
 			info.emailEl.querySelectorAll('.ar.as').forEach(labelEl => {
-				if ( labelEl.innerText == currentTab.innerText ) {
+				if (labelEl.innerText == currentTab.innerText) {
 					// Remove Tabbed labels from the row.
 					labelEl.hidden = true;
 				}
@@ -468,7 +468,7 @@ const getEmails = () => {
 							isUnread: info.isUnread
 						}]
 					};
-				} else { 
+				} else {
 					labelStats[label].count++;
 					labelStats[label].senders.push({
 						name: firstParticipant,
@@ -525,7 +525,7 @@ const updateReminders = () => {
 				emailEl.querySelectorAll('.Zt').forEach(node => node.outerHTML = '');
 				emailEl.querySelectorAll('.y2').forEach(node => node.style.color = '#202124');
 			}
-			emailEl.querySelectorAll('.yP,.zF').forEach(node => { node.innerHTML = 'Reminder';});
+			emailEl.querySelectorAll('.yP,.zF').forEach(node => { node.innerHTML = 'Reminder'; });
 
 			const avatarWrapperEl = emailEl.querySelector('.oZ-x3');
 			if (avatarWrapperEl && avatarWrapperEl.getElementsByClassName(AVATAR_CLASS).length === 0) {
@@ -619,104 +619,104 @@ const updateReminders = () => {
 
 const menuNodes = {};
 const setupMenuNodes = () => {
-  const observer = new MutationObserver(() => {
-    // menu items
-    [
-      { label: 'inbox',     selector: '.aHS-bnt' },
-      { label: 'snoozed',   selector: '.aHS-bu1' },
-      { label: 'done',      selector: '.aHS-aHO' },
-      { label: 'drafts',    selector: '.aHS-bnq' },
-      { label: 'sent',      selector: '.aHS-bnu' },
-      { label: 'spam',      selector: '.aHS-bnv' },
-      { label: 'trash',     selector: '.aHS-bnx' },
-      { label: 'starred',   selector: '.aHS-bnw' },
-      { label: 'important', selector: '.aHS-bns' },
-      { label: 'chats',     selector: '.aHS-aHP' },
-    ].map(({ label, selector }) => {
-      const node = queryParentSelector(document.querySelector(selector), '.aim');
-      if (node) menuNodes[label] = node;
-    });
-  });
-  observer.observe(document.body, { subtree: true, childList: true });
+	const observer = new MutationObserver(() => {
+		// menu items
+		[
+			{ label: 'inbox', selector: '.aHS-bnt' },
+			{ label: 'snoozed', selector: '.aHS-bu1' },
+			{ label: 'done', selector: '.aHS-aHO' },
+			{ label: 'drafts', selector: '.aHS-bnq' },
+			{ label: 'sent', selector: '.aHS-bnu' },
+			{ label: 'spam', selector: '.aHS-bnv' },
+			{ label: 'trash', selector: '.aHS-bnx' },
+			{ label: 'starred', selector: '.aHS-bnw' },
+			{ label: 'important', selector: '.aHS-bns' },
+			{ label: 'chats', selector: '.aHS-aHP' },
+		].map(({ label, selector }) => {
+			const node = queryParentSelector(document.querySelector(selector), '.aim');
+			if (node) menuNodes[label] = node;
+		});
+	});
+	observer.observe(document.body, { subtree: true, childList: true });
 };
 
 const reorderMenuItems = () => {
-  const observer = new MutationObserver(() => {
-    const parent = document.querySelector('.wT .byl');
-    const refer = document.querySelector('.wT .byl>.TK');
-    const { inbox, snoozed, done, drafts, sent, spam, trash, starred, important, chats } = menuNodes;
+	const observer = new MutationObserver(() => {
+		const parent = document.querySelector('.wT .byl');
+		const refer = document.querySelector('.wT .byl>.TK');
+		const { inbox, snoozed, done, drafts, sent, spam, trash, starred, important, chats } = menuNodes;
 
-    if (parent && refer && loadedMenu && inbox && snoozed && done && drafts && sent && spam && trash && starred && important && chats) {
-      // Gmail will execute its script to add element to the first child, so
-      // add one placeholder for it and do the rest in the next child.
-      const placeholder = document.createElement('div');
-      placeholder.classList.add('TK');
-      placeholder.style.cssText = 'padding: 0; border: 0;';
+		if (parent && refer && loadedMenu && inbox && snoozed && done && drafts && sent && spam && trash && starred && important && chats) {
+			// Gmail will execute its script to add element to the first child, so
+			// add one placeholder for it and do the rest in the next child.
+			const placeholder = document.createElement('div');
+			placeholder.classList.add('TK');
+			placeholder.style.cssText = 'padding: 0; border: 0;';
 
-      // Assign link href which only show archived mail
-      done.querySelector('a').href = '#archive';
+			// Assign link href which only show archived mail
+			done.querySelector('a').href = '#archive';
 
-      // Remove id attribute from done element for preventing event override from Gmail
-      done.firstChild.removeAttribute('id');
+			// Remove id attribute from done element for preventing event override from Gmail
+			done.firstChild.removeAttribute('id');
 
-      // Manually add on-click event to done elment
-      done.addEventListener('click', () => window.location.assign('#archive'));
-			
-      // Rewrite text from All Mail to Done
-      done.querySelector('a').innerText = 'Done';
+			// Manually add on-click event to done elment
+			done.addEventListener('click', () => window.location.assign('#archive'));
 
-      // Add border seperator to bottom of Done
-      const innerDone = done.querySelector('div');
-      innerDone.parentElement.style.borderBottom = '1px solid rgb(221, 221, 221)';
-      innerDone.parentElement.style.paddingBottom = '15px';
-      innerDone.style.paddingBottom = '5px';
-      innerDone.style.paddingTop = '5px';
+			// Rewrite text from All Mail to Done
+			done.querySelector('a').innerText = 'Done';
 
-      const newNode = document.createElement('div');
-      newNode.classList.add('TK');
-      newNode.appendChild(inbox);
-      newNode.appendChild(snoozed);
-      newNode.appendChild(done);
-      parent.insertBefore(placeholder, refer);
-      parent.insertBefore(newNode, refer);
+			// Add border seperator to bottom of Done
+			const innerDone = done.querySelector('div');
+			innerDone.parentElement.style.borderBottom = '1px solid rgb(221, 221, 221)';
+			innerDone.parentElement.style.paddingBottom = '15px';
+			innerDone.style.paddingBottom = '5px';
+			innerDone.style.paddingTop = '5px';
 
-      setupClickEventForNodes([inbox, snoozed, done, drafts, sent, spam, trash, starred, important, chats]);
+			const newNode = document.createElement('div');
+			newNode.classList.add('TK');
+			newNode.appendChild(inbox);
+			newNode.appendChild(snoozed);
+			newNode.appendChild(done);
+			parent.insertBefore(placeholder, refer);
+			parent.insertBefore(newNode, refer);
 
-      // Close More menu
-      document.body.querySelector('.J-Ke.n4.ah9').click();
-      observer.disconnect();
-    }
+			setupClickEventForNodes([inbox, snoozed, done, drafts, sent, spam, trash, starred, important, chats]);
 
-    if (!loadedMenu && inbox) {
-      // Open More menu
-      document.body.querySelector('.J-Ke.n4.ah9').click();
-      loadedMenu = true;
-    }
-  });
-  observer.observe(document.body, { subtree: true, childList: true });
+			// Close More menu
+			document.body.querySelector('.J-Ke.n4.ah9').click();
+			observer.disconnect();
+		}
+
+		if (!loadedMenu && inbox) {
+			// Open More menu
+			document.body.querySelector('.J-Ke.n4.ah9').click();
+			loadedMenu = true;
+		}
+	});
+	observer.observe(document.body, { subtree: true, childList: true });
 };
 
 const activateMenuItem = (target, nodes) => {
-  nodes.map(node => node.firstChild.classList.remove('nZ'));
-  target.firstChild.classList.add('nZ');
+	nodes.map(node => node.firstChild.classList.remove('nZ'));
+	target.firstChild.classList.add('nZ');
 };
 
 const setupClickEventForNodes = (nodes) => {
-  nodes.map(node =>
-    node.addEventListener('click', () =>
-      activateMenuItem(node, nodes)
-    )
-  );
+	nodes.map(node =>
+		node.addEventListener('click', () =>
+			activateMenuItem(node, nodes)
+		)
+	);
 };
 
 const queryParentSelector = (elm, sel) => {
-  if (!elm) return null;
-  var parent = elm.parentElement;
-  while (!parent.matches(sel)) {
-    parent = parent.parentElement;
-    if (!parent) return null;
-  }
-  return parent;
+	if (!elm) return null;
+	var parent = elm.parentElement;
+	while (!parent.matches(sel)) {
+		parent = parent.parentElement;
+		if (!parent) return null;
+	}
+	return parent;
 };
 
 /*
@@ -738,16 +738,16 @@ const waitForElement = function (selector, callback, tries = 100) {
 };
 
 const handleHashChange = () => {
-  let hash = window.location.hash;
-  if (isInBundle()) hash = '#inbox';
-  else hash = hash.split('/')[0].split('?')[0];
-  const headerElement = document.querySelector('header').parentElement.parentElement;
-  const titleNode = document.querySelector('a[title="Gmail"]:not([aria-label])');
+	let hash = window.location.hash;
+	if (isInBundle()) hash = '#inbox';
+	else hash = hash.split('/')[0].split('?')[0];
+	const headerElement = document.querySelector('header').parentElement.parentElement;
+	const titleNode = document.querySelector('a[title="Gmail"]:not([aria-label])');
 
-  if (!titleNode || !headerElement) return;
+	if (!titleNode || !headerElement) return;
 
-  headerElement.setAttribute('pageTitle', hash.replace('#', ''));
-  titleNode.href = hash;
+	headerElement.setAttribute('pageTitle', hash.replace('#', ''));
+	titleNode.href = hash;
 };
 
 window.addEventListener('hashchange', handleHashChange);
@@ -759,9 +759,8 @@ document.addEventListener('DOMContentLoaded', function () {
 		const myEmail = getMyEmailAddress();
 
 		// TODO: Replace all of the below with gmail.compose.start_compose() via the Gmail.js lib
-		const composeButton = document.querySelector('.T-I.J-J5-Ji.T-I-KE.L3');
-		triggerMouseEvent(composeButton, 'mousedown');
-		triggerMouseEvent(composeButton, 'mouseup');
+		const composeButton = document.querySelector('.T-I.T-I-KE.L3');
+		composeButton.click();
 
 		// TODO: Delete waitForElement() function, replace with gmail.observe.on('compose') via the Gmail.js lib
 		waitForElement('textarea[name=to]', to => {
@@ -775,24 +774,27 @@ document.addEventListener('DOMContentLoaded', function () {
 			body.focus();
 		});
 	});
-  document.body.appendChild(addReminder);
-  
-  waitForElement('a[title="Gmail"]:not([aria-label])', handleHashChange);
+	document.body.appendChild(addReminder);
+
+	waitForElement('a[title="Gmail"]:not([aria-label])', handleHashChange);
 
 	const floatingComposeButton = document.createElement('div');
 	floatingComposeButton.className = 'floating-compose';
 	floatingComposeButton.addEventListener('click', function () {
 		// TODO: Replace all of the below with gmail.compose.start_compose() via the Gmail.js lib
-		const composeButton = document.querySelector('.T-I.J-J5-Ji.T-I-KE.L3');
-		triggerMouseEvent(composeButton, 'mousedown');
-		triggerMouseEvent(composeButton, 'mouseup');
+		const composeButton = document.querySelector('.T-I.T-I-KE.L3');
+		composeButton.click();
 	});
 	document.body.appendChild(floatingComposeButton);
 
 	setInterval(updateReminders, 250);
 });
 
-const setFavicon = () => document.querySelector('link[rel*="shortcut icon"]').href = chrome.runtime.getURL('images/favicon.png');;
+const setFavicon = () => {
+	if (document.querySelector('link[rel*="icon"]')) {
+		document.querySelector('link[rel*="icon"]').href = chrome.runtime.getURL('images/favicon.png');;
+	}
+}
 
 const init = () => {
 	setFavicon();
