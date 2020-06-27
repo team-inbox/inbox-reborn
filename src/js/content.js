@@ -755,7 +755,7 @@ window.addEventListener('hashchange', handleHashChange);
 document.addEventListener('DOMContentLoaded', function () {
 	const addReminder = document.createElement('div');
 	addReminder.className = 'add-reminder';
-	addReminder.addEventListener('click', function () {
+	const openReminder = () => {
 		const myEmail = getMyEmailAddress();
 
 		// TODO: Replace all of the below with gmail.compose.start_compose() via the Gmail.js lib
@@ -770,9 +770,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
 			from.value = myEmail;
 			to.value = myEmail;
-			title.value = 'Reminder';
-			body.focus();
+			if (options.reminderTreatment === 'all') {
+				to.addEventListener('focus', () => title.focus());
+			} else {
+				title.value = 'Reminder';
+				to.addEventListener('focus', () => body.focus());
+			}
 		});
+	};
+	addReminder.addEventListener('click', openReminder);
+	window.addEventListener('keydown', (event) => {
+		if (event.code === 'KeyT') {
+			openReminder();
+		}
 	});
 	document.body.appendChild(addReminder);
 
