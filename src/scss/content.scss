@@ -37,33 +37,21 @@ header {
 
 /* Emails */
 .Cp {
-	/*box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24);*/
-	margin: auto !important;
-	max-width: 1200px;
-	padding: 0 10px;
+	padding: 0 1px;
+}
+// add margin so screen doesn't jump while we're figuring out time-rows
+.F.cf.zt tbody {
+	tr:first-child {
+		margin-top: 40px;
+	}
+}
 }
 
 /* Set opened email width to same as email list */
 .Bs.nH.iY.bAt {
-	margin: 10px auto 10px auto !important;
-	max-width: 1180px;
-	padding: 0 10px;
-}
-
-/* Align toolbar with email width */
-.aeH > .G-atb {
-	margin: auto !important;
-	max-width: 1180px;
-}
-
-@media only screen and (min-width: 1420px) {
-	.aeH > .G-atb {
-		padding-left: 0;
-	}
-}
-
-.aeH {
-	margin-right: 7vw;
+	margin: 0 2px;
+	box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
+	width: auto;
 }
 
 /* Enforce background color behind emails */
@@ -251,9 +239,9 @@ td.apU.xY .T-KT.xf::before {
 .time {
 	color: #666;
 	font-size: 14px;
-	padding-bottom: 10px;
-	padding-top: 20px;
-	padding-left: 20px;
+	padding-top: 16px;
+	padding-left: 4px;
+	padding-bottom: 8px;
 }
 
 /* Email */
@@ -286,11 +274,6 @@ td.apU.xY .T-KT.xf::before {
 /* Fix for weird white space */
 .eb.TD {
 	display: none;
-}
-
-/* Fix padding on search */
-.BltHke.nH.oy8Mbf {
-	margin-top: 10px;
 }
 
 /* Hide border at bottom of empty inbox background */
@@ -609,9 +592,6 @@ button.gb_ff.gb_gf  {
 
 
 /* main email area */
-.Cp {
-	margin-top: 2px !important;
-}
 
 /*
 **
@@ -907,14 +887,6 @@ header form input {
 	order: 2;
 }
 
-/* Opened email */
-.Bs.nH.iY.bAt {
-	margin: 10px;
-	box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
-	width: calc(100% - 62px);
-	background: #FFF;
-}
-
 /* Fixed border on email */
 .Bu > .nH > .no {
 	display: none;
@@ -975,32 +947,9 @@ header form input {
 /* Inbox and top toolbar layout	    						 */
 /* --------------------------------------------- */
 
-/* Inbox: message list layout */
-.nH .AO .aeF {
-	min-width: 512px;
-	margin-right: 7vw;
-	width: auto;
-}
-
-/* Inbox: starred heading space */
-.Cp {
-	margin: 0 5px;
-}
-
-/* Inbox: hide the starred heading */
-.nH.Wg.aAD.aAr {
-	display: none;
-}
-
-/* Inbox: hide the everything else heading */
+/* Inbox: hide gmail's headings */
 .nH.Wg.aAr {
 	display: none;
-}
-
-/* Inbox: date groupings */
-.time {
-	font-size: 13px;
-	padding-top: 13px;
 }
 
 /* Inbox: email rows */
@@ -1059,15 +1008,16 @@ header form input {
 /* Rearranges the menu at the top and moves it all to the right corner */
 /* */
 
-/* the bar that the menu items typically rest on */
-.G-atb {
+// remove the filter bar and re-adjust the toolbar after that's removed
+.G6 {
+	display: none !important;
+}
+.D.E.PY.G-atb {
 	height: 48px;
+	display: flex;
 }
 
 /* shifts the inbox down */
-.aeF {
-	margin-top: -8px;
-}
 
 .nH.aqK {
 	padding-top: 0px;
