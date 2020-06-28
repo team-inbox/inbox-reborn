@@ -1,0 +1,60 @@
+.brd.calendar-attachment {
+	height: 80px;
+	width: 400px;
+	margin-left: 0px;
+
+	.brc { //calendar-container
+		height: 80px;
+		width: 400px;
+		max-width: 400px;
+		padding-left: 0;
+
+		border-radius: 2px;
+		background-color: #f7f7f7;
+		padding: 0 6px;
+		color: #212121;
+		box-shadow: 0 0 1px rgba(0,0,0,.11), 0 1px 2px rgba(0,0,0,.22);
+
+		.brg { //calendar-message
+			display: flex;
+			flex-direction: column;
+			max-width: 250px;
+			overflow: visible;
+		}
+	}
+	.event-title, .event-time {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.event-title {
+		font-weight: normal;
+	}
+	.event-time {
+		color: #757575;
+	}
+
+	.aKS { //rsvp-container
+		position: relative;
+		top: 0;
+		margin-top: 4px;
+		.aOd.T-I-awv { //rsvp-button
+			border-radius: 2px;
+		}
+	}
+}
+
+.calendar-image {
+	height: 80px;
+	width: 100px;
+	background-position: center;
+	background-image: url('chrome-extension://__MSG_@@extension_id__/images/calendar_event_attachment.png');
+	background-size: 200%;
+	margin-right: 16px;
+}
+@-moz-document url-prefix() {
+	.calendar-image {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/calendar_event_attachment.png');
+	}
+}

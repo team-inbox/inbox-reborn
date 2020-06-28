@@ -1,0 +1,74 @@
+.aeN { //sidebar-container
+	.aic { //compose-container
+		position: fixed;
+		z-index: 1000;
+		bottom: 20px;
+		right: 40px;
+		.z0 { //compose-button-container
+			padding: 0;
+			display: flex;
+			flex-direction: column-reverse;
+			height: auto;
+
+			.T-I.T-I-KE.L3 { //compose-button
+				border-radius: 28px;
+				height: 56px;
+				padding-right: 0;
+				width: 56px;
+				background: #d23f31;
+				&::before {
+					background-image: url("chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png") !important;
+					height: 56px;
+					width: 56px;
+				}
+				&:hover::before {
+					background-image: url("chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png") !important;
+				}
+			}
+
+			.add-reminder {
+				margin-bottom: 5px;
+				user-select: none;
+				z-index: 1000;
+				border-radius: 50%;
+				background: #4285f4;
+				overflow: hidden;
+				box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302), 0 1px 3px 1px rgba(60, 64, 67, 0.149);
+				cursor: pointer;
+
+				&::before {
+					background-size: 24px !important;
+					background-position: center;
+					background-repeat: no-repeat;
+					content: "";
+					display: block;
+					background-image: url("chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_reminders_white_24dp_2x.png") !important;
+					height: 40px;
+					width: 40px;
+				}
+
+				&:hover {
+					box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.302), 0 4px 8px 3px rgba(60, 64, 67, 0.149);
+				}
+			}
+			@-moz-document url-prefix() {
+				.add-reminder::before {
+					background-image: url("moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_reminders_white_24dp_2x.png") !important;
+				}
+				.T-I.T-I-KE.L3::before {
+					background-image: url("moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png") !important;
+				}
+				.T-I.T-I-KE.L3:hover::before {
+					background-image: url("moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png") !important;
+				}
+			}
+		}
+	}
+}
+
+/* Hide Compose and Reminder buttons from Gmail's Print view */
+@media print {
+	.add-reminder {
+		display: none;
+	}
+}

@@ -1,0 +1,39 @@
+/* Override narrow width class */
+.ae4.Zs { //email-list-container
+	.zA { //email-row
+		-webkit-flex-wrap: nowrap;
+		flex-wrap: nowrap;
+
+		.a4W { //subject-column
+			margin-left: unset;
+			margin-right: 20px;
+			.xT { //subject-text-container
+				flex-wrap: unset;
+			}
+			.yi { //label-indicator-container
+				margin-left: 0;
+				max-width: unset;
+			}
+			.y6 { //subject-text
+				order: 1;
+			}
+			.y2 { //body-text
+				min-width: unset;
+				-webkit-flex: 1;
+				flex: 1;
+			}
+		}
+		.yX { //sender-column
+			flex: initial;
+		}
+		.xW { //date-column
+			-webkit-flex-basis: 1;
+			flex-basis: 1;
+			flex-grow: 400;
+			flex-basis: 0;
+		}
+		.xY { //email-column
+			order: 1;
+		}
+	}
+}

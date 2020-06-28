@@ -1,0 +1,103 @@
+/* Inbox */
+.aHS-bnt .qj {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/images/inbox_googblue_24dp.png') !important;
+}
+/* Dropdown arrow */
+.aHS-bnt .afM {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/images/arrow_drop_down_black_20dp.png') !important;
+}
+/* Starred, Important, Chats */
+.aHS-bnw .qr,
+.aHS-bns .qr,
+.aHS-aHP .qr {
+	opacity: 0.6 !important;
+}
+/* Starred */
+.aHS-bnw .qj {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/images/grade_black_24dp.png') !important;
+}
+/* Important */
+.aHS-bns .qj {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/images/label_important_black_24dp.png') !important;
+}
+/* Chats */
+.aHS-aHP .qj {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/images/hangout_black_24dp.png') !important;
+}
+/* Snoozed */
+.aHS-bu1 .qj {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_upcoming_clr_24dp_r5_2x.png') !important;
+}
+/* Sent */
+.aHS-bnu .qj {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_sent_right_g60_24dp_r1_2x.png') !important;
+}
+/* Drafts */
+.aHS-bnq .qj {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_draft_g60_24dp_r2_2x.png') !important;
+}
+/* Trash */
+.aHS-bnx .qj {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_trash_g60_24dp_r2_2x.png') !important;
+}
+/* Category */
+.aHS-bnr .qj {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png') !important;
+	background-repeat: repeat-x;
+	padding: 12px;
+	width: 48px;
+	border: 3px solid #F2F2F2;
+  	box-sizing: border-box;
+	border-radius: 30%;
+}
+/* Spam */
+.aHS-bnv .qj {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_spam_g60_24dp_r2_2x.png') !important;
+}
+
+@-moz-document url-prefix() {
+	/* Inbox */
+	.aHS-bnt .qj {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_googblue_24dp.png') !important;
+	}
+	/* Dropdown arrow */
+	.aHS-bnt .afM {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/arrow_drop_down_black_20dp.png') !important;
+	}
+	/* Starred */
+	.aHS-bnw .qj {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/grade_black_24dp.png') !important;
+	}
+	/* Important */
+	.aHS-bns .qj {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/label_important_black_24dp.png') !important;
+	}
+	/* Chats */
+	.aHS-aHP .qj {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/hangout_black_24dp.png') !important;
+	}
+	/* Snoozed */
+	.aHS-bu1 .qj {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_upcoming_clr_24dp_r5_2x.png') !important;
+	}
+	/* Sent */
+	.aHS-bnu .qj {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_sent_right_g60_24dp_r1_2x.png') !important;
+	}
+	/* Drafts */
+	.aHS-bnq .qj {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_draft_g60_24dp_r2_2x.png') !important;
+	}
+	/* Trash */
+	.aHS-bnx .qj {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_trash_g60_24dp_r2_2x.png') !important;
+	}
+	/* Category */
+	.aHS-bnr .qj {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png') !important;
+	}
+	/* Spam */
+	.aHS-bnv .qj {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_spam_g60_24dp_r2_2x.png') !important;
+	}
+}

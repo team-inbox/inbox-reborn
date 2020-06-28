@@ -1,0 +1,178 @@
+/* Archive button (inbox email, opened email) */
+.brq, .ar8 {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_done_black_24dp_2x.png') !important;
+	background-size: 24px !important;
+}
+
+/* Snooze button (inbox email, opened email) */
+.brv, .brW {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_snooze_black_24dp_2x.png') !important;
+	background-size: 24px !important;
+}
+
+/* Starred menu item */
+.aHS-bnw .qj {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
+	background-size: 24px !important;
+}
+
+td.apU.xY .T-KT{
+/* Not starred image */
+  &::before {
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
+    background-size: 24px !important;
+  }
+
+  /* Starred */
+  &.xl::before {
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
+    background-size: 24px !important;
+  }
+
+  /* Starred - Yellow Star */
+  &.T-KT-Jp::before {
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-yellow-24dp-r4-2x.png') !important;
+    background-size: 24px !important;
+    opacity: 1;
+  }
+
+  /* Starred - Orange Star */
+  &.xl::before {
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-orange-24dp-r4-2x.png') !important;
+    background-size: 24px !important;
+  }
+
+  /* Starred - Red Star */
+  &.xn::before {
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-red-24dp-r4-2x.png') !important;
+    background-size: 24px !important;
+  }
+
+  /* Starred - Purple Star */
+  &.xm::before {
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-purple-24dp-r4-2x.png') !important;
+    background-size: 24px !important;
+  }
+
+  /* Starred - Blue Star */
+  &.xj::before {
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-blue-24dp-r4-2x.png') !important;
+    background-size: 24px !important;
+  }
+
+  /* Starred - Green Star */
+  &.xk::before {
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-green-24dp-r4-2x.png') !important;
+    background-size: 24px !important;
+  }
+
+  /* Starred - Red Bang */
+  &.xg::before {
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+    background-size: 1px !important;
+  }
+
+  /* Starred - Orange Guillimet */
+  &.xe::before {
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+    background-size: 1px !important;
+  }
+
+  /* Starred - Yellow Bang */
+  &.xh::before {
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+    background-size: 1px !important;
+  }
+
+  /* Starred - Green Check */
+  &.xd::before {
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+    background-size: 1px !important;
+  }
+
+  /* Starred - Blue Info */
+  &.xc::before {
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+    background-size: 1px !important;
+  }
+
+  /* Starred - Purple Question */
+  &.xf::before {
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+    background-size: 1px !important;
+  }
+}
+
+@-moz-document url-prefix() {
+	/* Archive button (inbox email, opened email) */
+	.brq, .ar8 {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_done_black_24dp_2x.png') !important;
+	}
+	/* Snooze button (inbox email, opened email) */
+	.brv, .brW {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_snooze_black_24dp_2x.png') !important;
+	}
+
+  /* Not starred image */
+	/* Starred menu item */
+	.aHS-bnw .qj {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
+	}
+	td.apU.xY .T-KT{
+    &::before {
+      background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
+    }
+    /* Starred */
+    &.xl::before {
+      background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
+    }
+    /* Starred - Yellow Star */
+    &.T-KT-Jp::before {
+      background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-yellow-24dp-r4-2x.png') !important;
+    }
+    /* Starred - Orange Star */
+    &.xl::before {
+      background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-orange-24dp-r4-2x.png') !important;
+    }
+    /* Starred - Red Star */
+    &.xn::before {
+      background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-red-24dp-r4-2x.png') !important;
+    }
+    /* Starred - Purple Star */
+    &.xm::before {
+      background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-purple-24dp-r4-2x.png') !important;
+    }
+    /* Starred - Blue Star */
+    &.xj::before {
+      background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-blue-24dp-r4-2x.png') !important;
+    }
+    /* Starred - Green Star */
+    &.xk::before {
+      background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-green-24dp-r4-2x.png') !important;
+    }
+    /* Starred - Red Bang */
+    &.xg::before {
+      background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+    }
+    /* Starred - Orange Guillimet */
+    &.xe::before {
+      background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+    }
+    /* Starred - Yellow Bang */
+    &.xh::before {
+      background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+    }
+    /* Starred - Green Check */
+    &.xd::before {
+      background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+    }
+    /* Starred - Blue Info */
+    &.xc::before {
+      background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+    }
+    /* Starred - Purple Question */
+    &.xf::before {
+      background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+    }
+  }
+}
