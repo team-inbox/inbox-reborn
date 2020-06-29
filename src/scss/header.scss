@@ -1,0 +1,94 @@
+.nH.w-asV.aiw { //header-container
+	header {
+		box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
+
+		svg {
+			color: #FFF !important;
+			opacity: 1 !important;
+		}
+
+		form {
+			background: rgba(255, 255, 255, 0.125) !important;
+			max-width: 90% !important;
+			input {
+				color: white !important;
+				&::placeholder {
+					color: #FFF !important;
+				}
+			}
+		}
+	}
+	&, .nH.nn { //header-bottom-border
+		background-color: #898984;
+	}
+	&[pageTitle="inbox"] {
+		&, .nH.nn {
+			background-color: #4285f4;
+		}
+	}
+	&[pageTitle="snoozed"] {
+		&, .nH.nn {
+			background-color: #ef6c00;
+		}
+	}
+	&[pageTitle="archive"] {
+		&, .nH.nn {
+			background-color: #0f9d58;
+		}
+	}
+
+	a[title="Gmail"] {
+		width: 120px;
+		overflow: hidden;
+		text-decoration: none;
+
+		&::after {
+			content: 'Inbox';
+			font-size: 20px;
+			color: #FFF;
+			position: relative;
+			top: -2px;
+			padding-left: 7px;
+		}
+
+		img {
+			display: none;
+		}
+		&[href="#inbox"]::after {
+			content: 'Inbox';
+		}
+		&[href="#snoozed"]::after {
+			content: 'Snoozed';
+		}
+		&[href="#archive"]::after {
+			content: 'Done';
+		}
+		&[href="#starred"]::after {
+			content: 'Starred';
+		}
+		&[href="#sent"]::after {
+			content: 'Sent';
+		}
+		&[href="#drafts"]::after {
+			content: 'Drafts';
+		}
+		&[href="#imp"]::after {
+			content: 'Important';
+		}
+		&[href="#chats"]::after {
+			content: 'Chats';
+		}
+		&[href="#scheduled"]::after {
+			content: 'Scheduled';
+		}
+		&[href="#all"]::after {
+			content: 'All Mail';
+		}
+		&[href="#spam"]::after {
+			content: 'Spam';
+		}
+		&[href="#trash"]::after {
+			content: 'Trash';
+		}
+	}
+}

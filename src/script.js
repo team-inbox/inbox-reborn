@@ -38,9 +38,7 @@ Element.prototype.remove = function () {
 };
 
 const getMyEmailAddress = () => {
-	if (document.querySelector('.gb_tb') && document.querySelector('.gb_tb').innerText) {
-		return document.querySelector('.gb_tb').innerText;
-	}
+	if (document.querySelector('.gb_tb') && document.querySelector('.gb_tb').innerText) return document.querySelector('.gb_tb').innerText;
 	return '';
 }
 
@@ -90,6 +88,7 @@ const addDateLabel = function (email, label) {
 	timeRow.appendChild(time);
 
 	email.parentElement.insertBefore(timeRow, email);
+	email.parentElement.classList.add('time-row-added');
 };
 
 const getRawDate = function (email) {
@@ -121,7 +120,9 @@ const buildDateLabel = function (date) {
 const cleanupDateLabels = function () {
 	document.querySelectorAll('.time-row').forEach(row => {
 		// Delete any back to back date labels
-		if (row.nextSibling && row.nextSibling.className === 'time-row') row.remove();
+		if (row.nextSibling && row.nextSibling.className === 'time-row') {
+			row.remove();
+		}
 		// Check nextSibling recursively until reaching the next .time-row
 		// If all siblings are .bundled-email, then hide row
 		else if (isEmptyDateLabel(row)) row.hidden = true;
@@ -408,6 +409,18 @@ const getEmails = () => {
 
 	isInBundleFlag ? addClassToBody(BUNDLE_PAGE_CLASS) : removeClassFromBody(BUNDLE_PAGE_CLASS);
 
+	if (emails.length === 0) {
+		if (document.querySelector('.time-row-added')) {
+			Array.from(document.querySelectorAll('.time-row-added')).forEach(row => row.classList.remove('time-row-added'));
+		}
+	} else {
+		Array.from(document.querySelectorAll('.time-row')).forEach(div => {
+			if (!div.parentElement.classList.contains('time-row-added')) {
+				div.parentElement.classList.add('time-row-added')
+			}
+		});
+	}
+
 	// Start from last email on page and head towards first
 	for (let i = emails.length - 1; i >= 0; i--) {
 		let email = emails[i];
@@ -651,21 +664,33 @@ const reorderMenuItems = () => {
 			// add one placeholder for it and do the rest in the next child.
 			const placeholder = document.createElement('div');
 			placeholder.classList.add('TK');
-			placeholder.classList.add('google-menu-placeholder');
 			placeholder.style.cssText = 'padding: 0; border: 0;';
-			parent.insertBefore(placeholder, refer);
 
-			done.firstChild.removeAttribute('id');	//removing the ID disconnects gmail event
-			done.addEventListener('click', () => window.location.assign('#archive')); // Manually add on-click event to done elment
-			done.querySelector('a').innerText = 'Done';	//default text is All Mail
-			done.querySelector('div').classList.add('done-item');
+			// Assign link href which only show archived mail
+			done.querySelector('a').href = '#archive';
+
+			// Remove id attribute from done element for preventing event override from Gmail
+			done.firstChild.removeAttribute('id');
+
+			// Manually add on-click event to done elment
+			done.addEventListener('click', () => window.location.assign('#archive'));
+
+			// Rewrite text from All Mail to Done
+			done.querySelector('a').innerText = 'Done';
+
+			// Add border seperator to bottom of Done
+			const innerDone = done.querySelector('div');
+			innerDone.parentElement.style.borderBottom = '1px solid rgb(221, 221, 221)';
+			innerDone.parentElement.style.paddingBottom = '15px';
+			innerDone.style.paddingBottom = '5px';
+			innerDone.style.paddingTop = '5px';
 
 			const newNode = document.createElement('div');
 			newNode.classList.add('TK');
-			newNode.classList.add('main-menu');
 			newNode.appendChild(inbox);
 			newNode.appendChild(snoozed);
 			newNode.appendChild(done);
+			parent.insertBefore(placeholder, refer);
 			parent.insertBefore(newNode, refer);
 
 			setupClickEventForNodes([inbox, snoozed, done, drafts, sent, spam, trash, starred, important, chats]);
@@ -736,61 +761,66 @@ const handleHashChange = () => {
 
 	headerElement.setAttribute('pageTitle', hash.replace('#', ''));
 	titleNode.href = hash;
+	updateReminders();
 };
 
 window.addEventListener('hashchange', handleHashChange);
 
 document.addEventListener('DOMContentLoaded', function () {
-	waitForElement('.z0', (composeContainer) => {
-		const addReminder = document.createElement('div');
-		addReminder.className = 'add-reminder';
-		const openReminder = () => {
-			const myEmail = getMyEmailAddress();
+	const addReminder = document.createElement('div');
+	addReminder.className = 'add-reminder';
+	function openReminder() {
+		const myEmail = getMyEmailAddress();
 
-			// TODO: Replace all of the below with gmail.compose.start_compose() via the Gmail.js lib
-			const composeButton = document.querySelector('.T-I.T-I-KE.L3');
-			composeButton.click();
+		// TODO: Replace all of the below with gmail.compose.start_compose() via the Gmail.js lib
+		const composeButton = document.querySelector('.T-I.T-I-KE.L3');
+		composeButton.click();
+		// triggerMouseEvent(composeButton, 'mousedown');
+		// triggerMouseEvent(composeButton, 'mouseup');
 
-			// TODO: Delete waitForElement() function, replace with gmail.observe.on('compose') via the Gmail.js lib
-			waitForElement('textarea[name=to]', to => {
-				const title = document.querySelector('input[name=subjectbox]');
-				const body = document.querySelector('div[aria-label="Message Body"]');
-				const from = document.querySelector('input[name="from"]');
+		// TODO: Delete waitForElement() function, replace with gmail.observe.on('compose') via the Gmail.js lib
+		waitForElement('textarea[name=to]', to => {
+			const title = document.querySelector('input[name=subjectbox]');
+			const body = document.querySelector('div[aria-label="Message Body"]');
+			const from = document.querySelector('input[name="from"]');
 
-				from.value = myEmail;
-				to.value = myEmail;
-				if (options.reminderTreatment === 'all') {
-					to.addEventListener('focus', () => title.focus());
-				} else {
-					title.value = 'Reminder';
-					to.addEventListener('focus', () => body.focus());
-				}
-			});
-		};
-		addReminder.addEventListener('click', openReminder);
-		window.addEventListener('keydown', (event) => {
-			const inInput = event.target && isTypable(event.target);
-
-			if (event.code === 'KeyT' && !inInput) {
-				openReminder();
+			from.value = myEmail;
+			to.value = myEmail;
+			// title.value = 'Reminder';
+			// body.focus();
+			const moveFocus = () => {
+				title.focus();
 			}
+			to.addEventListener('focus', moveFocus);
 		});
-		composeContainer.appendChild(addReminder);
+	};
+	addReminder.addEventListener('click', openReminder);
+	window.addEventListener('keydown', (event) => {
+		if (event.code === 'KeyT') {
+			openReminder();
+		}
 	});
+	document.body.appendChild(addReminder);
 
 	waitForElement('a[title="Gmail"]:not([aria-label])', handleHashChange);
+
+	const floatingComposeButton = document.createElement('div');
+	floatingComposeButton.className = 'floating-compose';
+	floatingComposeButton.addEventListener('click', function () {
+		// TODO: Replace all of the below with gmail.compose.start_compose() via the Gmail.js lib
+		const composeButton = document.querySelector('.T-I.T-I-KE.L3');
+		composeButton.click();
+		// triggerMouseEvent(composeButton, 'mousedown');
+		// triggerMouseEvent(composeButton, 'mouseup');
+	});
+	document.body.appendChild(floatingComposeButton);
 
 	setInterval(updateReminders, 250);
 });
 
-const isTypable = (element) => {
-	const role = element.getAttribute && element.getAttribute('role');
-	return ['INPUT', 'TEXTAREA'].includes(element.tagName) || (role === 'textbox');
-}
-
 const setFavicon = () => {
-	if (document.querySelector('link[rel*="icon"]')) {
-		document.querySelector('link[rel*="icon"]').href = chrome.runtime.getURL('images/favicon.png');;
+	if (document.querySelector('link[rel*="shortcut icon"]')) {
+		document.querySelector('link[rel*="shortcut icon"]').href = chrome.runtime.getURL('images/favicon.png');
 	}
 }
 

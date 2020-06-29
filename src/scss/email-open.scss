@@ -1,0 +1,33 @@
+.Bs.nH.iY.bAt { //email-container
+	margin: 2px;
+	box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24);
+	width: auto;
+	.byY { //subject-container
+		padding: 20px 4px 8px 20px;
+		.ha { //subject-text-container
+			.J-J5-Ji { //labels-container
+				display: none;
+			}
+		}
+		.ade { //action-buttons-container
+			div[data-tooltip="Print all"],
+			div[data-tooltip="In new window"] {
+				display: none;
+			}
+		}
+	}
+
+	.aHU { //body-container
+		.gE { //header-container
+			.iw { //email-header
+				.go { //email-address
+					display: none;
+				}
+			}
+		}
+	}
+
+	.Bu.yM { //spacer(?) cell in the email table
+		display: none;
+	}
+}

@@ -1,0 +1,23 @@
+.D.E.G-atb { //toolbar
+	&::before {
+		box-shadow: none;
+		-webkit-box-shadow: none;
+	}
+
+	&.PY { //with-filter-bar
+		height: 48px;
+		display: flex;
+	}
+
+	.G6 { //filter-bar
+		display: none;
+	}
+	.Cq.aqL { //toolbar-left
+		margin-left: auto;
+		margin-right: -24px;
+	}
+	.Cr.aqJ { //toolbar-right
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+}

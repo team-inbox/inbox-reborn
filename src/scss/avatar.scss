@@ -1,0 +1,23 @@
+.avatar {
+  background: url("chrome-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png");
+  color: rgba(255, 255, 255, 0.65);
+  border-radius: 50%;
+  font-size: 18px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  position: relative;
+  left: -6px;
+  flex: 32px 0 0;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  line-height: 32px;
+  background-size: 75% 75% !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+@-moz-document url-prefix() {
+  .avatar {
+    background: url("moz-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png");
+  }
+}
