@@ -9,6 +9,7 @@ const devBuild = process.env.NODE_ENV !== 'production';
 const options = {
   entry: {
     content: [
+      'regenerator-runtime/runtime',
       path.join(__dirname, 'src', 'js', 'content/index.js'),
       path.join(__dirname, 'src', 'scss', 'content.scss')
     ],

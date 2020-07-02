@@ -63,6 +63,7 @@ export default {
           }
           labelStats[label].emailEl = email.emailEl;
           labelStats[label].date = email.getRawDate();
+          labelStats[label].dateDisplay = email.getDateDisplay();
           if (email.isUnread()) {
             labelStats[label].containsUnread = true;
           }

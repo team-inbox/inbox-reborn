@@ -45,6 +45,11 @@ export default class Email {
     return this.getParticipants().map(node => node.getAttribute('name'));
   }
 
+  getDateDisplay() {
+    const dateElement = this.emailEl.querySelector('.xW.xY span');
+    return dateElement && dateElement.innerText;
+  }
+
   getRawDate() {
     const dateElement = this.emailEl.querySelector('.xW.xY span');
     if (dateElement) {

@@ -21,21 +21,29 @@ export default class Bundle {
   buildBundleWrapper() {
     const importantMarkerClass = checkImportantMarkers() ? '' : 'hide-important-markers';
     const bundleImage = this.getBundleImageForLabel();
-    const { emailEl, date } = this.stats;
+    const { emailEl, date, dateDisplay } = this.stats;
     const bundleTitleColor = bundleImage.match(/custom-cluster/) && this.getBundleTitleColorForLabel();
 
     const bundleWrapper = htmlToElements(`
-        <div class="zA yO ${CLASSES.BUNDLE_WRAPPER_CLASS}" bundleLabel="${this.label}" data-date-label="${emailEl.getAttribute('data-date-label')}">
-          <span class="oZ-x3 xY aid bundle-image">
+        <tr class="zA yO ${CLASSES.BUNDLE_WRAPPER_CLASS}" bundleLabel="${this.label}" data-date-label="${emailEl.getAttribute('data-date-label')}">
+          <td class="PF xY"/>
+          <td class="oZ-x3 xY aid bundle-image">
             <img src="${bundleImage}" ${bundleTitleColor ? `style="filter: drop-shadow(0 0 0 ${bundleTitleColor}) saturate(300%)"` : ''}/>
-          </span>
-          <span class="WA xY ${importantMarkerClass}"></span>
-          <span class="yX xY label-link .yW" ${bundleTitleColor ? `style="color: ${bundleTitleColor}"` : ''}>${this.label}</span>
-          <span class="xW xY">
-            <span title="${date}"/>
-          </span>
-          <div class="y2 bundle-senders"></div>
-        </div>
+          </td>
+          <td class="apU xY"></td>
+          <td class="WA xY ${importantMarkerClass}"/>
+          <td class="yX xY label-link .yW" ${bundleTitleColor ? `style="color: ${bundleTitleColor}"` : ''}>${this.label}</td>
+          <td class="xY a4W">
+            <div class="xS">
+              <div class="xT">
+                <span class="y2 bundle-senders"/>
+              </div>
+            </div>
+          </td>
+          <td class="xW xY">
+            <span title="${date}">${dateDisplay}</span>
+          </td>
+        </tr>
     `);
 
     bundleWrapper.onclick = () => {
