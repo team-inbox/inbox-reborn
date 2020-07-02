@@ -1,7 +1,7 @@
-const path = require("path");
-const CleanWebpackPlugin = require("clean-webpack-plugin").CleanWebpackPlugin;
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const devBuild = process.env.NODE_ENV !== 'production';
@@ -9,7 +9,7 @@ const devBuild = process.env.NODE_ENV !== 'production';
 const options = {
   entry: {
     content: [
-      path.join(__dirname, 'src', 'js', 'content.js'),
+      path.join(__dirname, 'src', 'js', 'content/index.js'),
       path.join(__dirname, 'src', 'scss', 'content.scss')
     ],
     options: [
@@ -24,6 +24,12 @@ const options = {
   },
   module: {
     rules: [
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        use: 'eslint-loader',
+        include: path.join(__dirname, '../src')
+      },
       {
         test: /\.js$/,
         include: path.resolve(__dirname, 'src'),
@@ -58,13 +64,13 @@ const options = {
     // expose and write the allowed env vars on the compiled bundle
     new CopyWebpackPlugin([{
       from: 'src/manifest.json',
-      transform: function (content, path) {
+      transform(content) {
         // generates the manifest file using the package.json informations
         return Buffer.from(JSON.stringify({
           description: process.env.npm_package_description,
           version: process.env.npm_package_version,
           ...JSON.parse(content.toString())
-        }))
+        }));
       }
     }]),
     new CopyWebpackPlugin([{ from: 'src/images', to: 'images' }]),
@@ -81,7 +87,7 @@ const options = {
 };
 
 if (devBuild) {
-  options.devtool = 'source-map';
+  options.devtool = 'inline-source-map';
 }
 
 module.exports = options;

@@ -1,0 +1,29 @@
+{
+  "extends": "airbnb-base",
+  "rules": {
+    "arrow-parens": [
+      "error",
+      "as-needed"
+    ],
+    "comma-dangle": [
+      "error",
+      "never"
+    ],
+    "consistent-return": "off",
+    "max-len": [
+      "warn",
+      150
+    ],
+    "no-param-reassign": "off",
+    "no-plusplus": [
+      "off",
+      {
+        "allowForLoopAfterthoughts": true
+      }
+    ]
+  },
+  "env": {
+    "browser": true,
+    "webextensions": true
+  }
+}
