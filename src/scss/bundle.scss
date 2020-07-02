@@ -1,24 +1,25 @@
 .zA.bundle-wrapper {
 	.bundle-image {
-		margin-left: 13px;
 		img {
 			width: 28px;
 		}
 	}
 
 	.label-link {
-		margin-left: 5px;
-		margin-right: 32px;
-
 		.bundle-count {
 			font-weight: 400;
 			margin-left: 5px;
 			color: gray;
 		}
 	}
-	.xW { //date-column
-		flex-grow: 1;
-		overflow: hidden;
+	.WA { //important-indicator-column
+		&.hide-important-markers {
+			display: none;
+		}
+	}
+
+	.a4W { //body-column
+		padding-right: 30px;
 		.bundle-senders {
 			color: #202124 !important;
 		}

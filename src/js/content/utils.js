@@ -42,7 +42,7 @@ export const removeClass = (element, className) => {
 export const getTabs = () => Array.from(document.querySelectorAll('.aKz')).map(el => el.innerText);
 export const isInInbox = () => document.querySelector('.nZ a[title=Inbox]') !== null;
 export const isInBundle = () => document.location.hash.match(/#search\/in%3Ainbox\+label%3A/g) !== null;
-export const checkImportantMarkers = () => document.querySelector('td.WA.xY');
+export const checkImportantMarkers = () => document.querySelector('.zA:not(.bundle-wrapper) td.WA.xY');
 
 export const getMyEmailAddress = () => {
   if (document.querySelector('.gb_tb') && document.querySelector('.gb_tb').innerText) {
