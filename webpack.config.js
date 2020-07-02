@@ -83,7 +83,10 @@ const options = {
     new MiniCssExtractPlugin({
       filename: '[name].css'
     })
-  ]
+  ],
+  optimization: {
+    minimize: false
+  }
 };
 
 if (devBuild) {

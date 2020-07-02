@@ -5,7 +5,7 @@
     "node": ">=12.16.1"
   },
   "scripts": {
-    "build": "webpack --mode production -C webpack.config.js",
+    "build": "NODE_ENV=production webpack --mode production -C webpack.config.js",
     "watch": "webpack --mode development -C webpack.config.js -w",
     "js:lint": "$(npm bin)/eslint './src/**/*.js'",
     "js:lint:fix": "$(npm bin)/eslint './src/**/*.js' --fix"
