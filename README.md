@@ -3,18 +3,16 @@
 
 Web extension which modifies Gmail™ to bring back the features and uncluttered design you knew and loved from Google's discontinued Inbox
 
-![inbox screenshot](https://github.com/boukestam/inbox-in-gmail/blob/master/screenshots/inbox%20v0.4.8-3.png?raw=true)
+![inbox screenshot](https://github.com/team-inbox/inbox-reborn/blob/master/screenshots/inbox%20v0.4.8-3.png?raw=true)
 
 ## Installing
 
-### Chrome
+### Chrome & Microsoft Edge 
 
 **NOTE**: This extension been removed from the Chrome Web Store for unknown reasons, see [issue #69](https://github.com/boukestam/inbox-in-gmail/issues/69)
 
-CRX file for Chrome available in [this repo's Releases page](https://github.com/boukestam/inbox-in-gmail/releases)
-
-If the CRX file does not work directly, try loading Inbox Reborn as an **unpacked extension**:
-1. Download [this repo's source code here](https://github.com/boukestam/inbox-in-gmail/archive/master.zip), and unzip it where you like
+Install Inbox Reborn as an **unpacked extension**:
+1. Download [this repo's source code here](https://github.com/team-inbox/inbox-reborn/archive/master.zip), and unzip it where you like
 2. Go to Chrome's extension settings page, at `chrome://extensions`
 3. Tick the `Developer mode` checkbox on the top right of the page
 4. Click the `Load unpacked` button, then select the unzipped folder you downloaded earlier
@@ -37,7 +35,7 @@ If the CRX file does not work directly, try loading Inbox Reborn as an **unpacke
 
 ## Extension Options
 
-![options popup screenshot](https://github.com/boukestam/inbox-in-gmail/blob/master/screenshots/options%20v0.4.8-2.png?raw=true)
+![options popup screenshot](https://github.com/team-inbox/inbox-reborn/blob/master/screenshots/options%20v0.4.8-2.png?raw=true)
 
 Click the extension's icon at the top right of your browser to adjust the behavior of some features:
 
