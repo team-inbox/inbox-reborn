@@ -1,3 +1,5 @@
+import { htmlToElements } from './utils';
+
 const CALENDAR_ATTACHMENT_CLASS = 'calendar-attachment';
 
 export default {
@@ -16,45 +18,28 @@ export default {
       }
     }
 
-    // build calendar attachment, this is based on regular attachments we no longer
-    // have access to inbox to see the full structure
-    const span = document.createElement('span');
-    span.appendChild(document.createTextNode('Attachment'));
-    span.classList.add('bzB');
-
-    const attachmentNameSpan = document.createElement('span');
-    attachmentNameSpan.classList.add('event-title');
-    attachmentNameSpan.appendChild(document.createTextNode(title));
-
-    const attachmentTimeSpan = document.createElement('span');
-    attachmentTimeSpan.classList.add('event-time');
-    attachmentTimeSpan.appendChild(document.createTextNode(time));
-
-    const attachmentContentWrapper = document.createElement('span');
-    attachmentContentWrapper.classList.add('brg');
-    attachmentContentWrapper.appendChild(attachmentNameSpan);
-    attachmentContentWrapper.appendChild(attachmentTimeSpan);
-
-    // Find Invitation Action
-    const action = email.querySelector('.aKS');
-    if (action) attachmentContentWrapper.appendChild(action);
-
-    const imageSpan = document.createElement('span');
-    imageSpan.classList.add('calendar-image');
-
-    const attachmentCard = document.createElement('div');
-    attachmentCard.classList.add('brc');
-    attachmentCard.setAttribute('role', 'listitem');
-    attachmentCard.setAttribute('title', title);
-    attachmentCard.appendChild(imageSpan);
-    attachmentCard.appendChild(attachmentContentWrapper);
-
-    const attachmentNode = document.createElement('div');
-    attachmentNode.classList.add('brd', CALENDAR_ATTACHMENT_CLASS);
-    attachmentNode.appendChild(span);
-    attachmentNode.appendChild(attachmentCard);
+    const calendarNode = htmlToElements(`
+      <div class="brd calendar-attachment">
+        <span class="bzB">Attachment</span>
+        <div class="brc" role="listitem" title="${title}">
+          <span class="calendar-image"></span>
+          <span class="brg">
+            <span class="event-title">${title}</span>
+            <span class="event-time">${time}</span>
+            <span class="aKS">
+              <div class="T-I J-J5-Ji aOd aS9 T-I-awv L3" role="button" tabindex="0">
+                <span class="aJ6">RSVP</span>
+                <img class="J-J5-Ji aTi aJ4" src="images/cleardot.gif" alt=""/>
+              </div>
+            </span>
+          </span>
+        </div>
+      </div>
+    `);
 
     const emailSubjectWrapper = email.querySelectorAll('.a4W');
-    if (emailSubjectWrapper) emailSubjectWrapper[0].appendChild(attachmentNode);
+    if (emailSubjectWrapper) {
+      emailSubjectWrapper[0].appendChild(calendarNode);
+    }
   }
 };
