@@ -19,6 +19,7 @@ export const CLASSES = {
   BUNDLE_PAGE_CLASS: 'bundle-page',
   BUNDLE_WRAPPER_CLASS: 'bundle-wrapper',
   CALENDAR_EMAIL_CLASS: 'calendar-event',
+  CALENDAR_ATTACHMENT_CLASS: 'calendar-attachment',
   REMINDER_EMAIL_CLASS: 'reminder',
   UNREAD_BUNDLE_CLASS: 'contains-unread',
   UNBUNDLED_PARENT_LABEL: 'Unbundled',
