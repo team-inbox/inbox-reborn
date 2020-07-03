@@ -6,12 +6,13 @@ import {
   observeForElement,
   removeClass
 } from './utils';
+import leftNav from './leftNav';
 import { getOptions } from './options';
 import { CLASSES } from './constants';
 
 export default {
   init() {
-    this.addReminderButton();
+    this.updateFloatingButtons();
     this.updateHeader();
     window.addEventListener('hashchange', this.handleHashChange);
   },
@@ -21,21 +22,31 @@ export default {
     }
 
     await observeForElement(document, 'a[title="Gmail"]:not([aria-label])');
+    const gSuiteLogo = document.querySelector('.gb_ua.gb_ra.gb_va');
+    if (gSuiteLogo) {
+      addClass(document.body, 'g-suite');
+    }
     this.handleHashChange();
   },
   handleHashChange() {
     let { hash } = window.location;
+    // eslint-disable-next-line prefer-destructuring
+    hash = hash.split('/')[0].split('?')[0];
+    let title = hash.replace('#', '');
     if (isInBundle()) {
       hash = '#inbox';
+      title = 'inbox';
       addClass(document.body, CLASSES.BUNDLE_PAGE_CLASS);
     } else {
       removeClass(document.body, CLASSES.BUNDLE_PAGE_CLASS);
-      // eslint-disable-next-line prefer-destructuring
-      hash = hash.split('/')[0].split('?')[0];
+      if (!leftNav.menuItems.some(item => `#${item.label}` === hash)) {
+        hash = '#inbox';
+        title = 'gmail';
+      }
     }
     const headerElement = document.querySelector('header').parentElement.parentElement;
     if (headerElement) {
-      headerElement.setAttribute('pageTitle', hash.replace('#', ''));
+      headerElement.setAttribute('pageTitle', title);
     }
 
     const titleNode = document.querySelector('a[title="Gmail"]:not([aria-label])');
@@ -43,8 +54,10 @@ export default {
       titleNode.href = hash;
     }
   },
-  async addReminderButton() {
-    const composeContainer = await observeForElement(document, '.z0');
+  async updateFloatingButtons() {
+    const composeContainer = await observeForElement(document, '.aic');
+    const mainContainer = document.querySelector('.bkL');
+    mainContainer.appendChild(composeContainer);
     const addReminder = document.createElement('div');
     addReminder.className = 'add-reminder';
     addReminder.addEventListener('click', this.openReminder);
@@ -55,7 +68,7 @@ export default {
         this.openReminder();
       }
     });
-    composeContainer.appendChild(addReminder);
+    composeContainer.querySelector('.z0').appendChild(addReminder);
   },
   async openReminder() {
     const myEmail = getMyEmailAddress();

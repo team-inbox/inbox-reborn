@@ -17,15 +17,29 @@
 		background: #F2F2F2;
 	}
 }
+.g-suite {
+	.bAw.nn { //right-hand-bar-g-suite-container
+		.brC-aT5-aOt-Jw { //right-hand-bar-g-suite
+			background: #F2F2F2;
+			border-left: 1px solid rgba(100,121,143,.12);
+		}
+	}
+}
 
 .Wg.aAr { //email-grouping-headers
 	display: none;
 }
 
+.left-hand-chat, .g-suite {
+	.dw {	//popup-container (holds hangouts chats and email compose)
+		left: -40px;
+	}
+}
+
 .ar4 { //main-container
-	// background: #f2f2f2;
 	max-width: 1200px;
 	margin: 0 auto;
+	padding-left: 16px;
 
 	.aeJ { //main-content-container
 		background-color: transparent;

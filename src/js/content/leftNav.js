@@ -1,9 +1,11 @@
+import { addClass, removeClass } from './utils';
+
 export default {
   loadedMenu: false,
   menuItems: [
     { label: 'inbox', selector: '.aHS-bnt' },
     { label: 'snoozed', selector: '.aHS-bu1' },
-    { label: 'done', selector: '.aHS-aHO' },
+    { label: 'archive', selector: '.aHS-aHO' },
     { label: 'drafts', selector: '.aHS-bnq' },
     { label: 'sent', selector: '.aHS-bnu' },
     { label: 'spam', selector: '.aHS-bnv' },
@@ -27,23 +29,27 @@ export default {
         // Gmail will execute its script to add element to the first child, so
         // add one placeholder for it and do the rest in the next child.
         const placeholder = document.createElement('div');
-        placeholder.classList.add('TK');
-        placeholder.classList.add('google-menu-placeholder');
+        addClass(placeholder, 'TK');
+        addClass(placeholder, 'google-menu-placeholder');
         placeholder.style.cssText = 'padding: 0; border: 0;';
         parent.insertBefore(placeholder, refer);
 
         const inbox = this.menuItems.find(item => item.label === 'inbox').node;
         const snoozed = this.menuItems.find(item => item.label === 'snoozed').node;
-        const done = this.menuItems.find(item => item.label === 'done').node;
+        const done = this.menuItems.find(item => item.label === 'archive').node;
 
         done.firstChild.removeAttribute('id'); // removing the ID disconnects gmail event
         done.addEventListener('click', () => window.location.assign('#archive')); // Manually add on-click event to done elment
         done.querySelector('a').innerText = 'Done'; // default text is All Mail
-        done.querySelector('div').classList.add('done-item');
+        const doneItem = done.querySelector('div');
+        addClass(doneItem, 'done-item');
+        if (window.location.hash === '#archive') {
+          addClass(doneItem, 'nZ');
+        }
 
         const newNode = document.createElement('div');
-        newNode.classList.add('TK');
-        newNode.classList.add('main-menu');
+        addClass(newNode, 'TK');
+        addClass(newNode, 'main-menu');
         newNode.appendChild(inbox);
         newNode.appendChild(snoozed);
         newNode.appendChild(done);
@@ -51,6 +57,9 @@ export default {
 
         this.setupClickEventForNodes(this.menuItems.map(item => item.node));
 
+        const chatContainer = document.querySelector('div[aria-label="Hangouts"][role="complementary"]');
+        const leftHandChat = chatContainer && this.queryParentSelector(chatContainer, '.aeN');
+        addClass(document.body, leftHandChat ? 'left-hand-chat' : 'right-hand-chat');
         moreMenu.click();
         observer.disconnect();
       }
@@ -66,8 +75,8 @@ export default {
     nodes.map(node => node.addEventListener('click', () => this.activateMenuItem(node, nodes)));
   },
   activateMenuItem(target, nodes) {
-    nodes.map(node => node.firstChild.classList.remove('nZ'));
-    target.firstChild.classList.add('nZ');
+    nodes.map(node => removeClass(node.firstChild, 'nZ'));
+    addClass(target.firstChild, 'nZ');
   },
   findMenuItem(itemSelector) {
     return this.queryParentSelector(document.querySelector(itemSelector), '.aim');
