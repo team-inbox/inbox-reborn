@@ -579,11 +579,6 @@ button.gb_ff.gb_gf  {
 	margin-left: 0px;
 }
 
-/* search icon options */
-button.gb_lf {
-	margin-top: -5px;
-}
-
 /* main search window */
 .gb_oc.gb_Od.gb_Xd.gb_Td {
 	margin-left: 10px;
@@ -1374,4 +1369,13 @@ body.email-bundling-enabled.bundle-page .nH.ar4.B .yi {
 }
 .Zs .zA > .xY {
 	order: 1 !important;
+}
+
+
+/* Hide Compose and Reminder buttons from Gmail's Print view */
+@media print {
+	.add-reminder,
+	.floating-compose {
+		display: none;
+	}
 }
