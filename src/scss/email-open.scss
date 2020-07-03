@@ -9,12 +9,6 @@
 				display: none;
 			}
 		}
-		.ade { //action-buttons-container
-			div[data-tooltip="Print all"],
-			div[data-tooltip="In new window"] {
-				display: none;
-			}
-		}
 	}
 
 	.aHU { //body-container
@@ -24,6 +18,9 @@
 					display: none;
 				}
 			}
+		}
+		.ii.gt {	//email-body
+			padding-right: 56px;
 		}
 	}
 

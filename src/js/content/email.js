@@ -166,7 +166,7 @@ export default class Email {
 
     if (this.isCalendarEvent() && !calendarAlreadyProcessed) {
       calendar.addEventAttachment(this.emailEl);
-      addClass(this.emailEl, CLASSES.BUNDLED_EMAIL_CLASS);
+      addClass(this.emailEl, CLASSES.CALENDAR_EMAIL_CLASS);
     }
   }
 
@@ -178,7 +178,7 @@ export default class Email {
       const subject = subjectEl && subjectEl.innerText.trim();
 
       // if subject is reminder, hide subject in the row and show the body instead
-      if (subject.toLowerCase() === 'reminder') {
+      if (subject && subject.toLowerCase() === 'reminder') {
         subjectEl.outerHTML = '';
         this.emailEl.querySelectorAll('.Zt').forEach(node => { node.outerHTML = ''; });
         this.emailEl.querySelectorAll('.y2').forEach(node => { node.style.color = '#202124'; });
