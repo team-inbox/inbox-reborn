@@ -27,8 +27,6 @@ const getSnoozeDate = snoozeString => {
 };
 
 export const buildDateLabel = (dateString, snoozeString) => {
-  // const dateString = getRawDate(this.emailEl);
-  // const snoozed = this.isSnoozed();
   let date;
   if (snoozeString) {
     date = getSnoozeDate(snoozeString);

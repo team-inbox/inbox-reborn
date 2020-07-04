@@ -1,11 +1,10 @@
-import { CLASSES } from './constants';
-import { addClass, hasClass } from './utils';
+import { addClass } from './utils';
 
 export default {
   addDateLabels() {
     let lastLabel = null;
     this.cleanupDateLabels();
-    const emailElements = document.querySelectorAll(`.BltHke[role=main] .zA:not(.${CLASSES.BUNDLED_EMAIL_CLASS})`);
+    const emailElements = document.querySelectorAll('.BltHke[role=main] .zA:not([data-bundled="true"])');
     emailElements.forEach(emailEl => {
       const dateLabel = emailEl.getAttribute('data-date-label');
 
@@ -40,7 +39,7 @@ export default {
     if (sibling.className === 'time-row') {
       return true;
     }
-    if (!hasClass(sibling, CLASSES.BUNDLED_EMAIL_CLASS)) {
+    if (sibling.getAttribute('data-bundled') !== 'true') {
       return false;
     }
     return this.isEmptyDateLabel(sibling);
@@ -51,7 +50,7 @@ export default {
       if (row.nextSibling && row.nextSibling.className === 'time-row') {
         row.remove();
         // Check nextSibling recursively until reaching the next .time-row
-        // If all siblings are .bundled-email, then hide row
+        // If all siblings are bundled, then hide row
       } else if (this.isEmptyDateLabel(row)) {
         row.hidden = true;
       }
