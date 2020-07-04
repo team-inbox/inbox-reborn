@@ -1,8 +1,15 @@
 import { CLASSES } from './constants';
+import emailPreview from './emailPreview';
+import inbox from './inbox';
 import {
   addClass,
   checkImportantMarkers,
+  getCurrentBundle,
   htmlToElements,
+  isInBundle,
+  observeForRemoval,
+  openBundle,
+  openInbox,
   removeClass
 } from './utils';
 
@@ -10,7 +17,7 @@ export default class Bundle {
   constructor(label, stats) {
     this.label = label;
     this.stats = stats;
-    this.element = document.querySelector(`.BltHke[role=main] .bundle-wrapper[bundleLabel="${label}"]`);
+    this.element = document.querySelector(`.BltHke[role=main] .${CLASSES.BUNDLE_WRAPPER_CLASS}[bundleLabel="${label}"]`);
     if (stats.count === 0 && this.element) {
       this.element.remove();
     } else if (!this.element) {
@@ -21,11 +28,13 @@ export default class Bundle {
   buildBundleWrapper() {
     const importantMarkerClass = checkImportantMarkers() ? '' : 'hide-important-markers';
     const bundleImage = this.getBundleImageForLabel();
-    const { emailEl, date, dateDisplay } = this.stats;
+    const { email, emailEl } = this.stats;
     const bundleTitleColor = bundleImage.match(/custom-cluster/) && this.getBundleTitleColorForLabel();
+    const bundleId = this.fixLabel(this.label);
+    const { dateLabel, dateDisplay, rawDate } = email.dateInfo;
 
     const bundleWrapper = htmlToElements(`
-        <div class="zA yO ${CLASSES.BUNDLE_WRAPPER_CLASS}" bundleLabel="${this.label}" data-date-label="${emailEl.getAttribute('data-date-label')}">
+        <div class="zA yO ${CLASSES.BUNDLE_WRAPPER_CLASS}" bundleLabel="${this.label}" data-bundle=${bundleId} data-date-label="${dateLabel}">
           <div class="PF xY"></div>
           <div class="oZ-x3 xY aid bundle-image">
             <img src="${bundleImage}" ${bundleTitleColor ? `style="filter: drop-shadow(0 0 0 ${bundleTitleColor}) saturate(300%)"` : ''}/>
@@ -41,13 +50,39 @@ export default class Bundle {
             </div>
           </div>
           <div class="xW xY">
-            <span title="${date}">${dateDisplay}</span>
+            <span title="${rawDate}">${dateDisplay}</span>
           </div>
         </div>
     `);
 
-    bundleWrapper.onclick = () => {
-      window.location.href = `#search/in%3Ainbox+label%3A${this.fixLabel(this.label)}`;
+    bundleWrapper.onclick = async () => {
+      const currentBundleId = getCurrentBundle(); // will be null when in inbox
+      const isInBundleFlag = isInBundle();
+      const clickedClosedBundle = bundleId !== currentBundleId;
+      if (isInBundleFlag) {
+        openInbox(); // opening the inbox closes the open bundle
+      }
+      if (clickedClosedBundle) {
+        if (isInBundleFlag) {
+          await observeForRemoval(document, '.nested-bundle');
+        }
+        emailPreview.hidePreview();
+        openBundle(bundleId);
+      }
+
+      // alternative implementation that navigates directly between bundles
+      // however, we have to reset the UI to the normal bundle display briefly,
+      // similar to what's done when navigating to other pages which causes a brief full page flash of gray
+      // const clickedOpen = bundleId === currentBundleId;
+      // if (clickedOpenBundle) {
+      //   openInbox();
+      // } else {
+      //   if (isInBundleFlag) {
+      //     inbox.replaceBundle();
+      //   }
+      //   emailPreview.hidePreview();
+      //   openBundle(bundleId);
+      // }
     };
 
     if (emailEl && emailEl.parentNode) {
@@ -80,15 +115,14 @@ export default class Bundle {
   }
 
   getBundleTitleColorForLabel() {
-    const labelEls = this.stats.emailEl.querySelectorAll('.at');
+    const labels = this.stats.email.getLabels();
     let bundleTitleColor = null;
 
-    labelEls.forEach(labelEl => {
-      if (labelEl.innerText === this.label) {
-        const labelColor = labelEl.style.backgroundColor;
+    labels.forEach(label => {
+      if (label.title === this.label) {
         // Ignore default label color, light gray
-        if (labelColor !== 'rgb(221, 221, 221)') {
-          bundleTitleColor = labelColor;
+        if (label.color !== 'rgb(221, 221, 221)') {
+          bundleTitleColor = label.color;
         }
       }
     });

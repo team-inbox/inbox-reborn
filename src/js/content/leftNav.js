@@ -1,4 +1,5 @@
-import { addClass, removeClass } from './utils';
+import { addClass, queryParentSelector, removeClass } from './utils';
+import inbox from './inbox';
 
 export default {
   loadedMenu: false,
@@ -34,7 +35,7 @@ export default {
         placeholder.style.cssText = 'padding: 0; border: 0;';
         parent.insertBefore(placeholder, refer);
 
-        const inbox = this.menuItems.find(item => item.label === 'inbox').node;
+        const inboxEl = this.menuItems.find(item => item.label === 'inbox').node;
         const snoozed = this.menuItems.find(item => item.label === 'snoozed').node;
         const done = this.menuItems.find(item => item.label === 'archive').node;
 
@@ -50,17 +51,17 @@ export default {
         const newNode = document.createElement('div');
         addClass(newNode, 'TK');
         addClass(newNode, 'main-menu');
-        newNode.appendChild(inbox);
+        newNode.appendChild(inboxEl);
         newNode.appendChild(snoozed);
         newNode.appendChild(done);
         parent.insertBefore(newNode, refer);
 
-        this.setupClickEventForNodes(this.menuItems.map(item => item.node));
-
         const chatContainer = document.querySelector('div[aria-label="Hangouts"][role="complementary"]');
-        const leftHandChat = chatContainer && this.queryParentSelector(chatContainer, '.aeN');
+        const leftHandChat = chatContainer && queryParentSelector(chatContainer, '.aeN');
         addClass(document.body, leftHandChat ? 'left-hand-chat' : 'right-hand-chat');
         moreMenu.click();
+        this.setupClickEventForNodes();
+        this.observeLabelNav();
         observer.disconnect();
       }
 
@@ -71,28 +72,36 @@ export default {
     });
     observer.observe(document.body, { subtree: true, childList: true });
   },
-  setupClickEventForNodes(nodes) {
-    nodes.map(node => node.addEventListener('click', () => this.activateMenuItem(node, nodes)));
+  observeLabelNav() {
+    this.applyLabelColors();
+    const observer = new MutationObserver(() => {
+      this.applyLabelColors();
+      this.setupClickEventForNodes();
+    });
+    const leftNavContainer = document.querySelector('.ajl.aib .wT');
+    observer.observe(leftNavContainer, { subtree: true, childList: true });
   },
-  activateMenuItem(target, nodes) {
-    nodes.map(node => removeClass(node.firstChild, 'nZ'));
-    addClass(target.firstChild, 'nZ');
+  applyLabelColors() {
+    document.querySelectorAll('.qj').forEach(labelIcon => {
+      if (labelIcon.style.borderColor) {
+        const color = labelIcon.style.borderColor;
+        const text = labelIcon.parentNode.querySelector('a');
+        text.style.color = color;
+        labelIcon.style.filter = `drop-shadow(0 0 0 ${color}) saturate(300%)`;
+        labelIcon.style.borderWidth = 0;
+      }
+    });
+  },
+  setupClickEventForNodes() {
+    const leftNavItems = document.querySelectorAll('.TN');
+    leftNavItems.forEach(item => item.addEventListener('click', this.activateMenuItem));
+  },
+  activateMenuItem(event) {
+    inbox.replaceBundle();
+    document.querySelectorAll('.nZ').forEach(el => removeClass(el, 'nZ'));
+    addClass(event.currentTarget.parentNode, 'nZ');
   },
   findMenuItem(itemSelector) {
-    return this.queryParentSelector(document.querySelector(itemSelector), '.aim');
-  },
-  queryParentSelector(el, selector) {
-    if (!el) {
-      return null;
-    }
-    let parent = el.parentElement;
-    while (!parent.matches(selector)) {
-      parent = parent.parentElement;
-      if (!parent) {
-        return null;
-      }
-    }
-    return parent;
+    return queryParentSelector(document.querySelector(itemSelector), '.aim');
   }
-
 };

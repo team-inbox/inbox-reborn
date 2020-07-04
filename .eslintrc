@@ -20,6 +20,10 @@
       {
         "allowForLoopAfterthoughts": true
       }
+    ],
+    "radix": [
+      "error",
+      "as-needed"
     ]
   },
   "env": {

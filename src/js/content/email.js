@@ -5,12 +5,16 @@ import {
 import { CLASSES } from './constants';
 import calendar from './calendar';
 import { getOptions } from './options';
+import emailPreview from './emailPreview';
 import {
   addClass,
   getMyEmailAddress,
   getTabs,
   hasClass,
-  isInInbox
+  isInBundle,
+  isInInbox,
+  openInbox,
+  queryParentSelector
 } from './utils';
 
 const STYLE_NODE_ID_PREFIX = 'hide-email-';
@@ -19,22 +23,23 @@ export default class Email {
   constructor(emailEl) {
     this.emailEl = emailEl;
 
-    const options = getOptions();
-
-    if (options.showAvatar === 'enabled') {
-      this.processAvatar();
-    }
-    if (options.emailBundling === 'enabled') {
-      this.processBundle();
-    }
+    this.processIcon();
+    this.processBundle();
     this.processCalendar();
     this.processDate();
-    this.processReminder();
-    this.processUnbundled();
+    this.setupPreview();
   }
 
-  getLabelTitles() {
-    return Array.from(this.emailEl.querySelectorAll('.ar .at')).map(el => el.attributes.title.value);
+  getLabels() {
+    return Array.from(this.emailEl.querySelectorAll('.ar.as')).map(labelContainer => {
+      const labelEl = labelContainer.querySelector('.at');
+      const labelText = labelContainer.querySelector('.av');
+      return {
+        title: labelEl.getAttribute('title'),
+        color: labelText.style.color !== 'rgb(255, 255, 255)' ? labelText.style.color : labelEl.style.backgroundColor,
+        element: labelEl
+      };
+    });
   }
 
   getParticipants() {
@@ -43,37 +48,6 @@ export default class Email {
 
   getParticipantNames() {
     return this.getParticipants().map(node => node.getAttribute('name'));
-  }
-
-  getDateDisplay() {
-    const dateElement = this.emailEl.querySelector('.xW.xY span');
-    return dateElement && dateElement.innerText;
-  }
-
-  getRawDate() {
-    const dateElement = this.emailEl.querySelector('.xW.xY span');
-    if (dateElement) {
-      return dateElement.getAttribute('title');
-    }
-  }
-
-  getSnoozeString() {
-    const node = this.emailEl.querySelector('.by1.cL');
-    return node && node.innerText;
-  }
-
-  bundleAlreadyProcessed() {
-    return hasClass(this.emailEl, CLASSES.BUNDLED_EMAIL_CLASS)
-      || hasClass(this.emailEl, CLASSES.BUNDLE_WRAPPER_CLASS);
-  }
-
-  isCalendarEvent() {
-    const node = this.emailEl.querySelector('.aKS .aJ6');
-    return node && node.innerText === 'RSVP';
-  }
-
-  isBundleWrapper() {
-    return hasClass(this.emailEl, CLASSES.BUNDLE_WRAPPER_CLASS);
   }
 
   isReminder() {
@@ -97,23 +71,23 @@ export default class Email {
     return false;
   }
 
-  isStarred() {
-    const node = this.emailEl.querySelector('.T-KT');
-    return node && node.title !== 'Not starred';
-  }
-
-  isUnbundled() {
-    return this.getLabelTitles().some(label => label.includes(CLASSES.UNBUNDLED_PARENT_LABEL));
-  }
-
   isUnread() {
     return hasClass(this.emailEl, 'zE');
   }
 
-  processAvatar() {
-    const avatarAlreadyProcessed = hasClass(this.emailEl, CLASSES.AVATAR_EMAIL_CLASS);
+  processIcon() {
+    if (this.isReminder()) {
+      this.processReminder();
+      this.emailEl.setAttribute('data-icon', 'reminder');
+    } else {
+      this.processAvatar();
+      this.emailEl.setAttribute('data-icon', 'avatar');
+    }
+  }
 
-    if (!avatarAlreadyProcessed && !this.bundleAlreadyProcessed() && !this.isReminder()) {
+  processAvatar() {
+    const options = getOptions();
+    if (options.showAvatar === 'enabled') {
       const participants = Array.from(this.getParticipantNames()); // convert to array to filter
       if (!participants.length) {
         return; // Prevents Drafts in Search or Drafts folder from causing errors
@@ -128,90 +102,131 @@ export default class Email {
 
       const firstLetter = (firstParticipant && firstParticipant.toUpperCase()[0]) || '-';
       this.addAvatar(firstLetter);
-
-      addClass(this.emailEl, CLASSES.AVATAR_EMAIL_CLASS);
-    }
-  }
-
-  processBundle() {
-    const tabs = getTabs();
-    const isInInboxFlag = isInInbox();
-
-    const labels = this.getLabelTitles().filter(x => !tabs.includes(x));
-    const styleId = `${STYLE_NODE_ID_PREFIX}-${this.emailEl.id}`;
-    const hideEmailStyle = document.getElementById(styleId);
-
-    if (isInInboxFlag && !this.isStarred() && labels.length && !this.isUnbundled() && !this.bundleAlreadyProcessed()) {
-      addClass(this.emailEl, CLASSES.BUNDLED_EMAIL_CLASS);
-      // Insert style node to avoid bundled emails appearing briefly in inbox during redraw
-      if (!hideEmailStyle) {
-        const style = document.createElement('style');
-        document.head.appendChild(style);
-        style.id = styleId;
-        style.type = 'text/css';
-        style.appendChild(document.createTextNode(`.nH.ar4.z .zA[id="${this.emailEl.id}"] { display: none; }`));
-      }
-    } else if (!this.isUnbundled() && !labels.length && hideEmailStyle) {
-      document.getElementById(styleId).remove();
     }
   }
 
   processDate() {
-    const dateLabel = buildDateLabel(this.getRawDate(), this.getSnoozeString());
+    const dateElement = this.emailEl.querySelector('.xW.xY span');
+    const dateDisplay = dateElement && dateElement.innerText;
+    const rawDate = dateElement && dateElement.getAttribute('title');
+    const snoozeElement = this.emailEl.querySelector('.by1.cL');
+    const snoozeString = snoozeElement && snoozeElement.innerText;
+
+    const dateLabel = buildDateLabel(rawDate, snoozeString);
+    this.dateInfo = {
+      rawDate,
+      dateLabel,
+      dateDisplay
+    };
+
     this.emailEl.setAttribute('data-date-label', dateLabel);
   }
 
-  processCalendar() {
-    const calendarAlreadyProcessed = hasClass(this.emailEl, CLASSES.CALENDAR_EMAIL_CLASS);
+  processBundle() {
+    const options = getOptions();
+    this.isBundled = this.emailEl.getAttribute('data-bundled') === 'true';
+    const alreadyProcessed = this.isBundled;
+    if (alreadyProcessed) {
+      return;
+    }
 
-    if (this.isCalendarEvent() && !calendarAlreadyProcessed) {
+    const tabs = getTabs();
+    const labels = this.getLabels().filter(label => !tabs.includes(label.title));
+    const labelTitles = labels.map(label => label.title);
+    this.emailEl.setAttribute('data-bundle', labelTitles.join(','));
+    if (queryParentSelector(this.emailEl, '.nested-bundle')) {
+      this.emailEl.setAttribute('data-nested-email', true);
+    }
+
+    // only process bundles on the inbox page
+    if (options.emailBundling === 'enabled' && !isInBundle() && isInInbox()) {
+      const starContainer = this.emailEl.querySelector('.T-KT');
+      const isStarred = starContainer && starContainer.title !== 'Not starred';
+      const isUnbundled = labelTitles.some(title => title.includes(CLASSES.UNBUNDLED_PARENT_LABEL));
+
+      const styleId = `${STYLE_NODE_ID_PREFIX}-${this.emailEl.id}`;
+      const hideEmailStyle = document.getElementById(styleId);
+
+      if (labels.length && !isStarred && !isUnbundled) {
+        this.emailEl.setAttribute('data-bundled', true);
+        this.isBundled = true;
+        // Insert style node to avoid bundled emails appearing briefly in inbox during redraw
+        if (!hideEmailStyle) {
+          const style = document.createElement('style');
+          document.head.appendChild(style);
+          style.id = styleId;
+          style.type = 'text/css';
+          style.appendChild(document.createTextNode(`.nH.ar4.z .zA[id="${this.emailEl.id}"] { display: none; }`));
+        }
+      } else {
+        this.emailEl.setAttribute('data-inbox', true);
+        if (hideEmailStyle) {
+          document.getElementById(styleId).remove();
+        }
+        if (isUnbundled) {
+          labels.forEach(label => {
+            if (label.title.includes(CLASSES.UNBUNDLED_PARENT_LABEL)) {
+              // Remove 'Unbundled/' from display in the UI
+              label.element.querySelector('.av').innerText = label.title.replace(`${CLASSES.UNBUNDLED_PARENT_LABEL}/`, '');
+            } else {
+              // Hide labels that aren't nested under UNBUNDLED_PARENT_LABEL
+              label.element.hidden = true;
+            }
+          });
+        }
+      }
+    }
+  }
+
+  processCalendar() {
+    const calendarAlreadyProcessed = this.emailEl.getAttribute('data-calendar');
+    const node = this.emailEl.querySelector('.aKS .aJ6');
+    const isCalendarEvent = node && node.innerText === 'RSVP';
+
+    if (isCalendarEvent && !calendarAlreadyProcessed) {
       calendar.addEventAttachment(this.emailEl);
-      addClass(this.emailEl, CLASSES.CALENDAR_EMAIL_CLASS);
+      this.emailEl.setAttribute('data-calendar', true);
     }
   }
 
   processReminder() {
-    const reminderAlreadyProcessed = hasClass(this.emailEl, CLASSES.REMINDER_EMAIL_CLASS);
+    const subjectEl = this.emailEl.querySelector('.y6');
+    const subject = subjectEl && subjectEl.innerText.trim();
 
-    if (this.isReminder() && !reminderAlreadyProcessed) {
-      const subjectEl = this.emailEl.querySelector('.y6');
-      const subject = subjectEl && subjectEl.innerText.trim();
-
-      // if subject is reminder, hide subject in the row and show the body instead
-      if (subject && subject.toLowerCase() === 'reminder') {
-        subjectEl.outerHTML = '';
-        this.emailEl.querySelectorAll('.Zt').forEach(node => { node.outerHTML = ''; });
-        this.emailEl.querySelectorAll('.y2').forEach(node => { node.style.color = '#202124'; });
-      }
-      // replace email with Reminder
-      this.emailEl.querySelectorAll('.yP,.zF').forEach(node => { node.innerHTML = 'Reminder'; });
-      this.addAvatar();
-      addClass(this.emailEl, CLASSES.REMINDER_EMAIL_CLASS);
+    // if subject is reminder, hide subject in the row and show the body instead
+    if (subject && subject.toLowerCase() === 'reminder') {
+      subjectEl.outerHTML = '';
+      this.emailEl.querySelectorAll('.Zt').forEach(node => { node.outerHTML = ''; });
+      this.emailEl.querySelectorAll('.y2').forEach(node => { node.style.color = '#202124'; });
     }
-  }
-
-  processUnbundled() {
-    const labels = this.emailEl.querySelectorAll('.ar.as');
-    const unbundledAlreadyProcessed = hasClass(this.emailEl, CLASSES.UNBUNDLED_EMAIL_CLASS);
-
-    if (this.isUnbundled() && !unbundledAlreadyProcessed) {
-      addClass(this.emailEl, CLASSES.UNBUNDLED_EMAIL_CLASS);
-      labels.forEach(labelEl => {
-        if (labelEl.querySelector('.at').title.includes(CLASSES.UNBUNDLED_PARENT_LABEL)) {
-          // Remove 'Unbundled/' from display in the UI
-          labelEl.querySelector('.av').innerText = labelEl.innerText.replace(`${CLASSES.UNBUNDLED_PARENT_LABEL}/`, '');
-        } else {
-          // Hide labels that aren't nested under UNBUNDLED_PARENT_LABEL
-          labelEl.hidden = true;
-        }
-      });
-    }
+    // replace email with Reminder
+    this.emailEl.querySelectorAll('.yP,.zF').forEach(node => { node.innerHTML = 'Reminder'; });
+    this.addAvatar();
+    addClass(this.emailEl, CLASSES.REMINDER_EMAIL_CLASS);
   }
 
   addAvatar(firstLetter) {
     const avatarWrapperEl = this.emailEl.querySelector('.oZ-x3');
     if (avatarWrapperEl && avatarWrapperEl.getElementsByClassName(CLASSES.AVATAR_CLASS).length === 0) {
       avatarWrapperEl.appendChild(buildAvatar(firstLetter));
+    }
+  }
+
+  setupPreview() {
+    const previewProcessed = this.emailEl.getAttribute('data-preview-enabled');
+    if (previewProcessed !== 'true') {
+      const ignoreColumns = ['oZ-x3', 'apU', 'bq4'];
+      this.emailEl.addEventListener('click', event => {
+        const clickColumn = queryParentSelector(event.target, '.xY');
+        if (clickColumn && ignoreColumns.some(col => hasClass(clickColumn, col))) {
+          return;
+        }
+        emailPreview.emailClicked(this.emailEl);
+        if (this.emailEl.getAttribute('data-inbox') && isInBundle()) {
+          openInbox();
+        }
+      });
+      this.emailEl.setAttribute('data-preview-enabled', true);
     }
   }
 }

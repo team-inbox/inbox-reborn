@@ -1,9 +1,9 @@
 import leftNav from './leftNav';
 import navigation from './navigation';
-import emails from './emails';
+import inbox from './inbox';
 
 function initInboxReborn() {
-  emails.observeEmails();
+  inbox.observeEmails();
   navigation.init();
   leftNav.init();
 }

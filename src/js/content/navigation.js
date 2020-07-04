@@ -2,18 +2,25 @@ import {
   addClass,
   getMyEmailAddress,
   isInBundle,
+  isInInbox,
   isTypable,
   observeForElement,
+  openInbox,
   removeClass
 } from './utils';
 import leftNav from './leftNav';
-import { getOptions } from './options';
+import inbox from './inbox';
+import { getOptions, reloadOptions } from './options';
 import { CLASSES } from './constants';
 
 export default {
   init() {
+    reloadOptions();
     this.updateFloatingButtons();
     this.updateHeader();
+    if (!isInInbox()) { // always make sure we start on the main inbox page so we can find the right email container
+      openInbox();
+    }
     window.addEventListener('hashchange', this.handleHashChange);
   },
   async updateHeader() {
@@ -26,7 +33,18 @@ export default {
     if (gSuiteLogo) {
       addClass(document.body, 'g-suite');
     }
+    this.handleSearchSubmit();
     this.handleHashChange();
+  },
+  async handleSearchSubmit() {
+    const searchInput = await observeForElement(document, '.gb_sf');
+    searchInput.addEventListener('keydown', event => {
+      if (event.code === 'Enter') {
+        inbox.replaceBundle();
+      }
+    });
+    const searchButton = document.querySelector('.gb_Bf');
+    searchButton.addEventListener('click', inbox.replaceBundle);
   },
   handleHashChange() {
     let { hash } = window.location;
@@ -44,7 +62,7 @@ export default {
         title = 'gmail';
       }
     }
-    const headerElement = document.querySelector('header').parentElement.parentElement;
+    const headerElement = document.querySelector('header') && document.querySelector('header').parentElement.parentElement;
     if (headerElement) {
       headerElement.setAttribute('pageTitle', title);
     }

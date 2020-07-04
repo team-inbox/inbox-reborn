@@ -14,7 +14,6 @@ export const CLASSES = {
   AVATAR_EMAIL_CLASS: 'email-with-avatar',
   AVATAR_CLASS: 'avatar',
   AVATAR_OPTION_CLASS: 'show-avatar-enabled',
-  BUNDLED_EMAIL_CLASS: 'bundled-email',
   BUNDLING_OPTION_CLASS: 'email-bundling-enabled',
   BUNDLE_PAGE_CLASS: 'bundle-page',
   BUNDLE_WRAPPER_CLASS: 'bundle-wrapper',
@@ -22,6 +21,5 @@ export const CLASSES = {
   CALENDAR_ATTACHMENT_CLASS: 'calendar-attachment',
   REMINDER_EMAIL_CLASS: 'reminder',
   UNREAD_BUNDLE_CLASS: 'contains-unread',
-  UNBUNDLED_PARENT_LABEL: 'Unbundled',
-  UNBUNDLED_EMAIL_CLASS: 'unbundled-email'
+  UNBUNDLED_PARENT_LABEL: 'Unbundled'
 };
