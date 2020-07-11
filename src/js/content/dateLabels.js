@@ -1,10 +1,13 @@
 import { addClass } from './utils';
+import { SELECTORS } from './constants';
+
+const { EMAIL_CONTAINER, EMAIL_ROW } = SELECTORS;
 
 export default {
   addDateLabels() {
     let lastLabel = null;
     this.cleanupDateLabels();
-    const emailElements = document.querySelectorAll('.BltHke[role=main] .zA:not([data-bundled="true"])');
+    const emailElements = document.querySelectorAll(`${EMAIL_CONTAINER}[role=main] ${EMAIL_ROW}:not([data-bundled="true"])`);
     emailElements.forEach(emailEl => {
       const dateLabel = emailEl.getAttribute('data-date-label');
 

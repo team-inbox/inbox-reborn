@@ -40,11 +40,11 @@ export default {
     const searchInput = await observeForElement(document, '.gb_sf');
     searchInput.addEventListener('keydown', event => {
       if (event.code === 'Enter') {
-        inbox.replaceBundle();
+        inbox.restoreBundle();
       }
     });
     const searchButton = document.querySelector('.gb_Bf');
-    searchButton.addEventListener('click', inbox.replaceBundle);
+    searchButton.addEventListener('click', inbox.restoreBundle);
   },
   handleHashChange() {
     let { hash } = window.location;

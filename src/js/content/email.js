@@ -125,10 +125,6 @@ export default class Email {
   processBundle() {
     const options = getOptions();
     this.isBundled = this.emailEl.getAttribute('data-bundled') === 'true';
-    const alreadyProcessed = this.isBundled;
-    if (alreadyProcessed) {
-      return;
-    }
 
     const tabs = getTabs();
     const labels = this.getLabels().filter(label => !tabs.includes(label.title));
@@ -148,6 +144,7 @@ export default class Email {
       const hideEmailStyle = document.getElementById(styleId);
 
       if (labels.length && !isStarred && !isUnbundled) {
+        this.emailEl.removeAttribute('data-inbox');
         this.emailEl.setAttribute('data-bundled', true);
         this.isBundled = true;
         // Insert style node to avoid bundled emails appearing briefly in inbox during redraw
@@ -159,7 +156,9 @@ export default class Email {
           style.appendChild(document.createTextNode(`.nH.ar4.z .zA[id="${this.emailEl.id}"] { display: none; }`));
         }
       } else {
+        this.emailEl.removeAttribute('data-bundled');
         this.emailEl.setAttribute('data-inbox', true);
+        this.isBundled = false;
         if (hideEmailStyle) {
           document.getElementById(styleId).remove();
         }

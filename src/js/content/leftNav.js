@@ -97,7 +97,7 @@ export default {
     leftNavItems.forEach(item => item.addEventListener('click', this.activateMenuItem));
   },
   activateMenuItem(event) {
-    inbox.replaceBundle();
+    inbox.restoreBundle();
     document.querySelectorAll('.nZ').forEach(el => removeClass(el, 'nZ'));
     addClass(event.currentTarget.parentNode, 'nZ');
   },

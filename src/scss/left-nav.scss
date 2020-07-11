@@ -1,8 +1,12 @@
 @import 'left-nav-images';
 .aeN { //left-sidebar
   &.bhZ { //collapsed
-    transform: translateX(-80px) !important;
-    transition: transform 0.2s ease;
+    // below will hide the collapsed left-hand nav entirel
+    // transform: translateX(-80px) !important;
+    // transition: transform 0.2s ease;
+    &.bym { //small-nav-container
+  		background: #F2F2F2;
+    }
   }
 
   .ajl.aib .wT { //left-container

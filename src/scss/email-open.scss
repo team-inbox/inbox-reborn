@@ -1,3 +1,31 @@
+.Nu.S3.aZ6 { //preview-pane
+	overflow: auto;
+	box-shadow: 0 3px 4px rgba(0,0,0,.24);
+
+	&:not(.show-preview) {
+		//need !important to override inline styles
+		flex-grow: 0 !important;
+		height: 0 !important;
+	}
+	&.show-preview {
+		margin-bottom: 10px;
+		// width: calc(100% - 17px);
+	}
+	.if > .byY { //email-subject-header
+		padding-left: 20px;
+	}
+
+	.ii.gt { //email-body
+		padding-right: 56px;
+	}
+
+	.nH.if { //email-container
+		.nH.eE0 { //bottom-spacer
+			padding-bottom: !important;
+		}
+	}
+}
+
 .Bs.nH.iY.bAt { //email-container
 	margin: 2px;
 	box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24);
