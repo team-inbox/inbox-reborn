@@ -137,7 +137,8 @@ export default class Email {
     // only process bundles on the inbox page
     if (options.emailBundling === 'enabled' && !isInBundle() && isInInbox()) {
       const starContainer = this.emailEl.querySelector('.T-KT');
-      const isStarred = starContainer && starContainer.title !== 'Not starred';
+      // const isStarred = starContainer && starContainer.title !== 'Not starred';
+      const isStarred = hasClass(starContainer, 'T-KT-Jp');
       const isUnbundled = labelTitles.some(title => title.includes(CLASSES.UNBUNDLED_PARENT_LABEL));
 
       const styleId = `${STYLE_NODE_ID_PREFIX}-${this.emailEl.id}`;

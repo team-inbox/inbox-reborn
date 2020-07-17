@@ -76,7 +76,7 @@ export const openBundle = bundleId => { window.location.href = `#search/in%3Ainb
 export const openInbox = () => { window.location.href = '#inbox'; };
 
 export const getMyEmailAddress = () => {
-  if (document.querySelector('.gb_tb') && document.querySelector('.gb_tb').innerText) {
-    return document.querySelector('.gb_tb').innerText;
+  if (document.querySelector('.gb_vb') && document.querySelector('.gb_vb').innerText) {
+    return document.querySelector('.gb_vb').innerText;
   }
 };
