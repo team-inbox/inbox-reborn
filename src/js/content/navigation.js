@@ -37,14 +37,14 @@ export default {
     this.handleHashChange();
   },
   async handleSearchSubmit() {
-    const searchInput = await observeForElement(document, '.gb_sf');
+    const searchInput = await observeForElement(document, 'header form input');
     searchInput.addEventListener('keydown', event => {
       if (event.code === 'Enter') {
-        inbox.replaceBundle();
+        inbox.restoreBundle();
       }
     });
-    const searchButton = document.querySelector('.gb_Bf');
-    searchButton.addEventListener('click', inbox.replaceBundle);
+    const searchButton = document.querySelector('.gb_Df');
+    searchButton.addEventListener('click', inbox.restoreBundle);
   },
   handleHashChange() {
     let { hash } = window.location;

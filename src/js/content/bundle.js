@@ -1,6 +1,5 @@
-import { CLASSES } from './constants';
+import { CLASSES, SELECTORS } from './constants';
 import emailPreview from './emailPreview';
-import inbox from './inbox';
 import {
   addClass,
   checkImportantMarkers,
@@ -13,11 +12,14 @@ import {
   removeClass
 } from './utils';
 
+const { BUNDLE_WRAPPER_CLASS, UNREAD_BUNDLE_CLASS } = CLASSES;
+const { EMAIL_CONTAINER } = SELECTORS;
+
 export default class Bundle {
   constructor(label, stats) {
     this.label = label;
     this.stats = stats;
-    this.element = document.querySelector(`.BltHke[role=main] .${CLASSES.BUNDLE_WRAPPER_CLASS}[bundleLabel="${label}"]`);
+    this.element = document.querySelector(`${EMAIL_CONTAINER}[role=main] .${BUNDLE_WRAPPER_CLASS}[bundleLabel="${label}"]`);
     if (stats.count === 0 && this.element) {
       this.element.remove();
     } else if (!this.element) {
@@ -34,7 +36,7 @@ export default class Bundle {
     const { dateLabel, dateDisplay, rawDate } = email.dateInfo;
 
     const bundleWrapper = htmlToElements(`
-        <div class="zA yO ${CLASSES.BUNDLE_WRAPPER_CLASS}" bundleLabel="${this.label}" data-bundle=${bundleId} data-date-label="${dateLabel}">
+        <div class="zA yO ${BUNDLE_WRAPPER_CLASS}" bundleLabel="${this.label}" data-inbox=${bundleId} data-date-label="${dateLabel}">
           <div class="PF xY"></div>
           <div class="oZ-x3 xY aid bundle-image">
             <img src="${bundleImage}" ${bundleTitleColor ? `style="filter: drop-shadow(0 0 0 ${bundleTitleColor}) saturate(300%)"` : ''}/>
@@ -59,30 +61,17 @@ export default class Bundle {
       const currentBundleId = getCurrentBundle(); // will be null when in inbox
       const isInBundleFlag = isInBundle();
       const clickedClosedBundle = bundleId !== currentBundleId;
+
+      emailPreview.hidePreview();
       if (isInBundleFlag) {
         openInbox(); // opening the inbox closes the open bundle
       }
       if (clickedClosedBundle) {
         if (isInBundleFlag) {
-          await observeForRemoval(document, '.nested-bundle');
+          await observeForRemoval(document, '[data-pane="bundle"]');
         }
-        emailPreview.hidePreview();
         openBundle(bundleId);
       }
-
-      // alternative implementation that navigates directly between bundles
-      // however, we have to reset the UI to the normal bundle display briefly,
-      // similar to what's done when navigating to other pages which causes a brief full page flash of gray
-      // const clickedOpen = bundleId === currentBundleId;
-      // if (clickedOpenBundle) {
-      //   openInbox();
-      // } else {
-      //   if (isInBundleFlag) {
-      //     inbox.replaceBundle();
-      //   }
-      //   emailPreview.hidePreview();
-      //   openBundle(bundleId);
-      // }
     };
 
     if (emailEl && emailEl.parentNode) {
@@ -121,7 +110,7 @@ export default class Bundle {
     labels.forEach(label => {
       if (label.title === this.label) {
         // Ignore default label color, light gray
-        if (label.color !== 'rgb(221, 221, 221)') {
+        if (label.color !== 'rgb(102, 102, 102)') {
           bundleTitleColor = label.color;
         }
       }
@@ -165,9 +154,9 @@ export default class Bundle {
 
   checkUnread() {
     if (this.stats.containsUnread) {
-      addClass(this.element, CLASSES.UNREAD_BUNDLE_CLASS);
+      addClass(this.element, UNREAD_BUNDLE_CLASS);
     } else {
-      removeClass(this.element, CLASSES.UNREAD_BUNDLE_CLASS);
+      removeClass(this.element, UNREAD_BUNDLE_CLASS);
     }
   }
 

@@ -1,21 +1,27 @@
-import { CLASSES } from './constants';
+import { CLASSES, SELECTORS } from './constants';
 
 // ---- HTML Elements ---- \\
 export const observeForCondition = (el, condition) => new Promise(
   resolve => {
+    let satisfied = condition();
+    if (satisfied) {
+      resolve(satisfied);
+    }
     const observer = new MutationObserver(() => {
-      const satisified = condition();
-      if (satisified) {
+      satisfied = condition();
+      if (satisfied) {
         observer.disconnect();
-        resolve(satisified);
+        resolve(satisfied);
       }
     });
-    observer.observe(el, { subtree: true, childList: true });
+    if (el) {
+      observer.observe(el, { subtree: true, childList: true });
+    }
   }
 );
 
-export const observeForElement = (el, selector) => observeForCondition(el, () => el.querySelector(selector));
-export const observeForRemoval = (el, selector) => observeForCondition(el, () => !el.querySelector(selector));
+export const observeForElement = (el, selector) => observeForCondition(el, () => el && el.querySelector(selector));
+export const observeForRemoval = (el, selector) => observeForCondition(el, () => !el || !el.querySelector(selector));
 
 export const htmlToElements = html => {
   const template = document.createElement('template');
@@ -25,10 +31,17 @@ export const htmlToElements = html => {
 
 export const isTypable = element => {
   const role = element.getAttribute && element.getAttribute('role');
-  return ['INPUT', 'TEXTAREA'].includes(element.tagName) || (role === 'textbox');
+  return [ 'INPUT', 'TEXTAREA' ].includes(element.tagName) || (role === 'textbox');
 };
 
-// export const pixelsToInt = pixels => parseInt(pixels.replace('px'));
+export const pixelsToInt = pixels => (typeof pixels === 'number' ? pixels : parseInt(pixels.replace('px')));
+export const addPixels = (...pixels) => {
+  const pixelInt = pixels.reduce((pixel, pixelSum) => {
+    pixelSum += pixelsToInt(pixel);
+    return pixelSum;
+  }, 0);
+  return `${pixelInt}px`;
+};
 
 export const queryParentSelector = (el, selector) => {
   if (!el) {
@@ -63,13 +76,13 @@ export const removeClass = (element, className) => {
 export const getTabs = () => Array.from(document.querySelectorAll('.aKz')).map(el => el.innerText);
 export const isInInbox = () => document.querySelector('.nZ a[title=Inbox]') !== null;
 export const isInBundle = () => document.location.hash.match(/#search\/in%3Ainbox\+label%3A/g) !== null;
-export const getCurrentBundle = () => document.location.hash.replace('#search/in%3Ainbox+label%3A', '');
-export const checkImportantMarkers = () => document.querySelector(`.zA:not(.${CLASSES.BUNDLE_WRAPPER_CLASS}) td.WA.xY`);
-export const openBundle = bundleId => { window.location.href = `#search/in%3Ainbox+label%3A${bundleId}`; };
+export const getCurrentBundle = () => document.location.hash.replace('#search/in%3Ainbox+label%3A', '').replace('+-in%3Astarred', '');
+export const checkImportantMarkers = () => document.querySelector(`${SELECTORS.EMAIL_ROW}:not(.${CLASSES.BUNDLE_WRAPPER_CLASS}) td.WA.xY`);
+export const openBundle = bundleId => { window.location.href = `#search/in%3Ainbox+label%3A${bundleId}+-in%3Astarred`; };
 export const openInbox = () => { window.location.href = '#inbox'; };
 
 export const getMyEmailAddress = () => {
-  if (document.querySelector('.gb_tb') && document.querySelector('.gb_tb').innerText) {
-    return document.querySelector('.gb_tb').innerText;
+  if (document.querySelector('.gb_vb') && document.querySelector('.gb_vb').innerText) {
+    return document.querySelector('.gb_vb').innerText;
   }
 };

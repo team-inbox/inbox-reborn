@@ -24,7 +24,7 @@ export const reloadOptions = () => {
   } else if (options.emailBundling === 'disabled') {
     removeClass(document.body, CLASSES.BUNDLING_OPTION_CLASS);
     // Unbundle emails
-    document.querySelectorAll('[data-bundled="true"]').forEach(emailEl => emailEl.removeAttribute('data-bundled'));
+    document.querySelectorAll('[data-inbox="bundled"]').forEach(emailEl => emailEl.setAttribute('data-inbox', 'email'));
     // Remove bundle wrapper rows
     document.querySelectorAll(`.${CLASSES.BUNDLE_WRAPPER_CLASS}`).forEach(bundleEl => bundleEl.remove());
   }

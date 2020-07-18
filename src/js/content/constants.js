@@ -23,3 +23,9 @@ export const CLASSES = {
   UNREAD_BUNDLE_CLASS: 'contains-unread',
   UNBUNDLED_PARENT_LABEL: 'Unbundled'
 };
+
+export const SELECTORS = {
+  EMAIL_ROW: '.zA',
+  EMAIL_CONTAINER: '.BltHke', // could add .nH.oy8Mbf
+  PREVIEW_PANE: '.Nu.S3.aZ6'
+};

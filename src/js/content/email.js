@@ -14,19 +14,18 @@ import {
   isInBundle,
   isInInbox,
   openInbox,
-  queryParentSelector
+  queryParentSelector,
+  observeForRemoval
 } from './utils';
 
-const STYLE_NODE_ID_PREFIX = 'hide-email-';
-
 export default class Email {
-  constructor(emailEl) {
+  constructor(emailEl, prevDate) {
     this.emailEl = emailEl;
 
     this.processIcon();
     this.processBundle();
     this.processCalendar();
-    this.processDate();
+    this.processDate(prevDate);
     this.setupPreview();
   }
 
@@ -48,6 +47,10 @@ export default class Email {
 
   getParticipantNames() {
     return this.getParticipants().map(node => node.getAttribute('name'));
+  }
+
+  isBundled() {
+    return this.emailEl.getAttribute('data-inbox') === 'bundled';
   }
 
   isReminder() {
@@ -105,18 +108,24 @@ export default class Email {
     }
   }
 
-  processDate() {
+  processDate(prevDate) {
     const dateElement = this.emailEl.querySelector('.xW.xY span');
     const dateDisplay = dateElement && dateElement.innerText;
     const rawDate = dateElement && dateElement.getAttribute('title');
+    let date = new Date(rawDate);
     const snoozeElement = this.emailEl.querySelector('.by1.cL');
     const snoozeString = snoozeElement && snoozeElement.innerText;
+    const isSnoozed = snoozeString || (prevDate && date < prevDate);
+    if (isSnoozed) {
+      date = prevDate || new Date();
+    }
 
-    const dateLabel = buildDateLabel(rawDate, snoozeString);
+    const dateLabel = buildDateLabel(date);
     this.dateInfo = {
-      rawDate,
+      date,
       dateLabel,
-      dateDisplay
+      dateDisplay,
+      rawDate
     };
 
     this.emailEl.setAttribute('data-date-label', dateLabel);
@@ -124,45 +133,21 @@ export default class Email {
 
   processBundle() {
     const options = getOptions();
-    this.isBundled = this.emailEl.getAttribute('data-bundled') === 'true';
-    const alreadyProcessed = this.isBundled;
-    if (alreadyProcessed) {
-      return;
-    }
 
     const tabs = getTabs();
     const labels = this.getLabels().filter(label => !tabs.includes(label.title));
     const labelTitles = labels.map(label => label.title);
-    this.emailEl.setAttribute('data-bundle', labelTitles.join(','));
-    if (queryParentSelector(this.emailEl, '.nested-bundle')) {
-      this.emailEl.setAttribute('data-nested-email', true);
-    }
 
     // only process bundles on the inbox page
     if (options.emailBundling === 'enabled' && !isInBundle() && isInInbox()) {
       const starContainer = this.emailEl.querySelector('.T-KT');
-      const isStarred = starContainer && starContainer.title !== 'Not starred';
+      const isStarred = hasClass(starContainer, 'T-KT-Jp');
       const isUnbundled = labelTitles.some(title => title.includes(CLASSES.UNBUNDLED_PARENT_LABEL));
 
-      const styleId = `${STYLE_NODE_ID_PREFIX}-${this.emailEl.id}`;
-      const hideEmailStyle = document.getElementById(styleId);
-
       if (labels.length && !isStarred && !isUnbundled) {
-        this.emailEl.setAttribute('data-bundled', true);
-        this.isBundled = true;
-        // Insert style node to avoid bundled emails appearing briefly in inbox during redraw
-        if (!hideEmailStyle) {
-          const style = document.createElement('style');
-          document.head.appendChild(style);
-          style.id = styleId;
-          style.type = 'text/css';
-          style.appendChild(document.createTextNode(`.nH.ar4.z .zA[id="${this.emailEl.id}"] { display: none; }`));
-        }
+        this.emailEl.setAttribute('data-inbox', 'bundled');
       } else {
-        this.emailEl.setAttribute('data-inbox', true);
-        if (hideEmailStyle) {
-          document.getElementById(styleId).remove();
-        }
+        this.emailEl.setAttribute('data-inbox', 'email');
         if (isUnbundled) {
           labels.forEach(label => {
             if (label.title.includes(CLASSES.UNBUNDLED_PARENT_LABEL)) {
@@ -215,15 +200,28 @@ export default class Email {
   setupPreview() {
     const previewProcessed = this.emailEl.getAttribute('data-preview-enabled');
     if (previewProcessed !== 'true') {
-      const ignoreColumns = ['oZ-x3', 'apU', 'bq4'];
-      this.emailEl.addEventListener('click', event => {
-        const clickColumn = queryParentSelector(event.target, '.xY');
-        if (clickColumn && ignoreColumns.some(col => hasClass(clickColumn, col))) {
-          return;
-        }
-        emailPreview.emailClicked(this.emailEl);
+      const ignoreColumns = [ 'oZ-x3', 'apU', 'bq4' ];
+      this.emailEl.addEventListener('click', async event => {
         if (this.emailEl.getAttribute('data-inbox') && isInBundle()) {
           openInbox();
+          emailPreview.hidePreview();
+          await observeForRemoval(document, '[data-pane="bundle"]');
+          const clickColumn = queryParentSelector(event.target, '.xY');
+          if (clickColumn && ignoreColumns.some(col => hasClass(clickColumn, col))) {
+            const clickSelector = `${event.target.tagName}.${Array.from(event.target.classList).join('.')}`;
+            const clickTarget = this.emailEl.querySelector(clickSelector);
+            if (clickTarget) {
+              clickTarget.click();
+            }
+          } else {
+            emailPreview.emailClicked(this.emailEl);
+          }
+        } else {
+          const clickColumn = queryParentSelector(event.target, '.xY');
+          if (clickColumn && ignoreColumns.some(col => hasClass(clickColumn, col))) {
+            return;
+          }
+          emailPreview.emailClicked(this.emailEl);
         }
       });
       this.emailEl.setAttribute('data-preview-enabled', true);
