@@ -1,5 +1,6 @@
 import {
   addClass,
+  addPixels,
   removeClass,
   observeForElement
 } from './utils';
@@ -8,9 +9,7 @@ import { SELECTORS } from './constants';
 const { EMAIL_CONTAINER, EMAIL_ROW, PREVIEW_PANE } = SELECTORS;
 
 /* Issues
-* archiving emails in a bundle from oldest to newest doesn't automatically update preview pane
 * navigating quickly between two bundles can cause weird things
-* previews still aren't always consistent - might need to
 */
 
 export default {
@@ -18,18 +17,12 @@ export default {
   hidePreview() {
     this.showPreview = false;
   },
-  getPreviewPane(emailEl) {
-    let previewSelector;
-    if (emailEl.getAttribute('data-inbox')) {
-      previewSelector = `${EMAIL_CONTAINER} ${PREVIEW_PANE}[data-inbox]`;
-    } else {
-      // this catches both emails in nested bundles and emails on non-inbox pages (like snoozed/done)
-      previewSelector = `${EMAIL_CONTAINER}[role="main"] ${PREVIEW_PANE}`;
-    }
+  getPreviewPane() {
+    const previewSelector = `${EMAIL_CONTAINER}[role="main"] ${PREVIEW_PANE}`;
     return document.querySelector(previewSelector);
   },
   async emailClicked(clickedEmail) {
-    const previewPane = this.getPreviewPane(clickedEmail);
+    const previewPane = this.getPreviewPane();
     const clickedCurrentEmail = clickedEmail && this.currentEmail && this.currentEmail === clickedEmail;
     if (clickedCurrentEmail) {
       if (this.previewShowing) {
@@ -48,61 +41,80 @@ export default {
     }
   },
   movePreviewPane(selectedEmail, previewPane) {
-    if (selectedEmail && previewPane) {
-      selectedEmail.parentNode.insertBefore(previewPane, selectedEmail.nextSibling);
+    // this creates a space for the preview and uses absolute positioning to make it look like it's under the current email
+    let previewPlaceholder = document.querySelector('.preview-placeholder');
+    if (!previewPlaceholder) {
+      previewPlaceholder = document.createElement('div');
+      addClass(previewPlaceholder, 'preview-placeholder');
     }
-  },
-  restorePreview(previewPane) {
-    let containerSelector;
-    if (previewPane.getAttribute('data-inbox')) {
-      containerSelector = `${EMAIL_CONTAINER}[data-inbox]`;
-    } else if (previewPane.getAttribute('data-bundle')) {
-      containerSelector = `${EMAIL_CONTAINER}[data-bundle]`;
-    } else {
-      containerSelector = `${EMAIL_CONTAINER}[role=main]:not([data-inbox]):not([data-bundle])`;
-    }
-
-    const container = document.querySelector(containerSelector);
-    if (container) {
-      const nested = document.querySelector(`${containerSelector} > .Nr.UI`);
-      nested.appendChild(previewPane);
-    }
+    const selectedTop = selectedEmail.offsetTop;
+    selectedEmail.parentNode.insertBefore(previewPlaceholder, selectedEmail.nextSibling);
+    previewPane.style.position = 'absolute';
+    previewPane.style.top = addPixels(selectedTop, selectedEmail.clientHeight);
   },
   showPreviewPane(previewPane) {
+    this.movePreviewPane(this.currentEmail, previewPane);
+    const previewPlaceholder = document.querySelector('.preview-placeholder');
     addClass(previewPane, 'show-preview');
     this.previewShowing = true;
+    const adjustPreviewHeight = () => {
+      const previewHeight = previewPane.offsetHeight;
+      previewPlaceholder.style.height = addPixels(previewHeight, 16);
+    };
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+    this.observer = new MutationObserver(adjustPreviewHeight);
+    this.observer.observe(previewPane, { subtree: true, attributes: true });
+    adjustPreviewHeight();
   },
   hidePreviewPane(previewPane) {
     if (previewPane) {
       removeClass(previewPane, 'show-preview');
     }
     this.previewShowing = false;
+    const previewPlaceholder = document.querySelector('.preview-placeholder');
+    if (previewPlaceholder) {
+      previewPlaceholder.style.height = 0;
+    }
+    if (this.observer) {
+      this.observer.disconnect();
+    }
   },
   hideIfCurrentEmailRemoved() {
     if (this.currentEmail) {
       const currentEmailEl = document.getElementById(this.currentEmail.getAttribute('id'));
-      const previewPane = this.getPreviewPane(this.currentEmail);
+      const previewPane = this.getPreviewPane();
       if (!currentEmailEl) {
         this.currentEmail = null;
         this.hidePreviewPane(previewPane);
       }
     }
   },
+  previewMatchesSelected(previewPane, selectedEmail) {
+    const previewThread = previewPane.querySelector('[data-thread-perm-id]');
+    const selectedThread = selectedEmail.querySelector('[data-thread-id]');
+    const previewThreadId = previewThread && previewThread.getAttribute('data-thread-perm-id');
+    const selectedThreadId = selectedThread && selectedThread.getAttribute('data-thread-id');
+    return `#${previewThreadId}` === selectedThreadId;
+  },
   checkPreview() {
     this.hideIfCurrentEmailRemoved();
 
     const selectedEmail = document.querySelector(`${EMAIL_CONTAINER}[role="main"]  ${EMAIL_ROW}.btb`);
     if (selectedEmail) {
-      const previewPane = this.getPreviewPane(selectedEmail);
-      const selectedEmailIsBundled = selectedEmail && selectedEmail.getAttribute('data-bundled');
+      const previewPane = this.getPreviewPane();
+      const selectedEmailIsBundled = selectedEmail && selectedEmail.getAttribute('data-inbox') === 'bundled';
       const currentEmailChanged = this.currentEmail !== selectedEmail;
       const emailPreviewing = previewPane && previewPane.querySelector('.UG');
+      const previewMatchesSelected = this.previewMatchesSelected(previewPane, selectedEmail);
+
       if (currentEmailChanged) {
         this.currentEmail = selectedEmail;
         this.movePreviewPane(selectedEmail, previewPane);
       }
 
-      if (selectedEmailIsBundled || !this.showPreview || !emailPreviewing) {
+      if (selectedEmailIsBundled || !this.showPreview || !emailPreviewing || !previewMatchesSelected) {
         this.hidePreviewPane(previewPane);
       } else {
         this.showPreviewPane(previewPane);

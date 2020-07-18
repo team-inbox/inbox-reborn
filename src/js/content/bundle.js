@@ -36,7 +36,7 @@ export default class Bundle {
     const { dateLabel, dateDisplay, rawDate } = email.dateInfo;
 
     const bundleWrapper = htmlToElements(`
-        <div class="zA yO ${BUNDLE_WRAPPER_CLASS}" bundleLabel="${this.label}" data-bundle=${bundleId} data-date-label="${dateLabel}">
+        <div class="zA yO ${BUNDLE_WRAPPER_CLASS}" bundleLabel="${this.label}" data-inbox=${bundleId} data-date-label="${dateLabel}">
           <div class="PF xY"></div>
           <div class="oZ-x3 xY aid bundle-image">
             <img src="${bundleImage}" ${bundleTitleColor ? `style="filter: drop-shadow(0 0 0 ${bundleTitleColor}) saturate(300%)"` : ''}/>
@@ -68,7 +68,7 @@ export default class Bundle {
       }
       if (clickedClosedBundle) {
         if (isInBundleFlag) {
-          await observeForRemoval(document, '.nested-bundle');
+          await observeForRemoval(document, '[data-pane="bundle"]');
         }
         openBundle(bundleId);
       }
@@ -110,7 +110,7 @@ export default class Bundle {
     labels.forEach(label => {
       if (label.title === this.label) {
         // Ignore default label color, light gray
-        if (label.color !== 'rgb(221, 221, 221)') {
+        if (label.color !== 'rgb(102, 102, 102)') {
           bundleTitleColor = label.color;
         }
       }

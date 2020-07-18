@@ -7,16 +7,19 @@ export default {
   addDateLabels() {
     let lastLabel = null;
     this.cleanupDateLabels();
-    const emailElements = document.querySelectorAll(`${EMAIL_CONTAINER}[role=main] ${EMAIL_ROW}:not([data-bundled="true"])`);
-    emailElements.forEach(emailEl => {
-      const dateLabel = emailEl.getAttribute('data-date-label');
+    const emailContainer = document.querySelector(`${EMAIL_CONTAINER}[role=main]`);
+    if (emailContainer) {
+      const emailElements = emailContainer.querySelectorAll(`${EMAIL_ROW}:not([data-inbox="bundled"])`);
+      emailElements.forEach(emailEl => {
+        const dateLabel = emailEl.getAttribute('data-date-label');
 
-      // Add date label if it's a new label
-      if (dateLabel !== lastLabel) {
-        this.addDateLabel(emailEl, dateLabel);
-        lastLabel = dateLabel;
-      }
-    });
+        // Add date label if it's a new label
+        if (dateLabel !== lastLabel) {
+          this.addDateLabel(emailEl, dateLabel);
+          lastLabel = dateLabel;
+        }
+      });
+    }
   },
   addDateLabel(email, label) {
     if (email.previousSibling && email.previousSibling.className === 'time-row') {
@@ -42,7 +45,7 @@ export default {
     if (sibling.className === 'time-row') {
       return true;
     }
-    if (sibling.getAttribute('data-bundled') !== 'true') {
+    if (sibling.getAttribute('data-inbox') !== 'bundled') {
       return false;
     }
     return this.isEmptyDateLabel(sibling);

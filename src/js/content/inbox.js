@@ -2,12 +2,12 @@ import Email from './email';
 import Bundle from './bundle';
 import {
   addClass,
+  addPixels,
   getTabs,
   getCurrentBundle,
   isInBundle,
   isInInbox,
-  observeForElement,
-  removeClass
+  observeForElement
 } from './utils';
 import dateLabels from './dateLabels';
 import { getOptions, reloadOptions } from './options';
@@ -22,24 +22,16 @@ const { BUNDLE_WRAPPER_CLASS } = CLASSES;
 export default {
   async observeEmails() {
     const mainContainer = await observeForElement(document, '.AO');
-    const observer = new MutationObserver(mutations => {
+    const observer = new MutationObserver(() => {
       observer.disconnect();
-      mutations.forEach(mutation => {
-        mutation.removedNodes.forEach(removed => {
-          const removedPreview = removed.querySelector && removed.querySelector(PREVIEW_PANE);
-          if (removedPreview) {
-            emailPreview.restorePreview(removedPreview);
-          }
-        });
-      });
       if (isInInbox()) {
-        let inbox = document.querySelector(`${EMAIL_CONTAINER}[role=main][data-inbox]`);
+        let inbox = document.querySelector(`${EMAIL_CONTAINER}[role=main][data-pane="inbox"]`);
         if (!inbox) {
           inbox = document.querySelector(`${EMAIL_CONTAINER}[role=main]`);
-          inbox.setAttribute('data-inbox', true);
-          const previewPane = inbox.querySelector(`${PREVIEW_PANE}:not([data-bundle])`);
+          inbox.setAttribute('data-pane', 'inbox');
+          const previewPane = inbox.querySelector(PREVIEW_PANE);
           if (previewPane) {
-            previewPane.setAttribute('data-inbox', true);
+            previewPane.setAttribute('data-pane', 'inbox');
           }
         }
       }
@@ -53,18 +45,19 @@ export default {
   },
   processEmails() {
     const isInInboxFlag = isInInbox();
-    const inboxEmailSelector = isInInboxFlag ? ':not([data-nested-email])' : '';
-    const emailElements = document.querySelectorAll(`${EMAIL_CONTAINER}[role=main] ${EMAIL_ROW}:not(.${BUNDLE_WRAPPER_CLASS})${inboxEmailSelector}`);
+    const emailElements = document.querySelectorAll(`${EMAIL_CONTAINER}[role=main] ${EMAIL_ROW}:not(.${BUNDLE_WRAPPER_CLASS})`);
     const tabs = getTabs();
     const options = getOptions();
 
     const currentTab = tabs.length && document.querySelector('.aAy[aria-selected="true"]');
     const labelStats = {};
+    let prevDate;
 
     // Start from last email on page and head towards first
     for (let i = emailElements.length - 1; i >= 0; i--) {
       const emailElement = emailElements[i];
-      const email = new Email(emailElement);
+      const email = new Email(emailElement, prevDate);
+      prevDate = email.dateInfo.date;
 
       const emailLabels = email.getLabels().map(label => label.title);
 
@@ -79,7 +72,7 @@ export default {
       }
 
       // Collect senders, message count and unread stats for each label
-      if (emailLabels.length && email.isBundled) {
+      if (emailLabels.length && email.isBundled()) {
         const firstParticipant = email.getParticipantNames()[0];
         emailLabels.forEach(label => {
           if (!labelStats[label]) {
@@ -109,13 +102,13 @@ export default {
 
     // Update bundle stats
     if (isInInboxFlag && !isInBundle() && options.emailBundling === 'enabled') {
-      Object.entries(labelStats).forEach(([label, stats]) => {
+      Object.entries(labelStats).forEach(([ label, stats ]) => {
         const bundle = new Bundle(label, stats);
         bundle.updateStats();
       });
 
       const emailBundles = this.getBundledLabels();
-      Object.entries(emailBundles).forEach(([label, el]) => {
+      Object.entries(emailBundles).forEach(([ label, el ]) => {
         if (!labelStats[label]) {
           el.remove();
         }
@@ -133,35 +126,53 @@ export default {
   },
   moveBundleElement() {
     if (isInBundle()) {
-      const inboxPane = document.querySelector(`${EMAIL_CONTAINER}[data-inbox="true"]`);
-      const bundlePane = document.querySelector(`${EMAIL_CONTAINER}[role="main"]`);
+      const inboxPane = document.querySelector(`${EMAIL_CONTAINER}[data-pane="inbox"]`);
+      const bundlePane = document.querySelector(`${EMAIL_CONTAINER}[role="main"]:not([data-pane="inbox"])`);
 
       if (inboxPane && bundlePane && inboxPane !== bundlePane && !bundlePane.getAttribute('data-navigating')) {
+        bundlePane.setAttribute('data-pane', 'bundle');
         const bundleId = getCurrentBundle();
-        if (!inboxPane.querySelector(`${EMAIL_CONTAINER}[data-bundle="${bundleId}"]`)) {
-          inboxPane.style.display = '';
-          bundlePane.setAttribute('data-bundle', bundleId);
-          const previewPane = bundlePane.querySelector(PREVIEW_PANE);
-          if (previewPane) {
-            previewPane.setAttribute('data-bundle', bundleId);
+        inboxPane.style.display = '';
+        const bundleRow = inboxPane.querySelector(`${EMAIL_ROW}.${BUNDLE_WRAPPER_CLASS}[data-inbox="${bundleId}"]`);
+        if (bundleRow) {
+          let bundlePlaceholder = document.querySelector('.bundle-placeholder');
+          if (!bundlePlaceholder) {
+            bundlePlaceholder = document.createElement('div');
+            addClass(bundlePlaceholder, 'bundle-placeholder');
           }
-          const bundleRow = inboxPane.querySelector(`${EMAIL_ROW}.${BUNDLE_WRAPPER_CLASS}[data-bundle="${bundleId}"]`);
-          if (bundleRow) {
-            bundleRow.parentNode.insertBefore(bundlePane, bundleRow.nextSibling);
-            addClass(bundlePane, 'nested-bundle');
+          bundlePane.style.position = 'absolute';
+          bundleRow.parentNode.insertBefore(bundlePlaceholder, bundleRow.nextSibling);
+          bundlePane.style.top = addPixels(bundleRow.offsetTop, bundleRow.clientHeight);
+
+          const adjustBundleHeight = () => {
+            bundlePlaceholder.style.height = `${bundlePane.offsetHeight}px`;
+          };
+          if (this.bundleObserver) {
+            this.bundleObserver.disconnect();
           }
+          this.bundleObserver = new MutationObserver(adjustBundleHeight);
+          this.bundleObserver.observe(bundlePane, { subtree: true, attributes: true });
+          adjustBundleHeight();
         }
+      }
+    } else {
+      if (this.bundleObserver) {
+        this.bundleObserver.disconnect();
+      }
+      const bundlePlaceholder = document.querySelector('.bundle-placeholder');
+      if (bundlePlaceholder) {
+        bundlePlaceholder.style.height = 0;
       }
     }
   },
   restoreBundle() {
-    const inboxPane = document.querySelector(`${EMAIL_CONTAINER}[data-inbox="true"]`);
-    const nestedBundle = document.querySelector('.nested-bundle');
-    if (inboxPane && nestedBundle) {
-      inboxPane.parentNode.appendChild(nestedBundle);
+    const inboxPane = document.querySelector(`${EMAIL_CONTAINER}[data-pane="inbox"]`);
+    const bundlePane = document.querySelector(`${EMAIL_CONTAINER}[data-pane="bundle"]`);
+    if (inboxPane && bundlePane) {
+      inboxPane.parentNode.appendChild(bundlePane);
       inboxPane.style.display = 'none';
-      removeClass(nestedBundle, '.nested-bundle');
-      nestedBundle.setAttribute('data-navigating', true);
+      bundlePane.removeAttribute('data-pane');
+      bundlePane.setAttribute('data-navigating', true);
     }
   }
 };

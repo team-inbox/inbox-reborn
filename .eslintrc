@@ -1,6 +1,13 @@
 {
   "extends": "airbnb-base",
   "rules": {
+    "array-bracket-spacing": [
+      "error",
+      "always",
+      {
+        "singleValue": false
+      }
+    ],
     "arrow-parens": [
       "error",
       "as-needed"

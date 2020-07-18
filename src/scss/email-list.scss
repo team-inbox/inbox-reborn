@@ -1,208 +1,86 @@
 @import 'email-list-images';
 
-.ae4 { //email-list-container
-	margin-bottom: 40px;
-	.Cp { //email-table-container
-		padding: 0 1px;
-
-		.F.cf.zt tbody { //email-list-table-body
-			.zA.tr:first-child {
-				// add margin so screen doesn't jump while we're figuring out time-rows
-				margin-top: 23px;
+.AO { //main-center-container
+	overflow-y: scroll;
+	padding-right: 12px;
+	&::-webkit-scrollbar {
+		width: 10px;
+	}
+	&::-webkit-scrollbar-button {
+		width: 0;
+		height: 0;
+		display: none;
+	}
+	&::-webkit-scrollbar-corner {
+		background-color: transparent;
+	}
+	&::-webkit-scrollbar-thumb {
+		background-color: rgba(0,0,0,0.2);
+		box-shadow: inset 1px 1px 0 rgba(0,0,0,0.10), inset 0 -1px 0 rgba(0,0,0,0.07);
+	}
+	.BltHke.nH.oy8Mbf { //main-email-container
+		&[data-navigating]::after {
+			content: '';
+			height: 100%;
+			width: 100%;
+			background: #F2F2F2;
+			position: absolute;
+			padding-top: 10px;
+			z-index: 3;
+		}
+	
+		&[data-navigating]::before {
+			content: '';
+			box-sizing: border-box;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 40px;
+			height: 40px;
+			margin-top: -20px;
+			margin-left: -20px;
+			border-radius: 50%;
+			border: 2px solid #fff;
+			border-top-color: #333;
+			animation: spinner .8s linear infinite;
+			z-index: 4;
+		}
+		&[data-pane="bundle"] {
+			padding: 0 16px;
+			height: auto;
+			background-color: lightgray;
+			width: calc(100% - 44px);
+			margin-top: 50px;
+	
+			.Nt { //bottom-border
+				display: none;
 			}
-
-			.time {
-				color: #666;
-				font-size: 13px;
-				padding-top: 16px;
-				padding-left: 4px;
-				padding-bottom: 8px;
-			}
-			.time-row:first-child .time {
-				padding-top: 0;
-			}
-
-			.zA, .zA:hover { //email-rows, bundle-rows
-				box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24);
-				-webkit-box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24);
-				z-index: inherit;
-				background: #FFF;
-			}
-			.zA { //email-rows, bundle-rows
-				padding: 12px 10px;
-				&:hover .avatar {
+			.email-bundling-enabled & {
+				.yi { //label-indicator-container
 					display: none;
 				}
-				* {
-					font-size: 13px;
-				}
+			}
+		}
+		.Nr.UI.Nf.vy { //another-email-container
+			overflow-y: initial;
+			.Nu.tf.aZ6 { //default-scroll-container
+				overflow-y: initial;
 
-				.oZ-x3 { //checkbox-column
-					&:before { //drag-indicator
-						display: none;
-					}
-					.T-Jo { //checkbox
-						margin-left: 1px;
-						&.T-Jo-Jp.J-J5-Ji { //checkbox-checked
-							display: inline;
-							+ .avatar {
-								display: none;
-							}
+				.ae4 { //email-list-container
+					margin-bottom: 40px;
+					.Cp { //email-table-container
+						padding: 0 1px;
+
+						.F.cf.zt tbody { //email-list-table-body
+							@import 'partials/email-row';
 						}
-					}
-				}
-
-				.WA { //important-indicator-column
-					padding: 0;
-				}
-
-				.yX { // sender-column
-					padding: 0 15px;
-				}
-
-				.a4W { //subject-column
-					.ar { //inline-label
-						height: 22px;
-						border-radius: 2px;
-						.av { //inline-label-text
-							padding-top: 2px;
-						}
-					}
-				}
-
-				.byZ { //snoozed-until-column
-					.cL { //snoozed-until-text
-						font-weight: normal;
-					}
-				}
-
-				.bq4 { //action-buttons-column
-					.bqY { //action-buttons-list
-
-						//make room for the pin
-						position: relative;
-						left: -10px;
-						.bqX { //action-button-item
-							margin: 0 10px;
-
-							&.bru { //delete-button
-								order: 2;
-							}
-							&.brq { //done-button
-								order: 3;
-								// make space for the pin button
-								margin-right: 22px;
-							}
-						}
-					}
-				}
-
-				.apU { //pin-star-column
-					display: block;
-					position: absolute;
-					right: 0px;
-					margin-right: 2px;
-					.aXw { //pin-icon
-						display: none;
-					}
-				}
-
-				.yf { //attachment-column
-					img {
-						display: none;
-					}
-				}
-
-				//this is also holding the list of senders in a bundle
-				.xW { //date-column
-					//make room for the pin icon
-					margin-left: -32px;
-					margin-right: 10px;
-				}
-
-				.show-avatar-enabled & { //option on the body
-					.oZ-x3 { //checkbox-column
-						.T-Jo { //checkbox
-							display: none;
-						}
-					}
-				}
-				&[data-bundled="true"] {
-					display: none;
-				}
-
-				&.aqw { // row-hovered
-					.oZ-x3 { //checkbox-column
-						.T-Jo { //checkbox
-							display: inline;
-						}
-					}
-					.apU { //pin-star-column
-						.aXw { //pin-icon
-							display: flex;
-						}
-					}
-				}
-
-				&.btb { //keyboard-selected-email
-					padding-left: 5px;
-					.PF.xY.PE { //keyboard-focus-indicator
-						//keeps the avatar aligned
-						margin-left: -5px;
-						margin-right: 10px;
 					}
 				}
 			}
 		}
-
-		.BltHke.nH.oy8Mbf { //main-email-container
-			&.nested-bundle {
-				padding-left: 16px;
-				height: auto;
-				background-color: lightgray;
-
-				.Nt { //bottom-border
-					display: none;
-				}
-				.email-bundling-enabled & {
-					.yi { //label-indicator-container
-						display: none;
-					}
-				}
-			}
-		}
-	}
-}
-
-.BltHke.nH.oy8Mbf { //main-email-container
-	&[data-navigating]::after {
-		content: '';
-		height: 100%;
-		width: 100%;
-		background: #F2F2F2;
-		position: absolute;
-		padding-top: 10px;
-		z-index: 3;
-	}
-
-	&[data-navigating]::before {
-		content: '';
-		box-sizing: border-box;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		width: 40px;
-		height: 40px;
-		margin-top: -20px;
-		margin-left: -20px;
-		border-radius: 50%;
-		border: 2px solid #fff;
-		border-top-color: #333;
-		animation: spinner .8s linear infinite;
-		z-index: 4;
 	}
 }
 
 @keyframes spinner {
-  to {transform: rotate(360deg);}
+  to { transform: rotate(360deg); }
 }

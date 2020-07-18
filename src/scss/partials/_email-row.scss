@@ -1,0 +1,145 @@
+.time {
+    color: #666;
+    font-size: 13px;
+    padding-top: 16px;
+    padding-left: 4px;
+    padding-bottom: 8px;
+}
+.time-row:first-child .time {
+    padding-top: 0;
+}
+
+.zA, .zA:hover { //email-rows, bundle-rows
+    box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24);
+    -webkit-box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24);
+    z-index: inherit;
+    background: #FFF;
+}
+.zA { //email-rows, bundle-rows
+    padding: 12px 10px;
+    &.tr:first-child {
+        // add margin so screen doesn't jump while we're figuring out time-rows
+        margin-top: 23px;
+    }
+    &:hover .avatar {
+        display: none;
+    }
+    * {
+        font-size: 13px;
+    }
+    .oZ-x3 { //checkbox-column
+        &:before { //drag-indicator
+            display: none;
+        }
+        .T-Jo { //checkbox
+            margin-left: 1px;
+            &.T-Jo-Jp.J-J5-Ji { //checkbox-checked
+                display: inline;
+                + .avatar {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .WA { //important-indicator-column
+        padding: 0;
+    }
+
+    .yX { // sender-column
+        padding: 0 15px;
+    }
+
+    .a4W { //subject-column
+        .ar { //inline-label
+            height: 22px;
+            border-radius: 2px;
+            .av { //inline-label-text
+                padding-top: 2px;
+            }
+        }
+    }
+
+    .byZ { //snoozed-until-column
+        .cL { //snoozed-until-text
+            font-weight: normal;
+        }
+    }
+
+    .bq4 { //action-buttons-column
+        .bqY { //action-buttons-list
+
+            //make room for the pin
+            position: relative;
+            left: -10px;
+            .bqX { //action-button-item
+                margin: 0 10px;
+
+                &.bru { //delete-button
+                    order: 2;
+                }
+                &.brq { //done-button
+                    order: 3;
+                    // make space for the pin button
+                    margin-right: 22px;
+                }
+            }
+        }
+    }
+
+    .apU { //pin-star-column
+        display: block;
+        position: absolute;
+        right: 0px;
+        margin-right: 2px;
+        .aXw { //pin-icon
+            display: none;
+        }
+    }
+
+    .yf { //attachment-column
+        img {
+            display: none;
+        }
+    }
+
+    //this is also holding the list of senders in a bundle
+    .xW { //date-column
+        //make room for the pin icon
+        margin-left: -32px;
+        margin-right: 10px;
+    }
+
+    .show-avatar-enabled & { //option on the body
+        .oZ-x3 { //checkbox-column
+            .T-Jo { //checkbox
+                display: none;
+            }
+        }
+    }
+    &[data-inbox="bundled"] {
+        display: none;
+    }
+
+    &.aqw { // row-hovered
+        .oZ-x3 { //checkbox-column
+            .T-Jo { //checkbox
+                display: inline;
+            }
+        }
+        .apU { //pin-star-column
+            .aXw { //pin-icon
+                display: flex;
+            }
+        }
+    }
+
+    &.btb { //keyboard-selected-email
+        padding-left: 5px;
+        .PF.xY.PE { //keyboard-focus-indicator
+            //keeps the avatar aligned
+            margin-left: -5px;
+            margin-right: 10px;
+        }
+    }
+}

@@ -5,36 +5,7 @@ import {
   NAME_COLORS
 } from './constants';
 
-const getSnoozeDate = snoozeString => {
-  const [, count, interval] = snoozeString.split(' ');
-  const intervals = {
-    day: 1,
-    days: 1,
-    week: 7,
-    weeks: 7,
-    month: 30,
-    months: 30
-  };
-  const date = new Date();
-  if (intervals[interval]) {
-    date.setDate(date.getDate() - (count * intervals[interval]));
-    return date;
-  }
-  // if interval is hours, use today
-  if (interval === 'hours') {
-    return date;
-  }
-};
-
-export const buildDateLabel = (dateString, snoozeString) => {
-  let date;
-  if (snoozeString) {
-    date = getSnoozeDate(snoozeString);
-  }
-  if (!date && dateString) {
-    date = new Date(dateString);
-  }
-
+export const buildDateLabel = date => {
   const now = new Date();
   if (!date) {
     return null;

@@ -1,6 +1,7 @@
 .Nu.S3.aZ6 { //preview-pane
 	overflow: auto;
 	box-shadow: 0 3px 4px rgba(0,0,0,.24);
+	width: calc(100% - 1px);
 
 	&:not(.show-preview) {
 		//need !important to override inline styles
@@ -9,7 +10,6 @@
 	}
 	&.show-preview {
 		margin-bottom: 10px;
-		// width: calc(100% - 17px);
 	}
 	.if > .byY { //email-subject-header
 		padding-left: 20px;
@@ -47,7 +47,7 @@
 				}
 			}
 		}
-		.ii.gt {	//email-body
+		.ii.gt { //email-body
 			padding-right: 56px;
 		}
 	}
