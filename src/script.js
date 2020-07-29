@@ -82,8 +82,10 @@ Element.prototype.remove = function () {
 };
 
 const getMyEmailAddress = () => {
-    let emailAddress = select.emailAddress(); let emailAddressText = emailAddress && emailAddress.innerText
-    return emailAddressText || ""
+    let emailAddress = select.emailAddress();
+    let emailAddressText = emailAddress && emailAddress.innerText;
+
+    return emailAddressText || "";
 }
 
 const isReminder = function (email, myEmailAddress) {
