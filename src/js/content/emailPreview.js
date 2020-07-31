@@ -1,6 +1,5 @@
 import {
   addClass,
-  addPixels,
   removeClass,
   observeForElement
 } from './utils';
@@ -41,25 +40,28 @@ export default {
     }
   },
   movePreviewPane(selectedEmail, previewPane) {
-    // this creates a space for the preview and uses absolute positioning to make it look like it's under the current email
-    let previewPlaceholder = document.querySelector('.preview-placeholder');
-    if (!previewPlaceholder) {
-      previewPlaceholder = document.createElement('div');
-      addClass(previewPlaceholder, 'preview-placeholder');
+    if (!this.currentEmail.getAttribute('data-previewing')) {
+      // this creates a space for the preview and uses absolute positioning to make it look like it's under the current email
+      let previewPlaceholder = document.querySelector('.preview-placeholder');
+      if (!previewPlaceholder) {
+        previewPlaceholder = document.createElement('div');
+        addClass(previewPlaceholder, 'preview-placeholder');
+      }
+      const selectedTop = selectedEmail.offsetTop;
+      selectedEmail.parentNode.insertBefore(previewPlaceholder, selectedEmail.nextSibling);
+      previewPane.style.position = 'absolute';
+      previewPane.style.top = `${selectedTop}px`;
     }
-    const selectedTop = selectedEmail.offsetTop;
-    selectedEmail.parentNode.insertBefore(previewPlaceholder, selectedEmail.nextSibling);
-    previewPane.style.position = 'absolute';
-    previewPane.style.top = addPixels(selectedTop, selectedEmail.clientHeight);
   },
   showPreviewPane(previewPane) {
     this.movePreviewPane(this.currentEmail, previewPane);
+    this.currentEmail.setAttribute('data-previewing', true);
     const previewPlaceholder = document.querySelector('.preview-placeholder');
     addClass(previewPane, 'show-preview');
     this.previewShowing = true;
     const adjustPreviewHeight = () => {
-      const previewHeight = previewPane.offsetHeight;
-      previewPlaceholder.style.height = addPixels(previewHeight, 16);
+      previewPane.style['padding-top'] = `${this.currentEmail.clientHeight}px`;
+      previewPlaceholder.style.height = `${previewPane.offsetHeight}px`;
     };
     if (this.observer) {
       this.observer.disconnect();
@@ -67,8 +69,13 @@ export default {
     this.observer = new MutationObserver(adjustPreviewHeight);
     this.observer.observe(previewPane, { subtree: true, attributes: true });
     adjustPreviewHeight();
+    previewPane.scrollIntoView({ behavior: 'smooth' });
   },
   hidePreviewPane(previewPane) {
+    const previewingEmail = document.querySelector('[data-previewing]');
+    if (previewingEmail) {
+      previewingEmail.removeAttribute('data-previewing');
+    }
     if (previewPane) {
       removeClass(previewPane, 'show-preview');
     }
@@ -80,6 +87,7 @@ export default {
     if (this.observer) {
       this.observer.disconnect();
     }
+    previewPane.style['padding-top'] = 0;
   },
   hideIfCurrentEmailRemoved() {
     if (this.currentEmail) {
