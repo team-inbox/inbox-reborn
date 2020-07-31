@@ -135,7 +135,14 @@
     }
 
     &.btb { //keyboard-selected-email
-        padding-left: 5px;
+        padding-left: 4px;
+        &[data-previewing] {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12);
+        }
+
         .PF.xY.PE { //keyboard-focus-indicator
             //keeps the avatar aligned
             margin-left: -5px;

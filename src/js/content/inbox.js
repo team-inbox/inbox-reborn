@@ -161,7 +161,7 @@ export default {
       }
       const bundlePlaceholder = document.querySelector('.bundle-placeholder');
       if (bundlePlaceholder) {
-        bundlePlaceholder.style.height = 0;
+        bundlePlaceholder.remove();
       }
     }
   },

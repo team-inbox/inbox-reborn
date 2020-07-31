@@ -38,9 +38,12 @@ export default {
     email.parentElement.insertBefore(timeRow, email);
   },
   isEmptyDateLabel(row) {
-    const sibling = row.nextSibling;
+    let sibling = row.nextSibling;
     if (!sibling) {
       return true;
+    }
+    if (sibling.classList.contains('bundle-placeholder')) {
+      sibling = sibling.nextSibling;
     }
     if (sibling.className === 'time-row') {
       return true;

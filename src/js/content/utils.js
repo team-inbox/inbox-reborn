@@ -76,7 +76,10 @@ export const removeClass = (element, className) => {
 export const getTabs = () => Array.from(document.querySelectorAll('.aKz')).map(el => el.innerText);
 export const isInInbox = () => document.querySelector('.nZ a[title=Inbox]') !== null;
 export const isInBundle = () => document.location.hash.match(/#search\/in%3Ainbox\+label%3A/g) !== null;
-export const getCurrentBundle = () => document.location.hash.replace('#search/in%3Ainbox+label%3A', '').replace('+-in%3Astarred', '');
+export const getCurrentBundle = () => {
+  const matches = document.location.hash.match(/#search\/in%3Ainbox\+label%3A(.*)\+-in%3Astarred/);
+  return matches && matches[1];
+};
 export const checkImportantMarkers = () => document.querySelector(`${SELECTORS.EMAIL_ROW}:not(.${CLASSES.BUNDLE_WRAPPER_CLASS}) td.WA.xY`);
 export const openBundle = bundleId => { window.location.href = `#search/in%3Ainbox+label%3A${bundleId}+-in%3Astarred`; };
 export const openInbox = () => { window.location.href = '#inbox'; };
