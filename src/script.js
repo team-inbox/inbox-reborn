@@ -18,12 +18,12 @@ const AVATAR_CLASS = 'avatar';
 const AVATAR_OPTION_CLASS = 'show-avatar-enabled';
 const STYLE_NODE_ID_PREFIX = 'hide-email-';
 
-// 
-// Element Selectors 
+//
+// Element Selectors
 //
 // All the selectors for things-created-by-google in one place
 // so that when they inevitably break, they can be corrected
-// this is also for making it easier for implementing more 
+// this is also for making it easier for implementing more
 // reliable retrieval methods like:
 // gmail.compose.start_compose() via the Gmail.js lib
 let select = {
@@ -58,7 +58,7 @@ let select = {
     emailStarred:        (email)=>email.querySelector('.T-KT'),
     emailAvatarWrapper:  (email)=>email.querySelector('.oZ-x3'),
     emailMiscPart1:      (email)=>email.querySelectorAll('.y2'),
-    emailMiscPart2:      (email)=>email.querySelectorAll('.yP,.zF'), 
+    emailMiscPart2:      (email)=>email.querySelectorAll('.yP,.zF'),
     emailMiscPart3:      (email)=>email.querySelectorAll('.Zt'),
     labelTitle:          (label)=>label.querySelector('.at'),
     labelInnerText:      (label)=>label.querySelector('.av'),
@@ -83,7 +83,7 @@ Element.prototype.remove = function () {
 	this.parentElement.removeChild(this);
 };
 
-const getMyEmailAddress = () => { 
+const getMyEmailAddress = () => {
     let emailAddressSource1 = select.emailAddressSource1(); let emailAddressSource1Text = emailAddressSource1 && emailAddressSource1.innerText
     let emailAddressSource2 = select.emailAddressSource2(); let emailAddressSource2Text = emailAddressSource2 && emailAddressSource2.innerText
     let emailAddressSource3 = select.emailAddressSource3(); let emailAddressSource3Text = emailAddressSource3 && emailAddressSource3.innerText
@@ -256,7 +256,7 @@ const reloadOptions = () => {
 		// Remove avatar elements
 		document.querySelectorAll('.' + AVATAR_CLASS).forEach(avatarEl => avatarEl.remove());
 	}
-	
+
 	// Add option classes to body for css styling, and unbundle emails when disabled
 	if (options.emailBundling === 'enabled' && !document.body.classList.contains(BUNDLING_OPTION_CLASS)) {
 		document.body.classList.add(BUNDLING_OPTION_CLASS);
@@ -402,7 +402,7 @@ const isSnoozed = (email, curDate, prevDate) => {
 
 const isStarred = email => {
 	const node = select.emailStarred(email);
-	if (node && node.title !== 'Not starred') return true;
+	if (node && node.ariaLabel !== 'Not starred') return true;
 };
 
 /**
@@ -483,7 +483,7 @@ const getEmails = () => {
 				}
 			});
 		}
-		
+
 		// Check for labels used for Tabs, and hide them from the row.
 		if ( false != currentTab ) {
 			select.emailAllLabels(info.emailEl).forEach(labelEl => {
@@ -510,7 +510,7 @@ const getEmails = () => {
 							isUnread: info.isUnread
 						}]
 					};
-				} else { 
+				} else {
 					labelStats[label].count++;
 					labelStats[label].senders.push({
 						name: firstParticipant,
@@ -703,7 +703,7 @@ const reorderMenuItems = () => {
 
       // Manually add on-click event to done elment
       done.addEventListener('click', () => window.location.assign('#archive'));
-			
+
       // Rewrite text from All Mail to Done
       done.querySelector('a').innerText = 'Done';
 
@@ -817,7 +817,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		});
 	});
   document.body.appendChild(addReminder);
-  
+
   waitForElement('a[title="Gmail"]:not([aria-label])', handleHashChange);
 
 	const floatingComposeButton = document.createElement('div');
