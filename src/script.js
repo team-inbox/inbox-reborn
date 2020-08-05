@@ -27,9 +27,7 @@ const STYLE_NODE_ID_PREFIX = 'hide-email-';
 // reliable retrieval methods like:
 // gmail.compose.start_compose() via the Gmail.js lib
 let select = {
-    emailAddressSource1: ()=>document.querySelector('.gb_hb'),
-    emailAddressSource2: ()=>document.querySelector('.gb_lb'),
-    emailAddressSource3: ()=>document.querySelector('.gb_qb'),
+    emailAddress:        ()=>document.querySelector('.gb_vb'),
     tabs:                ()=>document.querySelectorAll('.aKz'),
     bundleWrappers:      ()=>document.querySelectorAll('.BltHke[role=main] .bundle-wrapper'),
     inbox:               ()=>document.querySelector('.nZ a[title=Inbox]'),
@@ -55,7 +53,7 @@ let select = {
     emailLabelEls:       (email)=>email.querySelectorAll('.at'),
     emailAllLabels:      (email)=>email.querySelectorAll('.ar.as'),
     emailSnoozed:        (email)=>email.querySelector('.by1.cL'),
-    emailStarred:        (email)=>email.querySelector('.T-KT'),
+    emailStarred:        (email)=>email.querySelector('.T-KT.T-KT-Jp'),
     emailAvatarWrapper:  (email)=>email.querySelector('.oZ-x3'),
     emailMiscPart1:      (email)=>email.querySelectorAll('.y2'),
     emailMiscPart2:      (email)=>email.querySelectorAll('.yP,.zF'),
@@ -84,10 +82,10 @@ Element.prototype.remove = function () {
 };
 
 const getMyEmailAddress = () => {
-    let emailAddressSource1 = select.emailAddressSource1(); let emailAddressSource1Text = emailAddressSource1 && emailAddressSource1.innerText
-    let emailAddressSource2 = select.emailAddressSource2(); let emailAddressSource2Text = emailAddressSource2 && emailAddressSource2.innerText
-    let emailAddressSource3 = select.emailAddressSource3(); let emailAddressSource3Text = emailAddressSource3 && emailAddressSource3.innerText
-    return emailAddressSource1Text || emailAddressSource2Text || emailAddressSource3Text || ""
+    let emailAddress = select.emailAddress();
+    let emailAddressText = emailAddress && emailAddress.innerText;
+
+    return emailAddressText || "";
 }
 
 const isReminder = function (email, myEmailAddress) {
