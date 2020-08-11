@@ -30,7 +30,7 @@ let select = {
     emailAddress:        ()=>document.querySelector('.gb_vb'),
     tabs:                ()=>document.querySelectorAll('.aKz'),
     bundleWrappers:      ()=>document.querySelectorAll('.BltHke[role=main] .bundle-wrapper'),
-    inbox:               ()=>document.querySelector('.nZ a[title=Inbox]'),
+    inbox:               ()=>document.querySelector('.nZ[data-tooltip=Inbox]'),
     importanceMarkers:   ()=>document.querySelector('td.WA.xY'),
     emails:              ()=>document.querySelectorAll('.BltHke[role=main] .zA'),
     currentTab:          ()=>document.querySelector('.aAy[aria-selected="true"]'),
