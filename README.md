@@ -22,6 +22,12 @@ Install Inbox Reborn as an **unpacked extension**:
 
 [Firefox Add-ons: Inbox in Gmail](https://addons.mozilla.org/firefox/addon/inbox-in-gmail)
 
+Install Inbox Reborn as an **unsigned Firefox addon**:
+1. Download [this repo's source code here](https://github.com/team-inbox/inbox-reborn/archive/master.zip), and unzip it where you like
+2. Create a new zip file of the main folder's content of the zip file, so that there is no containing 'inbox-reborn-master' folder
+3. Make sure the Firefox setting `xpinstall.signatures.required` is set to `false` - this is done in `about:config`
+4. On the Firefox addons page, use the "Install Add-on From File..." on the gear menu to install the addon from the zip file you just created
+
 
 ## Features
 
