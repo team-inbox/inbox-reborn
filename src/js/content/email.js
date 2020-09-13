@@ -8,6 +8,7 @@ import { getOptions } from './options';
 import emailPreview from './emailPreview';
 import {
   addClass,
+  encodeBundleId,
   getMyEmailAddress,
   getTabs,
   querySelectorText,
@@ -52,7 +53,7 @@ export default class Email {
   }
 
   isBundled() {
-    return this.emailEl.getAttribute('data-inbox') === 'bundled';
+    return [ 'bundled', 'show-bundled' ].includes(this.emailEl.getAttribute('data-inbox'));
   }
 
   isReminder() {
@@ -150,7 +151,12 @@ export default class Email {
       const isUnbundled = labels.some(label => label.title.includes(CLASSES.UNBUNDLED_PARENT_LABEL));
 
       if (labels.length && !isStarred && !isUnbundled) {
-        this.emailEl.setAttribute('data-inbox', 'bundled');
+        if (this.emailEl.getAttribute('data-inbox') !== 'show-bundled') {
+          this.emailEl.setAttribute('data-inbox', 'bundled');
+        }
+        labels.forEach(label => {
+          this.emailEl.setAttribute(`data-${encodeBundleId(label.title)}`, true);
+        });
       } else {
         this.emailEl.setAttribute('data-inbox', 'email');
         if (isUnbundled) {
