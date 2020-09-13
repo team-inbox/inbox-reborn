@@ -57,6 +57,8 @@ export const addPixels = (...pixels) => {
   return `${pixelInt}px`;
 };
 
+export const encodeBundleId = bundleId => encodeURIComponent(bundleId.replace(/[/\\& ]/g, '-'));
+
 export const queryParentSelector = (el, selector) => {
   if (!el) {
     return null;

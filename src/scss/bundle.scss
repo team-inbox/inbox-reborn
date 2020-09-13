@@ -31,8 +31,21 @@
 	.bundle-senders span.strong {
 		font-weight: 700;
 	}
+	.bq4 .show-emails {
+		background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png') !important;
+		background-size: contain;
+	}
+
 	&:not(.contains-unread) .bundle-image img {
 		opacity: 0.6;
+	}
+	&:hover {
+		.xW { //date-column
+			display: none;
+		}
+		.bq4 { //action-buttons-column
+			display: flex;
+		}
 	}
 }
 

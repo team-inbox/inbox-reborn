@@ -3,13 +3,15 @@ import emailPreview from './emailPreview';
 import {
   addClass,
   checkImportantMarkers,
+  encodeBundleId,
   getCurrentBundle,
   htmlToElements,
   isInBundle,
   observeForRemoval,
   openBundle,
   openInbox,
-  removeClass
+  removeClass,
+  hasClass
 } from './utils';
 
 const { BUNDLE_WRAPPER_CLASS, UNREAD_BUNDLE_CLASS } = CLASSES;
@@ -32,11 +34,11 @@ export default class Bundle {
     const bundleImage = this.getBundleImageForLabel();
     const { email, emailEl } = this.stats;
     const bundleTitleColor = bundleImage.match(/custom-cluster/) && this.getBundleTitleColorForLabel();
-    const bundleId = this.fixLabel(this.label);
+    const bundleId = encodeBundleId(this.label);
     const { dateLabel, dateDisplay, rawDate } = email.dateInfo;
 
     const bundleWrapper = htmlToElements(`
-        <div class="zA yO ${BUNDLE_WRAPPER_CLASS}" bundleLabel="${this.label}" data-inbox=${bundleId} data-date-label="${dateLabel}">
+        <div class="zA yO ${BUNDLE_WRAPPER_CLASS}" bundleLabel="${this.label}" data-inbox=${bundleId} data-date-label="${dateLabel}" data-show-emails="false">
           <div class="PF xY"></div>
           <div class="oZ-x3 xY aid bundle-image">
             <img src="${bundleImage}" ${bundleTitleColor ? `style="filter: drop-shadow(0 0 0 ${bundleTitleColor}) saturate(300%)"` : ''}/>
@@ -54,10 +56,38 @@ export default class Bundle {
           <div class="xW xY">
             <span title="${rawDate}">${dateDisplay}</span>
           </div>
+          <div class="bq4 xY">
+            <ul class="bqY" role="toolbar">
+              <li class="bqX show-emails" data-tooltip="Show Inbox Emails"></li>
+            </ul>
+          </div>
         </div>
     `);
 
-    bundleWrapper.onclick = async () => {
+    bundleWrapper.onclick = e => this.handleBundleClick(e);
+
+    if (emailEl && emailEl.parentNode) {
+      emailEl.parentElement.insertBefore(bundleWrapper, emailEl);
+    }
+    return bundleWrapper;
+  }
+
+  async handleBundleClick(e) {
+    const bundleId = encodeBundleId(this.label);
+    if (hasClass(e.target, 'show-emails')) {
+      const bundleRow = e.currentTarget;
+      const currentlyShowing = bundleRow.getAttribute('data-show-emails') === 'true';
+      if (currentlyShowing) {
+        document.querySelectorAll(`[data-inbox="show-bundled"][data-${bundleId}]`).forEach(emailRow => {
+          emailRow.setAttribute('data-inbox', 'bundled');
+        });
+      } else {
+        document.querySelectorAll(`[data-inbox="bundled"][data-${bundleId}]`).forEach(emailRow => {
+          emailRow.setAttribute('data-inbox', 'show-bundled');
+        });
+      }
+      bundleRow.setAttribute('data-show-emails', !currentlyShowing);
+    } else {
       const currentBundleId = getCurrentBundle(); // will be null when in inbox
       const isInBundleFlag = isInBundle();
       const clickedClosedBundle = bundleId !== currentBundleId;
@@ -72,12 +102,7 @@ export default class Bundle {
         }
         openBundle(bundleId);
       }
-    };
-
-    if (emailEl && emailEl.parentNode) {
-      emailEl.parentElement.insertBefore(bundleWrapper, emailEl);
     }
-    return bundleWrapper;
   }
 
   getBundleImageForLabel() {
@@ -117,10 +142,6 @@ export default class Bundle {
     });
 
     return bundleTitleColor;
-  }
-
-  fixLabel() {
-    return encodeURIComponent(this.label.replace(/[/\\& ]/g, '-'));
   }
 
   updateStats() {
