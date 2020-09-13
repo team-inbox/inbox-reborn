@@ -10,6 +10,8 @@ import {
   addClass,
   getMyEmailAddress,
   getTabs,
+  querySelectorText,
+  querySelectorWithText,
   hasClass,
   isInBundle,
   isInInbox,
@@ -46,7 +48,7 @@ export default class Email {
   }
 
   getParticipantNames() {
-    return this.getParticipants().map(node => node.getAttribute('name'));
+    return this.isReminder() ? ['Reminder'] : this.getParticipants().map(node => node.getAttribute('name'));
   }
 
   isBundled() {
@@ -63,15 +65,23 @@ export default class Email {
 
     const participants = this.getParticipants().map(node => node.getAttribute('email'));
     const allNamesMe = participants.length > 0 && participants.every(participant => participant === getMyEmailAddress());
-
+    if (this.isCalendarReminder()) {
+      return true;
+    }
     if (options.reminderTreatment === 'all') {
       return allNamesMe;
-    } if (options.reminderTreatment === 'containing-word') {
-      const titleNode = this.emailEl.querySelector('.y6');
-      return allNamesMe && titleNode && titleNode.innerText.match(/reminder/i);
+    }
+    if (options.reminderTreatment === 'containing-word') {
+      const subjectText = querySelectorText('.y6', this.emailEl);
+      return allNamesMe && subjectText.match(/reminder/i);
     }
 
     return false;
+  }
+
+  isCalendarReminder() {
+    const emailBody = querySelectorText('.y2', this.emailEl);
+    return emailBody.toLowerCase().includes('calendar reminders');
   }
 
   isUnread() {
@@ -109,12 +119,10 @@ export default class Email {
   }
 
   processDate(prevDate) {
-    const dateElement = this.emailEl.querySelector('.xW.xY span');
-    const dateDisplay = dateElement && dateElement.innerText;
+    const { element: dateElement, text: dateDisplay } = querySelectorWithText('.xW.xY span', this.emailEl);
     const rawDate = dateElement && dateElement.getAttribute('title');
     let date = new Date(rawDate);
-    const snoozeElement = this.emailEl.querySelector('.by1.cL');
-    const snoozeString = snoozeElement && snoozeElement.innerText;
+    const snoozeString = querySelectorText('.by1.cL', this.emailEl);
     const isSnoozed = snoozeString || (prevDate && date < prevDate);
     if (isSnoozed) {
       date = prevDate || new Date();
@@ -132,17 +140,14 @@ export default class Email {
   }
 
   processBundle() {
-    const options = getOptions();
-
     const tabs = getTabs();
     const labels = this.getLabels().filter(label => !tabs.includes(label.title));
-    const labelTitles = labels.map(label => label.title);
 
     // only process bundles on the inbox page
-    if (options.emailBundling === 'enabled' && !isInBundle() && isInInbox()) {
+    if (isInInbox() && !isInBundle()) {
       const starContainer = this.emailEl.querySelector('.T-KT');
       const isStarred = hasClass(starContainer, 'T-KT-Jp');
-      const isUnbundled = labelTitles.some(title => title.includes(CLASSES.UNBUNDLED_PARENT_LABEL));
+      const isUnbundled = labels.some(label => label.title.includes(CLASSES.UNBUNDLED_PARENT_LABEL));
 
       if (labels.length && !isStarred && !isUnbundled) {
         this.emailEl.setAttribute('data-inbox', 'bundled');
@@ -165,8 +170,7 @@ export default class Email {
 
   processCalendar() {
     const calendarAlreadyProcessed = this.emailEl.getAttribute('data-calendar');
-    const node = this.emailEl.querySelector('.aKS .aJ6');
-    const isCalendarEvent = node && node.innerText === 'RSVP';
+    const isCalendarEvent = querySelectorText('.aKS .aJ6', this.emailEl) === 'RSVP';
 
     if (isCalendarEvent && !calendarAlreadyProcessed) {
       calendar.addEventAttachment(this.emailEl);
@@ -175,14 +179,22 @@ export default class Email {
   }
 
   processReminder() {
-    const subjectEl = this.emailEl.querySelector('.y6');
-    const subject = subjectEl && subjectEl.innerText.trim();
+    const { element: subjectEl, text: subject } = querySelectorWithText('.bog span', this.emailEl);
 
     // if subject is reminder, hide subject in the row and show the body instead
-    if (subject && subject.toLowerCase() === 'reminder') {
-      subjectEl.outerHTML = '';
-      this.emailEl.querySelectorAll('.Zt').forEach(node => { node.outerHTML = ''; });
-      this.emailEl.querySelectorAll('.y2').forEach(node => { node.style.color = '#202124'; });
+    if (subject) {
+      if (subject.toLowerCase() === 'reminder') {
+        subjectEl.outerHTML = '';
+        this.emailEl.querySelectorAll('.Zt').forEach(node => { node.outerHTML = ''; });
+        this.emailEl.querySelectorAll('.y2').forEach(node => { node.style.color = '#202124'; });
+      } else if (this.isCalendarReminder()) {
+        if (subject.indexOf('Notification: ') >= 0) {
+          let newSubject = subject.replace('Notification: ', '');
+          newSubject = newSubject.substring(0, newSubject.indexOf('@') - 1);
+          subjectEl.innerText = newSubject;
+          this.emailEl.querySelector('.y2').style.display = 'none';
+        }
+      }
     }
     // replace email with Reminder
     this.emailEl.querySelectorAll('.yP,.zF').forEach(node => { node.innerHTML = 'Reminder'; });

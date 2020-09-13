@@ -1,5 +1,5 @@
 import { CLASSES } from './constants';
-import { htmlToElements } from './utils';
+import { htmlToElements, querySelectorText } from './utils';
 
 export default {
   addEventAttachment(email) {
@@ -9,14 +9,11 @@ export default {
 
     let title = 'Calendar Event';
     let time = '';
-    const titleNode = email.querySelector('.bqe, .bog');
-    if (titleNode) {
-      const titleFullText = titleNode.innerText;
-      const matches = Array.from(titleFullText.matchAll(/[^:]*: ([^@]*)@(.*)/g))[0];
-      if (matches) {
-        title = matches[1].trim();
-        time = matches[2].trim();
-      }
+    const titleFullText = querySelectorText('.bqe, .bog', email);
+    const matches = Array.from(titleFullText.matchAll(/[^:]*: ([^@]*)@(.*)/g))[0];
+    if (matches) {
+      title = matches[1].trim();
+      time = matches[2].trim();
     }
 
     const calendarNode = htmlToElements(`

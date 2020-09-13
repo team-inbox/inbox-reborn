@@ -22,6 +22,20 @@ export const observeForCondition = (el, condition) => new Promise(
 
 export const observeForElement = (el, selector) => observeForCondition(el, () => el && el.querySelector(selector));
 export const observeForRemoval = (el, selector) => observeForCondition(el, () => !el || !el.querySelector(selector));
+export const startObserver = (observer, element, options, callback) => {
+  if (observer) {
+    observer.disconnect();
+  }
+  observer = new MutationObserver(callback);
+  observer.observe(element, options);
+  return observer;
+};
+
+export const querySelectorWithText = (selector, container = document) => {
+  const element = container.querySelector(selector);
+  return element ? { element, text: element.innerText } : {};
+};
+export const querySelectorText = (selector, container = document) => querySelectorWithText(selector, container).text;
 
 export const htmlToElements = html => {
   const template = document.createElement('template');
@@ -74,7 +88,7 @@ export const removeClass = (element, className) => {
 
 // ---- Gmail ---- \\
 export const getTabs = () => Array.from(document.querySelectorAll('.aKz')).map(el => el.innerText);
-export const isInInbox = () => document.querySelector('.nZ a[title=Inbox]') !== null;
+export const isInInbox = () => document.location.hash.match(/#inbox/g) !== null;
 export const isInBundle = () => document.location.hash.match(/#search\/in%3Ainbox\+label%3A/g) !== null;
 export const getCurrentBundle = () => {
   const matches = document.location.hash.match(/#search\/in%3Ainbox\+label%3A(.*)\+-in%3Astarred/);

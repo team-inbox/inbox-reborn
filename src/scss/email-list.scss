@@ -2,7 +2,6 @@
 
 .AO { //main-center-container
 	overflow-y: scroll;
-	padding-right: 12px;
 	&::-webkit-scrollbar {
 		width: 10px;
 	}
@@ -49,8 +48,9 @@
 			padding: 0 16px;
 			height: auto;
 			background-color: lightgray;
-			width: calc(100% - 44px);
-			margin-top: 50px;
+			width: calc(100% - 34px);
+			margin-left: 1px;
+			z-index: 1;
 	
 			.Nt { //bottom-border
 				display: none;
