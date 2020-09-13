@@ -96,10 +96,12 @@ export default {
     composeButton.click();
 
     // TODO: Delete waitForElement() function, replace with gmail.observe.on('compose') via the Gmail.js lib
-    const to = await observeForElement(document, 'textarea[name=to]');
-    const title = document.querySelector('input[name=subjectbox]');
-    const body = document.querySelector('div[aria-label="Message Body"]');
-    const from = document.querySelector('input[name="from"]');
+    const composeContainer = await observeForElement(document, '.AD');
+    addClass(composeContainer, 'compose-reminder');
+    const to = composeContainer.querySelector('textarea[name=to]');
+    const title = composeContainer.querySelector('input[name=subjectbox]');
+    const body = composeContainer.querySelector('div[aria-label="Message Body"]');
+    const from = composeContainer.querySelector('input[name="from"]');
 
     from.value = myEmail;
     to.value = myEmail;

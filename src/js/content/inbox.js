@@ -28,10 +28,12 @@ export default {
         let inbox = document.querySelector(`${EMAIL_CONTAINER}[role=main][data-pane="inbox"]`);
         if (!inbox) {
           inbox = document.querySelector(`${EMAIL_CONTAINER}[role=main]`);
-          inbox.setAttribute('data-pane', 'inbox');
-          const previewPane = inbox.querySelector(PREVIEW_PANE);
-          if (previewPane) {
-            previewPane.setAttribute('data-pane', 'inbox');
+          if (inbox) {
+            inbox.setAttribute('data-pane', 'inbox');
+            const previewPane = inbox.querySelector(PREVIEW_PANE);
+            if (previewPane) {
+              previewPane.setAttribute('data-pane', 'inbox');
+            }
           }
         }
       }
@@ -142,9 +144,10 @@ export default {
           }
           bundlePane.style.position = 'absolute';
           bundleRow.parentNode.insertBefore(bundlePlaceholder, bundleRow.nextSibling);
-          bundlePane.style.top = addPixels(bundleRow.offsetTop, bundleRow.clientHeight);
+          bundlePane.style.top = addPixels(bundleRow.offsetTop, bundleRow.clientHeight, 6);
 
           const adjustBundleHeight = () => {
+            bundlePane.style['margin-top'] = `${bundleRow.clientHeight}px`;
             bundlePlaceholder.style.height = `${bundlePane.offsetHeight}px`;
           };
           if (this.bundleObserver) {

@@ -42,8 +42,11 @@ export default {
     if (!sibling) {
       return true;
     }
-    if (sibling.classList.contains('bundle-placeholder')) {
+    if (sibling.classList.contains('bundle-placeholder') || sibling.classList.contains('preview-placeholder')) {
       sibling = sibling.nextSibling;
+    }
+    if (!sibling) {
+      return true;
     }
     if (sibling.className === 'time-row') {
       return true;

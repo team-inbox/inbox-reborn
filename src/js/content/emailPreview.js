@@ -1,7 +1,9 @@
 import {
   addClass,
+  addPixels,
+  observeForElement,
   removeClass,
-  observeForElement
+  startObserver
 } from './utils';
 import { SELECTORS } from './constants';
 
@@ -39,37 +41,48 @@ export default {
       this.showPreview = true;
     }
   },
-  movePreviewPane(selectedEmail, previewPane) {
-    if (!this.currentEmail.getAttribute('data-previewing')) {
-      // this creates a space for the preview and uses absolute positioning to make it look like it's under the current email
-      let previewPlaceholder = document.querySelector('.preview-placeholder');
-      if (!previewPlaceholder) {
-        previewPlaceholder = document.createElement('div');
-        addClass(previewPlaceholder, 'preview-placeholder');
-      }
-      const selectedTop = selectedEmail.offsetTop;
-      selectedEmail.parentNode.insertBefore(previewPlaceholder, selectedEmail.nextSibling);
-      previewPane.style.position = 'absolute';
-      previewPane.style.top = `${selectedTop}px`;
+  movePreviewPane(previewPane) {
+    // this creates a space for the preview and uses absolute positioning to make it look like it's under the current email
+    let previewPlaceholder = document.querySelector('.preview-placeholder');
+    if (!previewPlaceholder) {
+      previewPlaceholder = document.createElement('div');
+      addClass(previewPlaceholder, 'preview-placeholder');
     }
+    this.currentEmail.style.position = 'relative';
+    const selectedTop = this.currentEmail.offsetTop;
+    this.currentEmail.style.position = '';
+    this.currentEmail.parentNode.insertBefore(previewPlaceholder, this.currentEmail.nextSibling);
+    previewPane.style.position = 'absolute';
+    previewPane.style.top = `${selectedTop}px`;
   },
   showPreviewPane(previewPane) {
-    this.movePreviewPane(this.currentEmail, previewPane);
-    this.currentEmail.setAttribute('data-previewing', true);
+    this.movePreviewPane(previewPane);
     const previewPlaceholder = document.querySelector('.preview-placeholder');
     addClass(previewPane, 'show-preview');
     this.previewShowing = true;
     const adjustPreviewHeight = () => {
-      previewPane.style['padding-top'] = `${this.currentEmail.clientHeight}px`;
-      previewPlaceholder.style.height = `${previewPane.offsetHeight}px`;
+      const rowHeight = this.currentEmail.clientHeight;
+      previewPane.style['padding-top'] = `${rowHeight}px`;
+      previewPlaceholder.style.height = addPixels(previewPane.offsetHeight, -rowHeight, 16);
     };
-    if (this.observer) {
-      this.observer.disconnect();
-    }
-    this.observer = new MutationObserver(adjustPreviewHeight);
-    this.observer.observe(previewPane, { subtree: true, attributes: true });
+    this.previewObserver = startObserver(this.previewObserver, previewPane, { subtree: true, attributes: true }, adjustPreviewHeight);
     adjustPreviewHeight();
-    previewPane.scrollIntoView({ behavior: 'smooth' });
+
+    const checkPreviewPosition = () => {
+      this.rowObserver.disconnect();
+      this.currentEmail.style.position = 'relative';
+      const selectedTop = this.currentEmail.offsetTop;
+      this.currentEmail.style.position = '';
+      if (previewPane.style.top !== `${selectedTop}px`) {
+        previewPane.style.top = `${selectedTop}px`;
+      }
+      this.rowObserver.observe(this.currentEmail, { attributes: true });
+    };
+    this.rowObserver = startObserver(this.rowObserver, this.currentEmail, { attributes: true }, checkPreviewPosition);
+    if (!this.currentEmail.getAttribute('data-previewing')) {
+      this.currentEmail.setAttribute('data-previewing', true);
+      previewPane.scrollIntoView({ behavior: 'smooth' });
+    }
   },
   hidePreviewPane(previewPane) {
     const previewingEmail = document.querySelector('[data-previewing]');
@@ -84,8 +97,11 @@ export default {
     if (previewPlaceholder) {
       previewPlaceholder.style.height = 0;
     }
-    if (this.observer) {
-      this.observer.disconnect();
+    if (this.previewObserver) {
+      this.previewObserver.disconnect();
+    }
+    if (this.rowObserver) {
+      this.rowObserver.disconnect();
     }
     previewPane.style['padding-top'] = 0;
   },
@@ -119,7 +135,7 @@ export default {
 
       if (currentEmailChanged) {
         this.currentEmail = selectedEmail;
-        this.movePreviewPane(selectedEmail, previewPane);
+        this.movePreviewPane(previewPane);
       }
 
       if (selectedEmailIsBundled || !this.showPreview || !emailPreviewing || !previewMatchesSelected) {
