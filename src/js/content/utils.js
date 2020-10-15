@@ -64,7 +64,7 @@ export const queryParentSelector = (el, selector) => {
     return null;
   }
   let parent = el.parentElement;
-  while (!parent.matches(selector)) {
+  while (parent && !parent.matches(selector)) {
     parent = parent.parentElement;
     if (!parent) {
       return null;
@@ -101,7 +101,8 @@ export const openBundle = bundleId => { window.location.href = `#search/in%3Ainb
 export const openInbox = () => { window.location.href = '#inbox'; };
 
 export const getMyEmailAddress = () => {
-  if (document.querySelector('.gb_vb') && document.querySelector('.gb_vb').innerText) {
-    return document.querySelector('.gb_vb').innerText;
+  const emailSelector = '.gb_sb';
+  if (document.querySelector(emailSelector) && document.querySelector(emailSelector).innerText) {
+    return document.querySelector(emailSelector).innerText;
   }
 };
