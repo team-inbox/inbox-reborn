@@ -632,7 +632,16 @@ const updateReminders = () => {
 				continue;
 			}
 
-			const labels = emailInfo.labels.filter(x => !tabs.includes(x));
+			let labelCounts = emails.reduce((counts, email) => {
+				email.labels.forEach(label => counts[label] = ~~counts[label] + 1)
+				return counts;
+			}, {});
+			let labelsToBundle = [];
+			for (label in labelCounts) if (labelCounts[label] > 1) labelsToBundle.push(label);
+
+			let labels = emailInfo.labels.filter(x => !tabs.includes(x));
+			labels = labels.filter(x => labelsToBundle.includes(x));
+
 			if (isInInboxFlag && !emailInfo.isStarred && labels.length && !emailInfo.isUnbundled && !emailInfo.bundleAlreadyProcessed()) {
 				labels.forEach(label => {
 					addClassToEmail(emailEl, BUNDLED_EMAIL_CLASS);
