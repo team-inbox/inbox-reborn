@@ -43,8 +43,10 @@ export default {
         inbox.restoreBundle();
       }
     });
-    const searchButton = document.querySelector('.gb_Df');
-    searchButton.addEventListener('click', inbox.restoreBundle);
+    const searchButton = await observeForElement(document, '.gb_Df');
+    if (searchButton) {
+      searchButton.addEventListener('click', inbox.restoreBundle);
+    }
   },
   handleHashChange() {
     let { hash } = window.location;
