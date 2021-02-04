@@ -1373,6 +1373,14 @@ body.email-bundling-enabled.bundle-page .nH.ar4.B .yi {
 	order: 1 !important;
 }
 
+.add-reminder.moved {
+	right: 348px;
+}
+
+.floating-compose.moved {
+	right: 340px;
+}
+
 
 /* Hide Compose and Reminder buttons from Gmail's Print view */
 @media print {

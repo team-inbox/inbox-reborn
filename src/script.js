@@ -839,7 +839,79 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.body.appendChild(floatingComposeButton);
 
 	setInterval(updateReminders, 250);
+
+  waitForElement('div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I', sidePanelHandler);
+
 });
+
+const moveFloatersLeft = () => {
+	document.querySelector('.add-reminder').classList.add('moved');
+	document.querySelector('.floating-compose').classList.add('moved');
+}
+const moveFloatersRight = () => {
+	document.querySelector('.add-reminder').classList.remove('moved');
+	document.querySelector('.floating-compose').classList.remove('moved');
+
+	addOnsObserver.disconnect();
+}
+
+const sidePanelHandler = () => {
+
+	const sidePanel = document.querySelector('div[aria-label="Side panel"');
+	const sidePanelBtns = sidePanel.querySelectorAll('.bse-bvF-I.aT5-aOt-I:not(#qJTzr)'); // ignore the + btn
+
+	const addOnsFrame = document.querySelector('.bq9.buW');
+
+	for(let b = 0; b < sidePanelBtns.length; b++) {
+
+		sidePanelBtns[b].addEventListener('click', function(e) {
+			moveFloatersLeft();
+			sidePanelCloseHandler();
+		});
+	}
+
+	// AddOn open at page load check
+
+	if(!addOnsFrame.classList.contains('br9')) {
+
+		moveFloatersLeft();
+		sidePanelCloseHandler();
+	}
+
+}
+
+const sidePanelCloseHandler = () => {
+	console.log('AddOnsBar: ready to close it down');
+	
+	// Only one is active in DOM at a time... hence no 'All'
+	const addOnsPanels = document.querySelector('.bq9.buW > .brC-brG > div');
+	
+	const addOnsObserverConfig = {
+		attributes: true,
+		childList: true,
+		attributeFilter: ['style']
+	};
+
+	const panelClosed = (mutationsList, addOnsObserver) => {
+		for(const mutagen of mutationsList) {
+			console.log(mutagen);
+
+			if(mutagen.type === 'attributes') {
+				console.log('AddOnsBar: attr mutation ahoy!');
+				moveFloatersRight();
+			} else {
+				console.log('AddOnsBar: other mutations afoot!');
+			}
+
+			console.log('mutagens plz?');
+		}
+	}
+
+	const addOnsObserver = new MutationObserver(panelClosed);
+
+	addOnsObserver.observe(addOnsPanels, addOnsObserverConfig);
+		
+}
 
 const setFavicon = () => document.querySelector('link[rel*="shortcut icon"]').href = chrome.runtime.getURL('images/favicon.png');;
 
