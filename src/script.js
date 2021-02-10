@@ -894,16 +894,9 @@ const sidePanelCloseHandler = () => {
 
 	const panelClosed = (mutationsList, addOnsObserver) => {
 		for(const mutagen of mutationsList) {
-			console.log(mutagen);
-
 			if(mutagen.type === 'attributes') {
-				console.log('AddOnsBar: attr mutation ahoy!');
 				moveFloatersRight();
-			} else {
-				console.log('AddOnsBar: other mutations afoot!');
 			}
-
-			console.log('mutagens plz?');
 		}
 	}
 
