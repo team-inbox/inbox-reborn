@@ -839,7 +839,72 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.body.appendChild(floatingComposeButton);
 
 	setInterval(updateReminders, 250);
+
+  waitForElement('div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I', sidePanelHandler);
+
 });
+
+const moveFloatersLeft = () => {
+	document.querySelector('.add-reminder').classList.add('moved');
+	document.querySelector('.floating-compose').classList.add('moved');
+}
+const moveFloatersRight = () => {
+	document.querySelector('.add-reminder').classList.remove('moved');
+	document.querySelector('.floating-compose').classList.remove('moved');
+
+	addOnsObserver.disconnect();
+}
+
+const sidePanelHandler = () => {
+
+	const sidePanel = document.querySelector('div[aria-label="Side panel"');
+	const sidePanelBtns = sidePanel.querySelectorAll('.bse-bvF-I.aT5-aOt-I:not(#qJTzr)'); // ignore the + btn
+
+	const addOnsFrame = document.querySelector('.bq9.buW');
+
+	for(let b = 0; b < sidePanelBtns.length; b++) {
+
+		sidePanelBtns[b].addEventListener('click', function(e) {
+			moveFloatersLeft();
+			sidePanelMutationHandler();
+		});
+	}
+
+	// AddOn open at page load check
+
+	if(!addOnsFrame.classList.contains('br9')) {
+
+		moveFloatersLeft();
+		sidePanelMutationHandler();
+	}
+
+}
+
+	console.log('AddOnsBar: ready to close it down');
+	
+const sidePanelMutationHandler = () => {
+	// Only one is active in DOM at a time... hence no 'All'
+	const addOnsPanels = document.querySelector('.bq9.buW > .brC-brG > div');
+	
+	const addOnsObserverConfig = {
+		attributes: true,
+		childList: true,
+		attributeFilter: ['style']
+	};
+
+	const panelMutated = (mutationsList, addOnsObserver) => {
+		for(const mutagen of mutationsList) {
+			if(mutagen.type === 'attributes') {
+				moveFloatersRight();
+			}
+		}
+	}
+
+	const addOnsObserver = new MutationObserver(panelMutated);
+
+	addOnsObserver.observe(addOnsPanels, addOnsObserverConfig);
+		
+}
 
 const setFavicon = () => document.querySelector('link[rel*="shortcut icon"]').href = chrome.runtime.getURL('images/favicon.png');;
 
