@@ -866,7 +866,7 @@ const sidePanelHandler = () => {
 
 		sidePanelBtns[b].addEventListener('click', function(e) {
 			moveFloatersLeft();
-			sidePanelCloseHandler();
+			sidePanelMutationHandler();
 		});
 	}
 
@@ -875,14 +875,14 @@ const sidePanelHandler = () => {
 	if(!addOnsFrame.classList.contains('br9')) {
 
 		moveFloatersLeft();
-		sidePanelCloseHandler();
+		sidePanelMutationHandler();
 	}
 
 }
 
-const sidePanelCloseHandler = () => {
 	console.log('AddOnsBar: ready to close it down');
 	
+const sidePanelMutationHandler = () => {
 	// Only one is active in DOM at a time... hence no 'All'
 	const addOnsPanels = document.querySelector('.bq9.buW > .brC-brG > div');
 	
@@ -892,7 +892,7 @@ const sidePanelCloseHandler = () => {
 		attributeFilter: ['style']
 	};
 
-	const panelClosed = (mutationsList, addOnsObserver) => {
+	const panelMutated = (mutationsList, addOnsObserver) => {
 		for(const mutagen of mutationsList) {
 			if(mutagen.type === 'attributes') {
 				moveFloatersRight();
@@ -900,7 +900,7 @@ const sidePanelCloseHandler = () => {
 		}
 	}
 
-	const addOnsObserver = new MutationObserver(panelClosed);
+	const addOnsObserver = new MutationObserver(panelMutated);
 
 	addOnsObserver.observe(addOnsPanels, addOnsObserverConfig);
 		
