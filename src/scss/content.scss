@@ -12,20 +12,8 @@
 @import 'left-nav';
 
 @import 'toolbar';
+@import 'dark-mode';
 
-.vI8oZc.yL { //background-container
-	.wl { //background
-		background: #F2F2F2;
-	}
-}
-.g-suite {
-	.bAw.nn { //right-hand-bar-g-suite-container
-		.brC-aT5-aOt-Jw { //right-hand-bar-g-suite
-			background: #F2F2F2;
-			border-left: 1px solid rgba(100,121,143,.12);
-		}
-	}
-}
 
 .Wg.aAr { //email-grouping-headers
 	display: none;
@@ -40,10 +28,6 @@
 .ar4 { //main-container
 	max-width: 1200px;
 	margin: 0 auto;
-
-	.aeJ { //main-content-container
-		background-color: transparent;
-	}
 
 	.cf.TB { //no-emails-table
 		// add padding to no results message to reduce jumping
@@ -82,9 +66,7 @@
 					background-repeat: no-repeat;
 					background-position: center;
 					height: calc(100vh - 200px);
-					// width: 456px;
 					color: transparent;
-					// font-size: 14px;
 				}
 			}
 

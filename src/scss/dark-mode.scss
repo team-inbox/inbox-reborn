@@ -1,0 +1,42 @@
+body.dark-mode {
+  .vI8oZc.yL { //background-container
+    .wl { //background
+      background: #222;
+    }
+  }
+  .AO .BltHke.nH.oy8Mbf .Nr.UI.Nf.vy .Nu.tf.aZ6 .ae4 .Cp .F.cf.zt tbody .time {
+    color: #CCC;
+  }
+
+  .zA {
+    color: rgba(255, 255, 255, 1);
+    .avatar {
+      background: url("chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_reminders_white_24dp_2x.png");
+    }
+    &.bundle-wrapper {
+      .bq4 .show-emails {
+        background-image: url('https://www.gstatic.com/images/icons/material/system/1x/expand_more_white_20dp.png');
+      }
+      .a4W { //body-column
+        .bundle-senders {
+          color: rgba(255, 255, 255, 1);
+        }
+      }
+    }
+    .y2:not(.bundle-senders) { //body-text
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+
+  .AO .BltHke.nH.oy8Mbf[data-pane="bundle"] {
+    background-color: rgb(75, 75, 75);
+  }
+}
+
+@-moz-document url-prefix() {
+  body.dark-mode {
+    .avatar {
+      background: url("moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_reminders_white_24dp_2x.png");
+    }
+  }
+}

@@ -2,13 +2,14 @@
 	overflow: auto;
 	box-shadow: 0 3px 4px rgba(0,0,0,.24);
 	width: calc(100% - 1px);
+	height: auto !important;  //need !important to override inline styles
 
 	&:not(.show-preview) {
 		//need !important to override inline styles
 		flex-grow: 0 !important;
 		height: 0 !important;
 	}
-	.ao8 { //preview-pain-container
+	.ao8 { //preview-pane-container
 		width: auto !important;
 	}
 	.if > .byY { //email-subject-header
@@ -24,6 +25,10 @@
 			padding-bottom: 0 !important;
 		}
 	}
+}
+
+.Nt.WY { //preview-pane-separator
+	display: none;
 }
 
 .Bs.nH.iY.bAt { //email-container

@@ -61,7 +61,7 @@
 			content: 'Snoozed';
 		}
 		&[href="#archive"]::after {
-			content: 'Done';
+			content: 'Archive';
 		}
 		&[href="#starred"]::after {
 			content: 'Starred';

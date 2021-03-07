@@ -38,7 +38,8 @@ export default class Email {
       const labelText = labelContainer.querySelector('.av');
       return {
         title: labelEl.getAttribute('title'),
-        color: labelText.style.color !== 'rgb(255, 255, 255)' ? labelText.style.color : labelEl.style.backgroundColor,
+        textColor: labelText.style.color,
+        backgroundColor: labelEl.style.backgroundColor,
         element: labelEl
       };
     });
@@ -81,8 +82,8 @@ export default class Email {
   }
 
   isCalendarReminder() {
-    const emailBody = querySelectorText('.y2', this.emailEl);
-    return emailBody.toLowerCase().includes('calendar reminders');
+    const emailBody = querySelectorText('.y2', this.emailEl).toLowerCase();
+    return emailBody.includes('calendar') && emailBody.includes('reminders');
   }
 
   isUnread() {
@@ -204,7 +205,10 @@ export default class Email {
     }
     // replace email with Reminder
     this.emailEl.querySelectorAll('.yP,.zF').forEach(node => { node.innerHTML = 'Reminder'; });
-    this.addAvatar();
+    const options = getOptions();
+    if (options.showAvatar === 'enabled') {
+      this.addAvatar();
+    }
     addClass(this.emailEl, CLASSES.REMINDER_EMAIL_CLASS);
   }
 
