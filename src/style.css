@@ -767,6 +767,11 @@ header svg {
 	opacity: 1 !important;
 }
 
+/* Top bar Google Chat status selector text */
+.Yc {
+	color: #FFF !important;
+}
+
 /* Search bar (old, new) */
 header form {
 	background: rgba(255, 255, 255, 0.125) !important;
