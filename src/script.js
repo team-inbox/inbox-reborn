@@ -879,8 +879,6 @@ const sidePanelHandler = () => {
 	}
 
 }
-
-	console.log('AddOnsBar: ready to close it down');
 	
 const sidePanelMutationHandler = () => {
 	// Only one is active in DOM at a time... hence no 'All'
