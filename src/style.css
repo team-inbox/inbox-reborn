@@ -767,6 +767,17 @@ header svg {
 	opacity: 1 !important;
 }
 
+/* Top bar Google Chat status selector */
+.Yb, .Yb:not(.abs):focus {
+	border-color: transparent !important;
+}
+.Yb[aria-label="Status: Active"] .Yg { /* (Active) Icon */
+	background-color: #34d058 !important;
+}
+.Yc { /* Text */
+	color: #FFF !important;
+}
+
 /* Search bar (old, new) */
 header form {
 	background: rgba(255, 255, 255, 0.125) !important;
