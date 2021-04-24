@@ -9,13 +9,9 @@ Web extension which modifies Gmail™ to bring back the features and uncluttered
 
 ### Chrome & Microsoft Edge 
 
-**NOTE**: This extension been removed from the Chrome Web Store for unknown reasons, see [issue #69](https://github.com/boukestam/inbox-in-gmail/issues/69)
+The extension is now back in the Google Chrome Store! It can be add through the following link
 
-Install Inbox Reborn as an **unpacked extension**:
-1. Download [this repo's source code here](https://github.com/team-inbox/inbox-reborn/archive/master.zip), and unzip it where you like
-2. Go to Chrome's extension settings page, at `chrome://extensions`
-3. Tick the `Developer mode` checkbox on the top right of the page
-4. Click the `Load unpacked` button, then select the unzipped folder you downloaded earlier
+https://chrome.google.com/webstore/detail/inbox-reborn-theme-for-gm/bkphmihkdbdgedlaflnkhnmnmibffomf?hl=en&authuser=1
 
 
 ### Firefox
