@@ -11,7 +11,7 @@ Web extension which modifies Gmail™ to bring back the features and uncluttered
 
 The extension is now back in the Google Chrome Store! It can be add through the following link
 
-https://chrome.google.com/webstore/detail/inbox-reborn-theme-for-gm/bkphmihkdbdgedlaflnkhnmnmibffomf?hl=en&authuser=1
+https://chrome.google.com/webstore/detail/inbox-reborn-theme-for-gm/bkphmihkdbdgedlaflnkhnmnmibffomf
 
 
 ### Firefox
