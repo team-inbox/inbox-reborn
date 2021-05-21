@@ -11,7 +11,15 @@ async function checkForDarkMode() {
   }
 }
 
+function isPopupEmail() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('ui') === '2';
+}
+
 function initInboxReborn() {
+  if (isPopupEmail()) {
+    return;
+  }
   checkForDarkMode();
   inbox.observeEmails();
   navigation.init();

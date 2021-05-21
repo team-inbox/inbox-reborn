@@ -16,6 +16,8 @@
 		box-shadow: inset 1px 1px 0 rgba(0,0,0,0.10), inset 0 -1px 0 rgba(0,0,0,0.07);
 	}
 	.BltHke.nH.oy8Mbf { //main-email-container
+		@import 'toolbar';
+
 		&[data-navigating]::after {
 			content: '';
 			height: 100%;
