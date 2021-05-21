@@ -43,7 +43,7 @@ export default class Bundle {
           <div class="PF xY"></div>
           <div class="apU xY"></div>
           <div class="WA xY ${importantMarkerClass}"></div>
-          <div class="yX xY label-link .yW" style="color: ${label.backgroundColor}">${this.bundleName}</div>
+          <div class="yX xY label-link .yW" style="color: ${label.textColor}">${this.bundleName}</div>
           <div class="xY a4W">
             <div class="xS">
               <div class="xT">

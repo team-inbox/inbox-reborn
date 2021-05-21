@@ -14,6 +14,7 @@ import {
   querySelectorText,
   querySelectorWithText,
   hasClass,
+  isDarkMode,
   isInBundle,
   isInInbox,
   openInbox,
@@ -36,10 +37,11 @@ export default class Email {
     return Array.from(this.emailEl.querySelectorAll('.ar.as')).map(labelContainer => {
       const labelEl = labelContainer.querySelector('.at');
       const labelText = labelContainer.querySelector('.av');
+      const whiteText = labelText.style.color === 'rgb(255, 255, 255)';
+
       return {
         title: labelEl.getAttribute('title'),
-        textColor: labelText.style.color,
-        backgroundColor: labelEl.style.backgroundColor,
+        textColor: isDarkMode() || whiteText ? labelEl.style.backgroundColor : labelText.style.color,
         element: labelEl
       };
     });

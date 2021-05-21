@@ -43,7 +43,6 @@ export default {
         archive.addEventListener('click', () => window.location.assign('#archive')); // Manually add on-click event to done elment
         archive.querySelector('a').innerText = 'Archive'; // default text is All Mail
         const archiveItem = archive.querySelector('div');
-        // addClass(doneItem, 'done-item');
         if (window.location.hash === '#archive') {
           addClass(archiveItem, 'nZ');
         }

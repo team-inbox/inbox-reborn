@@ -106,3 +106,5 @@ export const getMyEmailAddress = () => {
     return emailContainer.children[1].innerText;
   }
 };
+
+export const isDarkMode = () => hasClass(document.querySelector('body'), 'dark-mode');
