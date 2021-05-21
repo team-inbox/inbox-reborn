@@ -14,6 +14,7 @@ import {
   querySelectorText,
   querySelectorWithText,
   hasClass,
+  isDarkMode,
   isInBundle,
   isInInbox,
   openInbox,
@@ -36,9 +37,11 @@ export default class Email {
     return Array.from(this.emailEl.querySelectorAll('.ar.as')).map(labelContainer => {
       const labelEl = labelContainer.querySelector('.at');
       const labelText = labelContainer.querySelector('.av');
+      const whiteText = labelText.style.color === 'rgb(255, 255, 255)';
+
       return {
         title: labelEl.getAttribute('title'),
-        color: labelText.style.color !== 'rgb(255, 255, 255)' ? labelText.style.color : labelEl.style.backgroundColor,
+        textColor: isDarkMode() || whiteText ? labelEl.style.backgroundColor : labelText.style.color,
         element: labelEl
       };
     });
@@ -81,8 +84,8 @@ export default class Email {
   }
 
   isCalendarReminder() {
-    const emailBody = querySelectorText('.y2', this.emailEl);
-    return emailBody.toLowerCase().includes('calendar reminders');
+    const emailBody = querySelectorText('.y2', this.emailEl).toLowerCase();
+    return emailBody.includes('calendar') && emailBody.includes('reminders');
   }
 
   isUnread() {
@@ -204,7 +207,10 @@ export default class Email {
     }
     // replace email with Reminder
     this.emailEl.querySelectorAll('.yP,.zF').forEach(node => { node.innerHTML = 'Reminder'; });
-    this.addAvatar();
+    const options = getOptions();
+    if (options.showAvatar === 'enabled') {
+      this.addAvatar();
+    }
     addClass(this.emailEl, CLASSES.REMINDER_EMAIL_CLASS);
   }
 

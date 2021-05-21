@@ -37,15 +37,14 @@ export default {
 
         const inboxEl = this.menuItems.find(item => item.label === 'inbox').node;
         const snoozed = this.menuItems.find(item => item.label === 'snoozed').node;
-        const done = this.menuItems.find(item => item.label === 'archive').node;
+        const archive = this.menuItems.find(item => item.label === 'archive').node;
 
-        done.firstChild.removeAttribute('id'); // removing the ID disconnects gmail event
-        done.addEventListener('click', () => window.location.assign('#archive')); // Manually add on-click event to done elment
-        done.querySelector('a').innerText = 'Done'; // default text is All Mail
-        const doneItem = done.querySelector('div');
-        addClass(doneItem, 'done-item');
+        archive.firstChild.removeAttribute('id'); // removing the ID disconnects gmail event
+        archive.addEventListener('click', () => window.location.assign('#archive')); // Manually add on-click event to done elment
+        archive.querySelector('a').innerText = 'Archive'; // default text is All Mail
+        const archiveItem = archive.querySelector('div');
         if (window.location.hash === '#archive') {
-          addClass(doneItem, 'nZ');
+          addClass(archiveItem, 'nZ');
         }
 
         const newNode = document.createElement('div');
@@ -53,7 +52,7 @@ export default {
         addClass(newNode, 'main-menu');
         newNode.appendChild(inboxEl);
         newNode.appendChild(snoozed);
-        newNode.appendChild(done);
+        newNode.appendChild(archive);
         parent.insertBefore(newNode, refer);
 
         const chatContainer = document.querySelector('div[aria-label="Hangouts"][role="complementary"]');
@@ -66,7 +65,7 @@ export default {
       }
 
       if (!this.loadedMenu && moreMenu) {
-        moreMenu.click(); // done menu item is hiding in the more menu
+        moreMenu.click(); // archive menu item is hiding in the more menu
         this.loadedMenu = true;
       }
     });
@@ -87,8 +86,6 @@ export default {
         const color = labelIcon.style.borderColor;
         const text = labelIcon.parentNode.querySelector('a');
         text.style.color = color;
-        labelIcon.style.filter = `drop-shadow(0 0 0 ${color}) saturate(300%)`;
-        labelIcon.style.borderWidth = 0;
       }
     });
   },

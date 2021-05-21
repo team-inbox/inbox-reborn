@@ -121,9 +121,9 @@ export default {
   },
   getBundledLabels() {
     const bundleRows = Array.from(document.querySelectorAll(`${EMAIL_CONTAINER}[role=main] .${BUNDLE_WRAPPER_CLASS}`));
-    return bundleRows.reduce((bundledLabels, el) => {
-      bundledLabels[el.getAttribute('bundleLabel')] = el;
-      return bundledLabels;
+    return bundleRows.reduce((bundles, el) => {
+      bundles[el.getAttribute('data-bundle-id')] = el;
+      return bundles;
     }, {});
   },
   moveBundleElement() {

@@ -103,7 +103,9 @@ export default {
     if (this.rowObserver) {
       this.rowObserver.disconnect();
     }
-    previewPane.style['padding-top'] = 0;
+    if (previewPane) {
+      previewPane.style['padding-top'] = 0;
+    }
   },
   hideIfCurrentEmailRemoved() {
     if (this.currentEmail) {

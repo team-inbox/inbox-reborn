@@ -1,17 +1,10 @@
 .zA.bundle-wrapper {
-	.bundle-image {
-		order: 0;
-		img {
-			width: 28px;
-			padding: 0 6px 0 10px;
-		}
-	}
-
 	.label-link {
+		flex-basis: 212px;
+		max-width: 212px;
 		.bundle-count {
 			font-weight: 400;
 			margin-left: 5px;
-			color: gray;
 		}
 	}
 	.WA { //important-indicator-column
@@ -23,22 +16,20 @@
 	.a4W { //body-column
 		padding-right: 30px;
 		.bundle-senders {
-			color: #202124 !important;
+			color: #202124;
 		}
 	}
 
-	&.contains-unread .label-link,
+	&.zE .label-link,	//unread row
 	.bundle-senders span.strong {
 		font-weight: 700;
 	}
 	.bq4 .show-emails {
-		background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png') !important;
+		background-image: url('https://www.gstatic.com/images/icons/material/system/2x/expand_more_black_20dp.png');
 		background-size: contain;
+		transition: 0.5s all;
 	}
 
-	&:not(.contains-unread) .bundle-image img {
-		opacity: 0.6;
-	}
 	&:hover {
 		.xW { //date-column
 			display: none;
@@ -47,31 +38,9 @@
 			display: flex;
 		}
 	}
-}
-
-/* Colored bundle titles for Inbox categories */
-.zA.yO {
-	&[bundleLabel="Updates"] .label-link > span:not(.bundle-count) {
-		color: rgb(255, 104, 57);
-	}
-	&[bundleLabel="Promotions"] .label-link > span:not(.bundle-count) {
-		color: rgb(0, 188, 212);
-	}
-	&[bundleLabel="Forums"] .label-link > span:not(.bundle-count) {
-		color: rgb(63, 81, 181);
-	}
-	&[bundleLabel="Social"] .label-link > span:not(.bundle-count) {
-		color: rgb(219, 68, 55);
-	}
-	&[bundleLabel="Travel"] .label-link > span:not(.bundle-count),
-	&[bundleLabel="Trips"] .label-link > span:not(.bundle-count) {
-		color: rgb(156, 39, 176);
-	}
-	&[bundleLabel="Finance"] .label-link > span:not(.bundle-count) {
-		color: rgb(103, 159, 56);
-	}
-	&[bundleLabel="Orders"] .label-link > span:not(.bundle-count),
-	&[bundleLabel="Purchases"] .label-link > span:not(.bundle-count) {
-		color: rgb(121, 85, 72);
+	&[data-show-emails="false"] {
+		.show-emails {
+			transform: rotate(90deg);
+		}
 	}
 }
