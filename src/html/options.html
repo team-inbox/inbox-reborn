@@ -1,45 +1,41 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <title>Inbox In Gmail Options</title>
-</head>
-<link rel="stylesheet" href="options.css">
-
+<head><title>Inbox in Gmail Options</title></head>
+<link rel="stylesheet" href="style.css">
 <body>
-    <div class="content">
-        <div class="setting">
-            <div class="setting-title">Reminders</div>
-            <div class="setting-content">
-                Choose how to display emails sent to yourself<br /><br />
-                <input type="radio" name="reminder-treatment" value="all"> All are treated as reminders.
-                <br />
-                <input type="radio" name="reminder-treatment" value="containing-word"> Only emails with a subject
-                containing the word "reminder" are treated as reminders.
-                <br />
-                <input type="radio" name="reminder-treatment" value="none"> Leave the emails as they are.
-            </div>
-        </div>
-        <div class="setting">
-            <div class="setting-title">Email Bundling</div>
-            <div class="setting-content">
-                Bundles emails in your inbox by label<br /><br />
-                <input type="radio" name="email-bundling" value="enabled"> Enabled
-                <br />
-                <input type="radio" name="email-bundling" value="disabled"> Disabled
-            </div>
-        </div>
-        <div class="setting">
-            <div class="setting-title">Avatars</div>
-            <div class="setting-content">
-                Displays a colored circle with the first letter initial of the sender<br /><br />
-                <input type="radio" name="avatar" value="enabled"> Enabled
-                <br />
-                <input type="radio" name="avatar" value="disabled"> Disabled
-            </div>
+<div class="content">
+    <div class="setting">
+        <div class="setting-title">Reminders</div>
+        <div class="setting-content">
+            Choose how to display emails sent to yourself<br /><br />
+            <input type="radio" name="reminder-treatment" value="all" id="reminder-treatment-all"><label for="reminder-treatment-all">All are treated as reminders</label>
+            <br />
+            <input type="radio" name="reminder-treatment" value="containing-word" id="reminder-treatment-containing-word"><label for="reminder-treatment-containing-word">Those with a subject containing "reminder" are treated as such</label>
+            <br />
+            <input type="radio" name="reminder-treatment" value="none" id="reminder-treatment-none"><label for="reminder-treatment-none">Leave the emails as they are</label>
         </div>
     </div>
-    <script src="options.bundle.js"></script>
+    <div class="setting">
+        <div class="setting-title">Email Bundling</div>
+        <div class="setting-content">
+            Bundles emails in your inbox by label<br /><br />
+            <input type="radio" name="email-bundling" value="enabled" id="bundling-on"><label for="bundling-on">Enabled</label>
+            <br />
+            <input type="radio" name="email-bundling" value="disabled" id="bundling-off"><label for="bundling-off">Disabled</label>
+            <br /><br />
+            <input type="checkbox" name="bundle-one" checked="checked" id="bundle-one"><label for="bundle-one">Bundle if only one email? (requires refresh when switching off)</label>
+        </div>
+    </div>
+    <div class="setting">
+        <div class="setting-title">Avatars</div>
+        <div class="setting-content">
+            Displays a colored circle with the first letter initial of the sender<br /><br />
+            <input type="radio" name="avatar" value="enabled" id="avatar-on"><label for="avatar-on">Enabled</label>
+            <br />
+            <input type="radio" name="avatar" value="disabled" id="avatar-off"><label for="avatar-off">Disabled</label>
+        </div>
+    </div>
+</div>
+<script src="script.js"></script>
 </body>
-
 </html>
