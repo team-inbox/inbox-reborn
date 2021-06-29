@@ -27,7 +27,7 @@ const STYLE_NODE_ID_PREFIX = 'hide-email-';
 // reliable retrieval methods like:
 // gmail.compose.start_compose() via the Gmail.js lib
 let select = {
-    emailAddress:        ()=>document.querySelector('.gb_ob'),
+    emailAddress:        ()=>document.querySelector('title'),
     tabs:                ()=>document.querySelectorAll('.aKz'),
     bundleWrappers:      ()=>document.querySelectorAll('.BltHke[role=main] .bundle-wrapper'),
     inbox:               ()=>document.querySelector('.nZ[data-tooltip=Inbox]'),
@@ -83,7 +83,7 @@ Element.prototype.remove = function () {
 
 const getMyEmailAddress = () => {
     let emailAddress = select.emailAddress();
-    let emailAddressText = emailAddress && emailAddress.innerText;
+    let emailAddressText = emailAddress && emailAddress.innerText.match(/[^ ]* - ([^ ]*) - Gmail/)[1];
 
     return emailAddressText || "";
 }
