@@ -1392,6 +1392,18 @@ body.email-bundling-enabled.bundle-page .nH.ar4.B .yi {
 	right: 340px;
 }
 
+/* Inbox tips, Unsubscribe/other alerts shown on top */
+.S4 .X3 {
+	margin-left: 9px;
+	margin-right: 9px;
+}
+
+.G4, .GR, div[aria-label="Inbox tip"] {
+	border: 0 !important;
+	border-radius: 0 !important;
+	box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
+}
+
 
 /* Hide Compose and Reminder buttons from Gmail's Print view */
 @media print {
