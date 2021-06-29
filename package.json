@@ -1,6 +1,6 @@
 {
   "name": "inbox-reborn",
-  "version": "0.5.5",
+  "version": "0.5.9.3",
   "scripts": {
     "build": "webpack --mode production -C webpack.config.js",
     "watch": "webpack --mode development -C webpack.config.js -w"
