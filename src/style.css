@@ -1404,6 +1404,13 @@ body.email-bundling-enabled.bundle-page .nH.ar4.B .yi {
 	box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
 }
 
+/* Fix for black icons in left sidebar */
+
+/* Starred */
+.aHS-bnw .qj, .aHS-bns .qj, .aEe, .aEc.aHS-bnr .qj, .aHS-aHP .qj, .TO > .aHS-nd .qj, .aHS-aHO .qj  { /* Starred, Important, Generic Labels, Chats, Schedules, All Mail */
+	opacity: 0.6 !important;
+}
+
 
 /* Hide Compose and Reminder buttons from Gmail's Print view */
 @media print {
