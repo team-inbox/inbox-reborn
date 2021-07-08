@@ -431,10 +431,13 @@ td.apU.xY .T-KT.xf::before {
 .aHS-bnt .afM {
 	background-image: url('chrome-extension://__MSG_@@extension_id__/images/arrow_drop_down_black_20dp.png') !important;
 }
-/* Starred, Important, Chats */
-.aHS-bnw .qr,
-.aHS-bns .qr,
-.aHS-aHP .qr {
+/* Starred, Important, Chats, Generic Labels, Scheduled, All Mail  */
+.aHS-bnw .qj,
+.aHS-bns .qj,
+.aHS-aHP .qj,
+.aHS-bnr .qj,
+.aHS-nd .qj,
+.aHS-aHO .qj {
 	opacity: 0.6 !important;
 }
 /* Starred */
@@ -1403,14 +1406,6 @@ body.email-bundling-enabled.bundle-page .nH.ar4.B .yi {
 	border-radius: 0 !important;
 	box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
 }
-
-/* Fix for black icons in left sidebar */
-
-/* Starred */
-.aHS-bnw .qj, .aHS-bns .qj, .aEe, .aEc.aHS-bnr .qj, .aHS-aHP .qj, .TO > .aHS-nd .qj, .aHS-aHO .qj  { /* Starred, Important, Generic Labels, Chats, Schedules, All Mail */
-	opacity: 0.6 !important;
-}
-
 
 /* Hide Compose and Reminder buttons from Gmail's Print view */
 @media print {
