@@ -933,6 +933,11 @@ header form input {
 	background: #FFF;
 }
 
+/* Fix bug that would expand the message area if giant image in message */
+.Bs.nH.iY.bAt img {
+	max-width: 100%;
+}
+
 /* Fixed border on email */
 .Bu > .nH > .no {
 	display: none;
