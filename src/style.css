@@ -442,7 +442,10 @@ td.apU.xY .T-KT.xf::before {
 }
 /* Starred */
 .aHS-bnw .qj {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/grade_black_24dp.png') !important;
+	/*background-image: url('chrome-extension://__MSG_@@extension_id__/images/grade_black_24dp.png') !important;*/
+	background-color: rgb(241, 196, 15) !important;
+	background-image: none !important;
+	clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
 }
 /* Important */
 .aHS-bns .qj {
@@ -494,7 +497,10 @@ td.apU.xY .T-KT.xf::before {
 	}
 	/* Starred */
 	.aHS-bnw .qj {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/grade_black_24dp.png') !important;
+		/*background-image: url('moz-extension://__MSG_@@extension_id__/images/grade_black_24dp.png') !important;*/
+		background-color: rgb(241, 196, 15) !important; /* #f7ca4c !important; */
+		background-image: none !important;
+		clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
 	}
 	/* Important */
 	.aHS-bns .qj {
@@ -677,6 +683,11 @@ button.gb_ff.gb_gf  {
 .gb_Ld.gb_je.gb_Td, .nH.w-asV.aiw, .nH.nn {
 	background-color: #898984;
 }
+
+.nH.w-asV.aiw[pagetitle="starred"] {
+	background-color: rgb(241, 196, 15) !important; /*#f7ca4c !important;*/
+}
+
 .nH.w-asV.aiw[pageTitle="inbox"],
 .nH.w-asV.aiw[pageTitle="inbox"] .nH.nn {
 	background-color: #4285f4;
