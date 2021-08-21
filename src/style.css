@@ -684,7 +684,8 @@ button.gb_ff.gb_gf  {
 	background-color: #898984;
 }
 
-.nH.w-asV.aiw[pagetitle="starred"] {
+.nH.w-asV.aiw[pagetitle="starred"],
+.nH.w-asV.aiw[pagetitle="starred"] header.gb_Va:not(.gb_Ed) {
 	background-color: rgb(241, 196, 15) !important; /*#f7ca4c !important;*/
 }
 
