@@ -847,10 +847,12 @@ document.addEventListener('DOMContentLoaded', function () {
 const moveFloatersLeft = () => {
 	document.querySelector('.add-reminder').classList.add('moved');
 	document.querySelector('.floating-compose').classList.add('moved');
+	document.querySelector('.Yh.akV').classList.add('moved');
 }
 const moveFloatersRight = () => {
 	document.querySelector('.add-reminder').classList.remove('moved');
 	document.querySelector('.floating-compose').classList.remove('moved');
+	document.querySelector('.Yh.akV').classList.remove('moved');
 
 	addOnsObserver.disconnect();
 }
