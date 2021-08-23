@@ -35,7 +35,7 @@ let select = {
     emails:              ()=>document.querySelectorAll('.BltHke[role=main] .zA'),
     currentTab:          ()=>document.querySelector('.aAy[aria-selected="true"]'),
     menu:                ()=>document.body.querySelector('.J-Ke.n4.ah9'),
-    composeButton:       ()=>document.querySelector('.T-I.T-I-KE.L3'),
+    composeButton:       ()=>document.querySelector('.Yh.akV'),
     menuParent:          ()=>document.querySelector('.wT .byl'),
     menuRefer:           ()=>document.querySelector('.wT .byl>.TK'),
     titleNode:           ()=>document.querySelector('a[title="Gmail"]:not([aria-label])'),
@@ -819,16 +819,18 @@ document.addEventListener('DOMContentLoaded', function () {
 			const body = select.messageBody();
 			const from = select.messageFrom();
 
-			from.value = myEmail;
-			to.value = myEmail;
+			from.value = myEmail.innerHTML;
+			to.value = myEmail.innerHTML;
 			title.value = 'Reminder';
 			body.focus();
 		});
 	});
   document.body.appendChild(addReminder);
 
+
   waitForElement('a[title="Gmail"]:not([aria-label])', handleHashChange);
 
+  /*
 	const floatingComposeButton = document.createElement('div');
 	floatingComposeButton.className = 'floating-compose';
 	floatingComposeButton.addEventListener('click', function () {
@@ -837,6 +839,7 @@ document.addEventListener('DOMContentLoaded', function () {
         composeButton.click();
 	});
 	document.body.appendChild(floatingComposeButton);
+  */
 
 	setInterval(updateReminders, 250);
 
@@ -846,13 +849,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 const moveFloatersLeft = () => {
 	document.querySelector('.add-reminder').classList.add('moved');
-	document.querySelector('.floating-compose').classList.add('moved');
-	document.querySelector('.Yh.akV').classList.add('moved');
+	// document.querySelector('.floating-compose').classList.add('moved');
+	document.querySelector('.Yh.akV[type="button"]').classList.add('moved');
 }
 const moveFloatersRight = () => {
 	document.querySelector('.add-reminder').classList.remove('moved');
-	document.querySelector('.floating-compose').classList.remove('moved');
-	document.querySelector('.Yh.akV').classList.remove('moved');
+	// document.querySelector('.floating-compose').classList.remove('moved');
+	document.querySelector('.Yh.akV[type="button"]').classList.remove('moved');
 
 	addOnsObserver.disconnect();
 }
