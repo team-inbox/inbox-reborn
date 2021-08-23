@@ -1413,6 +1413,11 @@ body.email-bundling-enabled.bundle-page .nH.ar4.B .yi {
 	right: 340px;
 }
 
+/* Hide inbox count when Mail collapsed in left side bar */
+span.XU {
+	display: none !important;
+}
+
 /* Inbox tips, Unsubscribe/other alerts shown on top */
 .S4 .X3 {
 	margin-left: 9px;
@@ -1433,7 +1438,7 @@ body.email-bundling-enabled.bundle-page .nH.ar4.B .yi {
 	z-index: 1001;
 
 	height: 58px; /* 56px */
-	min-width: 56px;
+	min-width: 58px; /* 56px */
 
 	background-color: #d23f31 !important;
 	border: 0 !important;
