@@ -1437,8 +1437,8 @@ span.XU {
 	right: 38px; /* 38px */
 	z-index: 1001;
 
-	height: 58px; /* 56px */
-	min-width: 58px; /* 56px */
+	height: 58px !important; /* 56px */
+	min-width: 58px !important; /* 56px */
 
 	background-color: #d23f31 !important;
 	border: 0 !important;
@@ -1451,28 +1451,28 @@ span.XU {
 .akV:hover, .akV:focus {
 	background-color: #d23f31 !important;
 }
-/*
+
 .akV:hover::before, .akV:focus::before {
 	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
 }
-*/
+
 @-moz-document url-prefix() {
 	.akV::before {
 		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
 	}
-	.akV:hover::before, .akV:focus::before; {
+	.akV:hover::before, .akV:focus::before {
 		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
 	}
 	@media (min-resolution:144dpi),(-webkit-min-device-pixel-ratio:1.5) {
 		.akV::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
-	}
-		.akV:hover::before, .akV:focus::before; {
+			background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
+		}
+		.akV:hover::before, .akV:focus::before {
 			background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
 		}
 	}
 }
-/*
+
 @media (min-resolution:144dpi),(-webkit-min-device-pixel-ratio:1.5) {
 	.akV::before {
 		background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
@@ -1480,8 +1480,17 @@ span.XU {
 	.akV:hover::before, .akV:focus::before {
 		background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
 	}
+	/*
+	.akV::before {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
+	}
+	.akV:hover::before, .akV:focus::before; {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
+	}
+	*/
 }
-*/
+
+
 
 /* Hide Compose and Reminder buttons from Gmail's Print view */
 @media print {
