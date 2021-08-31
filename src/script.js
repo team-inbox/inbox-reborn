@@ -35,7 +35,7 @@ let select = {
     emails:              ()=>document.querySelectorAll('.BltHke[role=main] .zA'),
     currentTab:          ()=>document.querySelector('.aAy[aria-selected="true"]'),
     menu:                ()=>document.body.querySelector('.J-Ke.n4.ah9'),
-    composeButton:       ()=>document.querySelector('.T-I.T-I-KE.L3'),
+    composeButton:       ()=>document.querySelector('.Yh.akV'),
     menuParent:          ()=>document.querySelector('.wT .byl'),
     menuRefer:           ()=>document.querySelector('.wT .byl>.TK'),
     titleNode:           ()=>document.querySelector('a[title="Gmail"]:not([aria-label])'),
