@@ -35,7 +35,9 @@ let select = {
     emails:              ()=>document.querySelectorAll('.BltHke[role=main] .zA'),
     currentTab:          ()=>document.querySelector('.aAy[aria-selected="true"]'),
     menu:                ()=>document.body.querySelector('.J-Ke.n4.ah9'),
-    composeButton:       ()=>document.querySelector('.Yh.akV'),
+    composeButtonNew:    ()=>document.querySelector('.Yh.akV'),
+    composeButtonOld:    ()=>document.querySelector('.T-I.T-I-KE.L3'),
+    composeButton:       ()=>select.composeButtonOld() || select.composeButtonNew(),
     menuParent:          ()=>document.querySelector('.wT .byl'),
     menuRefer:           ()=>document.querySelector('.wT .byl>.TK'),
     titleNode:           ()=>document.querySelector('a[title="Gmail"]:not([aria-label])'),
@@ -829,23 +831,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   waitForElement('a[title="Gmail"]:not([aria-label])', handleHashChange);
+  waitForElement('a[title="Gmail"]:not([aria-label])', addFloatingComposeButton);
 
-  /*
+  setInterval(updateReminders, 250);
+
+  waitForElement('div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I', sidePanelHandler);
+
+});
+
+const addFloatingComposeButton = () => {
+  if (select.composeButtonOld()) {
 	const floatingComposeButton = document.createElement('div');
 	floatingComposeButton.className = 'floating-compose';
 	floatingComposeButton.addEventListener('click', function () {
 		// TODO: Replace all of the below with gmail.compose.start_compose() via the Gmail.js lib
 		const composeButton = select.composeButton();
-        composeButton.click();
+	    composeButton.click();
 	});
 	document.body.appendChild(floatingComposeButton);
-  */
-
-	setInterval(updateReminders, 250);
-
-  waitForElement('div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I', sidePanelHandler);
-
-});
+  }
+}
 
 const moveFloatersLeft = () => {
 	document.querySelector('.add-reminder').classList.add('moved');
