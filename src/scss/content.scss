@@ -431,15 +431,21 @@ td.apU.xY .T-KT.xf::before {
 .aHS-bnt .afM {
 	background-image: url('chrome-extension://__MSG_@@extension_id__/images/arrow_drop_down_black_20dp.png') !important;
 }
-/* Starred, Important, Chats */
-.aHS-bnw .qr,
-.aHS-bns .qr,
-.aHS-aHP .qr {
+/* Starred, Important, Chats, Generic Labels, Scheduled, All Mail  */
+.aHS-bnw .qj,
+.aHS-bns .qj,
+.aHS-aHP .qj,
+.aHS-bnr .qj,
+.aHS-nd .qj,
+.aHS-aHO .qj {
 	opacity: 0.6 !important;
 }
 /* Starred */
 .aHS-bnw .qj {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/grade_black_24dp.png') !important;
+	/*background-image: url('chrome-extension://__MSG_@@extension_id__/images/grade_black_24dp.png') !important;*/
+	background-color: rgb(241, 196, 15) !important;
+	background-image: none !important;
+	clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
 }
 /* Important */
 .aHS-bns .qj {
@@ -491,7 +497,10 @@ td.apU.xY .T-KT.xf::before {
 	}
 	/* Starred */
 	.aHS-bnw .qj {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/grade_black_24dp.png') !important;
+		/*background-image: url('moz-extension://__MSG_@@extension_id__/images/grade_black_24dp.png') !important;*/
+		background-color: rgb(241, 196, 15) !important; /* #f7ca4c !important; */
+		background-image: none !important;
+		clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
 	}
 	/* Important */
 	.aHS-bns .qj {
@@ -674,6 +683,12 @@ button.gb_ff.gb_gf  {
 .gb_Ld.gb_je.gb_Td, .nH.w-asV.aiw, .nH.nn {
 	background-color: #898984;
 }
+
+.nH.w-asV.aiw[pagetitle="starred"],
+.nH.w-asV.aiw[pagetitle="starred"] header.gb_Va:not(.gb_Ed) {
+	background-color: rgb(241, 196, 15) !important; /*#f7ca4c !important;*/
+}
+
 .nH.w-asV.aiw[pageTitle="inbox"],
 .nH.w-asV.aiw[pageTitle="inbox"] .nH.nn {
 	background-color: #4285f4;
@@ -928,6 +943,11 @@ header form input {
 	box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
 	width: calc(100% - 62px);
 	background: #FFF;
+}
+
+/* Fix bug that would expand the message area if giant image in message */
+.Bs.nH.iY.bAt img {
+	max-width: 100%;
 }
 
 /* Fixed border on email */
@@ -1388,8 +1408,14 @@ body.email-bundling-enabled.bundle-page .nH.ar4.B .yi {
 	right: 348px;
 }
 
-.floating-compose.moved {
+.floating-compose.moved,
+.Yh.akV.moved {
 	right: 340px;
+}
+
+/* Hide inbox count when Mail collapsed in left side bar */
+span.XU {
+	display: none !important;
 }
 
 /* Inbox tips, Unsubscribe/other alerts shown on top */
@@ -1404,11 +1430,65 @@ body.email-bundling-enabled.bundle-page .nH.ar4.B .yi {
 	box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
 }
 
+/* New compose button */
+.Yh.akV {
+	position: fixed;
+	bottom: 16px; /* 20px; */
+	right: 38px; /* 38px */
+	z-index: 1001;
+
+	height: 58px !important; /* 56px */
+	min-width: 58px !important; /* 56px */
+
+	background-color: #d23f31 !important;
+	border: 0 !important;
+}
+/*
+.akV::before {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
+}
+*/
+.akV:hover, .akV:focus {
+	background-color: #d23f31 !important;
+}
+
+.akV:hover::before, .akV:focus::before {
+	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
+}
+
+@media (min-resolution:144dpi),(-webkit-min-device-pixel-ratio:1.5) {
+	.akV::before {
+		background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
+	}
+	.akV:hover::before, .akV:focus::before {
+		background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
+	}
+}
+
+@-moz-document url-prefix() {
+	.akV::before {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
+	}
+	.akV:hover::before, .akV:focus::before {
+		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
+	}
+	@media (min-resolution:144dpi),(-webkit-min-device-pixel-ratio:1.5) {
+		.akV::before {
+			background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
+		}
+		.akV:hover::before, .akV:focus::before {
+			background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
+		}
+	}
+}
+
+
 
 /* Hide Compose and Reminder buttons from Gmail's Print view */
 @media print {
 	.add-reminder,
-	.floating-compose {
+	.floating-compose,
+	.akV {
 		display: none;
 	}
 }
