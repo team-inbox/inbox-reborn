@@ -831,11 +831,10 @@ document.addEventListener('DOMContentLoaded', function () {
   document.body.appendChild(addReminder);
 
 
-  waitForElement('a[title="Gmail"]:not([aria-label])', handleHashChange);
-  waitForElement('a[title="Gmail"]:not([aria-label])', addFloatingComposeButton);
+  waitForElement('a[title="Gmail"]', handleHashChange);
+  waitForElement('a[title="Gmail"]', addFloatingComposeButton);
 
   setInterval(updateReminders, 250);
-  setInterval(handleHashChange, 250);
 
   waitForElement('div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I', sidePanelHandler);
 
