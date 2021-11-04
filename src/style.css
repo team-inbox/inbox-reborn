@@ -734,7 +734,7 @@ a[title="Gmail"]::after {
 	padding-left: 7px;
 }
 
-a[title="Gmail"][href="#inbox"]::after {
+a[title="Gmail"][href="#inbox"]::after, a[title="Gmail"][href="#settings"]::after {
 	content: 'Inbox';
 }
 a[title="Gmail"][href="#snoozed"]::after {
@@ -769,9 +769,6 @@ a[title="Gmail"][href="#spam"]::after {
 }
 a[title="Gmail"][href="#trash"]::after {
 	content: 'Trash';
-}
-a[title="Gmail"][href="#settings"]::after {
-	content: 'Settings';
 }
 
 /* Invisible inbox info with huge padding at bottom of email  */
