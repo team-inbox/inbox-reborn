@@ -734,7 +734,7 @@ a[title="Gmail"]::after {
 	padding-left: 7px;
 }
 
-a[title="Gmail"][href="#inbox"]::after {
+a[title="Gmail"][href="#inbox"]::after, a[title="Gmail"][href="#settings"]::after {
 	content: 'Inbox';
 }
 a[title="Gmail"][href="#snoozed"]::after {

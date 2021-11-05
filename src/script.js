@@ -40,7 +40,8 @@ let select = {
     composeButton:       ()=>select.composeButtonOld() || select.composeButtonNew(),
     menuParent:          ()=>document.querySelector('.wT .byl'),
     menuRefer:           ()=>document.querySelector('.wT .byl>.TK'),
-    titleNode:           ()=>document.querySelector('a[title="Gmail"]:not([aria-label])'),
+    titleNode:           ()=>document.querySelectorAll('a[title="Gmail"]')[1],
+    headerElement:       ()=>document.querySelector('.nH.w-asV.aiw'),
     messageBody:         ()=>document.querySelector('div[aria-label="Message Body"]'),
     messageFrom:         ()=>document.querySelector('input[name="from"]'),
     messageSubjectBox:   ()=>document.querySelector('input[name=subjectbox]'),
@@ -794,7 +795,7 @@ const handleHashChange = () => {
   let hash = window.location.hash;
   if (isInBundle()) hash = '#inbox';
   else hash = hash.split('/')[0].split('?')[0];
-  const headerElement = document.querySelector('header').parentElement.parentElement;
+  const headerElement = select.headerElement();
   const titleNode = select.titleNode();
 
   if (!titleNode || !headerElement) return;
@@ -830,8 +831,8 @@ document.addEventListener('DOMContentLoaded', function () {
   document.body.appendChild(addReminder);
 
 
-  waitForElement('a[title="Gmail"]:not([aria-label])', handleHashChange);
-  waitForElement('a[title="Gmail"]:not([aria-label])', addFloatingComposeButton);
+  waitForElement('a[title="Gmail"]', handleHashChange);
+  waitForElement('a[title="Gmail"]', addFloatingComposeButton);
 
   setInterval(updateReminders, 250);
 
