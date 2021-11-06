@@ -318,7 +318,7 @@ const getBundleImageForLabel = (label) => {
 	switch (true) {
 		case label=='Promotions':
 			return chrome.runtime.getURL('images/ic_offers_24px_clr_r3_2x.png');
-		case label=='Finance':
+		case !!label.match(/\b(finance|finances|banking|tax|taxes)\b/gi):
 			return chrome.runtime.getURL('images/ic_finance_24px_clr_r3_2x.png');
 		case ['Orders', 'Purchases'].includes(label):
 			return chrome.runtime.getURL('images/ic_purchases_24px_clr_r3_2x.png');
