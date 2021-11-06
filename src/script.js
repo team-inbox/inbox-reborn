@@ -315,22 +315,20 @@ const addSendersToBundle = (label, senders) => {
 };
 
 const getBundleImageForLabel = (label) => {
-	switch (label) {
-		case 'Promotions':
+	switch (true) {
+		case label=='Promotions':
 			return chrome.runtime.getURL('images/ic_offers_24px_clr_r3_2x.png');
-		case 'Finance':
+		case label=='Finance':
 			return chrome.runtime.getURL('images/ic_finance_24px_clr_r3_2x.png');
-		case 'Purchases':
-		case 'Orders':
+		case ['Orders', 'Purchases'].includes(label):
 			return chrome.runtime.getURL('images/ic_purchases_24px_clr_r3_2x.png');
-		case 'Trips':
-		case 'Travel':
+		case !!label.match(/\b(trip|trips|travel)\b/gi):
 			return chrome.runtime.getURL('images/ic_travel_clr_24dp_r1_2x.png');
-		case 'Updates':
+		case label=='Updates':
 			return chrome.runtime.getURL('images/ic_updates_24px_clr_r3_2x.png');
-		case 'Forums':
+		case label=='Forums':
 			return chrome.runtime.getURL('images/ic_forums_24px_clr_r3_2x.png');
-		case 'Social':
+		case label=='Social':
 			return chrome.runtime.getURL('images/ic_social_24px_clr_r3_2x.png');
 		default:
 			return chrome.runtime.getURL('images/ic_custom-cluster_24px_g60_r3_2x.png');
