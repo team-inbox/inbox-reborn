@@ -948,6 +948,7 @@ header form input {
 /* Fix bug that would expand the message area if giant image in message */
 .Bs.nH.iY.bAt img {
 	max-width: 100%;
+	height: auto !important; /* Now ft. actual image proportions! */
 }
 
 /* Fixed border on email */
