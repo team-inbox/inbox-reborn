@@ -853,13 +853,11 @@ const addFloatingComposeButton = () => {
 
 const moveFloatersLeft = () => {
 	document.querySelector('.add-reminder').classList.add('moved');
-	// document.querySelector('.floating-compose').classList.add('moved');
-	document.querySelector('.Yh.akV[type="button"]').classList.add('moved');
+	document.querySelector('.floating-compose').classList.add('moved');
 }
 const moveFloatersRight = () => {
 	document.querySelector('.add-reminder').classList.remove('moved');
-	// document.querySelector('.floating-compose').classList.remove('moved');
-	document.querySelector('.Yh.akV[type="button"]').classList.remove('moved');
+	document.querySelector('.floating-compose').classList.remove('moved');
 
 	addOnsObserver.disconnect();
 }
