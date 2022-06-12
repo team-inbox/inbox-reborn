@@ -839,7 +839,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 const addFloatingComposeButton = () => {
-  if (select.composeButtonOld()) {
+  if (!select.composeButton()) {
 	const floatingComposeButton = document.createElement('div');
 	floatingComposeButton.className = 'floating-compose';
 	floatingComposeButton.addEventListener('click', function () {
@@ -878,11 +878,12 @@ const sidePanelHandler = () => {
 	}
 
 	// AddOn open at page load check
+	if(addOnsFrame) {
+		if(!addOnsFrame.classList.contains('br9')) {
 
-	if(!addOnsFrame.classList.contains('br9')) {
-
-		moveFloatersLeft();
-		sidePanelMutationHandler();
+			moveFloatersLeft();
+			sidePanelMutationHandler();
+		}
 	}
 
 }
