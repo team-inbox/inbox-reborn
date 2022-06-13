@@ -839,7 +839,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 const addFloatingComposeButton = () => {
-  if (select.composeButtonOld()) {
+  if (!select.composeButton()) {
 	const floatingComposeButton = document.createElement('div');
 	floatingComposeButton.className = 'floating-compose';
 	floatingComposeButton.addEventListener('click', function () {
@@ -853,13 +853,11 @@ const addFloatingComposeButton = () => {
 
 const moveFloatersLeft = () => {
 	document.querySelector('.add-reminder').classList.add('moved');
-	// document.querySelector('.floating-compose').classList.add('moved');
-	document.querySelector('.Yh.akV[type="button"]').classList.add('moved');
+	document.querySelector('.floating-compose').classList.add('moved');
 }
 const moveFloatersRight = () => {
 	document.querySelector('.add-reminder').classList.remove('moved');
-	// document.querySelector('.floating-compose').classList.remove('moved');
-	document.querySelector('.Yh.akV[type="button"]').classList.remove('moved');
+	document.querySelector('.floating-compose').classList.remove('moved');
 
 	addOnsObserver.disconnect();
 }
@@ -880,11 +878,12 @@ const sidePanelHandler = () => {
 	}
 
 	// AddOn open at page load check
+	if(addOnsFrame) {
+		if(!addOnsFrame.classList.contains('br9')) {
 
-	if(!addOnsFrame.classList.contains('br9')) {
-
-		moveFloatersLeft();
-		sidePanelMutationHandler();
+			moveFloatersLeft();
+			sidePanelMutationHandler();
+		}
 	}
 
 }
