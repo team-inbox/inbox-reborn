@@ -835,7 +835,6 @@ document.addEventListener('DOMContentLoaded', function () {
   setInterval(updateReminders, 250);
 
   waitForElement('div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I[aria-label="Get add-ons"]', sidePanelHandler);
-  //''.bse-bvF-I.aT5-aOt-I[aria-label="Get add-ons"]''
 
 });
 
