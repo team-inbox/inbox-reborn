@@ -839,7 +839,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 const addFloatingComposeButton = () => {
-  if (!select.composeButton()) {
+  if (!document.querySelector('.floating-compose')) {
 	const floatingComposeButton = document.createElement('div');
 	floatingComposeButton.className = 'floating-compose';
 	floatingComposeButton.addEventListener('click', function () {
