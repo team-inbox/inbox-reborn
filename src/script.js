@@ -834,7 +834,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   setInterval(updateReminders, 250);
 
-  waitForElement('div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I', sidePanelHandler);
+  waitForElement('div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I[aria-label="Get add-ons"]', sidePanelHandler);
+  //''.bse-bvF-I.aT5-aOt-I[aria-label="Get add-ons"]''
 
 });
 
@@ -888,29 +889,21 @@ const sidePanelHandler = () => {
 
 }
 	
-const sidePanelMutationHandler = () => {
-	// Only one is active in DOM at a time... hence no 'All'
-	const addOnsPanels = document.querySelector('.bq9.buW > .brC-brG > div');
-	
-	const addOnsObserverConfig = {
-		attributes: true,
-		childList: true,
-		attributeFilter: ['style']
-	};
+const sidePanelMutationHandler = waitForElement('.bq9.buW', () => {
+	const addOnsPanel = document.querySelector('.bq9.buW');
 
-	const panelMutated = (mutationsList, addOnsObserver) => {
-		for(const mutagen of mutationsList) {
-			if(mutagen.type === 'attributes') {
-				moveFloatersRight();
+	const panelResized = entries => {
+		console.log(entries)
+		for (let entry of entries) {
+			if (entry.contentRect.width==0) {
+				moveFloatersRight()
 			}
 		}
 	}
 
-	const addOnsObserver = new MutationObserver(panelMutated);
-
-	addOnsObserver.observe(addOnsPanels, addOnsObserverConfig);
-		
-}
+	const addOnsObserver = new ResizeObserver(panelResized)
+	addOnsObserver.observe(addOnsPanel)		
+})
 
 const setFavicon = () => document.querySelector('link[rel*="shortcut icon"]').href = chrome.runtime.getURL('images/favicon.png');;
 
