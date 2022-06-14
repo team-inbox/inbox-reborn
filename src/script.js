@@ -864,8 +864,12 @@ const moveFloatersRight = () => {
 
 const sidePanelHandler = () => {
 
+	console.log("Side panel handler activated")
+
 	const sidePanel = document.querySelector('div[aria-label="Side panel"');
 	const sidePanelBtns = sidePanel.querySelectorAll('.bse-bvF-I.aT5-aOt-I:not(#qJTzr)'); // ignore the + btn
+
+	console.log(`${sidePanelBtns.length} buttons available`)
 
 	const addOnsFrame = document.querySelector('.bq9.buW');
 
@@ -888,7 +892,7 @@ const sidePanelHandler = () => {
 
 }
 	
-const sidePanelMutationHandler = waitForElement('.bq9.buW', () => {
+const sidePanelMutationHandler = () => waitForElement('.bq9.buW', () => {
 	const addOnsPanel = document.querySelector('.bq9.buW');
 
 	const panelResized = entries => {
