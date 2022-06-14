@@ -828,14 +828,12 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
   document.body.appendChild(addReminder);
 
-
   waitForElement('a[title="Gmail"]', handleHashChange);
   waitForElement('a[title="Gmail"]', addFloatingComposeButton);
 
   setInterval(updateReminders, 250);
 
   waitForElement('div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I[aria-label="Get add-ons"]', sidePanelHandler);
-
 });
 
 const addFloatingComposeButton = () => {
@@ -863,7 +861,6 @@ const moveFloatersRight = () => {
 }
 
 const sidePanelHandler = () => {
-
 	const sidePanel = document.querySelector('div[aria-label="Side panel"');
 	const sidePanelBtns = sidePanel.querySelectorAll('.bse-bvF-I.aT5-aOt-I:not(#qJTzr)'); // ignore the + btn
 	const addOnsFrame = document.querySelector('.bq9.buW');
@@ -879,17 +876,14 @@ const sidePanelHandler = () => {
 	// AddOn open at page load check
 	if(addOnsFrame) {
 		if(!addOnsFrame.classList.contains('br9')) {
-
 			moveFloatersLeft();
 			sidePanelMutationHandler();
 		}
 	}
-
 }
 	
 const sidePanelMutationHandler = () => waitForElement('.bq9.buW', () => {
 	const addOnsPanel = document.querySelector('.bq9.buW');
-
 	const panelResized = entries => {
 		for (let entry of entries) {
 			if (entry.contentRect.width==0) {
@@ -897,7 +891,6 @@ const sidePanelMutationHandler = () => waitForElement('.bq9.buW', () => {
 			}
 		}
 	}
-
 	const addOnsObserver = new ResizeObserver(panelResized)
 	addOnsObserver.observe(addOnsPanel)		
 })
