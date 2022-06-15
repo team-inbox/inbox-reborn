@@ -27,7 +27,7 @@ const STYLE_NODE_ID_PREFIX = 'hide-email-';
 // reliable retrieval methods like:
 // gmail.compose.start_compose() via the Gmail.js lib
 let select = {
-    emailAddress:        ()=>document.querySelector('.gb_nb'),
+    emailAddress:        ()=>document.querySelector('.gb_A.gb_La.gb_f'),
     tabs:                ()=>document.querySelectorAll('.aKz'),
     bundleWrappers:      ()=>document.querySelectorAll('.BltHke[role=main] .bundle-wrapper'),
     inbox:               ()=>document.querySelector('.nZ[data-tooltip=Inbox]'),
@@ -85,9 +85,8 @@ Element.prototype.remove = function () {
 };
 
 const getMyEmailAddress = () => {
-    let emailAddress = select.emailAddress();
-    let emailAddressText = emailAddress; // && emailAddress.innerText.match(/[^ ]* - ([^ ]*) - Gmail/)[1];
-
+    let emailAddress = select.emailAddress().getAttribute('aria-label');
+    let emailAddressText = emailAddress && emailAddress.match(/.*?\((.*?)\)/)[1]
     return emailAddressText || "";
 }
 
@@ -820,8 +819,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			const body = select.messageBody();
 			const from = select.messageFrom();
 
-			from.value = myEmail.innerHTML;
-			to.value = myEmail.innerHTML;
+			from.value = myEmail;
+			to.value = myEmail;
 			title.value = 'Reminder';
 			body.focus();
 		});
