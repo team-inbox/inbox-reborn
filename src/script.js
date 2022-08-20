@@ -642,7 +642,7 @@ const updateReminders = () => {
 			}
 
 			let labels = emailInfo.labels.filter(x => !tabs.includes(x));
-			if (!options.bundleOne && labelsToBundle.length) labels = labels.filter(x => labelsToBundle.includes(x));
+			if (!options.bundleOne) labels = labelsToBundle.length ? labels.filter(x => labelsToBundle.includes(x)) : []
 
 			if (isInInboxFlag && !emailInfo.isStarred && labels.length && !emailInfo.isUnbundled && !emailInfo.bundleAlreadyProcessed()) {
 				labels.forEach(label => {
@@ -711,7 +711,7 @@ const reorderMenuItems = () => {
       done.firstChild.removeAttribute('id');
 
       // Manually add on-click event to done elment
-      done.addEventListener('click', () => window.location.assign('#archive'));
+	  done.addEventListener('click', () => window.location.assign('#archive'));
 
       // Rewrite text from All Mail to Done
       done.querySelector('a').innerText = 'Done';
