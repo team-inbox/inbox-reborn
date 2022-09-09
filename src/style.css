@@ -685,8 +685,8 @@ button.gb_ff.gb_gf  {
 }
 
 .nH.w-asV.aiw[pagetitle="starred"],
-.nH.w-asV.aiw[pagetitle="starred"] header.gb_Va:not(.gb_Ed) {
-	background-color: rgb(241, 196, 15) !important; /*#f7ca4c !important;*/
+.nH.w-asV.aiw[pagetitle="starred"] .nH.nn {
+	background-color: #f1c40f;
 }
 
 .nH.w-asV.aiw[pageTitle="inbox"],
