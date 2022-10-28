@@ -27,7 +27,7 @@ const STYLE_NODE_ID_PREFIX = 'hide-email-';
 // reliable retrieval methods like:
 // gmail.compose.start_compose() via the Gmail.js lib
 let select = {
-    emailAddress:        ()=>document.querySelector('.gb_A.gb_La.gb_f'),
+    emailAddress:        ()=>document.querySelector('.gb_A.gb_Ma.gb_f'),
     tabs:                ()=>document.querySelectorAll('.aKz'),
     bundleWrappers:      ()=>document.querySelectorAll('.BltHke[role=main] .bundle-wrapper'),
     inbox:               ()=>document.querySelector('.nZ[data-tooltip=Inbox]'),
