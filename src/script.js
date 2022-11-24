@@ -883,7 +883,7 @@ const sidePanelMutationHandler = () => waitForElement('.bq9.buW', () => {
 	const addOnsPanel = document.querySelector('.bq9.buW');
 	const panelResized = entries => {
 		for (let entry of entries) {
-			if (entry.contentRect.width==0) {
+			if (!entry.contentBoxSize) {
 				moveFloatersRight();
 				if(addOnsObserver) {
 					addOnsObserver.disconnect();
