@@ -25,6 +25,11 @@ header {
 	display: none !important;
 }
 
+/* Sidebar: hide Mail/Chat/Spaces that came with new Gmail */
+.aeN.WR.a6o.anZ.nH.oy8Mbf {
+	display: none;
+}
+
 /* Sidebar: labels */
 .TO .nU > .n0,
 .ah9 > .CJ {
