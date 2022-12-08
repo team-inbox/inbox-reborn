@@ -9,7 +9,7 @@ Web extension which modifies Gmail™ to bring back the features and uncluttered
 
 ### Chrome & Microsoft Edge 
 
-The extension has been updated to version 0.5.9.15. It can be added through the following link
+The extension has been updated to version 0.5.9.16. It can be added through the following link
 
 https://chrome.google.com/webstore/detail/inbox-reborn-theme-for-gm/bkphmihkdbdgedlaflnkhnmnmibffomf
 
