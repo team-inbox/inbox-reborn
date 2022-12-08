@@ -27,7 +27,7 @@ const STYLE_NODE_ID_PREFIX = 'hide-email-';
 // reliable retrieval methods like:
 // gmail.compose.start_compose() via the Gmail.js lib
 let select = {
-    emailAddress:        ()=>document.querySelector('.gb_A.gb_Ma.gb_f'),
+    emailAddress:        ()=>document.querySelector('.gb_d.gb_Ra.gb_l'),
     tabs:                ()=>document.querySelectorAll('.aKz'),
     bundleWrappers:      ()=>document.querySelectorAll('.BltHke[role=main] .bundle-wrapper'),
     inbox:               ()=>document.querySelector('.nZ[data-tooltip=Inbox]'),
@@ -832,7 +832,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   setInterval(updateReminders, 250);
 
-  waitForElement('div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I[aria-label="Get add-ons"]', sidePanelHandler);
+  waitForElement('div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I[aria-label="Get Add-ons"]', sidePanelHandler);
 });
 
 const addFloatingComposeButton = () => {
@@ -855,12 +855,10 @@ const moveFloatersLeft = () => {
 const moveFloatersRight = () => {
 	document.querySelector('.add-reminder').classList.remove('moved');
 	document.querySelector('.floating-compose').classList.remove('moved');
-
-	addOnsObserver.disconnect();
 }
 
 const sidePanelHandler = () => {
-	const sidePanel = document.querySelector('div[aria-label="Side panel"');
+	const sidePanel = document.querySelector('div[aria-label="Side panel"]');
 	const sidePanelBtns = sidePanel.querySelectorAll('.bse-bvF-I.aT5-aOt-I:not(#qJTzr)'); // ignore the + btn
 	const addOnsFrame = document.querySelector('.bq9.buW');
 
@@ -874,7 +872,7 @@ const sidePanelHandler = () => {
 
 	// AddOn open at page load check
 	if(addOnsFrame) {
-		if(!addOnsFrame.classList.contains('br9')) {
+		if(!addOnsFrame.classList.contains('br3')) {
 			moveFloatersLeft();
 			sidePanelMutationHandler();
 		}
@@ -883,18 +881,19 @@ const sidePanelHandler = () => {
 	
 const sidePanelMutationHandler = () => waitForElement('.bq9.buW', () => {
 	const addOnsPanel = document.querySelector('.bq9.buW');
-	const panelResized = entries => {
-		for (let entry of entries) {
-			if (entry.contentRect.width==0) {
-				moveFloatersRight()
+	const panelResized = new ResizeObserver((entries) => {
+		for (let entry of entries) {	
+			if (entry.contentRect.width == 0) {
+				moveFloatersRight();
+			} else {
+				moveFloatersLeft();
 			}
 		}
-	}
-	const addOnsObserver = new ResizeObserver(panelResized)
-	addOnsObserver.observe(addOnsPanel)		
+	});
+	panelResized.observe(addOnsPanel);
 })
 
-const setFavicon = () => document.querySelector('link[rel*="shortcut icon"]').href = chrome.runtime.getURL('images/favicon.png');;
+const setFavicon = () => document.querySelector('link[rel*="shortcut icon"]').href = chrome.runtime.getURL('images/favicon.png');
 
 const init = () => {
 	setFavicon();
