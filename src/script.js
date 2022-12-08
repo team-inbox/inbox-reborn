@@ -881,18 +881,16 @@ const sidePanelHandler = () => {
 	
 const sidePanelMutationHandler = () => waitForElement('.bq9.buW', () => {
 	const addOnsPanel = document.querySelector('.bq9.buW');
-	const panelResized = entries => {
-		for (let entry of entries) {
-			if (!entry.contentBoxSize) {
+	const panelResized = new ResizeObserver((entries) => {
+		for (let entry of entries) {	
+			if (entry.contentRect.width == 0) {
 				moveFloatersRight();
-				if(addOnsObserver) {
-					addOnsObserver.disconnect();
-				}
+			} else {
+				moveFloatersLeft();
 			}
 		}
-	}
-	const addOnsObserver = new ResizeObserver(panelResized);
-	addOnsObserver.observe(addOnsPanel);
+	});
+	panelResized.observe(addOnsPanel);
 })
 
 const setFavicon = () => document.querySelector('link[rel*="shortcut icon"]').href = chrome.runtime.getURL('images/favicon.png');
