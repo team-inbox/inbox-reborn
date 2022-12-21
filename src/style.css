@@ -333,11 +333,6 @@ td.apU.xY .T-KT.xf::before {
 	margin-left: 0 !important;
 }
 
-/* Choose a conversation */
-.aB6 {
-	background: #f2f2f2 !important;
-}
-
 /* Chat Header, Content (these are within iframes so not pulling this CSS) */
 .vIO7af,
 .bzJiD {
@@ -612,6 +607,22 @@ td.apU.xY .T-KT.xf::before {
 /* Mail / Chat / Spaces Side Panels */
 .aBO {
 	background-color: #f2f2f2;
+}
+
+/* Chats + Spaces wrappers + iframe */
+
+.aB6,
+.bn .bl {
+	height: calc(100vh - 64px) !important;
+}
+
+.BltHke.nH.oy8Mbf {
+	margin-bottom: 0 !important;
+}
+
+/* Chat / Spaces text input */
+.zmXnlc .WQKmIb .XganBc {
+	padding-bottom: 20px !important;
 }
 /*
 **
