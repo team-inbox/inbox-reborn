@@ -25,15 +25,33 @@ header {
 	display: none !important;
 }
 
-/* Sidebar: hide Mail/Chat/Spaces that came with new Gmail */
+/* Sidebar: Mail/Chat/Spaces that came with new Gmail */
 .aeN.WR.a6o.anZ.nH.oy8Mbf {
-	display: none;
+	width: 64px !important;
 }
 
-/* Sidebar: labels */
-.TO .nU > .n0,
-.ah9 > .CJ {
-	color: #616161;
+.WR.aeN {
+	background: #f2f2f2 !important;
+}
+
+/* Mail sidebar */
+.aqn.aIH.nH.oy8Mbf.apV {
+	margin-bottom: 60px; /* 52px */
+	height: calc(100vh - 64px) !important;
+}
+
+/* Mail/Chat/Spaces sidebar hover preview */
+.aqn.aIH.nH.oy8Mbf.apV.aJu,
+.aqn.arL.nH.oy8Mbf.apV.aJu,
+.aqn.arM.nH.oy8Mbf.apV.aJu { /* .aJu applies hover preview styles! */
+	height: calc(100vh - 64px) !important;
+	border-radius: 0 !important;
+}
+
+/* Arrows on Mail/Chat/Spaces sidebar hover preview */
+.aTV {
+	left: 60px !important;
+	border-color: transparent transparent #f2f2f2 #f2f2f2 !important;
 }
 
 /* Sidebar: labels */
@@ -305,6 +323,25 @@ td.apU.xY .T-KT.xf::before {
 /* Hide border at bottom of empty inbox background */
 .cf.TB {
 	border-bottom: none !important;
+}
+
+/* Chat + Spaces: Full Screen Views */
+
+/* Spaces */
+
+.aBA + .bkK, .a3W + .bkK {
+	margin-left: 0 !important;
+}
+
+/* Choose a conversation */
+.aB6 {
+	background: #f2f2f2 !important;
+}
+
+/* Chat Header, Content (these are within iframes so not pulling this CSS) */
+.vIO7af,
+.bzJiD {
+	background: #f2f2f2 !important;
 }
 
 /*
@@ -729,6 +766,11 @@ a[title="Gmail"] img {
 	display: none;
 }
 
+/* Fix for padding applied to a[href="#inbox"] */
+a[title="Gmail"][href="#inbox"] {
+	padding-left: 0;
+}
+
 /* Gmail text */
 a[title="Gmail"]::after {
 	content: 'Search';
@@ -760,8 +802,11 @@ a[title="Gmail"][href="#drafts"]::after {
 a[title="Gmail"][href="#imp"]::after {
 	content: 'Important';
 }
-a[title="Gmail"][href="#chats"]::after {
-	content: 'Chats';
+a[title="Gmail"][href="#chat"]::after {
+	content: 'Chat';
+}
+a[title="Gmail"][href="#rooms"]::after {
+	content: 'Spaces';
 }
 a[title="Gmail"][href="#scheduled"]::after {
 	content: 'Scheduled';
