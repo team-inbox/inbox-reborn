@@ -814,7 +814,8 @@ document.addEventListener('DOMContentLoaded', function () {
         composeButton.click();
 
 		// TODO: Delete waitForElement() function, replace with gmail.observe.on('compose') via the Gmail.js lib
-		waitForElement('textarea[name=to]', to => {
+		// waitForElement('textarea[name=to]', to => {
+		waitForElement('input[peoplekit-id="BbVjBd"]', to => {
 			const title = select.messageSubjectBox();
 			const body = select.messageBody();
 			const from = select.messageFrom();
