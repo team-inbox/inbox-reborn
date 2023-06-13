@@ -25,15 +25,32 @@ header {
 	display: none !important;
 }
 
-/* Sidebar: hide Mail/Chat/Spaces that came with new Gmail */
+/* Sidebar: Mail/Chat/Spaces that came with new Gmail */
 .aeN.WR.a6o.anZ.nH.oy8Mbf {
-	display: none;
+	width: 68px !important;
 }
 
-/* Sidebar: labels */
-.TO .nU > .n0,
-.ah9 > .CJ {
-	color: #616161;
+.WR.aeN {
+	background: #f2f2f2 !important;
+}
+
+/* Mail sidebar */
+.aqn.aIH.nH.oy8Mbf.apV {
+	margin-bottom: 60px; /* 52px */
+	height: calc(100vh - 64px) !important;
+}
+
+/* Mail/Chat/Spaces sidebar hover preview */
+.apV.aJu, 
+.aBA.apV.bym { /* .bym applies hover preview styles! */
+	height: calc(100vh - 64px) !important;
+	border-radius: 0 !important;
+}
+
+/* Arrows on Mail/Chat/Spaces sidebar hover preview */
+.aTV {
+	left: 62px !important;
+	border-color: transparent transparent #f2f2f2 #f2f2f2 !important;
 }
 
 /* Sidebar: labels */
@@ -41,8 +58,10 @@ header {
 .TO.NQ .nU > .n0,
 .TO.nZ .nU > .n0,
 .ah9 > .CJ,
-.n3 > .CL > .CK {
+.n3 > .CL > .CK,
+.aAv {
 	text-shadow: none;
+	color: #616161 !important
 }
 
 /* Emails */
@@ -68,6 +87,10 @@ header {
     width: var(--email-max-width);
     /* this percent effectively enforces a 3.5% (7% / 2) padding when */
     max-width: 93%;
+}
+/* .PY applied when bundle/email open */
+.D.E.G-atb.PY {
+	height: auto;
 }
 
 .aeH {
@@ -101,6 +124,7 @@ td.apU.xY {
 td.apU.xY .T-KT::before {
 	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
 	background-size: 24px !important;
+	opacity: 0.7 !important;
 }
 
 /* Starred menu item */
@@ -300,11 +324,32 @@ td.apU.xY .T-KT.xf::before {
 /* Fix padding on search */
 .BltHke.nH.oy8Mbf {
 	margin-top: 10px;
+	margin-bottom: 0 !important;
 }
 
 /* Hide border at bottom of empty inbox background */
 .cf.TB {
 	border-bottom: none !important;
+}
+
+/* Chat + Spaces: Full Screen Views */
+
+/* Spaces */
+
+.aBA + .bkK, .a3W + .bkK {
+	margin-left: 0 !important;
+}
+
+/* Meet: Full Screen Views */
+
+.Wh .Wi {
+	height: calc(100vh - 64px) !important;
+}
+
+/* Chat Header, Content (these are within iframes so not pulling this CSS) */
+.vIO7af,
+.bzJiD {
+	background: #f2f2f2 !important;
 }
 
 /*
@@ -359,12 +404,51 @@ td.apU.xY .T-KT.xf::before {
 /* Compose email old place */
 .z0 {
 	margin: 0px !important;
-	height: 10px !important;
+	height: 0px !important;
 }
 
 /* Compose email boxes wrapper */
 .nH.Hd {
 	margin-right: 40px;
+}
+/* Compose email popup */
+/* Top bar */
+.nH .Hy .m {
+	background: #404040 !important;
+	border-radius: 0 !important;
+}
+.Hp {
+	color: white !important;
+}
+/* Minimize, Maximize, Close buttons */
+.Hk {
+	-webkit-mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_maximize_16px_1x.png');
+	mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_maximize_16px_1x.png');
+	background: white !important;
+}
+.Hl {
+	-webkit-mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_minimize_16px_1x.png');
+	mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_minimize_16px_1x.png');
+	background: white !important;
+}
+.Hq {
+	-webkit-mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_popout_16px_1x.png');
+	mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_popout_16px_1x.png');
+	background: white !important;
+}
+.Hm .aUG {
+	-webkit-mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_open_in_full_16px_1x.png');
+	mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_open_in_full_16px_1x.png');
+	background: white !important;
+}
+.Ha {
+	-webkit-mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_close_16px_1x.png');
+	mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_close_16px_1x.png');
+	background: white !important;
+}
+/* .Hn applies :hover color */
+.Hk.Hn, .Hl.Hn, .Hr.Hq, .Ha.Hb {
+	background: rgba(255,255,255,0.5) !important;
 }
 
 /* Hangout chat box wrapper */
@@ -384,7 +468,7 @@ td.apU.xY .T-KT.xf::before {
 	max-width: unset;
 	min-width: unset;
 	width: 224px;
-	padding: 12px 8px 52px;
+	padding: 12px 8px;
 }
 
 /* Menu item sections */
@@ -436,15 +520,6 @@ td.apU.xY .T-KT.xf::before {
 .aHS-bnt .afM {
 	background-image: url('chrome-extension://__MSG_@@extension_id__/images/arrow_drop_down_black_20dp.png') !important;
 }
-/* Starred, Important, Chats, Generic Labels, Scheduled, All Mail  */
-.aHS-bnw .qj,
-.aHS-bns .qj,
-.aHS-aHP .qj,
-.aHS-bnr .qj,
-.aHS-nd .qj,
-.aHS-aHO .qj {
-	opacity: 0.6 !important;
-}
 /* Starred */
 .aHS-bnw .qj {
 	/*background-image: url('chrome-extension://__MSG_@@extension_id__/images/grade_black_24dp.png') !important;*/
@@ -455,6 +530,7 @@ td.apU.xY .T-KT.xf::before {
 /* Important */
 .aHS-bns .qj {
 	background-image: url('chrome-extension://__MSG_@@extension_id__/images/label_important_black_24dp.png') !important;
+	opacity: 0.6 !important;
 }
 /* Chats */
 .aHS-aHP .qj {
@@ -472,19 +548,60 @@ td.apU.xY .T-KT.xf::before {
 .aHS-bnq .qj {
 	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_draft_g60_24dp_r2_2x.png') !important;
 }
+/* Scheduled */
+.aHS-nd .qj {
+	background-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/gm3/2x/schedule_send_baseline_nv700_20dp.png') !important;
+	opacity: 0.9 !important;
+}
+/* All Mail */
+.aHS-aHO .qj {
+	background-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/gm3/2x/stacked_email_baseline_nv700_20dp.png') !important;
+	opacity: 0.9 !important;
+}
 /* Trash */
 .aHS-bnx .qj {
 	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_trash_g60_24dp_r2_2x.png') !important;
 }
-/* Category */
+/* All, Nested Categories / Labels */
+.aEe,
+.aEc.aHS-bnr .qj,
 .aHS-bnr .qj {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png') !important;
-	background-repeat: repeat-x;
-	padding: 12px;
-	width: 48px;
-	border: 3px solid #F2F2F2;
-  	box-sizing: border-box;
-	border-radius: 30%;
+	opacity: 0.9 !important;
+	background-color: #444746;
+	-webkit-mask-position: center;
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-size: 24px;
+	mask-position: center;
+	mask-repeat: no-repeat;
+	mask-size: 24px;
+}
+/* Labels (only) */
+.zw .aHS-bnr .qj {
+	background-color: #444746 !important;
+}
+[data-tooltip="Categories"] .qj {
+	background-color: transparent !important;
+	background-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/gm3/2x/label_baseline_nv700_20dp.png') !important;
+}
+[data-tooltip="Social"] .qj {
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png');
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png');
+}
+[data-tooltip="Updates"] .qj {
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png');
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png');
+}
+[data-tooltip="Forums"] .qj {
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png');
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png');
+}
+[data-tooltip="Promotions"] .qj {
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png');
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png');
+}
+/* Category buttons */
+.CL.Q7::before, .CL.Wj::before {
+	opacity: 0.9 !important;
 }
 /* Spam */
 .aHS-bnv .qj {
@@ -499,13 +616,6 @@ td.apU.xY .T-KT.xf::before {
 	/* Dropdown arrow */
 	.aHS-bnt .afM {
 		background-image: url('moz-extension://__MSG_@@extension_id__/images/arrow_drop_down_black_20dp.png') !important;
-	}
-	/* Starred */
-	.aHS-bnw .qj {
-		/*background-image: url('moz-extension://__MSG_@@extension_id__/images/grade_black_24dp.png') !important;*/
-		background-color: rgb(241, 196, 15) !important; /* #f7ca4c !important; */
-		background-image: none !important;
-		clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
 	}
 	/* Important */
 	.aHS-bns .qj {
@@ -532,8 +642,20 @@ td.apU.xY .T-KT.xf::before {
 		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_trash_g60_24dp_r2_2x.png') !important;
 	}
 	/* Category */
-	.aHS-bnr .qj {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png') !important;
+	.aHS-bnr .qj /*:not(.aEe)*/ {
+		/*background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png') !important;*/
+	}
+	[data-tooltip="Social"] .qj {
+		mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png');
+	}
+	[data-tooltip="Updates"] .qj {
+		mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png');
+	}
+	[data-tooltip="Forums"] .qj {
+		mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png');
+	}
+	[data-tooltip="Promotions"] .qj {
+		mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png');
 	}
 	/* Spam */
 	.aHS-bnv .qj {
@@ -564,12 +686,32 @@ td.apU.xY .T-KT.xf::before {
 .aim {
 	margin-left: -14px;
 }
+/* arrow for labels */
+.aij {
+	background-color: transparent !important;
+}
 
 /* left menu border under trash */
 .TN.bzz.aHS-bnx {
 	padding-bottom: 5px;
 	padding-top: 5px;
 	border-bottom: 1px solid #DDDDDD;
+}
+
+/* Mail / Chat / Spaces Side Panels */
+.aBO {
+	background-color: #f2f2f2;
+}
+
+/* Chats + Spaces wrappers + iframe */
+
+.aB6 {
+	background-color: #f2f2f2 !important;
+}
+
+.aB6,
+.bn .bl {
+	height: calc(100vh - 40px) !important;
 }
 
 /*
@@ -589,6 +731,13 @@ td.apU.xY .T-KT.xf::before {
 .gb_xd.gb_4d.gb_Fd {
 	height: 56px;
 	box-shadow: 0px 5px 4px #c6c6c6;
+}
+
+form.bas {
+	border-radius: 8px !important;
+}
+form.bas > table {
+	margin-bottom: 0 !important;
 }
 
 /* search icon */
@@ -626,7 +775,12 @@ button.gb_ff.gb_gf  {
 }
 
 
-/* main email area */
+/* main email / chat / spaces area */
+.bkK > .nH {
+	margin-bottom: 0 !important;
+	border-radius: 0 !important;
+}
+
 .Cp {
 	margin-top: 2px !important;
 }
@@ -729,6 +883,11 @@ a[title="Gmail"] img {
 	display: none;
 }
 
+/* Fix for padding applied to a[href="#inbox"] */
+a[title="Gmail"][href="#inbox"] {
+	padding-left: 0;
+}
+
 /* Gmail text */
 a[title="Gmail"]::after {
 	content: 'Search';
@@ -760,8 +919,11 @@ a[title="Gmail"][href="#drafts"]::after {
 a[title="Gmail"][href="#imp"]::after {
 	content: 'Important';
 }
-a[title="Gmail"][href="#chats"]::after {
-	content: 'Chats';
+a[title="Gmail"][href="#chat"]::after {
+	content: 'Chat';
+}
+a[title="Gmail"][href="#rooms"]::after {
+	content: 'Spaces';
 }
 a[title="Gmail"][href="#scheduled"]::after {
 	content: 'Scheduled';
@@ -788,6 +950,9 @@ header svg {
 }
 
 /* Top bar Google Chat status selector */
+.Yb {
+	background-color: transparent !important;
+}
 .Yb, .Yb:not(.abs):focus {
 	border-color: transparent !important;
 }
@@ -895,13 +1060,12 @@ header form input {
 /* Archive button (inbox email, opened email) */
 .brq, .ar8 {
 	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_done_black_24dp_2x.png') !important;
-	background-size: 24px !important;
+	opacity: 0.7 !important;
 }
 
 /* Snooze button (inbox email, opened email) */
 .brv, .brW {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_snooze_black_24dp_2x.png') !important;
-	background-size: 24px !important;
+	background-size: 20px !important;
 }
 
 @-moz-document url-prefix() {
@@ -919,10 +1083,6 @@ header form input {
 	/* Archive button (inbox email, opened email) */
 	.brq, .ar8 {
 		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_done_black_24dp_2x.png') !important;
-	}
-	/* Snooze button (inbox email, opened email) */
-	.brv, .brW {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_snooze_black_24dp_2x.png') !important;
 	}
 }
 
@@ -959,6 +1119,11 @@ header form input {
 /* Fixed border on email */
 .Bu > .nH > .no {
 	display: none;
+}
+
+/* Fix vertical ellipsis button per email "overflow" */
+.T-I.J-J5-Ji.T-I-Js-Gs.aap.T-I-awG.T-I-ax7.L3 {
+	margin-right: 20px;
 }
 
 /* Left toolbar when collapsed (this is done to fix hidden compose button when collapsed) */
@@ -1015,6 +1180,18 @@ header form input {
 /* --------------------------------------------- */
 /* Inbox and top toolbar layout	    						 */
 /* --------------------------------------------- */
+
+.Tm {
+	padding-bottom: 16px !important;
+}
+/* table of emails in list view */
+.F {
+	padding-bottom: 16px !important;
+}
+/* Right sidebar set height override */
+.nH.bAw.nn {
+	height: calc(100vh - 64px) !important;
+}
 
 /* Inbox: message list layout */
 .nH .AO .aeF {
@@ -1102,7 +1279,7 @@ header form input {
 
 /* the bar that the menu items typically rest on */
 .G-atb {
-	height: 48px;
+	padding-bottom: 12px !important;
 }
 
 /* shifts the inbox down */
