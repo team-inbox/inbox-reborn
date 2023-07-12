@@ -804,11 +804,20 @@ const handleHashChange = () => {
   titleNode.href = hash;
 };
 
-const fixLabelColors = () => {
-	[...document.querySelectorAll('.qj.aEe')].forEach(el => {
-		(el.setAttribute('style', el.getAttribute('style').replace(/(background-color:.*(?<!\!important));/g, '$1 !important;')))
-	})
+
+const watchLabelColorChanges = () => {
+	const labelBaseNode = document.querySelector("[aria-labelledby=':6s']")
+	const observer = new MutationObserver(fixLabelColors)
+	function fixLabelColors() {
+		observer.disconnect();
+		[...document.querySelectorAll('.qj.aEe')].forEach(el => {
+			(el.setAttribute('style', el.getAttribute('style').replace(/(background-color:.*(?<!\!important));/g, '$1 !important;')))
+		})
+		observer.observe(labelBaseNode, { attributes: true, childList: true, subtree: true })
+	}
+	fixLabelColors()
 }
+
 
 window.addEventListener('hashchange', handleHashChange);
 
@@ -840,8 +849,7 @@ document.addEventListener('DOMContentLoaded', function () {
   waitForElement('a[title="Gmail"]', handleHashChange);
   waitForElement('a[title="Gmail"]', addFloatingComposeButton);
 
-  
-  waitForElement('div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I[aria-label^="Get "]', ()=>window.setTimeout(fixLabelColors,2000));
+  waitForElement("[aria-labelledby=':6s']", watchLabelColorChanges);
 
   setInterval(updateReminders, 250);
 
