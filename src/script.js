@@ -805,8 +805,9 @@ const handleHashChange = () => {
 };
 
 
+const LABEL_CONTAINER_SELECTOR = ".wT .n3 .zw .TK"
 const watchLabelColorChanges = () => {
-	const labelBaseNode = document.querySelector("[aria-labelledby=':6s']")
+	const labelBaseNode = document.querySelector(LABEL_CONTAINER_SELECTOR)
 	const observer = new MutationObserver(fixLabelColors)
 	function fixLabelColors() {
 		observer.disconnect();
@@ -817,7 +818,6 @@ const watchLabelColorChanges = () => {
 	}
 	fixLabelColors()
 }
-
 
 window.addEventListener('hashchange', handleHashChange);
 
@@ -849,7 +849,7 @@ document.addEventListener('DOMContentLoaded', function () {
   waitForElement('a[title="Gmail"]', handleHashChange);
   waitForElement('a[title="Gmail"]', addFloatingComposeButton);
 
-  waitForElement("[aria-labelledby=':6s']", watchLabelColorChanges);
+  waitForElement(LABEL_CONTAINER_SELECTOR, watchLabelColorChanges);
 
   setInterval(updateReminders, 250);
 
