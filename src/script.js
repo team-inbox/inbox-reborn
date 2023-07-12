@@ -85,7 +85,8 @@ Element.prototype.remove = function () {
 };
 
 const getMyEmailAddress = () => {
-    let emailAddress = select.emailAddress().getAttribute('aria-label');
+	let emailAddr = select.emailAddress()
+    let emailAddress = emailAddr && emailAddr.getAttribute('aria-label');
     let emailAddressText = emailAddress && emailAddress.match(/.*?\((.*?)\)/)[1]
     return emailAddressText || "";
 }
@@ -354,20 +355,12 @@ const buildBundleWrapper = function (email, label, hasImportantMarkers) {
 	const bundleImage = getBundleImageForLabel(label);
 	const bundleTitleColor = bundleImage.match(/custom-cluster/) && getBundleTitleColorForLabel(email, label);
 
-// element {
-// 	mask: url(moz-extension://84c0ec10-195b-49d7-9583-7494886f16dd/images/ic_custom-cluster_24px_g60_r3_2x.png) 0 0/100% 100%;
-// 	background-color: rgb(101,62,155);
-// 	display: inline-block;
-// 	width: 28px;
-// 	height: 28px;
-// }	
-// 
-// [...document.querySelectorAll('.qj.aEe')].forEach(el=>console.log(el.setAttribute('style', el.getAttribute('style').replace(';',' !important;'))))
+	const style = `-webkit-mask: url(${bundleImage}) 0 0/100% 100%; background-color: ${bundleTitleColor};`
 
 	const bundleWrapper = htmlToElements(`
 			<div class="zA yO" bundleLabel="${label}">
-				<span class="oZ-x3 xY aid bundle-image">
-					<img src="${bundleImage}" ${bundleTitleColor ? `style="filter: drop-shadow(0 0 0 ${bundleTitleColor}) saturate(300%)"` : ''}/>
+				<span class="oZ-x3 xY aid bundle-image" style="${style}">
+					<!--<img src="${bundleImage}" ${bundleTitleColor ? `style="filter: drop-shadow(0 0 0 ${bundleTitleColor}) saturate(300%)"` : ''}/>-->
 				</span>
 				<span class="WA xY ${importantMarkerClass}"></span>
 				<span class="yX xY label-link .yW" ${bundleTitleColor ? `style="color: ${bundleTitleColor}"` : ''}>${label}</span>
@@ -811,6 +804,12 @@ const handleHashChange = () => {
   titleNode.href = hash;
 };
 
+const fixLabelColors = () => {
+	[...document.querySelectorAll('.qj.aEe')].forEach(el => {
+		(el.setAttribute('style', el.getAttribute('style').replace(/(background-color:.*(?<!\!important));/g, '$1 !important;')))
+	})
+}
+
 window.addEventListener('hashchange', handleHashChange);
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -840,6 +839,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   waitForElement('a[title="Gmail"]', handleHashChange);
   waitForElement('a[title="Gmail"]', addFloatingComposeButton);
+
+  
+  waitForElement('div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I[aria-label^="Get "]', ()=>window.setTimeout(fixLabelColors,2000));
 
   setInterval(updateReminders, 250);
 
