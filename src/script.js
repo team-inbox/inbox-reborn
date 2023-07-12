@@ -350,12 +350,26 @@ const getBundleTitleColorForLabel = (email, label) => {
 	return bundleTitleColor;
 };
 
+const getCategoryColor = label => ({
+	Updates: 'rgb(255, 104, 57)',
+	Promotions: 'rgb(0, 188, 212)',
+	Forums: 'rgb(63, 81, 181)',
+	Social: 'rgb(219, 68, 55)',
+	Travel: 'rgb(156, 39, 176)',
+	Trips: 'rgb(156, 39, 176)',
+	Finance: 'rgb(103, 159, 56)',
+	Orders: 'rgb(121, 85, 72)',
+	Purchases: 'rgb(121, 85, 72)',
+}[label] || '#616161');
+
 const buildBundleWrapper = function (email, label, hasImportantMarkers) {
 	const importantMarkerClass = hasImportantMarkers ? '' : 'hide-important-markers';
 	const bundleImage = getBundleImageForLabel(label);
 	const bundleTitleColor = bundleImage.match(/custom-cluster/) && getBundleTitleColorForLabel(email, label);
 
-	const style = `-webkit-mask: url(${bundleImage}) 0 0/100% 100%; background-color: ${bundleTitleColor};`
+	const styleColor = bundleTitleColor ? bundleTitleColor : getCategoryColor(label);
+
+	const style = `-webkit-mask: url(${bundleImage}) 0 0/100% 100%; background-color: ${styleColor};`
 
 	const bundleWrapper = htmlToElements(`
 			<div class="zA yO" bundleLabel="${label}">
@@ -805,14 +819,15 @@ const handleHashChange = () => {
 };
 
 
-const LABEL_CONTAINER_SELECTOR = ".wT .n3 .zw .TK"
+const LABEL_CONTAINER_SELECTOR = ".aAw.FgKVne ~ .yJ"
 const watchLabelColorChanges = () => {
 	const labelBaseNode = document.querySelector(LABEL_CONTAINER_SELECTOR)
 	const observer = new MutationObserver(fixLabelColors)
 	function fixLabelColors() {
 		observer.disconnect();
 		[...document.querySelectorAll('.qj.aEe')].forEach(el => {
-			(el.setAttribute('style', el.getAttribute('style').replace(/(background-color:.*(?<!\!important));/g, '$1 !important;')))
+			let elStyle = el.getAttribute('style');
+			if (elStyle) (el.setAttribute('style', elStyle.replace(/(background-color:.*(?<!\!important));/g, '$1 !important;')))
 		})
 		observer.observe(labelBaseNode, { attributes: true, childList: true, subtree: true })
 	}
