@@ -354,6 +354,16 @@ const buildBundleWrapper = function (email, label, hasImportantMarkers) {
 	const bundleImage = getBundleImageForLabel(label);
 	const bundleTitleColor = bundleImage.match(/custom-cluster/) && getBundleTitleColorForLabel(email, label);
 
+// element {
+// 	mask: url(moz-extension://84c0ec10-195b-49d7-9583-7494886f16dd/images/ic_custom-cluster_24px_g60_r3_2x.png) 0 0/100% 100%;
+// 	background-color: rgb(101,62,155);
+// 	display: inline-block;
+// 	width: 28px;
+// 	height: 28px;
+// }	
+// 
+// [...document.querySelectorAll('.qj.aEe')].forEach(el=>console.log(el.setAttribute('style', el.getAttribute('style').replace(';',' !important;'))))
+
 	const bundleWrapper = htmlToElements(`
 			<div class="zA yO" bundleLabel="${label}">
 				<span class="oZ-x3 xY aid bundle-image">
