@@ -1474,6 +1474,12 @@ div[aria-label="Hangouts"][role="complementary"] {
 
 .bundle-image {
 	margin-left: 13px;
+ 	display: inline-block;
+ 	width: 28px;
+ 	height: 28px !important;
+ 	vertical-align:middle;
+ 	margin-top:-4px;
+ 	margin-bottom:-4px;
 }
 .bundle-image img {
 	width: 28px;

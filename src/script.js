@@ -85,7 +85,8 @@ Element.prototype.remove = function () {
 };
 
 const getMyEmailAddress = () => {
-    let emailAddress = select.emailAddress().getAttribute('aria-label');
+	let emailAddr = select.emailAddress()
+    let emailAddress = emailAddr && emailAddr.getAttribute('aria-label');
     let emailAddressText = emailAddress && emailAddress.match(/.*?\((.*?)\)/)[1]
     return emailAddressText || "";
 }
@@ -349,15 +350,31 @@ const getBundleTitleColorForLabel = (email, label) => {
 	return bundleTitleColor;
 };
 
+const getCategoryColor = label => ({
+	Updates: 'rgb(255, 104, 57)',
+	Promotions: 'rgb(0, 188, 212)',
+	Forums: 'rgb(63, 81, 181)',
+	Social: 'rgb(219, 68, 55)',
+	Travel: 'rgb(156, 39, 176)',
+	Trips: 'rgb(156, 39, 176)',
+	Finance: 'rgb(103, 159, 56)',
+	Orders: 'rgb(121, 85, 72)',
+	Purchases: 'rgb(121, 85, 72)',
+}[label] || '#616161');
+
 const buildBundleWrapper = function (email, label, hasImportantMarkers) {
 	const importantMarkerClass = hasImportantMarkers ? '' : 'hide-important-markers';
 	const bundleImage = getBundleImageForLabel(label);
 	const bundleTitleColor = bundleImage.match(/custom-cluster/) && getBundleTitleColorForLabel(email, label);
 
+	const styleColor = bundleTitleColor ? bundleTitleColor : getCategoryColor(label);
+
+	const style = `-webkit-mask: url(${bundleImage}) 0 0/100% 100%; background-color: ${styleColor};`
+
 	const bundleWrapper = htmlToElements(`
 			<div class="zA yO" bundleLabel="${label}">
-				<span class="oZ-x3 xY aid bundle-image">
-					<img src="${bundleImage}" ${bundleTitleColor ? `style="filter: drop-shadow(0 0 0 ${bundleTitleColor}) saturate(300%)"` : ''}/>
+				<span class="oZ-x3 xY aid bundle-image" style="${style}">
+					<!--<img src="${bundleImage}" ${bundleTitleColor ? `style="filter: drop-shadow(0 0 0 ${bundleTitleColor}) saturate(300%)"` : ''}/>-->
 				</span>
 				<span class="WA xY ${importantMarkerClass}"></span>
 				<span class="yX xY label-link .yW" ${bundleTitleColor ? `style="color: ${bundleTitleColor}"` : ''}>${label}</span>
@@ -801,6 +818,22 @@ const handleHashChange = () => {
   titleNode.href = hash;
 };
 
+
+const LABEL_CONTAINER_SELECTOR = ".aAw.FgKVne ~ .yJ"
+const watchLabelColorChanges = () => {
+	const labelBaseNode = document.querySelector(LABEL_CONTAINER_SELECTOR)
+	const observer = new MutationObserver(fixLabelColors)
+	function fixLabelColors() {
+		observer.disconnect();
+		[...document.querySelectorAll('.qj.aEe')].forEach(el => {
+			let elStyle = el.getAttribute('style');
+			if (elStyle) (el.setAttribute('style', elStyle.replace(/(background-color:.*(?<!\!important));/g, '$1 !important;')))
+		})
+		observer.observe(labelBaseNode, { attributes: true, childList: true, subtree: true })
+	}
+	fixLabelColors()
+}
+
 window.addEventListener('hashchange', handleHashChange);
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -830,6 +863,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   waitForElement('a[title="Gmail"]', handleHashChange);
   waitForElement('a[title="Gmail"]', addFloatingComposeButton);
+
+  waitForElement(LABEL_CONTAINER_SELECTOR, watchLabelColorChanges);
 
   setInterval(updateReminders, 250);
 
