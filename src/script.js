@@ -29,10 +29,10 @@ const STYLE_NODE_ID_PREFIX = 'hide-email-';
 let select = {
     emailAddress:        ()=>document.querySelector("a[aria-label^='Google Account:']"),
     tabs:                ()=>document.querySelectorAll('.aKz'),
-    bundleWrappers:      ()=>document.querySelectorAll('.BltHke[role=main] .bundle-wrapper'),
+    bundleWrappers:      ()=>document.querySelectorAll('.oy8Mbf[role=main] .bundle-wrapper'),
     inbox:               ()=>document.querySelector('.nZ[data-tooltip=Inbox]'),
     importanceMarkers:   ()=>document.querySelector('td.WA.xY'),
-    emails:              ()=>document.querySelectorAll('.BltHke[role=main] .zA'),
+    emails:              ()=>document.querySelectorAll('.oy8Mbf[role=main] .zA'),
     currentTab:          ()=>document.querySelector('.aAy[aria-selected="true"]'),
     menu:                ()=>document.body.querySelector('.J-Ke.n4.ah9'),
     composeButtonNew:    ()=>document.querySelector('.Yh.akV'),
