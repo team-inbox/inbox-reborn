@@ -16,10 +16,10 @@ https://chrome.google.com/webstore/detail/inbox-reborn-theme-for-gm/bkphmihkdbdg
 
 ### Firefox
 
-1. Download [this repo's source code here](https://github.com/team-inbox/inbox-reborn/archive/master.zip), and unzip it where you like
-2. Create a new zip file of the main folder's content, so that there is no containing 'inbox-reborn-master' folder
-3. Make sure the Firefox setting `xpinstall.signatures.required` is set to `false` - this is done in `about:config`
-4. On the Firefox addons page, use the "Install Add-on From File..." on the gear menu to install the addon from the zip file you just created
+The extension is updated to version 0.5.9.27. It can be added via this link:
+
+https://addons.mozilla.org/en-GB/firefox/addon/inbox-reborn-theme-gmail/
+
 
 
 ## Features
