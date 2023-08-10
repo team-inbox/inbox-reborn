@@ -6,7 +6,7 @@
   "homepage_url": "https://github.com/team-inbox/inbox-reborn",
   "browser_specific_settings": {
     "gecko": {
-      "id": "inbox-reborn@team-inbox.github.io"
+      "id": "inbox-reborn-new@team-inbox.github.io"
     }
   },
   "browser_action": {
