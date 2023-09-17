@@ -9,20 +9,17 @@ Web extension which modifies Gmail™ to bring back the features and uncluttered
 
 ### Chrome & Microsoft Edge 
 
-The extension has been updated to version 0.5.9.26. It can be added through the following link
+The extension has been updated to version 0.5.9.27. It can be added through the following link
 
 https://chrome.google.com/webstore/detail/inbox-reborn-theme-for-gm/bkphmihkdbdgedlaflnkhnmnmibffomf
 
 
 ### Firefox
 
-[Firefox Add-ons: Inbox in Gmail](https://addons.mozilla.org/firefox/addon/inbox-in-gmail)
+The extension is updated to version 0.5.9.27. It can be added via this link:
 
-Install Inbox Reborn as an **unsigned Firefox addon** (sometimes the version on the Firefox add-ons site is out of date):
-1. Download [this repo's source code here](https://github.com/team-inbox/inbox-reborn/archive/master.zip), and unzip it where you like
-2. Create a new zip file of the main folder's content, so that there is no containing 'inbox-reborn-master' folder
-3. Make sure the Firefox setting `xpinstall.signatures.required` is set to `false` - this is done in `about:config`
-4. On the Firefox addons page, use the "Install Add-on From File..." on the gear menu to install the addon from the zip file you just created
+https://addons.mozilla.org/en-GB/firefox/addon/inbox-reborn-theme-gmail/
+
 
 
 ## Features
