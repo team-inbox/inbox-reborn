@@ -41,7 +41,7 @@ let select = {
     menuParent:          ()=>document.querySelector('.wT .byl'),
     menuRefer:           ()=>document.querySelector('.wT .byl>.TK'),
     titleNode:           ()=>document.querySelectorAll('a[title="Gmail"]')[1],
-    headerElement:       ()=>document.querySelector('.nH.w-asV.aiw'),
+    headerElement:       ()=>document.querySelector('.w-asV.bbg.aiw'),
     messageBody:         ()=>document.querySelector('div[aria-label="Message Body"]'),
     messageFrom:         ()=>document.querySelector('input[name="from"]'),
     messageSubjectBox:   ()=>document.querySelector('input[name=subjectbox]'),
