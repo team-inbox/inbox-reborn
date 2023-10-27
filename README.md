@@ -16,7 +16,7 @@ https://chrome.google.com/webstore/detail/inbox-reborn-theme-for-gm/bkphmihkdbdg
 
 ### Firefox
 
-The extension is updated to version 0.5.9.27. It can be added via this link:
+The extension is updated to version 0.5.9.28. It can be added via this link:
 
 https://addons.mozilla.org/en-GB/firefox/addon/inbox-reborn-theme-gmail/
 
