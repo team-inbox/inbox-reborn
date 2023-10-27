@@ -9,14 +9,14 @@ Web extension which modifies Gmail™ to bring back the features and uncluttered
 
 ### Chrome & Microsoft Edge 
 
-The extension has been updated to version 0.5.9.27. It can be added through the following link
+The extension has been updated to version 0.5.9.28. It can be added through the following link
 
 https://chrome.google.com/webstore/detail/inbox-reborn-theme-for-gm/bkphmihkdbdgedlaflnkhnmnmibffomf
 
 
 ### Firefox
 
-The extension is updated to version 0.5.9.27. It can be added via this link:
+The extension is updated to version 0.5.9.28. It can be added via this link:
 
 https://addons.mozilla.org/en-GB/firefox/addon/inbox-reborn-theme-gmail/
 
