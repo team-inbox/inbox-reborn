@@ -781,10 +781,6 @@ button.gb_ff.gb_gf  {
 	border-radius: 0 !important;
 }
 
-.Cp {
-	margin-top: 2px !important;
-}
-
 /*
 **
 **END OF MAIN MENU, SEARCH BAR AND EMAIL AREA
@@ -1190,10 +1186,12 @@ header form input {
 .Tm {
 	padding-bottom: 16px !important;
 }
-/* table of emails in list view */
-.F {
-	padding-bottom: 16px !important;
+
+/* Search results "Some messages in Trash or Spam match your search" area */
+.TD {
+	background: transparent !important;
 }
+
 /* Right sidebar set height override */
 .nH.bAw.nn {
 	height: calc(100vh - 64px) !important;
@@ -1281,11 +1279,6 @@ header form input {
 /* the bar that the menu items typically rest on */
 .G-atb {
 	padding-bottom: 12px !important;
-}
-
-/* shifts the inbox down */
-.aeF {
-	margin-top: -8px;
 }
 
 .nH.aqK {
