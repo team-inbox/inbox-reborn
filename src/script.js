@@ -17,6 +17,7 @@ const AVATAR_EMAIL_CLASS = 'email-with-avatar';
 const AVATAR_CLASS = 'avatar';
 const AVATAR_OPTION_CLASS = 'show-avatar-enabled';
 const STYLE_NODE_ID_PREFIX = 'hide-email-';
+const PRIORITY_INBOX_OPTION_CLASS = 'priority-inbox-enabled';
 
 //
 // Element Selectors
@@ -32,7 +33,7 @@ let select = {
     bundleWrappers:      ()=>document.querySelectorAll('.BltHke[role=main] .bundle-wrapper, .aE3[role=main] .bundle-wrapper, .oy8Mbf[role=main] .bundle-wrapper'),
     inbox:               ()=>document.querySelector('.nZ[data-tooltip=Inbox]'),
     importanceMarkers:   ()=>document.querySelector('td.WA.xY'),
-    emails:              ()=>document.querySelectorAll('.BltHke[role=main] .zA, .aE3[role=main] .zA, .oy8Mbf[role=main] .zA'),
+    emails:              ()=>document.querySelectorAll('.oy8Mbf[role=main] .zA'),
     currentTab:          ()=>document.querySelector('.aAy[aria-selected="true"]'),
     menu:                ()=>document.body.querySelector('.J-Ke.n4.ah9'),
     composeButtonNew:    ()=>document.querySelector('.Yh.akV'),
@@ -256,6 +257,12 @@ const reloadOptions = () => {
 		document.querySelectorAll('.' + AVATAR_EMAIL_CLASS).forEach(avatarEl => avatarEl.classList.remove(AVATAR_EMAIL_CLASS));
 		// Remove avatar elements
 		document.querySelectorAll('.' + AVATAR_CLASS).forEach(avatarEl => avatarEl.remove());
+	}
+	// Add option classes to body for css styling, removes priority inbox section headings when enabled
+	if (options.priorityInbox == 'enabled' && !document.body.classList.contains(PRIORITY_INBOX_OPTION_CLASS)) {
+		document.body.classList.add(PRIORITY_INBOX_OPTION_CLASS);
+	} else if (options.hidePriorityInboxHeadings == 'disabled' && document.body.classList.contains(PRIORITY_INBOX_OPTION_CLASS)) {
+		document.body.classList.remove(PRIORITY_INBOX_OPTION_CLASS);
 	}
 
 	// Add option classes to body for css styling, and unbundle emails when disabled

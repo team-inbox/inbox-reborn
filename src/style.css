@@ -1211,13 +1211,8 @@ header form input {
 	margin: 0 5px;
 }
 
-/* Inbox: hide the starred heading */
-.nH.Wg.aAD.aAr {
-	display: none;
-}
-
-/* Inbox: hide the everything else heading */
-.nH.Wg.aAr {
+/* Inbox: hide "Priority Inbox" section headings */
+.priority-inbox-enabled .nH .Wg.aAr {
 	display: none;
 }
 
