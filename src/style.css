@@ -1183,8 +1183,20 @@ header form input {
 /* Inbox and top toolbar layout	    						 */
 /* --------------------------------------------- */
 
+/* Hides pale blue on bottom of main panel */
 .Tm {
 	padding-bottom: 16px !important;
+}
+
+/* Hides pale blue on bottom for side panel */
+.aUx {
+	min-height: calc(100vh - 64px);	
+}
+
+/* Fixes box-shadow getting cutoff by parent */
+.Nu {
+	padding-bottom: 6px;
+	height: auto !important;
 }
 
 /* Search results "Some messages in Trash or Spam match your search" area */
