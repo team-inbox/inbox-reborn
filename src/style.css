@@ -1383,11 +1383,6 @@ header form input {
 	border-radius: 2px !important;
 }
 
-/* Hide inline labels within bundle email lists */
-.nH .AO .aeF .bv9 .ar {
-	display: none;
-}
-
 .ar .av {
 	padding-top: 2px;
 }
