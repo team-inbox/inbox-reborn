@@ -78,6 +78,12 @@ header {
 	max-width: 1180px;
 	padding: 0 10px;
 }
+/* Center search toolbar */
+.biW {
+	margin-left: auto !important;
+	margin-right: auto !important;
+	max-width: var(--email-max-width);
+}
 
 /* Align toolbar with email width */
 .aeH > .D.E.G-atb {
