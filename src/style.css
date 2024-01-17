@@ -1195,6 +1195,7 @@ header form input {
 
 /* Fixes box-shadow getting cutoff by parent */
 .Nu {
+	padding-top: 2px;
 	padding-bottom: 6px;
 	height: auto !important;
 }
