@@ -1382,8 +1382,8 @@ header form input {
 	height: 22px !important;
 	border-radius: 2px !important;
 }
-/* Hides inline "Inbox" label on emails */
-.ar:first-of-type {
+/* Hides inline "Inbox" label on emails within bundles */
+.nH .AO .aeF .bv9 .ar:first-of-type {
 	display: none;
 }
 
