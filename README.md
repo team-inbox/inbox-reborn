@@ -50,8 +50,12 @@ This option is used to bundle emails by label in the inbox.
 
 - Toggle Enable/Disable
 
-#### Email Avatars
+#### Avatars
 This option will show a circle with the first letter initial of the sender, to the left of the email in your folder.
+- Toggle Enable/Disable
+
+#### Hide Priority Inbox Headings
+This option provides a cleaner inbox UI if "Priority Inbox" type enabled via settings
 - Toggle Enable/Disable
 
 
