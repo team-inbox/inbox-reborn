@@ -30,7 +30,7 @@ const PRIORITY_INBOX_OPTION_CLASS = 'priority-inbox-enabled';
 let select = {
     emailAddress:        ()=>document.querySelector("a[aria-label^='Google Account:']"),
     tabs:                ()=>document.querySelectorAll('.aKz'),
-    bundleWrappers:      ()=>document.querySelectorAll('.BltHke[role=main] .bundle-wrapper, .aE3[role=main] .bundle-wrapper, .oy8Mbf[role=main] .bundle-wrapper'),
+    bundleWrappers:      ()=>document.querySelectorAll('.oy8Mbf[role=main] .bundle-wrapper'),
     inbox:               ()=>document.querySelector('.nZ[data-tooltip=Inbox]'),
     importanceMarkers:   ()=>document.querySelector('td.WA.xY'),
     emails:              ()=>document.querySelectorAll('.oy8Mbf[role=main] .zA, .oy8Mbf[style]:not([role=navigation]) .zA'),
