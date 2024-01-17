@@ -86,7 +86,7 @@ header {
 	width: 100%;
 }
 .D.E.G-atb {
-	margin: 0 auto 16px auto !important;
+	margin: 0 auto !important;
     width: var(--email-max-width);
     /* this percent effectively enforces a 3.5% (7% / 2) padding when */
     max-width: 97%;
