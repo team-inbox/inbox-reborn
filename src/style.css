@@ -89,10 +89,6 @@ header {
     /* this percent effectively enforces a 3.5% (7% / 2) padding when */
     max-width: 97%;
 }
-/* .PY applied when bundle/email open */
-.D.E.G-atb.PY {
-	height: auto;
-}
 
 /* Add box-shadow to open email + match toolbar width */
 .nH.a98.iY {
