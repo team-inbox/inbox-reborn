@@ -106,8 +106,13 @@ header {
 	background: #f2f2f2;
 }
 
+/* Match right margin to center main content if left sidebar collapsed */
 .aBA + .bkK > .nH > .ar4 > div {
 	margin-left: var(--inbox-margin-right);
+}
+/* Match light gray BG to hide pale blue while animating sidebar open or close */
+.nH.aqk.aql.bkL {
+	background: #f2f2f2;
 }
 
 /* Attachment icon */
