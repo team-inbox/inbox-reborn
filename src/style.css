@@ -78,19 +78,30 @@ header {
 	max-width: 1180px;
 	padding: 0 10px;
 }
+/* Center search toolbar */
+.biW {
+	margin-left: auto !important;
+	margin-right: auto !important;
+	max-width: var(--email-max-width);
+}
 
 /* Align toolbar with email width */
-.aeH > .G-atb {
+.aeH > .D.E.G-atb {
 	margin: auto !important;
+	max-width: none;
+	width: 100%;
 }
 .D.E.G-atb {
+	margin: 0 auto !important;
     width: var(--email-max-width);
     /* this percent effectively enforces a 3.5% (7% / 2) padding when */
-    max-width: 93%;
+    max-width: 97%;
 }
-/* .PY applied when bundle/email open */
-.D.E.G-atb.PY {
-	height: auto;
+
+/* Add box-shadow to open email + match toolbar width */
+.nH.a98.iY {
+	margin: 2px 16px 0;
+	box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important
 }
 
 .aeH {
@@ -100,6 +111,15 @@ header {
 
 /* Enforce background color behind emails */
 .ar4 {
+	background: #f2f2f2;
+}
+
+/* Match right margin to center main content if left sidebar collapsed */
+.aBA + .bkK > .nH > .ar4 > div {
+	margin-left: var(--inbox-margin-right);
+}
+/* Match light gray BG to hide pale blue while animating sidebar open or close */
+.nH.aqk.aql.bkL {
 	background: #f2f2f2;
 }
 
@@ -781,10 +801,6 @@ button.gb_ff.gb_gf  {
 	border-radius: 0 !important;
 }
 
-.Cp {
-	margin-top: 2px !important;
-}
-
 /*
 **
 **END OF MAIN MENU, SEARCH BAR AND EMAIL AREA
@@ -856,6 +872,14 @@ button.gb_ff.gb_gf  {
 .w-asV.bbg.aiw[pageTitle="archive"] {
 	background-color: #0f9d58;
 }
+.w-asV.bbg.aiw[pageTitle="chat"],
+.w-asV.bbg.aiw[pageTitle="onboarding"] {
+	background-color: #00AC47; /* #0F9D58 is Google brand color green, but not as vibrant */
+}
+
+.w-asV.bbg.aiw[pageTitle="calls"] {
+	background-color: #DB4437;
+}
 
 /* Fix background color for vertical split layout */
 .UI .nH.nn,
@@ -915,11 +939,13 @@ a[title="Gmail"][href="#drafts"]::after {
 a[title="Gmail"][href="#imp"]::after {
 	content: 'Important';
 }
-a[title="Gmail"][href="#chat"]::after {
+a[title="Gmail"][href="#chat"]::after,
+a[title="Gmail"][href="#onboarding"]::after,
+a[title="Gmail"][href="#browse"]::after {
 	content: 'Chat';
 }
-a[title="Gmail"][href="#rooms"]::after {
-	content: 'Spaces';
+a[title="Gmail"][href="#calls"]::after {
+	content: 'Meet';
 }
 a[title="Gmail"][href="#scheduled"]::after {
 	content: 'Scheduled';
@@ -1177,13 +1203,28 @@ header form input {
 /* Inbox and top toolbar layout	    						 */
 /* --------------------------------------------- */
 
+/* Hides pale blue on bottom of main panel */
 .Tm {
 	padding-bottom: 16px !important;
 }
-/* table of emails in list view */
-.F {
-	padding-bottom: 16px !important;
+
+/* Hides pale blue on bottom for side panel */
+.aUx {
+	min-height: calc(100vh - 64px);	
 }
+
+/* Fixes box-shadow getting cutoff by parent */
+.Nu {
+	padding-top: 2px;
+	padding-bottom: 6px;
+	height: auto !important;
+}
+
+/* Search results "Some messages in Trash or Spam match your search" area */
+.TD {
+	background: transparent !important;
+}
+
 /* Right sidebar set height override */
 .nH.bAw.nn {
 	height: calc(100vh - 64px) !important;
@@ -1201,13 +1242,8 @@ header form input {
 	margin: 0 5px;
 }
 
-/* Inbox: hide the starred heading */
-.nH.Wg.aAD.aAr {
-	display: none;
-}
-
-/* Inbox: hide the everything else heading */
-.nH.Wg.aAr {
+/* Inbox: hide "Priority Inbox" section headings */
+.priority-inbox-enabled .nH .Wg.aAr {
 	display: none;
 }
 
@@ -1276,11 +1312,6 @@ header form input {
 /* the bar that the menu items typically rest on */
 .G-atb {
 	padding-bottom: 12px !important;
-}
-
-/* shifts the inbox down */
-.aeF {
-	margin-top: -8px;
 }
 
 .nH.aqK {
@@ -1370,6 +1401,10 @@ header form input {
 .ar {
 	height: 22px !important;
 	border-radius: 2px !important;
+}
+/* Hides inline "Inbox" label on emails within bundles */
+.nH .AO .aeF .bv9 .ar:first-of-type {
+	display: none;
 }
 
 .ar .av {
