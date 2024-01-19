@@ -7,19 +7,14 @@ Web extension which modifies Gmail™ to bring back the features and uncluttered
 
 ## Installing
 
-### Chrome & Microsoft Edge 
-
-The extension has been updated to version 0.5.9.29. It can be added through the following link
+### Chrome & Microsoft Edge Install
 
 https://chrome.google.com/webstore/detail/inbox-reborn-theme-for-gm/bkphmihkdbdgedlaflnkhnmnmibffomf
 
 
-### Firefox
-
-The extension is updated to version 0.5.9.28. It can be added via this link:
+### Firefox Install
 
 https://addons.mozilla.org/en-GB/firefox/addon/inbox-reborn-theme-gmail/
-
 
 
 ## Features
@@ -27,9 +22,9 @@ https://addons.mozilla.org/en-GB/firefox/addon/inbox-reborn-theme-gmail/
 - Bundle emails by label and category
 - Group emails by date (today, yesterday, this month, etc)
 - Clean interface to return to the simplicity of Inbox
-- Display emails sent to yourself with subject "Reminder" as reminders
-- Colored avatars based on senders name
-- Calendar events displayed in a small card, with inline responses
+- Display emails sent to yourself with the subject "Reminder" as reminders
+- Colored avatars based on the sender's name
+- Calendar events displayed on a small card, with inline responses
 
 
 ## Extension Options
@@ -55,7 +50,7 @@ This option will show a circle with the first letter initial of the sender, to t
 - Toggle Enable/Disable
 
 #### Hide Priority Inbox Headings
-This option provides a cleaner inbox UI if "Priority Inbox" type enabled via settings
+This option provides a cleaner inbox UI if the "Priority Inbox" type is enabled via the settings
 - Toggle Enable/Disable
 
 
@@ -78,15 +73,15 @@ Disable inbox category tabs:
 - Settings Dropdown/Configure Inbox -> Leave only Primary ticked -> Save
 
 Allow default category labels (Promotions, Social, Updates, Forums) to be bundled:
-- Settings/Labels/Categories/Show in message List -> Click show for each category
+- Settings/Labels/Categories/Show in message List -> Click Show for each category
 
 If you'd like a specific label not to be bundled, create a label called 'Unbundled', and nest that label within it.
 
 
 ## Known Issues
 
-- This extension works best in English, because it relies on specific date formats.
-- This currently only supports Gmail™'s default theme. If you enable the Dark theme, you will experience white/invisible text and icons.
+- This extension works best in English because it relies on specific date formats.
+- This currently only supports Gmail™'s default theme. You will experience white/invisible text and icons if you enable the Dark theme.
 
 
 ## Privacy
