@@ -831,6 +831,11 @@ button.gb_ff.gb_gf  {
 	background: #F2F2F2 !important;
 }
 
+/* Quick Settings panel */
+.IU {
+	border-radius: 0 !important;
+}
+
 /* Border under toolbar */
 .D.E.G-atb::before {
 	box-shadow: none;
