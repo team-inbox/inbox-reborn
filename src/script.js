@@ -33,7 +33,7 @@ let select = {
     bundleWrappers:      ()=>document.querySelectorAll('.oy8Mbf[role=main] .bundle-wrapper'),
     inbox:               ()=>document.querySelector('.nZ[data-tooltip=Inbox]'),
     importanceMarkers:   ()=>document.querySelector('td.WA.xY'),
-    emails:              ()=>document.querySelectorAll('.oy8Mbf[role=main] .zA, .oy8Mbf[style]:not([role=navigation]) .zA'),
+    emails:              ()=>document.querySelectorAll('.oy8Mbf[role=main] .zA'),
     currentTab:          ()=>document.querySelector('.aAy[aria-selected="true"]'),
     menu:                ()=>document.body.querySelector('.J-Ke.n4.ah9'),
     composeButtonNew:    ()=>document.querySelector('.Yh.akV'),
