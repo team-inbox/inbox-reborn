@@ -848,6 +848,11 @@ button.gb_ff.gb_gf  {
 	background: #F2F2F2 !important;
 }
 
+/* Quick Settings panel */
+.IU {
+	border-radius: 0 !important;
+}
+
 /* Border under toolbar */
 .D.E.G-atb::before {
 	box-shadow: none;
@@ -1402,8 +1407,8 @@ header form input {
 	height: 22px !important;
 	border-radius: 2px !important;
 }
-/* Hides inline "Inbox" label on emails within bundles */
-.nH .AO .aeF .bv9 .ar:first-of-type {
+/* Hides inline "Inbox" label on emails within bundles + labels */
+.ar:has(.at[title=Inbox]) {
 	display: none;
 }
 
