@@ -1391,7 +1391,7 @@ header form input {
 	border-radius: 2px !important;
 }
 /* Hides inline "Inbox" label on emails within bundles + labels */
-.nH .AO .aeF .oy8Mbf .ar:first-of-type {
+.ar:has(.at[title=Inbox]) {
 	display: none;
 }
 
