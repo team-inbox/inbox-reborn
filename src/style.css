@@ -1080,8 +1080,29 @@ header form input {
 }
 
 /* Hide old compose button */
-.T-I-KE.L3 {
+.T-I-KE.L3:not(.aDV) {
 	display: none !important;
+}
+
+/* But show New chat button + re-style to match */
+.T-I.T-I-KE.L3.aDV {
+	position: fixed;
+	left: 0; 
+	bottom: 20px;
+	z-index: 4;
+	padding: 0;
+	width: 52px;
+	height: 52px;
+	border-radius: 26px;
+	box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 1px 3px 1px rgba(60,64,67,0.149);
+}
+
+.T-I.T-I-KE.L3.aDV:hover {
+	box-shadow: 0 1px 3px 0 rgba(60,64,67,0.302), 0 4px 8px 3px rgba(60,64,67,0.149);
+}
+
+.aqn.arL.nH.oy8Mbf.apV .T-I.T-I-KE.L3.aDV {
+	left: 250px; /* only shows when Chat sidebar is active */
 }
 
 /* Archive button (inbox email, opened email) */
