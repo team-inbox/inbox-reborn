@@ -1,8 +1,8 @@
 {
   "name": "Inbox Reborn theme for Gmail™",
-  "version": "0.5.9.30",
+  "version": "0.5.9.31",
   "manifest_version": 2,
-  "description": "Adds features like reminders, email bundling and Inbox's minimalistic style to Gmail™",
+  "description": "Adds features like reminders, email bundling, and Inbox's minimalistic style to Gmail™",
   "homepage_url": "https://github.com/team-inbox/inbox-reborn",
   "browser_specific_settings": {
     "gecko": {
