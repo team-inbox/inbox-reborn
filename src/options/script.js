@@ -13,7 +13,9 @@ function saveOptions() {
 
 	const options = { reminderTreatment, emailBundling, bundleOne, showAvatar, priorityInbox };
 
-	localStorage.setItem('options', JSON.stringify(options));
+	chrome.storage.local.set({ 'options': options }, function() {
+    console.log('Options saved:', options);
+});
 }
 
 function restoreOptions() {
