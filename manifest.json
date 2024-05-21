@@ -1,7 +1,8 @@
 {
   "name": "Inbox Reborn theme for Gmail™",
-  "version": "0.5.9.31",
-  "manifest_version": 2,
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "permissions": ["storage"],
   "description": "Adds features like reminders, email bundling, and Inbox's minimalistic style to Gmail™",
   "homepage_url": "https://github.com/team-inbox/inbox-reborn",
   "browser_specific_settings": {
@@ -9,16 +10,14 @@
       "id": "inbox-reborn-new@team-inbox.github.io"
     }
   },
-  "browser_action": {
+  "action": {
     "default_popup": "src/options/options.html"
   },
   "options_ui": {
-    "page": "src/options/options.html",
-    "open_in_tab": false
+    "page": "src/options/options.html"
   },
   "background": {
-    "scripts": ["src/background.js"],
-    "persistent": false
+    "service_worker": "src/background.js"
   },
   "icons": {
     "16": "icons/icon16.png",
@@ -27,19 +26,16 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://mail.google.com/mail/*"
-      ],
-      "css": [
-        "src/style.css"
-      ],
-      "js": [
-        "src/script.js"
-      ],
+      "matches": ["https://mail.google.com/*"],
+      "css": ["src/style.css"],
+      "js": ["src/script.js"],
       "run_at": "document_start"
     }
   ],
   "web_accessible_resources": [
-    "images/*"
+    {
+      "resources": [ "images/*"],
+      "matches": ["https://mail.google.com/*"]
+    }
   ]
 }
