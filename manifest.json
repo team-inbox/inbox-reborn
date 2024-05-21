@@ -5,11 +5,6 @@
   "permissions": ["storage"],
   "description": "Adds features like reminders, email bundling, and Inbox's minimalistic style to Gmail™",
   "homepage_url": "https://github.com/team-inbox/inbox-reborn",
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "inbox-reborn-new@team-inbox.github.io"
-    }
-  },
   "action": {
     "default_popup": "src/options/options.html"
   },
