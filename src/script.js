@@ -903,7 +903,7 @@ const moveFloatersRight = () => {
 const sidePanelHandler = () => {
 	const sidePanel = document.querySelector('div[aria-label="Side panel"]');
 	const sidePanelBtns = sidePanel.querySelectorAll('.bse-bvF-I.aT5-aOt-I:not(#qJTzr)'); // ignore the + btn
-	const addOnsFrame = document.querySelector('.bq9.buW');
+	const addOnsFrame = document.querySelector('.buW');
 
 	for(let b = 0; b < sidePanelBtns.length; b++) {
 
@@ -917,13 +917,15 @@ const sidePanelHandler = () => {
 	if(addOnsFrame) {
 		if(!addOnsFrame.classList.contains('br3')) {
 			moveFloatersLeft();
-			sidePanelMutationHandler();
+		} else {
+			moveFloatersRight();
 		}
+		sidePanelMutationHandler();
 	}
 }
 	
-const sidePanelMutationHandler = () => waitForElement('.bq9.buW', () => {
-	const addOnsPanel = document.querySelector('.bq9.buW');
+const sidePanelMutationHandler = () => waitForElement('.buW', () => {
+	const addOnsPanel = document.querySelector('.buW');
 	const panelResized = new ResizeObserver((entries) => {
 		for (let entry of entries) {	
 			if (entry.contentRect.width == 0) {
