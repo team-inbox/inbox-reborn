@@ -977,18 +977,35 @@ header svg {
 }
 
 /* Top bar Google Chat status selector */
-.Yb {
-	background-color: transparent !important;
+.lJradf.X72uL { /* bg */
+	background: rgba(255, 255, 255, 0.125) !important;
 }
-.Yb, .Yb:not(.abs):focus {
-	border-color: transparent !important;
+
+.lJradf.X72uL:not(.Dnplmc):hover {
+	background: rgba(60, 64, 67, 0.08) !important;
 }
-.Yb[aria-label="Status: Active"] .Yg { /* (Active) Icon */
-	background-color: #34d058 !important;
-}
-.Yc { /* Text */
+
+.C2Qm1d.X72uL { /* Text */
 	color: #FFF !important;
 }
+
+/* ? icon */
+
+.t6.zH[aria-expanded="true"]:hover, .t6.zH[aria-expanded="true"] {
+	background-color: rgba(95,99,104,0.24);
+}
+
+/* settings icon */
+
+.FH[aria-expanded="true"]:hover {
+	background-color: rgba(95,99,104,0.24);
+}
+
+/* gapps shorcut (expanded) icon */
+.gb_B[aria-expanded="true"] .gb_F {
+	fill: #fff !important;
+}
+
 
 /* Search bar (old, new) */
 header form {
@@ -1546,6 +1563,7 @@ div[aria-label="Hangouts"][role="complementary"] {
 	margin-left: 5px;
 	font-size: 13px;
 	margin-right: 32px;
+	color: #404040 !important;
 }
 .bundle-wrapper.contains-unread .label-link,
 .bundle-wrapper .bundle-senders span.strong {
@@ -1587,7 +1605,7 @@ div[aria-label="Hangouts"][role="complementary"] {
 .zA.yO[bundleLabel="Trips"] .label-link > span:not(.bundle-count) {
 	color: rgb(156, 39, 176);
 }
-.zA.yO[bundleLabel="Finance"] .label-link > span:not(.bundle-count) {
+.zA.yO[bundleLabel^="Finance"] .label-link > span:not(.bundle-count) {
 	color: rgb(103, 159, 56);
 }
 .zA.yO[bundleLabel="Orders"] .label-link > span:not(.bundle-count),
@@ -1602,7 +1620,39 @@ div[aria-label="Hangouts"][role="complementary"] {
 /* Bundle row settings */
 .zA > span.oZ-x3 {
 	order: 0;
+	background-color: #444 !important;
 }
+
+.zA[bundlelabel^="Finance"] > .xY.bundle-image {
+	background-color: rgb(103, 159, 56) !important;
+}
+
+.zA[bundlelabel="Forums"] > .xY.bundle-image {
+	background-color: rgb(63, 81, 181) !important;
+}
+
+.zA[bundlelabel="Orders"] > span.oZ-x3,
+.zA[bundlelabel="Purchases"] > span.oZ-x3 {
+	background-color: rgb(121, 85, 72) !important;
+}
+
+.zA[bundlelabel="Promotions"] > span.oZ-x3 {
+	background-color: rgb(0,188,212) !important;
+}
+
+.zA[bundlelabel="Social"] > span.oZ-x3 {
+	background-color: rgb(219, 68, 55) !important;
+}
+
+.zA[bundlelabel="Travel"] > span.oZ-x3,
+.zA[bundlelabel="Travel"] > span.oZ-x3 {
+	background-color: rgb(156, 39, 176) !important;
+}
+
+.zA[bundlelabel="Updates"] > span.oZ-x3 {
+	background-color: rgb(255, 104, 57) !important;
+}
+
 
 .hide-important-markers {
 	display: none !important;
