@@ -9,7 +9,8 @@
     "default_popup": "src/options/options.html"
   },
   "options_ui": {
-    "page": "src/options/options.html"
+    "page": "src/options/options.html",
+    "open_in_tab": true
   },
   "background": {
     "service_worker": "src/background.js"
@@ -19,14 +20,19 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "content_scripts": [
-    {
-      "matches": ["https://mail.google.com/*"],
-      "css": ["src/style.css"],
-      "js": ["src/script.js"],
-      "run_at": "document_start"
-    }
-  ],
+"content_scripts": [
+  {
+    "matches": ["https://mail.google.com/*"],
+    "js": ["src/script.js"],
+    "css": ["src/style.css"],
+    "run_at": "document_start"
+  },
+  {
+    "matches": ["https://mail.google.com/*"],
+    "js": ["src/header-colors.js"],
+    "run_at": "document_idle"
+  }
+],
   "web_accessible_resources": [
     {
       "resources": [ "images/*"],

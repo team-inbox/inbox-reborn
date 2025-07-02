@@ -812,18 +812,6 @@ const waitForElement = function (selector, callback, tries = 100) {
 	else if (tries > 0) setTimeout(() => waitForElement(selector, callback, tries - 1), 100);
 };
 
-const handleHashChange = () => {
-  let hash = window.location.hash;
-  if (isInBundle()) hash = '#inbox';
-  else hash = hash.split('/')[0].split('?')[0];
-  const headerElement = select.headerElement();
-  const titleNode = select.titleNode();
-
-  if (!titleNode || !headerElement) return;
-
-  headerElement.setAttribute('pageTitle', hash.replace('#', ''));
-  titleNode.href = hash;
-};
 
 
 const LABEL_CONTAINER_SELECTOR = ".aAw.FgKVne ~ .yJ"
@@ -840,8 +828,6 @@ const watchLabelColorChanges = () => {
 	}
 	fixLabelColors()
 }
-
-window.addEventListener('hashchange', handleHashChange);
 
 document.addEventListener('DOMContentLoaded', function () {
 	const addReminder = document.createElement('div');
@@ -868,7 +854,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
   document.body.appendChild(addReminder);
 
-  waitForElement('a[title="Gmail"]', handleHashChange);
   waitForElement('a[title="Gmail"]', addFloatingComposeButton);
 
   waitForElement(LABEL_CONTAINER_SELECTOR, watchLabelColorChanges);

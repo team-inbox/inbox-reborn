@@ -859,33 +859,6 @@ button.gb_ff.gb_gf  {
 	-webkit-box-shadow: none;
 }
 
-/* top bar (old, new) */
-.w-asV.bbg.aiw{
-	background-color: #898984;
-}
-
-.w-asV.bbg.aiw[pageTitle="starred"]{
-	background-color: #f1c40f;
-}
-
-.w-asV.bbg.aiw[pageTitle="inbox"] {
-	background-color: #4285f4;
-}
-.w-asV.bbg.aiw[pageTitle="snoozed"] {
-	background-color: #ef6c00;
-}
-.w-asV.bbg.aiw[pageTitle="archive"] {
-	background-color: #0f9d58;
-}
-.w-asV.bbg.aiw[pageTitle="chat"],
-.w-asV.bbg.aiw[pageTitle="onboarding"] {
-	background-color: #00AC47; /* #0F9D58 is Google brand color green, but not as vibrant */
-}
-
-.w-asV.bbg.aiw[pageTitle="calls"] {
-	background-color: #DB4437;
-}
-
 /* Fix background color for vertical split layout */
 .UI .nH.nn,
 .nH.bkK.nn,
