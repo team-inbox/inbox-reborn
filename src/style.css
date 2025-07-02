@@ -1017,7 +1017,9 @@ header form input {
 /* Add reminder button */
 .add-reminder,
 /* Floating compose button */
-.floating-compose {
+.floating-compose,
+.T-I.T-I-KE.L3[jscontroller="eIu7Db"] {
+	font-size: 0 !important;
 	user-select: none;
 	position: fixed;
 	z-index: 1000;
@@ -1029,7 +1031,8 @@ header form input {
 }
 
 .add-reminder:hover,
-.floating-compose:hover {
+.floating-compose:hover,
+.T-I.T-I-KE.L3[jscontroller="eIu7Db"]:hover {
 	box-shadow: 0 1px 3px 0 rgba(60,64,67,0.302), 0 4px 8px 3px rgba(60,64,67,0.149);
 }
 
@@ -1045,7 +1048,8 @@ header form input {
 /* Add reminder button image */
 .add-reminder::before,
 /* Compose button image */
-.floating-compose::before {
+.floating-compose::before,
+.T-I.T-I-KE.L3[jscontroller="eIu7Db"]::before {
 	background-size: 24px !important;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -1061,7 +1065,8 @@ header form input {
 }
 
 /* Floating compose button */
-.floating-compose {
+.floating-compose,
+.T-I.T-I-KE.L3[jscontroller="eIu7Db"] {
 	right: 40px;
 	bottom: 20px;
 	width: 56px;
@@ -1070,17 +1075,19 @@ header form input {
 }
 
 /* Compose button image */
-.floating-compose::before {
+.floating-compose::before,
+.T-I.T-I-KE.L3[jscontroller="eIu7Db"]::before {
 	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
 	height: 56px;
 	width: 56px;
 }
-.floating-compose:hover::before {
+.floating-compose:hover::before,
+.T-I.T-I-KE.L3[jscontroller="eIu7Db"]:hover::before {
 	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
 }
 
-/* Hide old compose button */
-.T-I-KE.L3:not(.aDV) {
+/* Hide old compose button, but not the new Gmail compose button */
+.T-I-KE.L3:not(.aDV):not([jscontroller="eIu7Db"]) {
 	display: none !important;
 }
 

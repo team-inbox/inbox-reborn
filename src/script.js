@@ -37,7 +37,7 @@ let select = {
     currentTab:          ()=>document.querySelector('.aAy[aria-selected="true"]'),
     menu:                ()=>document.body.querySelector('.J-Ke.n4.ah9'),
     composeButtonNew:    ()=>document.querySelector('.Yh.akV'),
-    composeButtonOld:    ()=>document.querySelector('.T-I.T-I-KE.L3'),
+    composeButtonOld:    () => document.querySelector('.T-I.T-I-KE.L3[jscontroller="eIu7Db"]'),
     composeButton:       ()=>select.composeButtonOld() || select.composeButtonNew(),
     menuParent:          ()=>document.querySelector('.wT .byl'),
     menuRefer:           ()=>document.querySelector('.wT .byl>.TK'),
