@@ -41,7 +41,7 @@ let select = {
     composeButton:       ()=>select.composeButtonOld() || select.composeButtonNew(),
     menuParent:          ()=>document.querySelector('.wT .byl'),
     menuRefer:           ()=>document.querySelector('.wT .byl>.TK'),
-    titleNode:           ()=>document.querySelectorAll('a[title="Gmail"]')[1],
+    titleNode:           ()=>document.querySelectorAll('a[aria-label="Gmail"]')[1],
     headerElement:       ()=>document.querySelector('.w-asV.bbg.aiw'),
     messageBody:         ()=>document.querySelector('div[aria-label="Message Body"]'),
     messageFrom:         ()=>document.querySelector('input[name="from"]'),
@@ -868,8 +868,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
   document.body.appendChild(addReminder);
 
-  waitForElement('a[title="Gmail"]', handleHashChange);
-  waitForElement('a[title="Gmail"]', addFloatingComposeButton);
+  waitForElement('a[aria-label="Gmail"]', handleHashChange);
+  waitForElement('a[aria-label="Gmail"]', addFloatingComposeButton);
 
   waitForElement(LABEL_CONTAINER_SELECTOR, watchLabelColorChanges);
 
