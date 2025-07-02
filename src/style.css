@@ -899,22 +899,22 @@ button.gb_ff.gb_gf  {
 }
 
 /* Gmail icon (old, new) */
-a[title="Gmail"] {
+a[aria-label="Gmail"] {
 	width: 120px;
 	overflow: hidden;
 	text-decoration: none;
 }
-a[title="Gmail"] img {
+a[aria-label="Gmail"] img {
 	display: none;
 }
 
 /* Fix for padding applied to a[href="#inbox"] */
-a[title="Gmail"][href="#inbox"] {
+a[aria-label="Gmail"][href="#inbox"] {
 	padding-left: 0;
 }
 
 /* Gmail text */
-a[title="Gmail"]::after {
+a[aria-label="Gmail"]::after {
 	content: 'Search';
 	font-size: 20px;
 	color: #FFF;
@@ -923,45 +923,45 @@ a[title="Gmail"]::after {
 	padding-left: 7px;
 }
 
-a[title="Gmail"][href="#inbox"]::after, a[title="Gmail"][href="#settings"]::after {
+a[aria-label="Gmail"][href="#inbox"]::after, a[aria-label="Gmail"][href="#settings"]::after {
 	content: 'Inbox';
 }
-a[title="Gmail"][href="#snoozed"]::after {
+a[aria-label="Gmail"][href="#snoozed"]::after {
 	content: 'Snoozed';
 }
-a[title="Gmail"][href="#archive"]::after {
+a[aria-label="Gmail"][href="#archive"]::after {
 	content: 'Done';
 }
-a[title="Gmail"][href="#starred"]::after {
+a[aria-label="Gmail"][href="#starred"]::after {
 	content: 'Starred';
 }
-a[title="Gmail"][href="#sent"]::after {
+a[aria-label="Gmail"][href="#sent"]::after {
 	content: 'Sent';
 }
-a[title="Gmail"][href="#drafts"]::after {
+a[aria-label="Gmail"][href="#drafts"]::after {
 	content: 'Drafts';
 }
-a[title="Gmail"][href="#imp"]::after {
+a[aria-label="Gmail"][href="#imp"]::after {
 	content: 'Important';
 }
-a[title="Gmail"][href="#chat"]::after,
-a[title="Gmail"][href="#onboarding"]::after,
-a[title="Gmail"][href="#browse"]::after {
+a[aria-label="Gmail"][href="#chat"]::after,
+a[aria-label="Gmail"][href="#onboarding"]::after,
+a[aria-label="Gmail"][href="#browse"]::after {
 	content: 'Chat';
 }
-a[title="Gmail"][href="#calls"]::after {
+a[aria-label="Gmail"][href="#calls"]::after {
 	content: 'Meet';
 }
-a[title="Gmail"][href="#scheduled"]::after {
+a[aria-label="Gmail"][href="#scheduled"]::after {
 	content: 'Scheduled';
 }
-a[title="Gmail"][href="#all"]::after {
+a[aria-label="Gmail"][href="#all"]::after {
 	content: 'All Mail';
 }
-a[title="Gmail"][href="#spam"]::after {
+a[aria-label="Gmail"][href="#spam"]::after {
 	content: 'Spam';
 }
-a[title="Gmail"][href="#trash"]::after {
+a[aria-label="Gmail"][href="#trash"]::after {
 	content: 'Trash';
 }
 
