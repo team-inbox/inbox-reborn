@@ -44,3 +44,41 @@ label{
     color: #616161;
 }
 
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+body.dark-mode .setting-title {
+  color: #e0e0e0;
+}
+
+body.dark-mode input,
+body.dark-mode label,
+body.dark-mode p {
+  color: #e0e0e0;
+}
+
+body.dark-mode input[type="radio"],
+body.dark-mode input[type="checkbox"] {
+  accent-color: #4285f4;
+}
+
+body.dark-mode hr {
+  border-color: #333;
+}
+
+body.dark-mode {
+  --background: #121212;
+  --foreground: #e0e0e0;
+}
+
+body.dark-mode .content {
+  background-color: #121212;
+}
+
+body.dark-mode .setting-content {
+  background-color: #1e1e1e;
+  padding: 5px;
+  border-radius: 4px;
+}

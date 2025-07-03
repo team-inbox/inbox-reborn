@@ -47,6 +47,11 @@ const getCheckboxState = selector => document.querySelector(selector).checked;
 const monitorChange = element => element.addEventListener('click', saveOptions);
 
 document.addEventListener('DOMContentLoaded', restoreOptions);
+chrome.storage.local.get(['options'], function(result) {
+  if (result.options && result.options.darkMode) {
+    document.body.classList.add('dark-mode');
+  }
+});
 document.querySelectorAll(REMINDER_TREATMENT_SELECTOR).forEach(monitorChange);
 document.querySelectorAll(BUNDLED_EMAIL_SELECTOR).forEach(monitorChange);
 monitorChange(document.querySelector(BUNDLE_ONE_SELECTOR));
