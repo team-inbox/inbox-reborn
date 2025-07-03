@@ -6,28 +6,51 @@ function setHeaderColorDirect() {
   else hash = hash.split('/')[0].split('?')[0];
 
   // Map hash/page to color
-const colorMap = {
-  inbox: "#4285f4",
-  starred: "#f1c40f",
-  snoozed: "#ef6c00",
-  archive: "#0f9d58",
-  sent: "#fb8c00",
-  drafts: "#ffd600",
-  all: "#78909c",
-  spam: "#d32f2f",
-  trash: "#757575",
-  chat: "#00c853",
-  onboarding: "#00AC47",
-  calls: "#DB4437"
-};
+  const colorMap = {
+    inbox: "#4285f4",
+    starred: "#f1c40f",
+    snoozed: "#ef6c00",
+    archive: "#0f9d58",
+    sent: "#fb8c00",
+    drafts: "#ffd600",
+    all: "#78909c",
+    spam: "#d32f2f",
+    trash: "#757575",
+    chat: "#00c853",
+    onboarding: "#00AC47",
+    calls: "#DB4437"
+  };
+
   // Default color
   let color = "#898984";
   if (hash) {
     const key = hash.replace('#', '');
     if (colorMap[key]) color = colorMap[key];
   }
-  header.style.setProperty('background-color', color, 'important');
-  header.setAttribute('pageTitle', hash.replace('#', ''));
+
+  chrome.storage.local.get(['options'], function(result) {
+    if (result.options && result.options.darkMode) {
+      color = darkenColor(color, 0.4);
+    }
+    header.style.setProperty('background-color', color, 'important');
+    header.setAttribute('pageTitle', hash.replace('#', ''));
+  });
+}
+
+// Helper to darken a hex color by a given amount (0.0-1.0)
+function darkenColor(hex, amount) {
+  // Remove '#' if present
+  hex = hex.replace(/^#/, '');
+  // Parse r,g,b
+  let r = parseInt(hex.substring(0,2),16);
+  let g = parseInt(hex.substring(2,4),16);
+  let b = parseInt(hex.substring(4,6),16);
+  // Darken each channel
+  r = Math.max(0, Math.min(255, Math.floor(r * (1 - amount))));
+  g = Math.max(0, Math.min(255, Math.floor(g * (1 - amount))));
+  b = Math.max(0, Math.min(255, Math.floor(b * (1 - amount))));
+  // Convert back to hex
+  return "#" + [r,g,b].map(x => x.toString(16).padStart(2, '0')).join('');
 }
 
 (function persistHeaderColor() {
@@ -71,3 +94,8 @@ function replaceGmailLogoWithInbox() {
 const logoObserver = new MutationObserver(replaceGmailLogoWithInbox);
 logoObserver.observe(document.body, { childList: true, subtree: true });
 replaceGmailLogoWithInbox();
+chrome.storage.local.get(['options'], function(result) {
+  if (result.options && result.options.darkMode) {
+    document.body.classList.add('dark-mode');
+  }
+});

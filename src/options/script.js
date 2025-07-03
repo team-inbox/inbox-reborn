@@ -1,3 +1,4 @@
+const DARK_MODE_SELECTOR = 'input[name=dark-mode]';
 const REMINDER_TREATMENT_SELECTOR = 'input[name=reminder-treatment]';
 const BUNDLED_EMAIL_SELECTOR = 'input[name=email-bundling]';
 const BUNDLE_ONE_SELECTOR = 'input[name=bundle-one]';
@@ -10,8 +11,9 @@ function saveOptions() {
 	const bundleOne = getCheckboxState(BUNDLE_ONE_SELECTOR);
 	const showAvatar = getSelectedRadioValue(AVATAR_SELECTOR);
 	const priorityInbox = getSelectedRadioValue(PRIORITY_INBOX_SELECTOR);
+	const darkMode = getCheckboxState(DARK_MODE_SELECTOR);
 
-	const options = { reminderTreatment, emailBundling, bundleOne, showAvatar, priorityInbox };
+	const options = { reminderTreatment, emailBundling, bundleOne, showAvatar, priorityInbox, darkMode };
 
 	chrome.storage.local.set({ 'options': options }, function() {
     console.log('Options saved:', options);
@@ -25,7 +27,7 @@ function restoreOptions() {
 		setCheckbox(BUNDLE_ONE_SELECTOR, options.bundleOne);
 		selectRadioWithValue(AVATAR_SELECTOR, options.showAvatar);
 		selectRadioWithValue(PRIORITY_INBOX_SELECTOR, options.priorityInbox);
-		
+		setCheckbox(DARK_MODE_SELECTOR, options.darkMode);
 	});
 }
 
@@ -50,3 +52,4 @@ document.querySelectorAll(BUNDLED_EMAIL_SELECTOR).forEach(monitorChange);
 monitorChange(document.querySelector(BUNDLE_ONE_SELECTOR));
 document.querySelectorAll(AVATAR_SELECTOR).forEach(monitorChange);
 document.querySelectorAll(PRIORITY_INBOX_SELECTOR).forEach(monitorChange);
+monitorChange(document.querySelector(DARK_MODE_SELECTOR));
