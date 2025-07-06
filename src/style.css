@@ -859,32 +859,115 @@ button.gb_ff.gb_gf  {
 	-webkit-box-shadow: none;
 }
 
-/* top bar (old, new) */
-.w-asV.bbg.aiw{
-	background-color: #898984;
+/**
+ * Gmail Top Bar Color Overrides
+ * --------------------------------
+ * Purpose:
+ * Overrides Gmail's default top bar colors based on page context.
+ * 
+ * How it works:
+ * The 'pageTitle' attribute is dynamically set via JS to match
+ * the specific page (e.g., inbox, starred, promotions).
+ * 
+ * Maintenance:
+ * - Colors are based on the 2014 Material Design palette, matching the original Inbox launch colors.
+ * - Update if Gmail's DOM structure changes.
+ * - Ensure any new sections added in JS are also styled here.
+ *
+ */
+
+/* Default gray */
+.w-asV.bbg.aiw {
+  background-color: #898984;
 }
 
-.w-asV.bbg.aiw[pageTitle="starred"]{
-	background-color: #f1c40f;
-}
-
+/* Inbox - blue */
 .w-asV.bbg.aiw[pageTitle="inbox"] {
-	background-color: #4285f4;
+  background-color: #4285f4;
 }
+
+/* Starred - yellow */
+.w-asV.bbg.aiw[pageTitle="starred"] {
+  background-color: #f1c40f;
+}
+
+/* Snoozed - orange */
 .w-asV.bbg.aiw[pageTitle="snoozed"] {
-	background-color: #ef6c00;
+  background-color: #ef6c00;
 }
+
+/* Archive - dark green */
 .w-asV.bbg.aiw[pageTitle="archive"] {
-	background-color: #0f9d58;
+  background-color: #0f9d58;
 }
+
+/* Chat / Onboarding - green */
 .w-asV.bbg.aiw[pageTitle="chat"],
 .w-asV.bbg.aiw[pageTitle="onboarding"] {
-	background-color: #00AC47; /* #0F9D58 is Google brand color green, but not as vibrant */
+  background-color: #00ac47;
 }
 
+/* Calls - red */
 .w-asV.bbg.aiw[pageTitle="calls"] {
-	background-color: #DB4437;
+  background-color: #db4437;
 }
+
+/* Promotions - green */
+.w-asV.bbg.aiw[pageTitle="promotions"] {
+  background-color: #34a853;
+}
+
+/* Updates - amber */
+.w-asV.bbg.aiw[pageTitle="updates"] {
+  background-color: #fbbc04;
+}
+
+/* Forums - red */
+.w-asV.bbg.aiw[pageTitle="forums"] {
+  background-color: #ea4335;
+}
+
+/* Social - blue */
+.w-asV.bbg.aiw[pageTitle="social"] {
+  background-color: #1a73e8;
+}
+
+/* Spam - red */
+.w-asV.bbg.aiw[pageTitle="spam"] {
+  background-color: #d93025;
+}
+
+/* Trash - dark gray */
+.w-asV.bbg.aiw[pageTitle="trash"] {
+  background-color: #5f6368;
+}
+
+/* Sent - teal */
+.w-asV.bbg.aiw[pageTitle="sent"] {
+  background-color: #009688;
+}
+
+/* Drafts - brown */
+.w-asV.bbg.aiw[pageTitle="drafts"] {
+  background-color: #8d6e63; /* Material Brown 400 */
+}
+
+/* Important - orange */
+.w-asV.bbg.aiw[pageTitle="important"] {
+  background-color: #ff6d01;
+}
+
+/* Scheduled - green teal */
+.w-asV.bbg.aiw[pageTitle="scheduled"] {
+  background-color: #33b679;
+}
+
+/* All Mail - dark gray */
+.w-asV.bbg.aiw[pageTitle="allmail"] {
+  background-color: #5f6368;
+}
+
+/* ... (rest as written) ... */
 
 /* Fix background color for vertical split layout */
 .UI .nH.nn,
