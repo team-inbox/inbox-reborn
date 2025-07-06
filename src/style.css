@@ -1563,7 +1563,6 @@ div[aria-label="Hangouts"][role="complementary"] {
 	margin-left: 5px;
 	font-size: 13px;
 	margin-right: 32px;
-	color: #404040 !important;
 }
 /* allows user-specified custom color labels/bundles */
 .bundle-wrapper .label-link[style="color: rgb(225, 227, 225)"] {
@@ -1624,7 +1623,6 @@ div[aria-label="Hangouts"][role="complementary"] {
 /* Bundle row settings */
 .zA > span.oZ-x3 {
 	order: 0;
-	background-color: #444 !important;
 }
 
 /* allows user-specified custom color labels/bundles */
