@@ -1563,6 +1563,9 @@ div[aria-label="Hangouts"][role="complementary"] {
 	margin-left: 5px;
 	font-size: 13px;
 	margin-right: 32px;
+}
+/* allows user-specified custom color labels/bundles */
+.bundle-wrapper .label-link[style="color: rgb(225, 227, 225)"] {
 	color: #404040 !important;
 }
 .bundle-wrapper.contains-unread .label-link,
@@ -1620,6 +1623,10 @@ div[aria-label="Hangouts"][role="complementary"] {
 /* Bundle row settings */
 .zA > span.oZ-x3 {
 	order: 0;
+}
+
+/* allows user-specified custom color labels/bundles */
+.zA > .xY.bundle-image[style*="background-color: rgb(225, 227, 225)"] {
 	background-color: #444 !important;
 }
 
@@ -1644,7 +1651,6 @@ div[aria-label="Hangouts"][role="complementary"] {
 	background-color: rgb(219, 68, 55) !important;
 }
 
-.zA[bundlelabel="Travel"] > span.oZ-x3,
 .zA[bundlelabel="Travel"] > span.oZ-x3 {
 	background-color: rgb(156, 39, 176) !important;
 }
@@ -1652,7 +1658,6 @@ div[aria-label="Hangouts"][role="complementary"] {
 .zA[bundlelabel="Updates"] > span.oZ-x3 {
 	background-color: rgb(255, 104, 57) !important;
 }
-
 
 .hide-important-markers {
 	display: none !important;
@@ -1701,12 +1706,12 @@ body.email-bundling-enabled.bundle-page .nH.ar4.B .yi {
 }
 
 .add-reminder.moved {
-	right: 348px;
+	right: 388px;
 }
 
 .floating-compose.moved,
 .Yh.akV.moved {
-	right: 340px;
+	right: 380px;
 }
 
 /* Hide inbox count when Mail collapsed in left side bar */
