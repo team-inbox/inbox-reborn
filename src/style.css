@@ -912,26 +912,6 @@ button.gb_ff.gb_gf  {
   background-color: #db4437;
 }
 
-/* Promotions - green */
-.w-asV.bbg.aiw[pageTitle="promotions"] {
-  background-color: #34a853;
-}
-
-/* Updates - amber */
-.w-asV.bbg.aiw[pageTitle="updates"] {
-  background-color: #fbbc04;
-}
-
-/* Forums - red */
-.w-asV.bbg.aiw[pageTitle="forums"] {
-  background-color: #ea4335;
-}
-
-/* Social - blue */
-.w-asV.bbg.aiw[pageTitle="social"] {
-  background-color: #1a73e8;
-}
-
 /* Spam - red */
 .w-asV.bbg.aiw[pageTitle="spam"] {
   background-color: #d93025;
@@ -952,9 +932,9 @@ button.gb_ff.gb_gf  {
   background-color: #8d6e63; /* Material Brown 400 */
 }
 
-/* Important - orange */
-.w-asV.bbg.aiw[pageTitle="important"] {
-  background-color: #ff6d01;
+/* Important - amber */
+.w-asV.bbg.aiw[pageTitle="imp"] {
+  background-color: #fbbc04;
 }
 
 /* Scheduled - green teal */
@@ -963,7 +943,7 @@ button.gb_ff.gb_gf  {
 }
 
 /* All Mail - dark gray */
-.w-asV.bbg.aiw[pageTitle="allmail"] {
+.w-asV.bbg.aiw[pageTitle="all"] {
   background-color: #5f6368;
 }
 
