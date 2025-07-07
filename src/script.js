@@ -812,32 +812,48 @@ const waitForElement = function (selector, callback, tries = 100) {
 	else if (tries > 0) setTimeout(() => waitForElement(selector, callback, tries - 1), 100);
 };
 
+/**
+ * Updates the Gmail top bar header to display the correct page title.
+ * For user-created labels (e.g., #label/Software/Chess), only the "leaf" label (e.g., "Chess") is shown in the header,
+ * but the full label path is available as a tooltip for accessibility and clarity.
+ */
 const handleHashChange = () => {
   let hash = window.location.hash;
-  if (isInBundle()) hash = '#inbox';
-  else {
-// Map Gmail category hashes to clean pageTitle values
-// ---------------------------------------------------
-// Purpose:
-// Gmail uses hashes like '#category/social' for category views.
-// This mapping normalizes them to simple names (e.g., '#social')
-// so the CSS can apply correct top bar colors and titles.
-//
-// Categories handled here:
-// - Social
-// - Updates
-// - Forums
-// - Promotions
-// - Labels
-//
-// Note:
-// Ensure any new categories added are mapped here for top bar consistency.
+  if (isInBundle()) {
+    hash = '#inbox';
+  } else {
+    // Map Gmail category hashes to clean pageTitle values for color/title consistency
     if (hash.startsWith('#category/social')) hash = '#social';
     if (hash.startsWith('#category/updates')) hash = '#updates';
     if (hash.startsWith('#category/forums')) hash = '#forums';
     if (hash.startsWith('#category/promotions')) hash = '#promotions';
-	if (hash.startsWith('#settings/labels')) hash = '#labels';
-
+    if (hash.startsWith('#settings/labels')) hash = '#labels';
+    // Handle user-created/dynamic labels
+    if (hash.startsWith('#label/')) {
+      // Get the header element and Gmail link node
+      const headerElement = select.headerElement();
+      const titleNode = select.titleNode();
+      // Extract and decode the full label path (e.g., "Software/Chess")
+      const raw = hash.slice('#label/'.length);
+      const labelName = decodeURIComponent(raw.replace(/\+/g, ' '));
+      // Extract only the last part of the label path (the "leaf" label)
+      const leafLabel = labelName.split('/').pop().trim();
+      if (headerElement && titleNode && titleNode.setAttribute) {
+        headerElement.setAttribute('pageTitle', 'label');
+        // Show just the last sub-label in the header (e.g., "Chess")
+        titleNode.setAttribute('data-label-title', leafLabel);
+        // Provide the full label path as a tooltip for accessibility
+        titleNode.setAttribute('title', labelName);
+        titleNode.href = '#label';
+      }
+      return; // Skip the rest of the logic for label pages
+    }
+    // Remove label-title attribute if not on a label page
+    const titleNode = select.titleNode();
+    if (titleNode && titleNode.removeAttribute) {
+      titleNode.removeAttribute('data-label-title');
+      titleNode.removeAttribute('title');
+    }
     hash = hash.split('/')[0].split('?')[0];
   }
   const headerElement = select.headerElement();

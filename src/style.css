@@ -977,7 +977,49 @@ button.gb_ff.gb_gf  {
   background-color: #3f51b5; 
 }
 
-/* ... (rest as written) ... */
+/* Material Indigo 500 */
+.w-asV.bbg.aiw[pageTitle="label"] {
+  background-color: #3f51b5; 
+}
+
+/**
+ * ──────────────────────────────────────────────────────
+ * Category & Label Page Titles (Header Bar)
+ *
+ * These rules display the title in the Gmail header based on the
+ * `pageTitle` attribute set by handleHashChange() in JavaScript:
+ *
+ * • `social`, `updates`, `forums`, `promotions`, `labels` — use fixed names
+ * • `label` — dynamic: content pulled from `data-label-title` which
+ *               JS sets to the leaf (last segment) of a custom label.
+ *
+ * Example:
+ *   .w-asV.bbg.aiw[pageTitle="forums"] a[aria-label="Gmail"]::after {
+ *     content: 'Forums';
+ *   }
+ *   .w-asV.bbg.aiw[pageTitle="label"] a[aria-label="Gmail"]::after {
+ *     content: attr(data-label-title);
+ *   }
+ * ──────────────────────────────────────────────────────
+ */
+.w-asV.bbg.aiw[pageTitle="social"] a[aria-label="Gmail"]::after {
+  content: 'Social';
+}
+.w-asV.bbg.aiw[pageTitle="updates"] a[aria-label="Gmail"]::after {
+  content: 'Updates';
+}
+.w-asV.bbg.aiw[pageTitle="forums"] a[aria-label="Gmail"]::after {
+  content: 'Forums';
+}
+.w-asV.bbg.aiw[pageTitle="promotions"] a[aria-label="Gmail"]::after {
+  content: 'Promotions';
+}
+.w-asV.bbg.aiw[pageTitle="labels"] a[aria-label="Gmail"]::after {
+  content: 'Labels';
+}
+.w-asV.bbg.aiw[pageTitle="label"] a[aria-label="Gmail"]::after {
+  content: attr(data-label-title);
+}
 
 /* Fix background color for vertical split layout */
 .UI .nH.nn,
@@ -1060,29 +1102,6 @@ a[aria-label="Gmail"][href="#trash"]::after {
 }
 a[aria-label="Gmail"][href="#sub"]::after {
 	content: 'Subscriptions';
-}
-
-/**
- * Category Top Bar Titles
- * ------------------------
- * Displays the correct top bar title for Social, Updates, Forums, Promotions and Labels.
- * Relies on JS setting pageTitle to these values based on URL hash mappings
- * in handleHashChange() for correct contextual naming.
- */
-.w-asV.bbg.aiw[pageTitle="social"] a[aria-label="Gmail"]::after {
-  content: 'Social';
-}
-.w-asV.bbg.aiw[pageTitle="updates"] a[aria-label="Gmail"]::after {
-  content: 'Updates';
-}
-.w-asV.bbg.aiw[pageTitle="forums"] a[aria-label="Gmail"]::after {
-  content: 'Forums';
-}
-.w-asV.bbg.aiw[pageTitle="promotions"] a[aria-label="Gmail"]::after {
-  content: 'Promotions';
-}
-.w-asV.bbg.aiw[pageTitle="labels"] a[aria-label="Gmail"]::after {
-  content: 'Labels';
 }
 
 /* Invisible inbox info with huge padding at bottom of email  */
