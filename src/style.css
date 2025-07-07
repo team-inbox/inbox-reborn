@@ -909,7 +909,7 @@ a[aria-label="Gmail"] img {
 }
 
 /* Fix for padding applied to a[href="#inbox"] */
-/* All sections get padding, lines up with sidebar icons */
+/* All titles get padding, lines up with sidebar icons */
 a[aria-label="Gmail"][href^="#"] {
 	padding-left: 22px;
 }
