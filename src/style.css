@@ -886,9 +886,9 @@ button.gb_ff.gb_gf  {
   background-color: #4285f4;
 }
 
-/* Starred - yellow */
+/* Material Yellow 700 */
 .w-asV.bbg.aiw[pageTitle="starred"] {
-  background-color: #f1c40f;
+  background-color: #fbc02d; 
 }
 
 /* Snoozed - orange */
@@ -932,9 +932,9 @@ button.gb_ff.gb_gf  {
   background-color: #8d6e63; /* Material Brown 400 */
 }
 
-/* Important - amber */
+/* Important - deep orange */
 .w-asV.bbg.aiw[pageTitle="imp"] {
-  background-color: #fbbc04;
+  background-color: #ff5722;
 }
 
 /* Scheduled - green teal */
@@ -945,6 +945,36 @@ button.gb_ff.gb_gf  {
 /* All Mail - dark gray */
 .w-asV.bbg.aiw[pageTitle="all"] {
   background-color: #5f6368;
+}
+
+/* Material Light Green 500 */
+.w-asV.bbg.aiw[pageTitle="promotions"] {
+  background-color: #8bc34a; 
+}
+
+/* Updates - amber */
+.w-asV.bbg.aiw[pageTitle="updates"] {
+  background-color: #fbbc04;
+}
+
+/* Material Purple 500 */
+.w-asV.bbg.aiw[pageTitle="forums"] {
+  background-color: #9c27b0; 
+}
+
+/* Social - blue */
+.w-asV.bbg.aiw[pageTitle="social"] {
+  background-color: #1a73e8;
+}
+
+/* Material Cyan 600 */
+.w-asV.bbg.aiw[pageTitle="sub"] {
+  background-color: #00acc1; 
+}
+
+/* Material Indigo 500 */
+.w-asV.bbg.aiw[pageTitle="labels"] {
+  background-color: #3f51b5; 
 }
 
 /* ... (rest as written) ... */
@@ -1027,6 +1057,32 @@ a[aria-label="Gmail"][href="#spam"]::after {
 }
 a[aria-label="Gmail"][href="#trash"]::after {
 	content: 'Trash';
+}
+a[aria-label="Gmail"][href="#sub"]::after {
+	content: 'Subscriptions';
+}
+
+/**
+ * Category Top Bar Titles
+ * ------------------------
+ * Displays the correct top bar title for Social, Updates, Forums, Promotions and Labels.
+ * Relies on JS setting pageTitle to these values based on URL hash mappings
+ * in handleHashChange() for correct contextual naming.
+ */
+.w-asV.bbg.aiw[pageTitle="social"] a[aria-label="Gmail"]::after {
+  content: 'Social';
+}
+.w-asV.bbg.aiw[pageTitle="updates"] a[aria-label="Gmail"]::after {
+  content: 'Updates';
+}
+.w-asV.bbg.aiw[pageTitle="forums"] a[aria-label="Gmail"]::after {
+  content: 'Forums';
+}
+.w-asV.bbg.aiw[pageTitle="promotions"] a[aria-label="Gmail"]::after {
+  content: 'Promotions';
+}
+.w-asV.bbg.aiw[pageTitle="labels"] a[aria-label="Gmail"]::after {
+  content: 'Labels';
 }
 
 /* Invisible inbox info with huge padding at bottom of email  */

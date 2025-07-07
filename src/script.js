@@ -815,7 +815,31 @@ const waitForElement = function (selector, callback, tries = 100) {
 const handleHashChange = () => {
   let hash = window.location.hash;
   if (isInBundle()) hash = '#inbox';
-  else hash = hash.split('/')[0].split('?')[0];
+  else {
+// Map Gmail category hashes to clean pageTitle values
+// ---------------------------------------------------
+// Purpose:
+// Gmail uses hashes like '#category/social' for category views.
+// This mapping normalizes them to simple names (e.g., '#social')
+// so the CSS can apply correct top bar colors and titles.
+//
+// Categories handled here:
+// - Social
+// - Updates
+// - Forums
+// - Promotions
+// - Labels
+//
+// Note:
+// Ensure any new categories added are mapped here for top bar consistency.
+    if (hash.startsWith('#category/social')) hash = '#social';
+    if (hash.startsWith('#category/updates')) hash = '#updates';
+    if (hash.startsWith('#category/forums')) hash = '#forums';
+    if (hash.startsWith('#category/promotions')) hash = '#promotions';
+	if (hash.startsWith('#settings/labels')) hash = '#labels';
+
+    hash = hash.split('/')[0].split('?')[0];
+  }
   const headerElement = select.headerElement();
   const titleNode = select.titleNode();
 
