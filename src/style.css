@@ -881,45 +881,19 @@ button.gb_ff.gb_gf  {
   background-color: #898984;
 }
 
-/* Inbox - blue */
+/* Inbox */
 .w-asV.bbg.aiw[pageTitle="inbox"] {
   background-color: #4285f4;
 }
 
-/* Material Yellow 700 */
+/* Starred */
 .w-asV.bbg.aiw[pageTitle="starred"] {
   background-color: #fbc02d; 
 }
 
-/* Snoozed - orange */
+/* Snoozed */
 .w-asV.bbg.aiw[pageTitle="snoozed"] {
   background-color: #ef6c00;
-}
-
-/* Archive - dark green */
-.w-asV.bbg.aiw[pageTitle="archive"] {
-  background-color: #0f9d58;
-}
-
-/* Chat / Onboarding - green */
-.w-asV.bbg.aiw[pageTitle="chat"],
-.w-asV.bbg.aiw[pageTitle="onboarding"] {
-  background-color: #00ac47;
-}
-
-/* Calls - red */
-.w-asV.bbg.aiw[pageTitle="calls"] {
-  background-color: #db4437;
-}
-
-/* Spam - red */
-.w-asV.bbg.aiw[pageTitle="spam"] {
-  background-color: #d93025;
-}
-
-/* Trash - dark gray */
-.w-asV.bbg.aiw[pageTitle="trash"] {
-  background-color: #5f6368;
 }
 
 /* Sent - teal */
@@ -927,59 +901,85 @@ button.gb_ff.gb_gf  {
   background-color: #009688;
 }
 
-/* Drafts - brown */
+/* Drafts */
 .w-asV.bbg.aiw[pageTitle="drafts"] {
-  background-color: #8d6e63; /* Material Brown 400 */
+  background-color: #8d6e63; 
 }
 
-/* Important - deep orange */
-.w-asV.bbg.aiw[pageTitle="imp"] {
-  background-color: #ff5722;
-}
-
-/* Scheduled - green teal */
-.w-asV.bbg.aiw[pageTitle="scheduled"] {
-  background-color: #33b679;
-}
-
-/* All Mail - dark gray */
+/* All Mail */
 .w-asV.bbg.aiw[pageTitle="all"] {
+  background-color: #4285f4;
+}
+
+/* Spam */
+.w-asV.bbg.aiw[pageTitle="spam"] {
+  background-color: #d93025;
+}
+
+/* Trash */
+.w-asV.bbg.aiw[pageTitle="trash"] {
   background-color: #5f6368;
 }
 
-/* Material Light Green 500 */
+/* Social */
+.w-asV.bbg.aiw[pageTitle="social"] {
+  background-color: #009688;
+}
+
+/* Updates */
+.w-asV.bbg.aiw[pageTitle="updates"] {
+  background-color: #ffa600;
+}
+
+/* Forums */
+.w-asV.bbg.aiw[pageTitle="forums"] {
+  background-color: #bc5090; 
+}
+
+/* Promotions  */
 .w-asV.bbg.aiw[pageTitle="promotions"] {
   background-color: #8bc34a; 
 }
 
-/* Updates - amber */
-.w-asV.bbg.aiw[pageTitle="updates"] {
-  background-color: #fbbc04;
+/* Important */
+.w-asV.bbg.aiw[pageTitle="imp"] {
+  background-color: #ff5722;
 }
 
-/* Material Purple 500 */
-.w-asV.bbg.aiw[pageTitle="forums"] {
-  background-color: #9c27b0; 
+/* Scheduled */
+.w-asV.bbg.aiw[pageTitle="scheduled"] {
+  background-color: #33b679;
 }
 
-/* Social - blue */
-.w-asV.bbg.aiw[pageTitle="social"] {
-  background-color: #1a73e8;
-}
-
-/* Material Cyan 600 */
+/* Manage subscriptions */
 .w-asV.bbg.aiw[pageTitle="sub"] {
   background-color: #00acc1; 
 }
 
-/* Material Indigo 500 */
+/* Mange Labels */
 .w-asV.bbg.aiw[pageTitle="labels"] {
-  background-color: #3f51b5; 
+  background-color: #5e87f5; 
 }
 
-/* Material Indigo 500 */
+/* Labels Custom for users */
 .w-asV.bbg.aiw[pageTitle="label"] {
-  background-color: #3f51b5; 
+  background-color: #5e87f5; 
+}
+
+/* Archive  */
+.w-asV.bbg.aiw[pageTitle="archive"] {
+  background-color: #0f9d58;
+}
+
+/* Chat */
+.w-asV.bbg.aiw[pageTitle="chat"],
+.w-asV.bbg.aiw[pageTitle="onboarding"] {
+  background-color: #00ac47;
+}
+
+/* Meet */
+.w-asV.bbg.aiw[pageTitle="calls"] {
+  background-color: #db4437;
 }
 
 /**
