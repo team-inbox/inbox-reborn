@@ -396,7 +396,14 @@ const buildBundleWrapper = function (email, label, hasImportantMarkers) {
 
 	bundleWrapper.onclick = () => location.href = `#search/in%3Ainbox+label%3A${fixLabel(label)}`;
 
-	if (email && email.parentNode) email.parentElement.insertBefore(bundleWrapper, email);
+	if (email && email.parentNode) {
+  if (options.bundleTop) {
+    const parent = email.parentElement;
+    parent.insertBefore(bundleWrapper, parent.firstChild);
+  } else {
+    email.parentElement.insertBefore(bundleWrapper, email);
+  }
+}
 };
 
 const fixLabel = label => encodeURIComponent(label.replace(/[\/\\& ]/g, '-'));
