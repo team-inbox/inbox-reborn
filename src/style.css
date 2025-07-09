@@ -409,16 +409,94 @@ td.apU.xY .T-KT.xf::before {
 	transition: transform 0.2s ease;
 }
 
-/* Done icon (green checkmark) */
-.byl > .TK:nth-of-type(2) > .aim:nth-of-type(3) .qj {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_done_clr_24dp_r4_2x.png') !important;
+/* --- DONE MENU ROW --- */
+.TO.inbox-reborn-done {
+  width: 234px !important;
+  height: 50px !important;
+  display: flex !important;
+  align-items: center;
+  border-radius: 2px !important;
+  background: none !important;
+  position: relative;
+  box-sizing: border-box;
+  cursor: pointer !important;
+  /* To allow highlight/hover like other rows */
+  transition: background 0.12s;
 }
 
+/* Add divider under Done menu row */
+.TO.inbox-reborn-done {
+  position: relative;
+}
+
+.TO.inbox-reborn-done::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -13px; /* Adjust for spacing; matches Trash and Categories divider gap */
+  height: 1px;
+  background: #ddd;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Add vertical spacing after Done divider to match Categories gap */
+.TO.inbox-reborn-done {
+  margin-bottom: 27px; /* Adjust as needed for visual match */
+}
+
+/* On hover, look like all other menu rows */
+.TO.inbox-reborn-done:hover,
+.TO.inbox-reborn-done.nZ {
+  background-color: rgba(0,0,0,.05) !important;
+}
+
+/* Make all children take full height */
+.TO.inbox-reborn-done > * {
+  height: 100%;
+}
+
+/* Make the link cover the whole row, with flex alignment */
+.TO.inbox-reborn-done a {
+  display: flex !important;
+  align-items: center;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  color: inherit !important;
+  text-decoration: none !important;
+  background: none !important;
+  border: none;
+  box-sizing: border-box;
+  position: absolute;
+  left: 0; top: 0;
+  z-index: 2;
+  cursor: pointer !important;
+}
+
+/* Keep icon and text on top of the link, so click works everywhere */
+.TO.inbox-reborn-done .qj,
+.TO.inbox-reborn-done .nU {
+  position: relative;
+  z-index: 3;
+  pointer-events: none; /* don't block click */
+}
+
+/* Done icon - margin matches Sent/Drafts */
+.TO.inbox-reborn-done .qj {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_done_clr_24dp_r4_2x.png') !important;
+  background-size: 24px !important;
+  margin-right: 24px !important;
+  width: 24px !important;
+  height: 24px !important;
+  flex-shrink: 0;
+}
 @-moz-document url-prefix() {
-	/* Done icon (green checkmark) */
-	.byl > .TK:nth-of-type(2) > .aim:nth-of-type(3) .qj {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_done_clr_24dp_r4_2x.png') !important;
-	}
+  .TO.inbox-reborn-done .qj {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_done_clr_24dp_r4_2x.png') !important;
+  }
 }
 
 /* Compose email old place */
@@ -1922,8 +2000,6 @@ span.XU {
 	}
 }
 
-
-
 /* Hide Compose and Reminder buttons from Gmail's Print view */
 @media print {
 	.add-reminder,
@@ -1931,4 +2007,35 @@ span.XU {
 	.akV {
 		display: none;
 	}
+}
+
+/* === Auto-hide Gmail main message list scrollbar (Chrome & Firefox) === */
+
+/* For Chrome, Edge, and other Webkit/Blink browsers */
+.aeF::-webkit-scrollbar {
+  width: 10px;
+  background: transparent;
+  transition: background 0.2s;
+}
+.aeF::-webkit-scrollbar-thumb {
+  background: rgba(160, 160, 160, 0.15);
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.aeF:hover::-webkit-scrollbar-thumb,
+.aeF:active::-webkit-scrollbar-thumb {
+  background: rgba(160, 160, 160, 0.33);
+}
+.aeF:not(:hover)::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+/* For Firefox */
+.aeF {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(160,160,160,0.33) transparent;
+  transition: scrollbar-color 0.2s;
+}
+.aeF:not(:hover) {
+  scrollbar-color: transparent transparent;
 }

@@ -692,14 +692,19 @@ const updateReminders = () => {
 **
 */
 
-const menuNodes = {};
+// Declare menuNodes before use to avoid ReferenceError
+let menuNodes = {};
+
 const setupMenuNodes = () => {
-  const observer = new MutationObserver(() => {
-    // menu items
+  const sidebarSelector = '.wT .byl'; // Parent of the menu rows
+  const watchSidebar = () => {
+    const sidebar = document.querySelector(sidebarSelector);
+    if (!sidebar) return;
+    insertDoneMenuItem();
     [
       { label: 'inbox',     selector: '.aHS-bnt' },
       { label: 'snoozed',   selector: '.aHS-bu1' },
-      { label: 'done',      selector: '.aHS-aHO' },
+      { label: 'allmail',   selector: '.aHS-aHO' },
       { label: 'drafts',    selector: '.aHS-bnq' },
       { label: 'sent',      selector: '.aHS-bnu' },
       { label: 'spam',      selector: '.aHS-bnv' },
@@ -707,81 +712,121 @@ const setupMenuNodes = () => {
       { label: 'starred',   selector: '.aHS-bnw' },
       { label: 'important', selector: '.aHS-bns' },
       { label: 'chats',     selector: '.aHS-aHP' },
-    ].map(({ label, selector }) => {
+    ].forEach(({ label, selector }) => {
       const node = queryParentSelector(document.querySelector(selector), '.aim');
       if (node) menuNodes[label] = node;
     });
+  };
+
+  const observer = new MutationObserver(watchSidebar);
+  waitForElement(sidebarSelector, (sidebar) => {
+    observer.observe(sidebar, { childList: true, subtree: true });
+    watchSidebar();
   });
-  observer.observe(document.body, { subtree: true, childList: true });
 };
+
+function insertDoneMenuItem() {
+  // Prevent duplicate Done menu item
+  if (document.querySelector('.TO.inbox-reborn-done')) return;
+  const snoozedTO = document.querySelector('.aHS-bu1')?.closest('.TO');
+  if (!snoozedTO) return;
+
+  // Clone snoozed menu item and change to Done
+  const doneTO = snoozedTO.cloneNode(true);
+  doneTO.classList.remove('aHS-bu1');
+  doneTO.classList.add('inbox-reborn-done');
+  doneTO.classList.remove('nZ'); // remove highlight
+
+  // Fix icon
+  const icon = doneTO.querySelector('.qj');
+  if (icon) {
+    icon.style.backgroundImage = "url('chrome-extension://__MSG_@@extension_id__/images/ic_done_clr_24dp_r4_2x.png')";
+  }
+
+  // Fix label and link
+const labelContainer = doneTO.querySelector('.nU');
+if (labelContainer) {
+  // Remove any existing children (like <a>)
+  labelContainer.innerHTML = '';
+  // Insert the visible label as a span
+  const visibleLabel = document.createElement('span');
+  visibleLabel.className = 'n0';
+  visibleLabel.textContent = 'Done';
+  labelContainer.appendChild(visibleLabel);
+}
+
+// Create the absolutely positioned <a> for clickability
+let link = doneTO.querySelector('a');
+if (!link) {
+  link = document.createElement('a');
+  link.href = '#archive';
+  link.setAttribute('aria-label', 'Done');
+  link.className = 'inbox-reborn-done-link';
+  link.style.position = 'absolute';
+  link.style.left = '0';
+  link.style.top = '0';
+  link.style.width = '100%';
+  link.style.height = '100%';
+  link.style.zIndex = '2';
+  link.style.background = 'none';
+  link.onclick = function(e) {
+    e.preventDefault();
+    window.location.hash = '#archive';
+  };
+  doneTO.appendChild(link);
+}
+
+  // Make the whole row clickable
+  doneTO.onclick = function(e) {
+    if (e.target.tagName.toLowerCase() !== 'a') {
+      window.location.hash = '#archive';
+    }
+  };
+
+  // Insert after Snoozed
+  snoozedTO.parentNode.insertBefore(doneTO, snoozedTO.nextSibling);
+
+  // Highlight Done menu when active
+  function updateDoneHighlight() {
+    const doneMenu = document.querySelector('.TO.inbox-reborn-done');
+    if (!doneMenu) return;
+    if (window.location.hash === '#archive') {
+      doneMenu.classList.add('nZ');
+    } else {
+      doneMenu.classList.remove('nZ');
+    }
+    if (window.location.hash === '#archive') {
+      snoozedTO.classList.remove('nZ');
+    }
+  }
+  window.addEventListener('hashchange', updateDoneHighlight);
+  updateDoneHighlight();
+}
 
 const reorderMenuItems = () => {
-  const observer = new MutationObserver(() => {
-    const parent = select.menuParent();
-    const refer = select.menuRefer();
-    const { inbox, snoozed, done, drafts, sent, spam, trash, starred, important, chats } = menuNodes;
+  const desiredOrder = [
+    '.aHS-bnq', // Drafts
+    '.aHS-bnu', // Sent
+    '.aHS-aHO', // All Mail
+    '.aHS-bnx', // Trash
+    '.aHS-bnv', // Spam
+  ];
+  const parent = select.menuParent();
+  const refer = select.menuRefer();
 
-    if (parent && refer && loadedMenu && inbox && snoozed && done && drafts && sent && spam && trash && starred && important && chats) {
-      // Gmail will execute its script to add element to the first child, so
-      // add one placeholder for it and do the rest in the next child.
-      const placeholder = document.createElement('div');
-      placeholder.classList.add('TK');
-      placeholder.style.cssText = 'padding: 0; border: 0;';
-
-      // Assign link href which only show archived mail
-      done.querySelector('a').href = '#archive';
-
-      // Remove id attribute from done element for preventing event override from Gmail
-      done.firstChild.removeAttribute('id');
-
-      // Manually add on-click event to done elment
-	  done.addEventListener('click', () => window.location.assign('#archive'));
-
-      // Rewrite text from All Mail to Done
-      done.querySelector('a').innerText = 'Done';
-
-      // Add border seperator to bottom of Done
-      const innerDone = done.querySelector('div');
-      innerDone.parentElement.style.borderBottom = '1px solid rgb(221, 221, 221)';
-      innerDone.parentElement.style.paddingBottom = '15px';
-      innerDone.style.paddingBottom = '5px';
-      innerDone.style.paddingTop = '5px';
-
-      const newNode = document.createElement('div');
-      newNode.classList.add('TK');
-      newNode.appendChild(inbox);
-      newNode.appendChild(snoozed);
-      newNode.appendChild(done);
-      parent.insertBefore(placeholder, refer);
-      parent.insertBefore(newNode, refer);
-
-      setupClickEventForNodes([inbox, snoozed, done, drafts, sent, spam, trash, starred, important, chats]);
-
-      // Close More menu
-      select.menu().click();
-      observer.disconnect();
+  function tryReorder() {
+    // Find all the menu nodes in the desired order
+    const nodes = desiredOrder.map(sel => document.querySelector(sel)?.closest('.TO'));
+    if (nodes.some(n => !n) || !parent || !refer) {
+      setTimeout(tryReorder, 250);
+      return;
     }
-
-    if (!loadedMenu && inbox) {
-      // Open More menu
-      select.menu().click();
-      loadedMenu = true;
-    }
-  });
-  observer.observe(document.body, { subtree: true, childList: true });
-};
-
-const activateMenuItem = (target, nodes) => {
-  nodes.map(node => node.firstChild.classList.remove('nZ'));
-  target.firstChild.classList.add('nZ');
-};
-
-const setupClickEventForNodes = (nodes) => {
-  nodes.map(node =>
-    node.addEventListener('click', () =>
-      activateMenuItem(node, nodes)
-    )
-  );
+    // Remove from current position
+    nodes.forEach(node => parent.contains(node) && parent.removeChild(node));
+    // Insert in the new order before the reference node
+    nodes.forEach(node => parent.insertBefore(node, refer));
+  }
+  tryReorder();
 };
 
 const queryParentSelector = (elm, sel) => {
