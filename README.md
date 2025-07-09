@@ -28,7 +28,7 @@ https://addons.mozilla.org/en-GB/firefox/addon/inbox-reborn-theme-gmail/
 
 ## Extension Options
 
-![options popup screenshot](https://github.com/team-inbox/inbox-reborn/blob/master/screenshots/options.png?raw=true)
+<img src="https://github.com/team-inbox/inbox-reborn/blob/master/screenshots/options.png?raw=true" alt="options popup screenshot" width="400">
 
 Click the extension's icon at the top right of your browser to adjust the behavior of some features:
 
