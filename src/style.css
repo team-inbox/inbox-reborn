@@ -409,16 +409,94 @@ td.apU.xY .T-KT.xf::before {
 	transition: transform 0.2s ease;
 }
 
-/* Done icon (green checkmark) */
-.byl > .TK:nth-of-type(2) > .aim:nth-of-type(3) .qj {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_done_clr_24dp_r4_2x.png') !important;
+/* --- DONE MENU ROW --- */
+.TO.inbox-reborn-done {
+  width: 234px !important;
+  height: 50px !important;
+  display: flex !important;
+  align-items: center;
+  border-radius: 2px !important;
+  background: none !important;
+  position: relative;
+  box-sizing: border-box;
+  cursor: pointer !important;
+  /* To allow highlight/hover like other rows */
+  transition: background 0.12s;
 }
 
+/* Add divider under Done menu row */
+.TO.inbox-reborn-done {
+  position: relative;
+}
+
+.TO.inbox-reborn-done::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -13px; /* Adjust for spacing; matches Trash and Categories divider gap */
+  height: 1px;
+  background: #ddd;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Add vertical spacing after Done divider to match Categories gap */
+.TO.inbox-reborn-done {
+  margin-bottom: 27px; /* Adjust as needed for visual match */
+}
+
+/* On hover, look like all other menu rows */
+.TO.inbox-reborn-done:hover,
+.TO.inbox-reborn-done.nZ {
+  background-color: rgba(0,0,0,.05) !important;
+}
+
+/* Make all children take full height */
+.TO.inbox-reborn-done > * {
+  height: 100%;
+}
+
+/* Make the link cover the whole row, with flex alignment */
+.TO.inbox-reborn-done a {
+  display: flex !important;
+  align-items: center;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  color: inherit !important;
+  text-decoration: none !important;
+  background: none !important;
+  border: none;
+  box-sizing: border-box;
+  position: absolute;
+  left: 0; top: 0;
+  z-index: 2;
+  cursor: pointer !important;
+}
+
+/* Keep icon and text on top of the link, so click works everywhere */
+.TO.inbox-reborn-done .qj,
+.TO.inbox-reborn-done .nU {
+  position: relative;
+  z-index: 3;
+  pointer-events: none; /* don't block click */
+}
+
+/* Done icon - margin matches Sent/Drafts */
+.TO.inbox-reborn-done .qj {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_done_clr_24dp_r4_2x.png') !important;
+  background-size: 24px !important;
+  margin-right: 24px !important;
+  width: 24px !important;
+  height: 24px !important;
+  flex-shrink: 0;
+}
 @-moz-document url-prefix() {
-	/* Done icon (green checkmark) */
-	.byl > .TK:nth-of-type(2) > .aim:nth-of-type(3) .qj {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_done_clr_24dp_r4_2x.png') !important;
-	}
+  .TO.inbox-reborn-done .qj {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_done_clr_24dp_r4_2x.png') !important;
+  }
 }
 
 /* Compose email old place */
@@ -859,31 +937,166 @@ button.gb_ff.gb_gf  {
 	-webkit-box-shadow: none;
 }
 
-/* top bar (old, new) */
-.w-asV.bbg.aiw{
-	background-color: #898984;
+/**
+ * Gmail Top Bar Color Overrides
+ * --------------------------------
+ * Purpose:
+ * Overrides Gmail's default top bar colors based on page context.
+ * 
+ * How it works:
+ * The 'pageTitle' attribute is dynamically set via JS to match
+ * the specific page (e.g., inbox, starred, promotions).
+ * 
+ * Maintenance:
+ * - Colors are based on the 2014 Material Design palette, matching the original Inbox launch colors.
+ * - Update if Gmail's DOM structure changes.
+ * - Ensure any new sections added in JS are also styled here.
+ *
+ */
+
+/* Default gray */
+.w-asV.bbg.aiw {
+  background-color: #898984;
 }
 
-.w-asV.bbg.aiw[pageTitle="starred"]{
-	background-color: #f1c40f;
-}
-
+/* Inbox */
 .w-asV.bbg.aiw[pageTitle="inbox"] {
-	background-color: #4285f4;
+  background-color: #4285f4;
 }
+
+/* Starred */
+.w-asV.bbg.aiw[pageTitle="starred"] {
+  background-color: #fbc02d; 
+}
+
+/* Snoozed */
 .w-asV.bbg.aiw[pageTitle="snoozed"] {
-	background-color: #ef6c00;
+  background-color: #ef6c00;
 }
+
+/* Sent - teal */
+.w-asV.bbg.aiw[pageTitle="sent"] {
+  background-color: #009688;
+}
+
+/* Drafts */
+.w-asV.bbg.aiw[pageTitle="drafts"] {
+  background-color: #8d6e63; 
+}
+
+/* All Mail */
+.w-asV.bbg.aiw[pageTitle="all"] {
+  background-color: #4285f4;
+}
+
+/* Spam */
+.w-asV.bbg.aiw[pageTitle="spam"] {
+  background-color: #d93025;
+}
+
+/* Trash */
+.w-asV.bbg.aiw[pageTitle="trash"] {
+  background-color: #5f6368;
+}
+
+/* Social */
+.w-asV.bbg.aiw[pageTitle="social"] {
+  background-color: #009688;
+}
+
+/* Updates */
+.w-asV.bbg.aiw[pageTitle="updates"] {
+  background-color: #ffa600;
+}
+
+/* Forums */
+.w-asV.bbg.aiw[pageTitle="forums"] {
+  background-color: #bc5090; 
+}
+
+/* Promotions  */
+.w-asV.bbg.aiw[pageTitle="promotions"] {
+  background-color: #8bc34a; 
+}
+
+/* Important */
+.w-asV.bbg.aiw[pageTitle="imp"] {
+  background-color: #ff5722;
+}
+
+/* Scheduled */
+.w-asV.bbg.aiw[pageTitle="scheduled"] {
+  background-color: #33b679;
+}
+
+/* Manage subscriptions */
+.w-asV.bbg.aiw[pageTitle="sub"] {
+  background-color: #00acc1; 
+}
+
+/* Mange Labels */
+.w-asV.bbg.aiw[pageTitle="labels"] {
+  background-color: #5e87f5; 
+}
+
+/* Labels Custom for users */
+.w-asV.bbg.aiw[pageTitle="label"] {
+  background-color: #5e87f5; 
+}
+
+/* Archive  */
 .w-asV.bbg.aiw[pageTitle="archive"] {
-	background-color: #0f9d58;
+  background-color: #0f9d58;
 }
+
+/* Chat */
 .w-asV.bbg.aiw[pageTitle="chat"],
 .w-asV.bbg.aiw[pageTitle="onboarding"] {
-	background-color: #00AC47; /* #0F9D58 is Google brand color green, but not as vibrant */
+  background-color: #00ac47;
 }
 
+/* Meet */
 .w-asV.bbg.aiw[pageTitle="calls"] {
-	background-color: #DB4437;
+  background-color: #db4437;
+}
+
+/**
+ * ──────────────────────────────────────────────────────
+ * Category & Label Page Titles (Header Bar)
+ *
+ * These rules display the title in the Gmail header based on the
+ * `pageTitle` attribute set by handleHashChange() in JavaScript:
+ *
+ * • `social`, `updates`, `forums`, `promotions`, `labels` — use fixed names
+ * • `label` — dynamic: content pulled from `data-label-title` which
+ *               JS sets to the leaf (last segment) of a custom label.
+ *
+ * Example:
+ *   .w-asV.bbg.aiw[pageTitle="forums"] a[aria-label="Gmail"]::after {
+ *     content: 'Forums';
+ *   }
+ *   .w-asV.bbg.aiw[pageTitle="label"] a[aria-label="Gmail"]::after {
+ *     content: attr(data-label-title);
+ *   }
+ * ──────────────────────────────────────────────────────
+ */
+.w-asV.bbg.aiw[pageTitle="social"] a[aria-label="Gmail"]::after {
+  content: 'Social';
+}
+.w-asV.bbg.aiw[pageTitle="updates"] a[aria-label="Gmail"]::after {
+  content: 'Updates';
+}
+.w-asV.bbg.aiw[pageTitle="forums"] a[aria-label="Gmail"]::after {
+  content: 'Forums';
+}
+.w-asV.bbg.aiw[pageTitle="promotions"] a[aria-label="Gmail"]::after {
+  content: 'Promotions';
+}
+.w-asV.bbg.aiw[pageTitle="labels"] a[aria-label="Gmail"]::after {
+  content: 'Labels';
+}
+.w-asV.bbg.aiw[pageTitle="label"] a[aria-label="Gmail"]::after {
+  content: attr(data-label-title);
 }
 
 /* Fix background color for vertical split layout */
@@ -909,8 +1122,9 @@ a[aria-label="Gmail"] img {
 }
 
 /* Fix for padding applied to a[href="#inbox"] */
-a[aria-label="Gmail"][href="#inbox"] {
-	padding-left: 0;
+/* All titles get padding, lines up with sidebar icons */
+a[aria-label="Gmail"][href^="#"] {
+	padding-left: 22px;
 }
 
 /* Gmail text */
@@ -963,6 +1177,9 @@ a[aria-label="Gmail"][href="#spam"]::after {
 }
 a[aria-label="Gmail"][href="#trash"]::after {
 	content: 'Trash';
+}
+a[aria-label="Gmail"][href="#sub"]::after {
+	content: 'Subscriptions';
 }
 
 /* Invisible inbox info with huge padding at bottom of email  */
@@ -1783,8 +2000,6 @@ span.XU {
 	}
 }
 
-
-
 /* Hide Compose and Reminder buttons from Gmail's Print view */
 @media print {
 	.add-reminder,
@@ -1792,4 +2007,35 @@ span.XU {
 	.akV {
 		display: none;
 	}
+}
+
+/* === Auto-hide Gmail main message list scrollbar (Chrome & Firefox) === */
+
+/* For Chrome, Edge, and other Webkit/Blink browsers */
+.aeF::-webkit-scrollbar {
+  width: 10px;
+  background: transparent;
+  transition: background 0.2s;
+}
+.aeF::-webkit-scrollbar-thumb {
+  background: rgba(160, 160, 160, 0.15);
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.aeF:hover::-webkit-scrollbar-thumb,
+.aeF:active::-webkit-scrollbar-thumb {
+  background: rgba(160, 160, 160, 0.33);
+}
+.aeF:not(:hover)::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+/* For Firefox */
+.aeF {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(160,160,160,0.33) transparent;
+  transition: scrollbar-color 0.2s;
+}
+.aeF:not(:hover) {
+  scrollbar-color: transparent transparent;
 }
