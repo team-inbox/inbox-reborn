@@ -1,6 +1,9 @@
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+// Polyfill for cross-browser compatibility
+const browserAPI = (typeof browser !== 'undefined') ? browser : chrome;
+
+browserAPI.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.method === 'getOptions') {
-        chrome.storage.local.get('options', function(result) {
+        browserAPI.storage.local.get('options', function(result) {
             const options = result.options || {};
             options.reminderTreatment = options.reminderTreatment || 'containing-word';
             options.emailBundling = options.emailBundling || 'enabled';

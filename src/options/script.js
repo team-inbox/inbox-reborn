@@ -1,3 +1,8 @@
+// Polyfill for cross-browser compatibility with callback support
+const browserAPI = (typeof chrome !== 'undefined' && chrome.runtime && typeof chrome.runtime.sendMessage === 'function')
+    ? chrome
+    : (typeof browser !== 'undefined' ? browser : chrome);
+
 const REMINDER_TREATMENT_SELECTOR = 'input[name=reminder-treatment]';
 const BUNDLED_EMAIL_SELECTOR = 'input[name=email-bundling]';
 const BUNDLE_ONE_SELECTOR = 'input[name=bundle-one]';
@@ -13,13 +18,13 @@ function saveOptions() {
 
 	const options = { reminderTreatment, emailBundling, bundleOne, showAvatar, priorityInbox };
 
-	chrome.storage.local.set({ 'options': options }, function() {
+	browserAPI.storage.local.set({ 'options': options }, function() {
     console.log('Options saved:', options);
 });
 }
 
 function restoreOptions() {
-	chrome.runtime.sendMessage({ method: 'getOptions' }, function(options) {
+	browserAPI.runtime.sendMessage({ method: 'getOptions' }, function(options) {
 		selectRadioWithValue(REMINDER_TREATMENT_SELECTOR, options.reminderTreatment);
 		selectRadioWithValue(BUNDLED_EMAIL_SELECTOR, options.emailBundling);
 		setCheckbox(BUNDLE_ONE_SELECTOR, options.bundleOne);
