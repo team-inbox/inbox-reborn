@@ -3,7 +3,7 @@
 
 Web extension which modifies Gmail™ to bring back the features and uncluttered design you knew and loved from Google's discontinued Inbox
 
-![inbox screenshot](https://github.com/team-inbox/inbox-reborn/blob/master/screenshots/inbox%20v0.4.8-3.png?raw=true)
+![inbox screenshot](https://github.com/team-inbox/inbox-reborn/blob/master/screenshots/inbox.png?raw=true)
 
 ## Installing
 
@@ -28,7 +28,7 @@ https://addons.mozilla.org/en-GB/firefox/addon/inbox-reborn-theme-gmail/
 
 ## Extension Options
 
-![options popup screenshot](https://github.com/team-inbox/inbox-reborn/blob/master/screenshots/options%20v0.4.8-2.png?raw=true)
+![options popup screenshot](https://github.com/team-inbox/inbox-reborn/blob/master/screenshots/options.png?raw=true)
 
 Click the extension's icon at the top right of your browser to adjust the behavior of some features:
 
@@ -43,6 +43,8 @@ This option is used to determine how to treat emails sent to yourself.
 This option is used to bundle emails by label in the inbox.
 
 - Toggle Enable/Disable
+- Bundle if only one email
+- Move Bundles to the top of your Inbox
 
 #### Avatars
 This option will show a circle with the first letter initial of the sender, to the left of the email in your folder.

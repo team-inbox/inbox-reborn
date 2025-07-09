@@ -6,6 +6,7 @@ const browserAPI = (typeof chrome !== 'undefined' && chrome.runtime && typeof ch
 const REMINDER_TREATMENT_SELECTOR = 'input[name=reminder-treatment]';
 const BUNDLED_EMAIL_SELECTOR = 'input[name=email-bundling]';
 const BUNDLE_ONE_SELECTOR = 'input[name=bundle-one]';
+const BUNDLE_TOP_SELECTOR = 'input[name=bundle-top]';
 const AVATAR_SELECTOR = 'input[name=avatar]';
 const PRIORITY_INBOX_SELECTOR = 'input[name=priority-inbox]';
 
@@ -13,10 +14,11 @@ function saveOptions() {
 	const reminderTreatment = getSelectedRadioValue(REMINDER_TREATMENT_SELECTOR);
 	const emailBundling = getSelectedRadioValue(BUNDLED_EMAIL_SELECTOR);
 	const bundleOne = getCheckboxState(BUNDLE_ONE_SELECTOR);
+	const bundleTop = getCheckboxState(BUNDLE_TOP_SELECTOR);
 	const showAvatar = getSelectedRadioValue(AVATAR_SELECTOR);
 	const priorityInbox = getSelectedRadioValue(PRIORITY_INBOX_SELECTOR);
 
-	const options = { reminderTreatment, emailBundling, bundleOne, showAvatar, priorityInbox };
+	const options = { reminderTreatment, emailBundling, bundleOne, bundleTop, showAvatar, priorityInbox };
 
 	browserAPI.storage.local.set({ 'options': options }, function() {
     console.log('Options saved:', options);
@@ -28,6 +30,7 @@ function restoreOptions() {
 		selectRadioWithValue(REMINDER_TREATMENT_SELECTOR, options.reminderTreatment);
 		selectRadioWithValue(BUNDLED_EMAIL_SELECTOR, options.emailBundling);
 		setCheckbox(BUNDLE_ONE_SELECTOR, options.bundleOne);
+		setCheckbox(BUNDLE_TOP_SELECTOR, options.bundleTop);
 		selectRadioWithValue(AVATAR_SELECTOR, options.showAvatar);
 		selectRadioWithValue(PRIORITY_INBOX_SELECTOR, options.priorityInbox);
 		
@@ -53,5 +56,6 @@ document.addEventListener('DOMContentLoaded', restoreOptions);
 document.querySelectorAll(REMINDER_TREATMENT_SELECTOR).forEach(monitorChange);
 document.querySelectorAll(BUNDLED_EMAIL_SELECTOR).forEach(monitorChange);
 monitorChange(document.querySelector(BUNDLE_ONE_SELECTOR));
+monitorChange(document.querySelector(BUNDLE_TOP_SELECTOR));
 document.querySelectorAll(AVATAR_SELECTOR).forEach(monitorChange);
 document.querySelectorAll(PRIORITY_INBOX_SELECTOR).forEach(monitorChange);
