@@ -16,7 +16,6 @@ https://chrome.google.com/webstore/detail/inbox-reborn-theme-for-gm/bkphmihkdbdg
 
 https://addons.mozilla.org/en-GB/firefox/addon/inbox-reborn-theme-gmail/
 
-
 ## Features
 
 - Bundle emails by label and category
@@ -91,3 +90,104 @@ If you'd like a specific label not to be bundled, create a label called 'Unbundl
 - The code is open source, ready for you to audit.
 
 In other words, you are not being tracked, and your data is not leaving the page to be processed or stored anywhere else. This extension just sits as a layer on top of Gmail™, modifying the style and behavior of the page.
+
+## Build and Test Locally
+
+You can easily build Inbox Reborn for Chrome or Firefox and create test versions for local development using Node.js.
+
+### 1. Install Node.js
+
+#### macOS
+
+Using [Homebrew](https://brew.sh):
+
+```sh
+brew install node
+```
+
+Or, download the macOS installer from [nodejs.org](https://nodejs.org/).
+
+#### Linux (Debian/Ubuntu)
+
+```sh
+sudo apt update
+sudo apt install nodejs npm
+```
+
+Or, for the latest version, follow instructions on [nodejs.org](https://nodejs.org/).
+
+#### Windows
+
+- Download the Windows installer from [nodejs.org](https://nodejs.org/) and run it.
+- Follow the prompts to complete installation.
+
+**Verify installation** with:
+
+```sh
+node --version
+npm --version
+```
+
+### 2. Install Build Dependencies
+
+Inside your project folder, install dependencies (required only once):
+
+```sh
+npm install fs-extra archiver
+```
+
+### 3. Build for Chrome or Firefox
+
+#### Create Zipped Build
+
+- **For Chrome:**
+
+  ```sh
+  node build.js chrome zip
+  ```
+
+  This creates `zip-chrome.zip` with all extension files and the correct manifest.
+
+- **For Firefox:**
+
+  ```sh
+  node build.js firefox zip
+  ```
+
+  This creates `zip-firefox.zip` with the correct manifest.
+
+#### Create Unpacked Folder for Manual Testing
+
+This will copy all extension files (with the correct manifest) to a folder on your Desktop, ready for loading as an unpacked extension.
+
+- **For Chrome:**
+
+  ```sh
+  node build.js chrome unpacked
+  ```
+
+  Look for a new folder on your Desktop called `inbox-reborn-chrome`.
+
+- **For Firefox:**
+
+  ```sh
+  node build.js firefox unpacked
+  ```
+
+  Look for a new folder on your Desktop called `inbox-reborn-firefox`.
+
+### 4. Load Unpacked Extension in Browser
+
+- **Chrome/Edge:**
+  - Go to `chrome://extensions/`
+  - Enable "Developer mode"
+  - Click "Load unpacked" and select your Desktop folder (`inbox-reborn-chrome`)
+
+- **Firefox:**
+  - Go to `about:debugging#/runtime/this-firefox`
+  - Click "Load Temporary Add-on"
+  - Select the `manifest.json` inside your Desktop folder (`inbox-reborn-firefox`)
+
+---
+
+**If you need more help, see [Node.js Documentation](https://nodejs.org/en/docs/) or reach out on GitHub Issues!**
