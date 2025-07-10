@@ -1,3 +1,17 @@
+.setting-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.setting-content select {
+  min-width: 200px;
+}
+
+.setting-desc {
+  flex: 1;
+  margin-right: 12px;
+}
 body {
     font-family: Roboto, system-ui, sans-serif;
     font-size: 13px;
@@ -12,7 +26,7 @@ body {
     box-sizing: border-box;
 }
 
-label{
+.label{
     display:inline-block;
     width: 90%;
     vertical-align:top;
@@ -42,4 +56,87 @@ label{
 
 .setting-content {
     color: #616161;
+}
+
+body.dark-mode {
+    background-color: #303030;
+    color: #fafafa;
+}
+body.dark-mode .content {
+    background-color: #424242;
+}
+body.dark-mode .setting {
+    border-color: #555;
+}
+body.dark-mode .setting-content {
+    color: #ccc;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 17px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 13px;
+  width: 13px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #4285f4;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #4285f4;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(13px);
+  -ms-transform: translateX(13px);
+  transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.sub-settings {
+  margin-left: 40px;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.9em;
 }

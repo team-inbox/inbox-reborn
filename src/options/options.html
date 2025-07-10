@@ -5,45 +5,64 @@
 <body>
 <div class="content">
     <div class="setting">
+        <div class="setting-title">Dark Mode</div>
+        <div class="setting-content">
+            <span class="setting-desc">Enable dark mode for the extension options page</span>
+            <label class="switch">
+              <input type="checkbox" id="dark-mode-toggle">
+              <span class="slider round"></span>
+            </label>
+        </div>
+    </div>
+    <div class="setting">
         <div class="setting-title">Reminders</div>
         <div class="setting-content">
-            Choose how to display emails sent to yourself<br /><br />
-            <input type="radio" name="reminder-treatment" value="all" id="reminder-treatment-all"><label for="reminder-treatment-all">All are treated as reminders</label>
-            <br />
-            <input type="radio" name="reminder-treatment" value="containing-word" id="reminder-treatment-containing-word"><label for="reminder-treatment-containing-word">Those with a subject containing "reminder" are treated as such</label>
-            <br />
-            <input type="radio" name="reminder-treatment" value="none" id="reminder-treatment-none"><label for="reminder-treatment-none">Leave the emails as they are</label>
+          <span class="setting-desc">Select how emails sent to yourself are displayed</span>
+          <select id="reminder-select" name="reminder-treatment">
+            <option value="all">All messages</option>
+            <option value="containing-word">Subject (reminder) only</option>
+            <option value="none">None (no reminders)</option>
+          </select>
         </div>
     </div>
     <div class="setting">
         <div class="setting-title">Email Bundling</div>
         <div class="setting-content">
-            Bundles emails in your inbox by label<br /><br />
-            <input type="radio" name="email-bundling" value="enabled" id="bundling-on"><label for="bundling-on">Enabled</label>
-            <br />
-            <input type="radio" name="email-bundling" value="disabled" id="bundling-off"><label for="bundling-off">Disabled</label>
-            <br /><br />
-            <input type="checkbox" name="bundle-one" checked="checked" id="bundle-one"><label for="bundle-one">Bundle if only one email? (requires refresh when switching off)</label>
-            <br />
-            <input type="checkbox" name="bundle-top" id="bundle-top"><label for="bundle-top">Move bundles to top of Inbox</label>
+            <span class="setting-desc">Group emails in your inbox by label</span>
+            <label class="switch">
+              <input type="checkbox" id="bundling-toggle">
+              <span class="slider round"></span>
+            </label>
+        </div>
+        <div class="sub-settings">
+            <label>
+                <input type="checkbox" name="bundle-one" id="bundle-one">
+                Show bundle if only one email (Requires refresh when turning off)</small>
+            </label>
+            <label>
+                <input type="checkbox" name="bundle-top" id="bundle-top">
+                Move bundles to top of inbox
+            </label>
         </div>
     </div>
     <div class="setting">
         <div class="setting-title">Avatars</div>
         <div class="setting-content">
-            Displays a colored circle with the first letter initial of the sender<br /><br />
-            <input type="radio" name="avatar" value="enabled" id="avatar-on"><label for="avatar-on">Enabled</label>
-            <br />
-            <input type="radio" name="avatar" value="disabled" id="avatar-off"><label for="avatar-off">Disabled</label>
+            <span class="setting-desc">Show a colored circle with the sender’s first initial</span>
+            <label class="switch">
+              <input type="checkbox" id="avatar-toggle">
+              <span class="slider round"></span>
+            </label>
         </div>
     </div>
     <div class="setting">
         <div class="setting-title">Hide Priority Inbox Headings</div>
         <div class="setting-content">
-            Provides cleaner inbox UI if "Priority Inbox" type enabled via settings<br /><br />
-            <input type="radio" name="priority-inbox" value="enabled" id="priority-inbox-on"><label for="priority-inbox-on">Enabled</label>
-            <br />
-            <input type="radio" name="priority-inbox" value="disabled" id="priority-inbox-off" checked="checked"><label for="priority-inbox-off">Disabled</label>
+            <span class="setting-desc">Clean up the inbox UI when using “Priority Inbox” view</span>
+            <label class="switch">
+              <input type="checkbox" id="priority-inbox-toggle">
+              <span class="slider round"></span>
+            </label>
         </div>
     </div>
 </div>
