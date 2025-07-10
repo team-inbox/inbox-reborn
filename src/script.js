@@ -1,3 +1,18 @@
+// --- Dark Mode Sync ---
+// Apply stored dark-mode setting on page load
+chrome.storage?.local.get('options', ({ options }) => {
+  if (options && options.darkMode === 'enabled') {
+    document.body.classList.add('dark-mode');
+  }
+});
+// Listen for changes to options and toggle class dynamically
+chrome.storage?.onChanged.addListener((changes, area) => {
+  if (area === 'local' && changes.options) {
+    const enabled = changes.options.newValue.darkMode === 'enabled';
+    document.body.classList.toggle('dark-mode', enabled);
+  }
+});
+// -----------------------
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 

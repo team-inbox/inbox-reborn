@@ -2039,3 +2039,272 @@ span.XU {
 .aeF:not(:hover) {
   scrollbar-color: transparent transparent;
 }
+
+/* =================== DARK MODE =================== */
+body.dark-mode {
+  background-color: #1f1f1f !important;
+  color: #ffffff !important;
+}
+body.dark-mode * {
+  background-color: transparent !important;
+  color: #ffffff !important;
+}
+body.dark-mode .zA,
+body.dark-mode .Cp,
+body.dark-mode .Bs.nH.iY.bAt {
+  background-color: #292929 !important;
+}
+body.dark-mode input,
+body.dark-mode textarea {
+  background-color: #3b3b3b !important;
+  color: #ffffff !important;
+}
+body.dark-mode a {
+  color: #4cc2ff !important;
+}
+body.dark-mode hr {
+  border-color: #3b3b3b !important;
+}
+body.dark-mode .WR.aeN,
+body.dark-mode .ar4,
+body.dark-mode .nH.aqk.aql.bkL,
+body.dark-mode .aBO,
+body.dark-mode .aB6,
+body.dark-mode .bn .bl,
+body.dark-mode .bzJiD,
+body.dark-mode .vIO7af,
+body.dark-mode .no,
+body.dark-mode .AO,
+body.dark-mode .Tm.aeJ,
+body.dark-mode .nH.oy8Mbf.nn.aeN,
+body.dark-mode .brC-aT5-aOt-Jw,
+body.dark-mode .aj5 .J-KU,
+body.dark-mode .aj5.J-KU-Jg,
+body.dark-mode .aeH,
+body.dark-mode .aKh,
+body.dark-mode .aRs {
+  background: #292929 !important;
+}
+body.dark-mode .zA,
+body.dark-mode .zA:hover,
+body.dark-mode .Bs.nH.iY.bAt {
+  background: #292929 !important;
+  color: #ffffff !important;
+}
+body.dark-mode .zA * {
+  color: #ffffff !important;
+}
+body.dark-mode .TO .nU > .n0,
+body.dark-mode .TO.NQ .nU > .n0,
+body.dark-mode .TO.nZ .nU > .n0,
+body.dark-mode .ah9 > .CJ,
+body.dark-mode .n3 > .CL > .CK,
+body.dark-mode .aAv {
+  color: #c7c7c7 !important;
+}
+body.dark-mode .TO.nZ .n0 {
+  color: #ffffff !important;
+}
+body.dark-mode .TO .n0 {
+  color: #c7c7c7 !important;
+}
+body.dark-mode .brc {
+  background-color: #3b3b3b !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 1px rgba(0,0,0,.31), 0 1px 2px rgba(0,0,0,.42) !important;
+}
+body.dark-mode .bundle-senders {
+  color: #ffffff !important;
+}
+body.dark-mode .bundle-wrapper .label-link .bundle-count {
+  color: #c7c7c7 !important;
+}
+body.dark-mode .calendar-attachment .event-time {
+  color: #c7c7c7 !important;
+}
+body.dark-mode .time {
+  color: #c7c7c7 !important;
+}
+body.dark-mode .nH.bkK.nn + .nH.nn {
+  background-color: #3b3b3b !important;
+}
+body.dark-mode .IU {
+  background-color: #3b3b3b !important;
+}
+body.dark-mode .wT > .n3 .byl:first-child .aim:first-child .nZ {
+  background-color: rgba(255,255,255,.05) !important;
+}
+body.dark-mode .wT {
+  background-color: #292929 !important;
+}
+body.dark-mode .avatar {
+  /* keep background image, just adjust color if needed */
+  color: rgba(255,255,255,0.85);
+}
+body.dark-mode .bundle-wrapper:not(.contains-unread) .bundle-image img {
+  opacity: 0.8;
+}
+body.dark-mode .brc .brg {
+  color: #ffffff !important;
+}
+body.dark-mode .aEe,
+body.dark-mode .aEc.aHS-bnr .qj,
+body.dark-mode .aHS-bnr .qj,
+body.dark-mode .zw .aHS-bnr .qj {
+  background-color: #3b3b3b !important;
+}
+body.dark-mode .G4, body.dark-mode .GR, body.dark-mode div[aria-label="Inbox tip"] {
+  box-shadow: 0 -1px 0 #3b3b3b, 0 0 2px rgba(0,0,0,.32), 0 2px 4px rgba(0,0,0,.44) !important;
+}
+body.dark-mode .D.E.G-atb {
+  background: #292929 !important;
+}
+body.dark-mode .nH .AO .aeF {
+  background: #292929 !important;
+}
+body.dark-mode .nH .AO {
+  background: #292929 !important;
+}
+body.dark-mode .nH > .ha > .J-J5-Ji,
+body.dark-mode .nH > .nH > .hj > .ade,
+body.dark-mode .iw > .qu > .go {
+  display: none !important;
+}
+body.dark-mode .aTV {
+  border-color: transparent transparent #3b3b3b #3b3b3b !important;
+}
+body.dark-mode .nH.aqK {
+  background: #292929 !important;
+}
+body.dark-mode .no {
+  background-color: #292929 !important;
+}
+body.dark-mode .aB6,
+body.dark-mode .bn .bl {
+  background-color: #292929 !important;
+}
+body.dark-mode .aBO {
+  background-color: #292929 !important;
+}
+body.dark-mode .bzJiD,
+body.dark-mode .vIO7af {
+  background: #292929 !important;
+}
+body.dark-mode .ar4.z .TD > .TC {
+  background-color: #292929 !important;
+}
+body.dark-mode .nH.bkK.nn + .nH.nn {
+  background-color: #3b3b3b !important;
+}
+body.dark-mode [aria-label="Hangouts"][role="complementary"] {
+  background-color: #292929 !important;
+}
+body.dark-mode .nH.aqk.aql.bkL {
+  background: #292929 !important;
+}
+body.dark-mode .nH .AO .aeF {
+  background: #292929 !important;
+}
+body.dark-mode .nH.bAw.nn {
+  background-color: #292929 !important;
+}
+body.dark-mode .zA.yO {
+  background: #292929 !important;
+}
+body.dark-mode .zA .apU.xY .T-KT::before,
+body.dark-mode .zA .apU.xY .T-KT.xl::before,
+body.dark-mode .zA .apU.xY .T-KT.T-KT-Jp::before,
+body.dark-mode .zA .apU.xY .T-KT.xn::before,
+body.dark-mode .zA .apU.xY .T-KT.xm::before,
+body.dark-mode .zA .apU.xY .T-KT.xj::before,
+body.dark-mode .zA .apU.xY .T-KT.xk::before {
+  /* Keep star images, do not recolor */
+}
+body.dark-mode .zA .apU.xY .T-KT.xg::before,
+body.dark-mode .zA .apU.xY .T-KT.xe::before,
+body.dark-mode .zA .apU.xY .T-KT.xh::before,
+body.dark-mode .zA .apU.xY .T-KT.xd::before,
+body.dark-mode .zA .apU.xY .T-KT.xc::before,
+body.dark-mode .zA .apU.xY .T-KT.xf::before {
+  /* Keep cleardot gif */
+}
+body.dark-mode .brc {
+  background-color: #3b3b3b !important;
+  color: #ffffff !important;
+}
+body.dark-mode .calendar-attachment .event-time {
+  color: #c7c7c7 !important;
+}
+body.dark-mode .bundle-wrapper .label-link .bundle-count {
+  color: #c7c7c7 !important;
+}
+body.dark-mode .bundle-senders {
+  color: #ffffff !important;
+}
+body.dark-mode .aHS-bnw .qj {
+  background-color: rgb(241, 196, 15) !important;
+}
+body.dark-mode .D.E.G-atb::before {
+  box-shadow: none !important;
+}
+body.dark-mode header svg {
+  color: #ffffff !important;
+}
+body.dark-mode header form {
+  background: rgba(41,41,41,0.5) !important;
+}
+body.dark-mode header form input {
+  color: #ffffff !important;
+}
+body.dark-mode header form input::placeholder {
+  color: #c7c7c7 !important;
+}
+body.dark-mode .Yc {
+  color: #ffffff !important;
+}
+body.dark-mode .aHS-bnr .qj,
+body.dark-mode .aEc.aHS-bnr .qj,
+body.dark-mode .aEe {
+  background-color: #505050 !important;
+}
+body.dark-mode .wT > .n3 .byl:first-child .aim:first-child .nZ {
+  background-color: rgba(255,255,255,.05) !important;
+}
+body.dark-mode .aKk>tbody, .body.dark-mode .aAA, .body.dark-mode .aRz.J-KU {
+  background: #292929 !important;
+}
+
+body.dark-mode .G4, body.dark-mode .GR, body.dark-mode div[aria-label="Inbox tip"] {
+  box-shadow: 0 -1px 0 #3b3b3b, 0 0 2px rgba(0,0,0,.32), 0 2px 4px rgba(0,0,0,.44) !important;
+}
+/* Add other overrides as needed */
+
+/* Dark Mode: Header Bar Color Overrides */
+body.dark-mode .w-asV.bbg.aiw {
+  background-color: #4a4a4a !important; /* default dark gray */
+}
+body.dark-mode .w-asV.bbg.aiw[pageTitle="inbox"] {
+  background-color: #1e3a8a !important; /* darker shade of blue */
+}
+body.dark-mode .w-asV.bbg.aiw[pageTitle="starred"] {
+  background-color: #b38600 !important; /* darker shade of yellow */
+}
+body.dark-mode .w-asV.bbg.aiw[pageTitle="snoozed"] {
+  background-color: #bf4f00 !important; /* darker shade of orange */
+}
+body.dark-mode .w-asV.bbg.aiw[pageTitle="sent"] {
+  background-color: #00675b !important; /* darker teal */
+}
+body.dark-mode .w-asV.bbg.aiw[pageTitle="drafts"] {
+  background-color: #6b4b3b !important; /* darker brown */
+}
+body.dark-mode .w-asV.bbg.aiw[pageTitle="all"] {
+  background-color: #1e3a8a !important; /* reuse darker blue */
+}
+body.dark-mode .w-asV.bbg.aiw[pageTitle="spam"] {
+  background-color: #9b1c1c !important; /* darker red */
+}
+body.dark-mode .w-asV.bbg.aiw[pageTitle="trash"] {
+  background-color: #3c3f41 !important; /* darker gray */
+}
+/* Add additional dark-mode overrides for custom pageTitle values as needed */
