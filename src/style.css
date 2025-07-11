@@ -2049,6 +2049,14 @@ body.dark-mode * {
   background-color: transparent !important;
   color: #ffffff !important;
 }
+body.dark-mode .avatar {
+  background-color: #607d8b !important; /* Material Blue Grey as default */
+  color: #ffffff !important;
+}
+body.dark-mode .avatar[style*="background-color"] {
+  /* Revert to inline style for background, don't override */
+  background-color: inherit !important;
+}
 body.dark-mode .zA,
 body.dark-mode .Cp,
 body.dark-mode .Bs.nH.iY.bAt {
@@ -2136,10 +2144,6 @@ body.dark-mode .wT > .n3 .byl:first-child .aim:first-child .nZ {
 }
 body.dark-mode .wT {
   background-color: #292929 !important;
-}
-body.dark-mode .avatar {
-  /* keep background image, just adjust color if needed */
-  color: rgba(255,255,255,0.85);
 }
 body.dark-mode .bundle-wrapper:not(.contains-unread) .bundle-image img {
   opacity: 0.8;
