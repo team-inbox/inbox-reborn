@@ -2042,11 +2042,7 @@ span.XU {
 
 /* =================== DARK MODE =================== */
 body.dark-mode {
-  background-color: #1f1f1f !important;
-  color: #ffffff !important;
-}
-body.dark-mode * {
-  background-color: transparent !important;
+  background-color: #2d2d30 !important;
   color: #ffffff !important;
 }
 body.dark-mode .avatar {
@@ -2060,7 +2056,7 @@ body.dark-mode .avatar[style*="background-color"] {
 body.dark-mode .zA,
 body.dark-mode .Cp,
 body.dark-mode .Bs.nH.iY.bAt {
-  background-color: #292929 !important;
+  background-color: #252526 !important;
 }
 body.dark-mode input,
 body.dark-mode textarea {
@@ -2279,6 +2275,20 @@ body.dark-mode .aKk>tbody, .body.dark-mode .aAA, .body.dark-mode .aRz.J-KU {
   background: #292929 !important;
 }
 
+/* Dark mode: highlight active sidebar menu item */
+body.dark-mode .TO.nZ {
+  /* slightly lighter row for active state */
+  background-color: #383838 !important;
+}
+/* Ensure the label text on the active row stays fully white */
+body.dark-mode .TO.nZ .nU > .n0 {
+  color: #ffffff !important;
+}
+/* Ensure the icon on the active row is also bright enough */
+body.dark-mode .TO.nZ .qj {
+  opacity: 1 !important;
+}
+
 body.dark-mode .G4, body.dark-mode .GR, body.dark-mode div[aria-label="Inbox tip"] {
   box-shadow: 0 -1px 0 #3b3b3b, 0 0 2px rgba(0,0,0,.32), 0 2px 4px rgba(0,0,0,.44) !important;
 }
@@ -2375,4 +2385,35 @@ body.dark-mode .ar4.z .TD > .TC {
 		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_zero_inbox_2x_dark.png') !important;
 	}
 }
-/* Add additional dark-mode overrides for custom pageTitle values as needed */
+/* Dark mode: solid search bar */
+
+body.dark-mode header form {
+  /* Outlook-style gray */
+  background: #2d2d30 !important;
+}
+body.dark-mode header form input::placeholder {
+  color: #c7c7c7 !important;
+}
+
+/* Dark mode: force opaque backgrounds on all dialog windows (compose, attachments, etc) */
+
+body.dark-mode div[role="dialog"],
+body.dark-mode div[role="dialog"] * {
+  background-color: #252526 !important;
+  color: #ffffff !important;
+  background-image: none !important;
+  border-color: #383838 !important;
+  box-shadow: none !important;
+}
+
+/* Dark mode: make compose toolbar icons and dialog SVGs visible */
+body.dark-mode div[role="dialog"] svg {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
+body.dark-mode div[role="dialog"] .qj,
+body.dark-mode div[role="dialog"] .aDh .qj {
+  /* ensure mask-image icons invert to white */
+  filter: brightness(0) invert(1) !important;
+  opacity: 1 !important;
+}
