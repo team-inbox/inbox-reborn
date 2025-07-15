@@ -2385,35 +2385,47 @@ body.dark-mode .ar4.z .TD > .TC {
 		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_zero_inbox_2x_dark.png') !important;
 	}
 }
-/* Dark mode: solid search bar */
-
-body.dark-mode header form {
-  /* Outlook-style gray */
-  background: #2d2d30 !important;
-}
-body.dark-mode header form input::placeholder {
-  color: #c7c7c7 !important;
-}
 
 /* Dark mode: force opaque backgrounds on all dialog windows (compose, attachments, etc) */
 
 body.dark-mode div[role="dialog"],
 body.dark-mode div[role="dialog"] * {
   background-color: #252526 !important;
+  color: #444746 !important;
+  border-color: #444746 !important;
+}
+body.dark .Hp {
+  background-color: #2a2a2a !important;
   color: #ffffff !important;
-  background-image: none !important;
-  border-color: #383838 !important;
-  box-shadow: none !important;
+  border-bottom: 1px solid #444 !important;
 }
 
-/* Dark mode: make compose toolbar icons and dialog SVGs visible */
-body.dark-mode div[role="dialog"] svg {
-  fill: #ffffff !important;
+body.dark .a3E span {
   color: #ffffff !important;
 }
-body.dark-mode div[role="dialog"] .qj,
-body.dark-mode div[role="dialog"] .aDh .qj {
-  /* ensure mask-image icons invert to white */
-  filter: brightness(0) invert(1) !important;
-  opacity: 1 !important;
+
+/* Force background of email viewer in dark mode */
+body.dark-mode .AO {
+  background-color: #1e1e1e !important;
+  color: #e0e0e0 !important;
+}
+
+/* Target content inside .AO and force it to inherit dark theme */
+body.dark-mode .AO * {
+  background-color: transparent !important;
+  color: #e0e0e0 !important;
+  border-color: #444 !important;
+}
+
+/* Target divs with inline white background override */
+body.dark-mode .AO div[style*="background-color: white"],
+body.dark-mode .AO div[style*="background:#fff"],
+body.dark-mode .AO table[style*="background-color: white"],
+body.dark-mode .AO table[style*="background:#fff"] {
+  background-color: #1e1e1e !important;
+}
+
+/* Optional: style links in dark mode */
+body.dark-mode .AO a {
+  color: #8ab4f8 !important;
 }
