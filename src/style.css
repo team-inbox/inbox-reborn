@@ -2426,3 +2426,10 @@ body.dark-mode .avatar {
   background-color: #607d8b !important; /* Material Blue Grey as default */
   color: #ffffff !important;
 }
+/* Fix Labels from being cut off */
+body.dark-mode .at9,
+body.dark-mode .at9 * {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
