@@ -1045,13 +1045,82 @@ const sidePanelMutationHandler = () => waitForElement('.buW', () => {
 	panelResized.observe(addOnsPanel);
 })
 
+const injectMaterialIconsFont = () => {
+  const fontLink = document.createElement('link');
+  fontLink.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:FILL@1&display=swap';
+  fontLink.rel = 'stylesheet';
+  document.head.appendChild(fontLink);
+
+	const style = document.createElement('style');
+	style.textContent = `
+	.material-symbols-sharp {
+		font-family: 'Material Symbols Sharp' !important;
+		font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
+		font-size: 24px !important;
+		display: inline-block !important;
+		line-height: 1 !important;
+		-webkit-font-smoothing: antialiased !important;
+		text-rendering: optimizeLegibility !important;
+		color: rgba(0, 0, 0, 0.65) !important; /* lighter fill (black at 65%) */
+	}
+	`;
+	document.head.appendChild(style);
+};
+
 const setFavicon = () => document.querySelector('link[rel*="shortcut icon"]').href = chrome.runtime.getURL('images/favicon.png');
 
 const init = () => {
 	setFavicon();
 	setupMenuNodes();
 	reorderMenuItems();
+	injectMaterialIconsFont();
 };
 
 if (document.head) init();
 else document.addEventListener('DOMContentLoaded', init);
+
+
+// Replace Gmail sidebar icons with Material Symbols, targeting correct container and label node
+const replaceGmailIcon = (selector, iconName) => {
+  waitForElement(selector, (container) => {
+    if (!container) return;
+
+    // Prevent duplicate icons by checking if one already exists
+    const existingIcon = container.querySelector('.material-symbols-sharp');
+    if (existingIcon) return;
+
+    const oldIcon = container.querySelector('.qj');
+    if (oldIcon) oldIcon.remove();
+
+    const label = container.querySelector('.aio');
+    if (!label) return;
+
+    const icon = document.createElement('span');
+    icon.className = 'material-symbols-sharp';
+    icon.textContent = iconName;
+    icon.style.marginRight = '26px';
+    container.insertBefore(icon, label);
+  });
+};
+
+// Replacing icons after Gmail has rendered them
+const replaceAllIcons = () => {
+  replaceGmailIcon('.aHS-bnu', 'send');  			// Sent
+  replaceGmailIcon('.aHS-bnq', 'drafts');            // Drafts
+  replaceGmailIcon('.aHS-aHO', 'stacked_email');     // All Mail 
+  replaceGmailIcon('.aHS-bnx', 'delete');            // Trash
+  replaceGmailIcon('.aHS-bnv', 'report');            // Spam
+};
+
+replaceAllIcons();
+
+let debounceTimer;
+waitForElement('.wT .byl', (sidebar) => {
+  const iconObserver = new MutationObserver(() => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      replaceAllIcons();
+    }, 250); // 250ms pause before reapplying icons
+  });
+  iconObserver.observe(sidebar, { childList: true, subtree: true });
+});

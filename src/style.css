@@ -3,6 +3,15 @@
     --email-max-width: 1200px;
 }
 
+/* Hide default Gmail icons to prevent flicker before replacement */
+.aHS-bnu .qj,
+.aHS-bnq .qj,
+.aHS-aHO .qj,
+.aHS-bnx .qj,
+.aHS-bnv .qj {
+  visibility: hidden !important;
+}
+
 /* Change font everywhere */
 * {
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -638,27 +647,10 @@ td.apU.xY .T-KT.xf::before {
 .aHS-bu1 .qj {
 	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_upcoming_clr_24dp_r5_2x.png') !important;
 }
-/* Sent */
-.aHS-bnu .qj {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_sent_right_g60_24dp_r1_2x.png') !important;
-}
-/* Drafts */
-.aHS-bnq .qj {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_draft_g60_24dp_r2_2x.png') !important;
-}
 /* Scheduled */
 .aHS-nd .qj {
 	background-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/gm3/2x/schedule_send_baseline_nv700_20dp.png') !important;
 	opacity: 0.9 !important;
-}
-/* All Mail */
-.aHS-aHO .qj {
-	background-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/gm3/2x/stacked_email_baseline_nv700_20dp.png') !important;
-	opacity: 0.9 !important;
-}
-/* Trash */
-.aHS-bnx .qj {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_trash_g60_24dp_r2_2x.png') !important;
 }
 /* All, Nested Categories / Labels */
 .aEe,
@@ -701,10 +693,6 @@ td.apU.xY .T-KT.xf::before {
 .CL.Q7::before, .CL.Wj::before {
 	opacity: 0.9 !important;
 }
-/* Spam */
-.aHS-bnv .qj {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_spam_g60_24dp_r2_2x.png') !important;
-}
 
 @-moz-document url-prefix() {
 	/* Inbox */
@@ -727,18 +715,6 @@ td.apU.xY .T-KT.xf::before {
 	.aHS-bu1 .qj {
 		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_upcoming_clr_24dp_r5_2x.png') !important;
 	}
-	/* Sent */
-	.aHS-bnu .qj {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_sent_right_g60_24dp_r1_2x.png') !important;
-	}
-	/* Drafts */
-	.aHS-bnq .qj {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_draft_g60_24dp_r2_2x.png') !important;
-	}
-	/* Trash */
-	.aHS-bnx .qj {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_trash_g60_24dp_r2_2x.png') !important;
-	}
 	/* Category */
 	.aHS-bnr .qj /*:not(.aEe)*/ {
 		/*background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png') !important;*/
@@ -754,10 +730,6 @@ td.apU.xY .T-KT.xf::before {
 	}
 	[data-tooltip="Promotions"] .qj {
 		mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png');
-	}
-	/* Spam */
-	.aHS-bnv .qj {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_spam_g60_24dp_r2_2x.png') !important;
 	}
 }
 
