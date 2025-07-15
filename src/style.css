@@ -1689,6 +1689,7 @@ header form input {
 	background-size: 75% 75% !important;
 	background-repeat: no-repeat !important;
 	background-position: center !important;
+	/* background-color: #444 !important; -- Removed to preserve original colors */
 }
 @-moz-document url-prefix() {
 	.avatar {
@@ -2044,14 +2045,6 @@ span.XU {
 body.dark-mode {
   background-color: #2d2d30 !important;
   color: #ffffff !important;
-}
-body.dark-mode .avatar {
-  background-color: #607d8b !important; /* Material Blue Grey as default */
-  color: #ffffff !important;
-}
-body.dark-mode .avatar[style*="background-color"] {
-  /* Revert to inline style for background, don't override */
-  background-color: inherit !important;
 }
 body.dark-mode .zA,
 body.dark-mode .Cp,
@@ -2428,4 +2421,8 @@ body.dark-mode .AO table[style*="background:#fff"] {
 /* Optional: style links in dark mode */
 body.dark-mode .AO a {
   color: #8ab4f8 !important;
+}
+body.dark-mode .avatar {
+  background-color: #607d8b !important; /* Material Blue Grey as default */
+  color: #ffffff !important;
 }
