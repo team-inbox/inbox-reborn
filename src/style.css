@@ -1,6 +1,41 @@
+/**
+ * Gmail Enhancement Stylesheet
+ * 
+ * This stylesheet enhances the Gmail interface with:
+ * - Custom layout and spacing
+ * - Dark mode support
+ * - Material design elements
+ * - Email bundling styles
+ * - Custom sidebar navigation
+ * - Floating action buttons
+ * - Header color customization
+ * 
+ * Version: 2.0.0
+ * Last Updated: 2025
+ */
+
+/* =============================================================================
+   VARIABLES AND ROOT SETTINGS
+   ============================================================================= */
 :root {
-    --inbox-margin-right: 7vw;
-    --email-max-width: 1200px;
+  --inbox-margin-right: 7vw;
+  --email-max-width: 1200px;
+  
+  /* Color palette */
+  --color-background: #f2f2f2;
+  --color-surface: #ffffff;
+  --color-text-primary: #202124;
+  --color-text-secondary: #616161;
+  --color-divider: #dddddd;
+  --color-shadow: rgba(0, 0, 0, 0.24);
+  
+  /* Dark mode colors (will be applied with .dark-mode class) */
+  --dark-color-background: #292929;
+  --dark-color-surface: #252526;
+  --dark-color-text-primary: #ffffff;
+  --dark-color-text-secondary: #c7c7c7;
+  --dark-color-divider: #3b3b3b;
+  --dark-color-shadow: rgba(0, 0, 0, 0.44);
 }
 
 /* Hide default Gmail icons to prevent flicker before replacement */
@@ -12,54 +47,60 @@
   visibility: hidden !important;
 }
 
-/* Change font everywhere */
+/* =============================================================================
+   TYPOGRAPHY AND BASE STYLES
+   ============================================================================= */
 * {
-	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	font-size: 99.1%;
-	letter-spacing: normal;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 99.1%;
+  letter-spacing: normal;
 }
 
 /* Email subject colour */
 .zA {
-	color: #040404;
+  color: #040404;
 }
+
+/* =============================================================================
+   LAYOUT STRUCTURE
+   ============================================================================= */
 
 /* Header bar */
 header {
-	box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
+  box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
 }
 
 /* Sidebar: hide the label email counters */
 .bsU {
-	display: none !important;
+  display: none !important;
 }
 
 /* Sidebar: Mail/Chat/Spaces that came with new Gmail */
 .aeN.WR.a6o.anZ.nH.oy8Mbf {
-	width: 68px !important;
+  width: 68px !important;
 }
 
 .WR.aeN {
-	background: #f2f2f2 !important;
+  background: #f2f2f2 !important;
 }
 
 /* Mail sidebar */
 .aqn.aIH.nH.oy8Mbf.apV {
-	margin-bottom: 60px; /* 52px */
-	height: calc(100vh - 64px) !important;
+  margin-bottom: 60px; /* 52px */
+  height: calc(100vh - 64px) !important;
 }
 
 /* Mail/Chat/Spaces sidebar hover preview */
 .apV.aJu, 
 .aBA.apV.bym { /* .bym applies hover preview styles! */
-	height: calc(100vh - 64px) !important;
-	border-radius: 0 !important;
+  height: calc(100vh - 64px) !important;
+  border-radius: 0 !important;
 }
 
 /* Arrows on Mail/Chat/Spaces sidebar hover preview */
 .aTV {
-	left: 62px !important;
-	border-color: transparent transparent #f2f2f2 #f2f2f2 !important;
+  left: 62px !important;
+  border-color: transparent transparent #f2f2f2 #f2f2f2 !important;
 }
 
 /* Sidebar: labels */
@@ -69,337 +110,345 @@ header {
 .ah9 > .CJ,
 .n3 > .CL > .CK,
 .aAv {
-	text-shadow: none;
-	color: #616161 !important
+  text-shadow: none;
+  color: #616161 !important
 }
 
 /* Emails */
 .Cp {
-	/*box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24);*/
-	margin: auto !important;
-	max-width: var(--email-max-width);
-	padding: 0 10px;
+  margin: auto !important;
+  max-width: var(--email-max-width);
+  padding: 0 10px;
 }
 
 /* Set opened email width to same as email list */
 .Bs.nH.iY.bAt {
-	margin: 10px auto 10px auto !important;
-	max-width: 1180px;
-	padding: 0 10px;
+  margin: 10px auto 10px auto !important;
+  max-width: 1180px;
+  padding: 0 10px;
 }
+
 /* Center search toolbar */
 .biW {
-	margin-left: auto !important;
-	margin-right: auto !important;
-	max-width: var(--email-max-width);
+  margin-left: auto !important;
+  margin-right: auto !important;
+  max-width: var(--email-max-width);
 }
 
 /* Align toolbar with email width */
 .aeH > .D.E.G-atb {
-	margin: auto !important;
-	max-width: none;
-	width: 100%;
+  margin: auto !important;
+  max-width: none;
+  width: 100%;
 }
+
 .D.E.G-atb {
-	margin: 0 auto !important;
-    width: var(--email-max-width);
-    /* this percent effectively enforces a 3.5% (7% / 2) padding when */
-    max-width: 97%;
+  margin: 0 auto !important;
+  width: var(--email-max-width);
+  /* this percent effectively enforces a 3.5% (7% / 2) padding when */
+  max-width: 97%;
 }
 
 /* Add box-shadow to open email + match toolbar width */
 .nH.a98.iY {
-	margin: 2px 16px 0;
-	box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important
+  margin: 2px 16px 0;
+  box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important
 }
 
 .aeH {
-    width: calc(100% - var(--inbox-margin-right));
-    display: flex;
+  width: calc(100% - var(--inbox-margin-right));
+  display: flex;
 }
 
 /* Enforce background color behind emails */
 .ar4 {
-	background: #f2f2f2;
+  background: #f2f2f2;
 }
 
 /* Match right margin to center main content if left sidebar collapsed */
 .aBA + .bkK > .nH > .ar4 > div {
-	margin-left: var(--inbox-margin-right);
+  margin-left: var(--inbox-margin-right);
 }
+
 /* Match light gray BG to hide pale blue while animating sidebar open or close */
 .nH.aqk.aql.bkL {
-	background: #f2f2f2;
+  background: #f2f2f2;
 }
+
+/* =============================================================================
+   EMAIL ELEMENTS
+   ============================================================================= */
 
 /* Attachment icon */
 .yE {
-	display: none !important;
+  display: none !important;
 }
 
 /* Star email */
 td.apU.xY {
-	display: block;
-	position: absolute;
-	right: 0px;
+  display: block;
+  position: absolute;
+  right: 0px;
 }
 
 /* Display star (pin) on hover */
 .zA:hover td.apU.xY {
-	display: block;
+  display: block;
 }
 
 /* Not starred image */
 td.apU.xY .T-KT::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
-	background-size: 24px !important;
-	opacity: 0.7 !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
+  background-size: 24px !important;
+  opacity: 0.7 !important;
 }
 
 /* Starred menu item */
 .aHS-bnw .qj {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
-	background-size: 24px !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
+  background-size: 24px !important;
 }
 
 /* Starred */
 td.apU.xY .T-KT.xl::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
-	background-size: 24px !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
+  background-size: 24px !important;
 }
 
 /* Starred - Yellow Star */
 td.apU.xY .T-KT.T-KT-Jp::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-yellow-24dp-r4-2x.png') !important;
-	background-size: 24px !important;
-	opacity: 1;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-yellow-24dp-r4-2x.png') !important;
+  background-size: 24px !important;
+  opacity: 1;
 }
 
 /* Starred - Orange Star */
 td.apU.xY .T-KT.xl::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-orange-24dp-r4-2x.png') !important;
-	background-size: 24px !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-orange-24dp-r4-2x.png') !important;
+  background-size: 24px !important;
 }
 
 /* Starred - Red Star */
 td.apU.xY .T-KT.xn::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-red-24dp-r4-2x.png') !important;
-	background-size: 24px !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-red-24dp-r4-2x.png') !important;
+  background-size: 24px !important;
 }
 
 /* Starred - Purple Star */
 td.apU.xY .T-KT.xm::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-purple-24dp-r4-2x.png') !important;
-	background-size: 24px !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-purple-24dp-r4-2x.png') !important;
+  background-size: 24px !important;
 }
 
 /* Starred - Blue Star */
 td.apU.xY .T-KT.xj::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-blue-24dp-r4-2x.png') !important;
-	background-size: 24px !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-blue-24dp-r4-2x.png') !important;
+  background-size: 24px !important;
 }
 
 /* Starred - Green Star */
 td.apU.xY .T-KT.xk::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-green-24dp-r4-2x.png') !important;
-	background-size: 24px !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-green-24dp-r4-2x.png') !important;
+  background-size: 24px !important;
 }
 
 /* Starred - Red Bang */
 td.apU.xY .T-KT.xg::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-	background-size: 1px !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+  background-size: 1px !important;
 }
 
 /* Starred - Orange Guillimet */
 td.apU.xY .T-KT.xe::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-	background-size: 1px !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+  background-size: 1px !important;
 }
 
 /* Starred - Yellow Bang */
 td.apU.xY .T-KT.xh::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-	background-size: 1px !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+  background-size: 1px !important;
 }
 
 /* Starred - Green Check */
 td.apU.xY .T-KT.xd::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-	background-size: 1px !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+  background-size: 1px !important;
 }
 
 /* Starred - Blue Info */
 td.apU.xY .T-KT.xc::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-	background-size: 1px !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+  background-size: 1px !important;
 }
 
 /* Starred - Purple Question */
 td.apU.xY .T-KT.xf::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-	background-size: 1px !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+  background-size: 1px !important;
 }
 
+/* Firefox-specific image paths */
 @-moz-document url-prefix() {
-	/* Not starred image */
-	td.apU.xY .T-KT::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
-	}
-	/* Starred menu item */
-	.aHS-bnw .qj {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
-	}
-	/* Starred */
-	td.apU.xY .T-KT.xl::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
-	}
-	/* Starred - Yellow Star */
-	td.apU.xY .T-KT.T-KT-Jp::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-yellow-24dp-r4-2x.png') !important;
-	}
-	/* Starred - Orange Star */
-	td.apU.xY .T-KT.xl::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-orange-24dp-r4-2x.png') !important;
-	}
-	/* Starred - Red Star */
-	td.apU.xY .T-KT.xn::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-red-24dp-r4-2x.png') !important;
-	}
-	/* Starred - Purple Star */
-	td.apU.xY .T-KT.xm::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-purple-24dp-r4-2x.png') !important;
-	}
-	/* Starred - Blue Star */
-	td.apU.xY .T-KT.xj::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-blue-24dp-r4-2x.png') !important;
-	}
-	/* Starred - Green Star */
-	td.apU.xY .T-KT.xk::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-green-24dp-r4-2x.png') !important;
-	}
-	/* Starred - Red Bang */
-	td.apU.xY .T-KT.xg::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-	}
-	/* Starred - Orange Guillimet */
-	td.apU.xY .T-KT.xe::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-	}
-	/* Starred - Yellow Bang */
-	td.apU.xY .T-KT.xh::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-	}
-	/* Starred - Green Check */
-	td.apU.xY .T-KT.xd::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-	}
-	/* Starred - Blue Info */
-	td.apU.xY .T-KT.xc::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-	}
-	/* Starred - Purple Question */
-	td.apU.xY .T-KT.xf::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-	}
+  /* Not starred image */
+  td.apU.xY .T-KT::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
+  }
+  /* Starred menu item */
+  .aHS-bnw .qj {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
+  }
+  /* Starred */
+  td.apU.xY .T-KT.xl::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_pin_black_24dp_2x.png') !important;
+  }
+  /* Starred - Yellow Star */
+  td.apU.xY .T-KT.T-KT-Jp::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-yellow-24dp-r4-2x.png') !important;
+  }
+  /* Starred - Orange Star */
+  td.apU.xY .T-KT.xl::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-orange-24dp-r4-2x.png') !important;
+  }
+  /* Starred - Red Star */
+  td.apU.xY .T-KT.xn::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-red-24dp-r4-2x.png') !important;
+  }
+  /* Starred - Purple Star */
+  td.apU.xY .T-KT.xm::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-purple-24dp-r4-2x.png') !important;
+  }
+  /* Starred - Blue Star */
+  td.apU.xY .T-KT.xj::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-blue-24dp-r4-2x.png') !important;
+  }
+  /* Starred - Green Star */
+  td.apU.xY .T-KT.xk::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-green-24dp-r4-2x.png') !important;
+  }
+  /* Starred - Red Bang */
+  td.apU.xY .T-KT.xg::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+  }
+  /* Starred - Orange Guillimet */
+  td.apU.xY .T-KT.xe::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+  }
+  /* Starred - Yellow Bang */
+  td.apU.xY .T-KT.xh::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+  }
+  /* Starred - Green Check */
+  td.apU.xY .T-KT.xd::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+  }
+  /* Starred - Blue Info */
+  td.apU.xY .T-KT.xc::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+  }
+  /* Starred - Purple Question */
+  td.apU.xY .T-KT.xf::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
+  }
 }
 
 /* Unread email */
 .yO {
-	background: #FFF !important;
+  background: #FFF !important;
 }
 
 /* Time */
 .time {
-	color: #666;
-	font-size: 14px;
-	padding-bottom: 10px;
-	padding-top: 20px;
-	padding-left: 20px;
+  color: #666;
+  font-size: 14px;
+  padding-bottom: 10px;
+  padding-top: 20px;
+  padding-left: 20px;
 }
 
 /* Email */
 .zA, .zA:hover {
-	box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
-	-webkit-box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
-	z-index: inherit !important;
-	padding-right: 24px;
-	background: #FFF !important;
+  box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
+  -webkit-box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
+  z-index: inherit !important;
+  padding-right: 24px;
+  background: #FFF !important;
 }
 
 /* Inbox Email is Empty show Sun */
 .ar4.z .TD > .TC {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_zero_inbox_2x.png') !important;
-	background-repeat: no-repeat;
-	background-position: center;
-	padding-top: 30px;
-	height: 618px;
-	width: 456px;
-	background-color: #F2F2F2;
-	color: transparent;
-	font-size: 14px;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_zero_inbox_2x.png') !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-top: 30px;
+  height: 618px;
+  width: 456px;
+  background-color: #F2F2F2;
+  color: transparent;
+  font-size: 14px;
 }
+
 @-moz-document url-prefix() {
-	.ar4.z .TD > .TC {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_zero_inbox_2x.png') !important;
-	}
+  .ar4.z .TD > .TC {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_zero_inbox_2x.png') !important;
+  }
 }
 
 /* Fix for weird white space */
 .eb.TD {
-	display: none;
+  display: none;
 }
 
 /* Fix padding on search */
 .BltHke.nH.oy8Mbf {
-	margin-top: 10px;
-	margin-bottom: 0 !important;
+  margin-top: 10px;
+  margin-bottom: 0 !important;
 }
 
 /* Hide border at bottom of empty inbox background */
 .cf.TB {
-	border-bottom: none !important;
+  border-bottom: none !important;
 }
+
+/* =============================================================================
+   CHAT, SPACES, AND MEET VIEWS
+   ============================================================================= */
 
 /* Chat + Spaces: Full Screen Views */
 
 /* Spaces */
-
 .aBA + .bkK, .a3W + .bkK {
-	margin-left: 0 !important;
+  margin-left: 0 !important;
 }
 
 /* Meet: Full Screen Views */
-
 .Wh .Wi {
-	height: calc(100vh - 64px) !important;
+  height: calc(100vh - 64px) !important;
 }
 
 /* Chat Header, Content (these are within iframes so not pulling this CSS) */
 .vIO7af,
 .bzJiD {
-	background: #f2f2f2 !important;
+  background: #f2f2f2 !important;
 }
 
-/*
-**
-**START OF LEFT MENU
-**
-*/
+/* =============================================================================
+   LEFT MENU STYLING
+   ============================================================================= */
 
 .aim {
-	padding-left: 4px !important;
+  padding-left: 4px !important;
 }
 
 /* Menu item row */
 .TK .TO {
-	border-radius: 2px !important;
+  border-radius: 2px !important;
 }
 
 /* Menu item row, hover */
 .TK .TO:hover {
-	background-color: rgba(0,0,0,.05) !important;
-	cursor: pointer;
+  background-color: rgba(0,0,0,.05) !important;
+  cursor: pointer;
 }
 
 /* Menu item row active */
@@ -409,13 +458,13 @@ td.apU.xY .T-KT.xf::before {
 .TO.nZ,
 .TO.NQ,
 .TO.ol {
-	background-color: rgba(0,0,0,.05) !important;
+  background-color: rgba(0,0,0,.05) !important;
 }
 
 /* Left sidebar collapsed */
 .aeN.bhZ {
-	transform: translateX(-80px) !important;
-	transition: transform 0.2s ease;
+  transform: translateX(-80px) !important;
+  transition: transform 0.2s ease;
 }
 
 /* --- DONE MENU ROW --- */
@@ -502,6 +551,7 @@ td.apU.xY .T-KT.xf::before {
   height: 24px !important;
   flex-shrink: 0;
 }
+
 @-moz-document url-prefix() {
   .TO.inbox-reborn-done .qj {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_done_clr_24dp_r4_2x.png') !important;
@@ -510,236 +560,224 @@ td.apU.xY .T-KT.xf::before {
 
 /* Compose email old place */
 .z0 {
-	margin: 0px !important;
-	height: 0px !important;
+  margin: 0px !important;
+  height: 0px !important;
 }
 
 /* Compose email boxes wrapper */
 .nH.Hd {
-	margin-right: 40px;
+  margin-right: 40px;
 }
+
 /* Compose email popup */
 /* Top bar */
 .nH .Hy .m {
-	background: #404040 !important;
-	border-radius: 0 !important;
+  background: #404040 !important;
+  border-radius: 0 !important;
 }
+
 .Hp {
-	color: white !important;
+  color: white !important;
 }
+
 /* Minimize, Maximize, Close buttons */
 .Hk {
-	-webkit-mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_maximize_16px_1x.png');
-	mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_maximize_16px_1x.png');
-	background: white !important;
+  -webkit-mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_maximize_16px_1x.png');
+  mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_maximize_16px_1x.png');
+  background: white !important;
 }
+
 .Hl {
-	-webkit-mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_minimize_16px_1x.png');
-	mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_minimize_16px_1x.png');
-	background: white !important;
+  -webkit-mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_minimize_16px_1x.png');
+  mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_minimize_16px_1x.png');
+  background: white !important;
 }
+
 .Hq {
-	-webkit-mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_popout_16px_1x.png');
-	mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_popout_16px_1x.png');
-	background: white !important;
+  -webkit-mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_popout_16px_1x.png');
+  mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_popout_16px_1x.png');
+  background: white !important;
 }
+
 .Hm .aUG {
-	-webkit-mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_open_in_full_16px_1x.png');
-	mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_open_in_full_16px_1x.png');
-	background: white !important;
+  -webkit-mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_open_in_full_16px_1x.png');
+  mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_open_in_full_16px_1x.png');
+  background: white !important;
 }
+
 .Ha {
-	-webkit-mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_close_16px_1x.png');
-	mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_close_16px_1x.png');
-	background: white !important;
+  -webkit-mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_close_16px_1x.png');
+  mask-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/rfr/ic_close_16px_1x.png');
+  background: white !important;
 }
+
 /* .Hn applies :hover color */
 .Hk.Hn, .Hl.Hn, .Hr.Hq, .Ha.Hb {
-	background: rgba(255,255,255,0.5) !important;
+  background: rgba(255,255,255,0.5) !important;
 }
 
 /* Hangout chat box wrapper */
 .nH.aJl.nn {
-	margin-right: 40px;
+  margin-right: 40px;
 }
 
 /* Menu container */
 .aeN {
-	width: 232px !important;
-	max-width: unset !important;
-	min-width: unset !important;
-	left: 0;
+  width: 232px !important;
+  max-width: unset !important;
+  min-width: unset !important;
+  left: 0;
 }
+
 .wT {
-	margin-top: -20px;
-	max-width: unset;
-	min-width: unset;
-	width: 224px;
-	padding: 12px 8px;
+  margin-top: -20px;
+  max-width: unset;
+  min-width: unset;
+  width: 224px;
+  padding: 12px 8px;
 }
 
 /* Menu item sections */
 .TK {
-	padding: 8px 0;
+  padding: 8px 0;
 }
 
 /* Menu item row inner */
 .aim .TN {
-	height: 40px;
+  height: 40px;
 }
 
 /* Menu item row inner (when collapsed) */
 .bhZ:not(.bym) .TN {
-	padding: 0 4px !important;
+  padding: 0 4px !important;
 }
 
 /* Menu item link */
 .TO .nU > .n0 {
-	font-weight: normal;
-}
-
-/* Menu item link */
-.TO .nU > .n0 {
-	font-weight: normal;
+  font-weight: normal;
 }
 
 .wT > .n3 .byl:first-child .aim:first-child .nZ {
-	background-color: rgba(0,0,0,.05) !important;
+  background-color: rgba(0,0,0,.05) !important;
 }
+
+/* Material Icons styling */
+.material-symbols-sharp {
+  width: 24px !important;
+  height: 24px !important;
+  opacity: 1 !important;
+  margin-right: 24px !important;
+  background-size: 24px !important;
+}
+
 .qj {
-	width: 24px !important;
-	height: 24px !important;
-	opacity: 1 !important;
-	margin-right: 24px !important;
-	background-size: 24px !important;
+  width: 24px !important;
+  height: 24px !important;
+  opacity: 1 !important;
+  margin-right: 24px !important;
+  background-size: 24px !important;
 }
+
 .qj::before {
-	content: none !important;
+  content: none !important;
 }
+
 .qj::after {
-	content: none !important;
+  content: none !important;
 }
+
 /* Inbox */
 .aHS-bnt .qj {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/inbox_googblue_24dp.png') !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/inbox_googblue_24dp.png') !important;
 }
+
 /* Dropdown arrow */
 .aHS-bnt .afM {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/arrow_drop_down_black_20dp.png') !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/arrow_drop_down_black_20dp.png') !important;
 }
+
 /* Starred */
 .aHS-bnw .qj {
-	/*background-image: url('chrome-extension://__MSG_@@extension_id__/images/grade_black_24dp.png') !important;*/
-	background-color: rgb(241, 196, 15) !important;
-	background-image: none !important;
-	clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  /*background-image: url('chrome-extension://__MSG_@@extension_id__/images/grade_black_24dp.png') !important;*/
+  background-color: rgb(241, 196, 15) !important;
+  background-image: none !important;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
 }
+
 /* Important */
 .aHS-bns .qj {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/label_important_black_24dp.png') !important;
-	opacity: 0.6 !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/label_important_black_24dp.png') !important;
+  opacity: 0.6 !important;
 }
+
 /* Chats */
 .aHS-aHP .qj {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/hangout_black_24dp.png') !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/hangout_black_24dp.png') !important;
 }
+
 /* Snoozed */
 .aHS-bu1 .qj {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_upcoming_clr_24dp_r5_2x.png') !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_upcoming_clr_24dp_r5_2x.png') !important;
 }
+
 /* Scheduled */
 .aHS-nd .qj {
-	background-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/gm3/2x/schedule_send_baseline_nv700_20dp.png') !important;
-	opacity: 0.9 !important;
+  background-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/gm3/2x/schedule_send_baseline_nv700_20dp.png') !important;
+  opacity: 0.9 !important;
 }
+
 /* All, Nested Categories / Labels */
 .aEe,
 .aEc.aHS-bnr .qj,
 .aHS-bnr .qj {
-	opacity: 0.9 !important;
-	background-color: #444746;
-	-webkit-mask-position: center;
-	-webkit-mask-repeat: no-repeat;
-	-webkit-mask-size: 24px;
-	mask-position: center;
-	mask-repeat: no-repeat;
-	mask-size: 24px;
+  opacity: 0.9 !important;
+  background-color: #444746;
 }
+
 /* Labels (only) */
 .zw .aHS-bnr .qj {
-	background-color: #444746 !important;
+  background-color: #444746 !important;
 }
-[data-tooltip="Categories"] .qj {
-	background-color: transparent !important;
-	background-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/gm3/2x/label_baseline_nv700_20dp.png') !important;
-}
-[data-tooltip="Social"] .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png');
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png');
-}
-[data-tooltip="Updates"] .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png');
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png');
-}
-[data-tooltip="Forums"] .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png');
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png');
-}
-[data-tooltip="Promotions"] .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png');
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png');
-}
+
+/* Category icons will be handled by Material Icons in JavaScript */
+
 /* Category buttons */
 .CL.Q7::before, .CL.Wj::before {
-	opacity: 0.9 !important;
+  opacity: 0.9 !important;
 }
 
 @-moz-document url-prefix() {
-	/* Inbox */
-	.aHS-bnt .qj {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_googblue_24dp.png') !important;
-	}
-	/* Dropdown arrow */
-	.aHS-bnt .afM {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/arrow_drop_down_black_20dp.png') !important;
-	}
-	/* Important */
-	.aHS-bns .qj {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/label_important_black_24dp.png') !important;
-	}
-	/* Chats */
-	.aHS-aHP .qj {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/hangout_black_24dp.png') !important;
-	}
-	/* Snoozed */
-	.aHS-bu1 .qj {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_upcoming_clr_24dp_r5_2x.png') !important;
-	}
-	/* Category */
-	.aHS-bnr .qj /*:not(.aEe)*/ {
-		/*background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png') !important;*/
-	}
-	[data-tooltip="Social"] .qj {
-		mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png');
-	}
-	[data-tooltip="Updates"] .qj {
-		mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png');
-	}
-	[data-tooltip="Forums"] .qj {
-		mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png');
-	}
-	[data-tooltip="Promotions"] .qj {
-		mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png');
-	}
+  /* Inbox */
+  .aHS-bnt .qj {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_googblue_24dp.png') !important;
+  }
+  /* Dropdown arrow */
+  .aHS-bnt .afM {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/arrow_drop_down_black_20dp.png') !important;
+  }
+  /* Important */
+  .aHS-bns .qj {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/label_important_black_24dp.png') !important;
+  }
+  /* Chats */
+  .aHS-aHP .qj {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/hangout_black_24dp.png') !important;
+  }
+  /* Snoozed */
+  .aHS-bu1 .qj {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_upcoming_clr_24dp_r5_2x.png') !important;
+  }
+  /* Category icons will be handled by Material Icons in JavaScript */
 }
 
 .TO.nZ .n0 {
-	color: #212121 !important;
-	outline: none;
+  color: #212121 !important;
+  outline: none;
 }
+
 .TO .n0 {
-	color: #616161 !important;
-	outline: none;
+  color: #616161 !important;
+  outline: none;
 }
 
 /* padding for inbox, starred, sent, drafts, snooze */
@@ -748,130 +786,119 @@ td.apU.xY .T-KT.xf::before {
 .TN.bzz.aHS-bnw,
 .TN.bzz.aHS-bnt,
 .TN.bzz.aHS-bu1 {
-	padding-bottom: 5px;
-	padding-top: 5px;
+  padding-bottom: 5px;
+  padding-top: 5px;
 }
 
 /* padding for inbox, stared, sent, drafts */
 .aim {
-	margin-left: -14px;
+  margin-left: -14px;
 }
+
 /* arrow for labels */
 .aij {
-	background-color: transparent !important;
+  background-color: transparent !important;
 }
 
 /* left menu border under trash */
 .TN.bzz.aHS-bnx {
-	padding-bottom: 5px;
-	padding-top: 5px;
-	border-bottom: 1px solid #DDDDDD;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  border-bottom: 1px solid #DDDDDD;
 }
 
 /* Mail / Chat / Spaces Side Panels */
 .aBO {
-	background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 
 /* Chats + Spaces wrappers + iframe */
-
 .aB6 {
-	background-color: #f2f2f2 !important;
+  background-color: #f2f2f2 !important;
 }
 
 .aB6,
 .bn .bl {
-	height: calc(100vh - 40px) !important;
+  height: calc(100vh - 40px) !important;
 }
 
-/*
-**
-**END OF LEFT MENU
-**
-*/
-
-
-/*
-**
-**START OF MAIN MENU, SEARCH BAR AND EMAIL AREA
-**
-*/
+/* =============================================================================
+   MAIN MENU, SEARCH BAR AND EMAIL AREA
+   ============================================================================= */
 
 /* main top bar including shadow*/
 .gb_xd.gb_4d.gb_Fd {
-	height: 56px;
-	box-shadow: 0px 5px 4px #c6c6c6;
+  height: 56px;
+  box-shadow: 0px 5px 4px #c6c6c6;
 }
 
 form.bas {
-	border-radius: 8px !important;
+  border-radius: 8px !important;
 }
+
 form.bas > table {
-	margin-bottom: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 /* search icon */
 button.gb_ff.gb_gf  {
-	margin-top: -3px;
-	margin-left: 0px;
+  margin-top: -3px;
+  margin-left: 0px;
 }
 
 /* main search window */
 .gb_oc.gb_Od.gb_Xd.gb_Td {
-	margin-left: 10px;
+  margin-left: 10px;
 }
 
 /* search mail text */
- input.gb_3e {
-	margin-top: -5px;
-	margin-left: 20px;
+input.gb_3e {
+  margin-top: -5px;
+  margin-left: 20px;
 }
 
 /* Google Apps icon & Google Account icon */
 .gb_w.gb_Xc.gb_f.gb_Af, .gb_Ea.gb_Xc.gb_qg.gb_f.gb_Af {
-	margin-top: -7px;
+  margin-top: -7px;
 }
 
 /* search bar */
 .gb_mf.gb_gf {
-	margin-top: 0px;
-	margin-left: 30px;
-	height: 36px;
+  margin-top: 0px;
+  margin-left: 30px;
+  height: 36px;
 }
 
 /* colapsed main menu */
 .no {
-	background-color: #F2F2F2;
+  background-color: #F2F2F2;
 }
-
 
 /* main email / chat / spaces area */
 .bkK > .nH {
-	margin-bottom: 0 !important;
-	border-radius: 0 !important;
+  margin-bottom: 0 !important;
+  border-radius: 0 !important;
 }
 
-/*
-**
-**END OF MAIN MENU, SEARCH BAR AND EMAIL AREA
-**
-*/
+/* =============================================================================
+   INBOX TABS AND LAYOUT
+   ============================================================================= */
 
 /* Inbox tabs align center */
 .aAA {
-	max-width: var(--email-max-width) !important;
+  max-width: var(--email-max-width) !important;
 }
 
 .aKk>tbody, .aAA, .aRz.J-KU {
-	justify-content: center !important;
+  justify-content: center !important;
 }
 
 .J-KU-Jg-K9.aAA > .aRz > .aAy {
-	justify-content: center;
+  justify-content: center;
 }
 
 .aAy > .aKp {
-	margin-left: 0;
+  margin-left: 0;
 }
 
 /* behind emails */
@@ -895,20 +922,23 @@ button.gb_ff.gb_gf  {
 /* Empty inbox tab */
 .aRs
 {
-	background: #F2F2F2 !important;
+  background: #F2F2F2 !important;
 }
 
 /* Quick Settings panel */
 .IU {
-	border-radius: 0 !important;
+  border-radius: 0 !important;
 }
 
 /* Border under toolbar */
 .D.E.G-atb::before {
-	box-shadow: none;
-	-webkit-box-shadow: none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
 }
 
+/* =============================================================================
+   GMAIL TOP BAR COLOR OVERRIDES
+   ============================================================================= */
 /**
  * Gmail Top Bar Color Overrides
  * --------------------------------
@@ -923,7 +953,6 @@ button.gb_ff.gb_gf  {
  * - Colors are based on the 2014 Material Design palette, matching the original Inbox launch colors.
  * - Update if Gmail's DOM structure changes.
  * - Ensure any new sections added in JS are also styled here.
- *
  */
 
 /* Default gray */
@@ -1032,25 +1061,16 @@ button.gb_ff.gb_gf  {
   background-color: #db4437;
 }
 
+/* =============================================================================
+   CATEGORY & LABEL PAGE TITLES (HEADER BAR)
+   ============================================================================= */
 /**
- * ──────────────────────────────────────────────────────
- * Category & Label Page Titles (Header Bar)
- *
  * These rules display the title in the Gmail header based on the
  * `pageTitle` attribute set by handleHashChange() in JavaScript:
  *
  * • `social`, `updates`, `forums`, `promotions`, `labels` — use fixed names
  * • `label` — dynamic: content pulled from `data-label-title` which
  *               JS sets to the leaf (last segment) of a custom label.
- *
- * Example:
- *   .w-asV.bbg.aiw[pageTitle="forums"] a[aria-label="Gmail"]::after {
- *     content: 'Forums';
- *   }
- *   .w-asV.bbg.aiw[pageTitle="label"] a[aria-label="Gmail"]::after {
- *     content: attr(data-label-title);
- *   }
- * ──────────────────────────────────────────────────────
  */
 .w-asV.bbg.aiw[pageTitle="social"] a[aria-label="Gmail"]::after {
   content: 'Social';
@@ -1075,916 +1095,924 @@ button.gb_ff.gb_gf  {
 .UI .nH.nn,
 .nH.bkK.nn,
 .age {
-	background-color: unset !important;
+  background-color: unset !important;
 }
 
 /* storage usage, terms of service, privacy, account activity */
 .aeG {
-	display: none;
+  display: none;
 }
 
 /* Gmail icon (old, new) */
 a[aria-label="Gmail"] {
-	width: 120px;
-	overflow: hidden;
-	text-decoration: none;
+  width: 120px;
+  overflow: hidden;
+  text-decoration: none;
 }
 a[aria-label="Gmail"] img {
-	display: none;
+  display: none;
 }
 
 /* Fix for padding applied to a[href="#inbox"] */
 /* All titles get padding, lines up with sidebar icons */
 a[aria-label="Gmail"][href^="#"] {
-	padding-left: 22px;
+  padding-left: 22px;
 }
 
 /* Gmail text */
 a[aria-label="Gmail"]::after {
-	content: 'Search';
-	font-size: 20px;
-	color: #FFF;
-	position: relative;
-	top: -2px;
-	padding-left: 7px;
+  content: 'Search';
+  font-size: 20px;
+  color: #FFF;
+  position: relative;
+  top: -2px;
+  padding-left: 7px;
 }
 
 a[aria-label="Gmail"][href="#inbox"]::after, a[aria-label="Gmail"][href="#settings"]::after {
-	content: 'Inbox';
+  content: 'Inbox';
 }
 a[aria-label="Gmail"][href="#snoozed"]::after {
-	content: 'Snoozed';
+  content: 'Snoozed';
 }
 a[aria-label="Gmail"][href="#archive"]::after {
-	content: 'Done';
+  content: 'Done';
 }
 a[aria-label="Gmail"][href="#starred"]::after {
-	content: 'Starred';
+  content: 'Starred';
 }
 a[aria-label="Gmail"][href="#sent"]::after {
-	content: 'Sent';
+  content: 'Sent';
 }
 a[aria-label="Gmail"][href="#drafts"]::after {
-	content: 'Drafts';
+  content: 'Drafts';
 }
 a[aria-label="Gmail"][href="#imp"]::after {
-	content: 'Important';
+  content: 'Important';
 }
 a[aria-label="Gmail"][href="#chat"]::after,
 a[aria-label="Gmail"][href="#onboarding"]::after,
 a[aria-label="Gmail"][href="#browse"]::after {
-	content: 'Chat';
+  content: 'Chat';
 }
 a[aria-label="Gmail"][href="#calls"]::after {
-	content: 'Meet';
+  content: 'Meet';
 }
 a[aria-label="Gmail"][href="#scheduled"]::after {
-	content: 'Scheduled';
+  content: 'Scheduled';
 }
 a[aria-label="Gmail"][href="#all"]::after {
-	content: 'All Mail';
+  content: 'All Mail';
 }
 a[aria-label="Gmail"][href="#spam"]::after {
-	content: 'Spam';
+  content: 'Spam';
 }
 a[aria-label="Gmail"][href="#trash"]::after {
-	content: 'Trash';
+  content: 'Trash';
 }
 a[aria-label="Gmail"][href="#sub"]::after {
-	content: 'Subscriptions';
+  content: 'Subscriptions';
 }
 
 /* Invisible inbox info with huge padding at bottom of email  */
 .pfiaof {
-	display: none;
+  display: none;
 }
 
 /* Top bar icons */
 header svg {
-	color: #FFF !important;
-	opacity: 1 !important;
+  color: #FFF !important;
+  opacity: 1 !important;
 }
 
 /* Top bar Google Chat status selector */
 .lJradf.X72uL { /* bg */
-	background: rgba(255, 255, 255, 0.125) !important;
+  background: rgba(255, 255, 255, 0.125) !important;
 }
 
 .lJradf.X72uL:not(.Dnplmc):hover {
-	background: rgba(60, 64, 67, 0.08) !important;
+  background: rgba(60, 64, 67, 0.08) !important;
 }
 
 .C2Qm1d.X72uL { /* Text */
-	color: #FFF !important;
+  color: #FFF !important;
 }
 
 /* ? icon */
-
 .t6.zH[aria-expanded="true"]:hover, .t6.zH[aria-expanded="true"] {
-	background-color: rgba(95,99,104,0.24);
+  background-color: rgba(95,99,104,0.24);
 }
 
 /* settings icon */
-
 .FH[aria-expanded="true"]:hover {
-	background-color: rgba(95,99,104,0.24);
+  background-color: rgba(95,99,104,0.24);
 }
 
 /* gapps shorcut (expanded) icon */
 .gb_B[aria-expanded="true"] .gb_F {
-	fill: #fff !important;
+  fill: #fff !important;
 }
-
 
 /* Search bar (old, new) */
 header form {
-	background: rgba(255, 255, 255, 0.125) !important;
-	max-width: 90% !important;
+  background: rgba(255, 255, 255, 0.125) !important;
+  max-width: 90% !important;
 }
 
 /* Search bar icon on active input (old, new) */
 .gb_1e.gb_yf.gb_if button svg, .gb_2e.gb_zf.gb_jf button svg {
-	color: #000 !important;
+  color: #000 !important;
 }
 .gb_if {
-	margin-top: -5px;
+  margin-top: -5px;
 }
 
 /* Search bar placeholder (old, new) */
 header form input::placeholder {
-	color: #FFF !important;
+  color: #FFF !important;
 }
 
 /* Search bar input */
 header form input {
-	color: white !important;
+  color: white !important;
 }
+
+/* =============================================================================
+   FLOATING ACTION BUTTONS
+   ============================================================================= */
 
 /* Add reminder button */
 .add-reminder,
 /* Floating compose button */
 .floating-compose {
-	user-select: none;
-	position: fixed;
-	z-index: 1000;
-	border-radius: 50%;
-	padding: 0;
-	overflow: hidden;
-	box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 1px 3px 1px rgba(60,64,67,0.149);
-	cursor: pointer;
+  user-select: none;
+  position: fixed;
+  z-index: 1000;
+  border-radius: 50%;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 1px 3px 1px rgba(60,64,67,0.149);
+  cursor: pointer;
 }
 
 .add-reminder:hover,
 .floating-compose:hover {
-	box-shadow: 0 1px 3px 0 rgba(60,64,67,0.302), 0 4px 8px 3px rgba(60,64,67,0.149);
+  box-shadow: 0 1px 3px 0 rgba(60,64,67,0.302), 0 4px 8px 3px rgba(60,64,67,0.149);
 }
 
 /* Add reminder button */
 .add-reminder {
-	right: 48px;
-	bottom: 90px;
-	width: 40px;
-	height: 40px;
-	background: #4285f4;
+  right: 48px;
+  bottom: 90px;
+  width: 40px;
+  height: 40px;
+  background: #4285f4;
 }
 
 /* Add reminder button image */
 .add-reminder::before,
 /* Compose button image */
 .floating-compose::before {
-	background-size: 24px !important;
-	background-position: center;
-	background-repeat: no-repeat;
-	content: '';
-	display: block;
+  background-size: 24px !important;
+  background-position: center;
+  background-repeat: no-repeat;
+  content: '';
+  display: block;
 }
 
 /* Add reminder button image */
 .add-reminder::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_reminders_white_24dp_2x.png') !important;
-	height: 40px;
-	width: 40px;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_reminders_white_24dp_2x.png') !important;
+  height: 40px;
+  width: 40px;
 }
 
 /* Floating compose button */
 .floating-compose {
-	right: 40px;
-	bottom: 20px;
-	width: 56px;
-	height: 56px;
-	background: #d23f31;
+  right: 40px;
+  bottom: 20px;
+  width: 56px;
+  height: 56px;
+  background: #d23f31;
 }
 
 /* Compose button image */
 .floating-compose::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
-	height: 56px;
-	width: 56px;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
+  height: 56px;
+  width: 56px;
 }
 .floating-compose:hover::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
 }
 
 /* Hide old compose button */
 .T-I-KE.L3:not(.aDV) {
-	display: none !important;
+  display: none !important;
 }
 
 /* But show New chat button + re-style to match */
 .T-I.T-I-KE.L3.aDV {
-	position: fixed;
-	left: 0; 
-	bottom: 20px;
-	z-index: 4;
-	padding: 0;
-	width: 52px;
-	height: 52px;
-	border-radius: 26px;
-	box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 1px 3px 1px rgba(60,64,67,0.149);
+  position: fixed;
+  left: 0; 
+  bottom: 20px;
+  z-index: 4;
+  padding: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 26px;
+  box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 1px 3px 1px rgba(60,64,67,0.149);
 }
 
 .T-I.T-I-KE.L3.aDV:hover {
-	box-shadow: 0 1px 3px 0 rgba(60,64,67,0.302), 0 4px 8px 3px rgba(60,64,67,0.149);
+  box-shadow: 0 1px 3px 0 rgba(60,64,67,0.302), 0 4px 8px 3px rgba(60,64,67,0.149);
 }
 
 .aqn.arL.nH.oy8Mbf.apV .T-I.T-I-KE.L3.aDV {
-	left: 250px; /* only shows when Chat sidebar is active */
+  left: 250px; /* only shows when Chat sidebar is active */
 }
 
 /* Archive button (inbox email, opened email) */
 .brq, .ar8 {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_done_black_24dp_2x.png') !important;
-	opacity: 0.7 !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_done_black_24dp_2x.png') !important;
+  opacity: 0.7 !important;
 }
 
 /* Snooze button (inbox email, opened email) */
 .brv, .brW {
-	background-size: 20px !important;
+  background-size: 20px !important;
 }
 
 @-moz-document url-prefix() {
-	/* Add reminder button image */
-	.add-reminder::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_reminders_white_24dp_2x.png') !important
-	}
-	/* Compose email image */
-	.floating-compose::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
-	}
-	.floating-compose:hover::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
-	}
-	/* Archive button (inbox email, opened email) */
-	.brq, .ar8 {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_done_black_24dp_2x.png') !important;
-	}
+  /* Add reminder button image */
+  .add-reminder::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_reminders_white_24dp_2x.png') !important
+  }
+  /* Compose email image */
+  .floating-compose::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
+  }
+  .floating-compose:hover::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
+  }
+  /* Archive button (inbox email, opened email) */
+  .brq, .ar8 {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_done_black_24dp_2x.png') !important;
+  }
 }
 
 /* Action buttons on email row */
 .bqX {
-	margin: 0 10px !important;
+  margin: 0 10px !important;
 }
 
 /* Done button on email row */
 .bqX.brq {
-	order: 3;
-	margin-right: 22px !important;
+  order: 3;
+  margin-right: 22px !important;
 }
 
 /* Delete button on email row */
 .bqX.bru {
-	order: 2;
+  order: 2;
 }
+
+/* =============================================================================
+   EMAIL CONTENT STYLING
+   ============================================================================= */
 
 /* Opened email */
 .Bs.nH.iY.bAt {
-	margin: 10px;
-	box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
-	width: calc(100% - 62px);
-	background: #FFF;
+  margin: 10px;
+  box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
+  width: calc(100% - 62px);
+  background: #FFF;
 }
 
 /* Fix bug that would expand the message area if giant image in message */
 .Bs.nH.iY.bAt img {
-	max-width: 100%;
-	height: auto !important; /* Now ft. actual image proportions! */
+  max-width: 100%;
+  height: auto !important; /* Now ft. actual image proportions! */
 }
 
 /* Fixed border on email */
 .Bu > .nH > .no {
-	display: none;
+  display: none;
 }
 
 /* Fix vertical ellipsis button per email "overflow" */
 .T-I.J-J5-Ji.T-I-Js-Gs.aap.T-I-awG.T-I-ax7.L3 {
-	margin-right: 20px;
+  margin-right: 20px;
 }
 
 /* Left toolbar when collapsed (this is done to fix hidden compose button when collapsed) */
 .bhZ {
-	position: relative !important;
-	margin-right: -72px;
+  position: relative !important;
+  margin-right: -72px;
 }
 
 /* Attachments styling to look more like inbox */
 .brd {
-	margin-left: 0px !important;
+  margin-left: 0px !important;
 }
 .brc {
-	border-radius: 2px !important;
-	background-color: #f7f7f7;
-	padding: 0 6px !important;
-	color: #212121 !important;
-	box-shadow: 0 0 1px rgba(0,0,0,.11), 0 1px 2px rgba(0,0,0,.22) !important;
+  border-radius: 2px !important;
+  background-color: #f7f7f7;
+  padding: 0 6px !important;
+  color: #212121 !important;
+  box-shadow: 0 0 1px rgba(0,0,0,.11), 0 1px 2px rgba(0,0,0,.22) !important;
 }
 .brc .brg {
-	font-size: 13px !important;
+  font-size: 13px !important;
 }
 
-/* --------------------------------------------- */
-/* Hides the pin icon until the mouse is over it */
-/* --------------------------------------------- */
+/* =============================================================================
+   PIN ICON STYLING
+   ============================================================================= */
 
 /* Nudges the pin along and then moves the date/time over a bit */
 .zA .apU.xY {
-	margin-right: 2px;
+  margin-right: 2px;
 }
 .zA .xW.xY {
-	margin-left: -32px;
-	margin-right: 10px;
+  margin-left: -32px;
+  margin-right: 10px;
 }
 
 /* Handles the positioning of the quick action icons that appear when you mouse over an email row to make room for the pin */
 .bqY {
-	position: relative;
-	left: -10px;
+  position: relative;
+  left: -10px;
 }
 
 /* Hides the pin when not pinned, until the cursor is over it */
 .zA .apU.xY .aXw {
-	display: none;
+  display: none;
 }
 .zA .apU.xY .T-KT-JW {
-	display: flex;
+  display: flex;
 }
 .aqw .apU.xY .aXw {
-	display: flex;
+  display: flex;
 }
 
-/* --------------------------------------------- */
-/* Inbox and top toolbar layout	    						 */
-/* --------------------------------------------- */
+/* =============================================================================
+   INBOX AND TOP TOOLBAR LAYOUT
+   ============================================================================= */
 
 /* Hides pale blue on bottom of main panel */
 .Tm {
-	padding-bottom: 16px !important;
+  padding-bottom: 16px !important;
 }
 
 /* Hides pale blue on bottom for side panel */
 .aUx {
-	min-height: calc(100vh - 64px);	
+  min-height: calc(100vh - 64px);	
 }
 
 /* Fixes box-shadow getting cutoff by parent */
 .Nu {
-	padding-top: 2px;
-	padding-bottom: 6px;
-	height: auto !important;
+  padding-top: 2px;
+  padding-bottom: 6px;
+  height: auto !important;
 }
 
 /* Search results "Some messages in Trash or Spam match your search" area */
 .TD {
-	background: transparent !important;
+  background: transparent !important;
 }
 
 /* Right sidebar set height override */
 .nH.bAw.nn {
-	height: calc(100vh - 64px) !important;
+  height: calc(100vh - 64px) !important;
 }
 
 /* Inbox: message list layout */
 .nH .AO .aeF {
-	min-width: 512px;
-	margin-right: var(--inbox-margin-right);
-	width: auto;
+  min-width: 512px;
+  margin-right: var(--inbox-margin-right);
+  width: auto;
 }
 
 /* Inbox: starred heading space */
 .Cp {
-	margin: 0 5px;
+  margin: 0 5px;
 }
 
 /* Inbox: hide "Priority Inbox" section headings */
 .priority-inbox-enabled .nH .Wg.aAr {
-	display: none;
+  display: none;
 }
 
 /* Inbox: date groupings */
 .time {
-	font-size: 13px;
-	padding-top: 13px;
+  font-size: 13px;
+  padding-top: 13px;
 }
 
 /* Inbox: email rows */
 .zA {
-	padding: 13px 12px 13px 10px !important;
+  padding: 13px 12px 13px 10px !important;
 }
 
 /* Email selected with keyboard shortcut (remove left padding so blue bar is still right against the left edge) */
 .zA.btb {
-	padding-left: 5px !important;
+  padding-left: 5px !important;
 }
 .zA.btb .PF.xY.PE {
-	margin-right: 10px;
+  margin-right: 10px;
 }
 
 /* Inbox: email row contents */
 .zA * {
-	font-size: 13px;
+  font-size: 13px;
 }
 
 /* Moves the selection indicator to the left */
 .PF.xY.PE {
-	margin-left: -5px;
-	margin-right: 5px;
+  margin-left: -5px;
+  margin-right: 5px;
 }
 
 /* Hides the checkbox when not checked */
 .show-avatar-enabled .zA .oZ-x3.xY .T-Jo {
-	display: none;
+  display: none;
 }
 
 .zA .oZ-jc.T-Jo.J-J5-Ji {
-	margin-left: -4px;
+  margin-left: -4px;
 }
 
 /* hide the drag icon next to checkbox */
 .aqw>td.oZ-x3:before {
-	display: none;
+  display: none;
 }
 
 /* Unhides the checkbox when checked */
 .zA.aqw .oZ-x3.xY .T-Jo {
-	display: inline;
+  display: inline;
 }
 .aqw .yX.xY div:nth-child(n+3)>img {
-	display: none;
+  display: none;
 }
 .x7 .yX.xY div:nth-child(n+3)>img {
-	display: none;
+  display: none;
 }
 .zA.x7 .oZ-x3.xY .T-Jo {
-	display: inline;
+  display: inline;
 }
 
-/* */
 /* Rearranges the menu at the top and moves it all to the right corner */
-/* */
-
 /* the bar that the menu items typically rest on */
 .G-atb {
-	padding-bottom: 12px !important;
+  padding-bottom: 12px !important;
 }
 
 .nH.aqK {
-	padding-top: 0px;
+  padding-top: 0px;
 }
 
 .Cq.aqL {
-	margin-left: 0;
+  margin-left: 0;
 }
 
 .Cr.aqJ {
-	margin-left: auto;
+  margin-left: auto;
 }
 
 /* Snoozed notification styling */
 .cL {
-	font-weight: normal !important;
-	font-size: 13px;
-	margin-left: 0px !important;
+  font-weight: normal !important;
+  font-size: 13px;
+  margin-left: 0px !important;
 }
 
-/* --------------------------------------------- */
-/* Calendar event as attachment                  */
-/* --------------------------------------------- */
+/* =============================================================================
+   CALENDAR EVENT STYLING
+   ============================================================================= */
 
 .calendar-attachment {
-	height: 80px !important;
-	width: 400px !important;
+  height: 80px !important;
+  width: 400px !important;
 }
 
 .calendar-attachment .brc {
-	height: 80px;
-	width: 400px;
-	max-width: 400px !important;
-	padding-left: 0 !important;
+  height: 80px;
+  width: 400px;
+  max-width: 400px !important;
+  padding-left: 0 !important;
 }
 
 .calendar-attachment .brg {
-	display: flex;
-	flex-direction: column;
-	max-width: 250px;
-	overflow: visible;
+  display: flex;
+  flex-direction: column;
+  max-width: 250px;
+  overflow: visible;
 }
 
 .calendar-attachment .event-title, .calendar-attachment .event-time {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .calendar-attachment .event-title {
-	font-weight: normal;
+  font-weight: normal;
 }
 .calendar-attachment .event-time {
-	color: #757575;
+  color: #757575;
 }
 
 .calendar-attachment .aKS {
-	position: relative;
-	top: 0;
-	margin-top: 4px;
+  position: relative;
+  top: 0;
+  margin-top: 4px;
 }
 
 .calendar-attachment .aKS .aOd.T-I-awv {
-	border-radius: 2px;
+  border-radius: 2px;
 }
 
 .calendar-image {
-	height: 80px;
-	width: 100px;
-	background-position: center;
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/calendar_event_attachment.png') !important;
-	background-size: 200%;
-	margin-right: 16px;
+  height: 80px;
+  width: 100px;
+  background-position: center;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/calendar_event_attachment.png') !important;
+  background-size: 200%;
+  margin-right: 16px;
 }
 @-moz-document url-prefix() {
-	.calendar-image {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/calendar_event_attachment.png') !important;
-	}
+  .calendar-image {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/calendar_event_attachment.png') !important;
+  }
 }
 
 /* Remove gmail calendar icon */
 .yf img.xL {
-	display: none;
+  display: none;
 }
+
+/* =============================================================================
+   LABELS AND AVATARS
+   ============================================================================= */
 
 /* Labels inline in email list */
 .ar {
-	height: 22px !important;
-	border-radius: 2px !important;
+  height: 22px !important;
+  border-radius: 2px !important;
 }
 /* Hides inline "Inbox" label on emails within bundles + labels */
 .ar:has(.at[title=Inbox]) {
-	display: none;
+  display: none;
 }
 
 .ar .av {
-	padding-top: 2px;
+  padding-top: 2px;
 }
 
 /* Name avatar */
 .avatar {
-	background: url('chrome-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png');
-	color: rgba(255, 255, 255, 0.65);
-	border-radius: 50%;
-	font-size: 18px;
-	font-family: 'Roboto', sans-serif;
-	font-weight: 400;
-	position: relative;
-	left: -6px;
-	flex: 32px 0 0;
-	width: 32px;
-	height: 32px;
-	text-align: center;
-	line-height: 32px;
-	background-size: 75% 75% !important;
-	background-repeat: no-repeat !important;
-	background-position: center !important;
-	/* background-color: #444 !important; -- Removed to preserve original colors */
+  background: url('chrome-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png');
+  color: rgba(255, 255, 255, 0.65);
+  border-radius: 50%;
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  position: relative;
+  left: -6px;
+  flex: 32px 0 0;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  line-height: 32px;
+  background-size: 75% 75% !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  /* background-color: #444 !important; -- Removed to preserve original colors */
 }
 @-moz-document url-prefix() {
-	.avatar {
-		background: url('moz-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png');
-	}
+  .avatar {
+    background: url('moz-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png');
+  }
 }
 
 .zA:hover .avatar {
-	display: none;
+  display: none;
 }
 
 .zA > .oZ-x3 > div[aria-checked="true"] + .avatar {
-	display: none;
+  display: none;
 }
 
 /* Alignment of calendar icon */
 .zA>.yf {
-	padding-right: 32px !important;
+  padding-right: 32px !important;
 }
 
 /* Hide important indicator on reminders */
 .reminder .WA.xY {
-	visibility: hidden;
+  visibility: hidden;
 }
 
 /* Right side Hangouts */
 div[aria-label="Hangouts"][role="complementary"] {
-	background-color: rgb(242, 242, 242) !important;
+  background-color: rgb(242, 242, 242) !important;
 }
 
 .nH.bkK.nn + .nH.nn {
-	background-color: #e5e5e5 !important;
+  background-color: #e5e5e5 !important;
 }
 
 /* Subject padding in opened email */
 .if > .byY, .iC .byY {
-	padding: 20px 4px 8px 20px !important;
+  padding: 20px 4px 8px 20px !important;
 }
 
 /* Subject padding in email list */
 .zA > .yX {
-	padding: 0 15px !important;
+  padding: 0 15px !important;
 }
 
 /* Align the checkbox with first letter avatar */
 .zA .oZ-jc.T-Jo.J-J5-Ji {
-	margin-left: 1px;
+  margin-left: 1px;
 }
 
 /* Hide the drag icon next to checkbox */
 .aqw > td.oZ-x3:before {
-	display: none;
+  display: none;
 }
 
 /* Hide labels next to email subject */
 .nH > .ha > .J-J5-Ji {
-	display: none;
+  display: none;
 }
 
 /* Hide buttons next to email subject */
 .nH > .nH > .hj > .ade {
-	display: none;
+  display: none;
 }
 
 /* Hide full length email address */
 .iw > .qu > .go {
-	display: none;
+  display: none;
 }
 
 /* Spacing on bottom of email list */
 .BltHke.oy8Mbf {
-	margin-bottom: 40px;
+  margin-bottom: 40px;
 }
 
+/* =============================================================================
+   BUNDLE STYLING
+   ============================================================================= */
+
 .bundle-image {
-	margin-left: 13px;
- 	display: inline-block;
- 	width: 28px;
- 	height: 28px !important;
- 	vertical-align:middle;
- 	margin-top:-4px;
- 	margin-bottom:-4px;
+  margin-left: 13px;
+  display: inline-block;
+  width: 28px;
+  height: 28px !important;
+  vertical-align:middle;
+  margin-top:-4px;
+  margin-bottom:-4px;
 }
 .bundle-image img {
-	width: 28px;
+  width: 28px;
 }
 
 .bundle-wrapper .label-link {
-	margin-left: 5px;
-	font-size: 13px;
-	margin-right: 32px;
+  margin-left: 5px;
+  font-size: 13px;
+  margin-right: 32px;
 }
 /* allows user-specified custom color labels/bundles */
 .bundle-wrapper .label-link[style="color: rgb(225, 227, 225)"] {
-	color: #404040 !important;
+  color: #404040 !important;
 }
 .bundle-wrapper.contains-unread .label-link,
 .bundle-wrapper .bundle-senders span.strong {
-	font-weight: 700;
+  font-weight: 700;
 }
 .bundle-wrapper:not(.contains-unread) .bundle-image img {
-	opacity: 0.6;
+  opacity: 0.6;
 }
 
 .bundle-senders {
-	color: #202124 !important;
+  color: #202124 !important;
 }
 /* Parent of .bundle-senders */
 .label-link + .xW.xY {
-	flex-grow: 1;
-	overflow: hidden;
+  flex-grow: 1;
+  overflow: hidden;
 }
 
 .bundle-wrapper .label-link .bundle-count {
-	font-weight: 400;
-	margin-left: 5px;
-	color: gray;
+  font-weight: 400;
+  margin-left: 5px;
+  color: gray;
 }
 
 /* Colored bundle titles for Inbox categories */
 .zA.yO[bundleLabel="Updates"] .label-link > span:not(.bundle-count) {
-	color: rgb(255, 104, 57);
+  color: rgb(255, 104, 57);
 }
 .zA.yO[bundleLabel="Promotions"] .label-link > span:not(.bundle-count) {
-	color: rgb(0, 188, 212);
+  color: rgb(0, 188, 212);
 }
 .zA.yO[bundleLabel="Forums"] .label-link > span:not(.bundle-count) {
-	color: rgb(63, 81, 181);
+  color: rgb(63, 81, 181);
 }
 .zA.yO[bundleLabel="Social"] .label-link > span:not(.bundle-count) {
-	color: rgb(219, 68, 55);
+  color: rgb(219, 68, 55);
 }
 .zA.yO[bundleLabel="Travel"] .label-link > span:not(.bundle-count),
 .zA.yO[bundleLabel="Trips"] .label-link > span:not(.bundle-count) {
-	color: rgb(156, 39, 176);
+  color: rgb(156, 39, 176);
 }
 .zA.yO[bundleLabel^="Finance"] .label-link > span:not(.bundle-count) {
-	color: rgb(103, 159, 56);
+  color: rgb(103, 159, 56);
 }
 .zA.yO[bundleLabel="Orders"] .label-link > span:not(.bundle-count),
 .zA.yO[bundleLabel="Purchases"] .label-link > span:not(.bundle-count) {
-	color: rgb(121, 85, 72);
+  color: rgb(121, 85, 72);
 }
 
 .bundled-email {
-	display: none !important;
+  display: none !important;
 }
 
 /* Bundle row settings */
 .zA > span.oZ-x3 {
-	order: 0;
+  order: 0;
 }
 
 /* allows user-specified custom color labels/bundles */
 .zA > .xY.bundle-image[style*="background-color: rgb(225, 227, 225)"] {
-	background-color: #444 !important;
+  background-color: #444 !important;
 }
 
 .zA[bundlelabel^="Finance"] > .xY.bundle-image {
-	background-color: rgb(103, 159, 56) !important;
+  background-color: rgb(103, 159, 56) !important;
 }
 
 .zA[bundlelabel="Forums"] > .xY.bundle-image {
-	background-color: rgb(63, 81, 181) !important;
+  background-color: rgb(63, 81, 181) !important;
 }
 
 .zA[bundlelabel="Orders"] > span.oZ-x3,
 .zA[bundlelabel="Purchases"] > span.oZ-x3 {
-	background-color: rgb(121, 85, 72) !important;
+  background-color: rgb(121, 85, 72) !important;
 }
 
 .zA[bundlelabel="Promotions"] > span.oZ-x3 {
-	background-color: rgb(0,188,212) !important;
+  background-color: rgb(0,188,212) !important;
 }
 
 .zA[bundlelabel="Social"] > span.oZ-x3 {
-	background-color: rgb(219, 68, 55) !important;
+  background-color: rgb(219, 68, 55) !important;
 }
 
 .zA[bundlelabel="Travel"] > span.oZ-x3 {
-	background-color: rgb(156, 39, 176) !important;
+  background-color: rgb(156, 39, 176) !important;
 }
 
 .zA[bundlelabel="Updates"] > span.oZ-x3 {
-	background-color: rgb(255, 104, 57) !important;
+  background-color: rgb(255, 104, 57) !important;
 }
 
 .hide-important-markers {
-	display: none !important;
+  display: none !important;
 }
 
 /* Hide labels on emails when bundling is enabled */
 body.email-bundling-enabled .bundled-email .yi,
 body.email-bundling-enabled.bundle-page .nH.ar4.B .yi {
-	display: none !important;
+  display: none !important;
 }
 
 /* Override narrow width class */
 .Zs .zA {
     -webkit-flex-wrap: nowrap !important;
-	flex-wrap: nowrap !important;
+  flex-wrap: nowrap !important;
 }
 .Zs .zA > .a4W {
-	margin-left: unset !important;
+  margin-left: unset !important;
 }
 .Zs .a4W .xT {
-	flex-wrap: unset !important;
+  flex-wrap: unset !important;
 }
 .Zs .yi {
-	margin-left: 0 !important;
-	max-width: unset !important;
+  margin-left: 0 !important;
+  max-width: unset !important;
 }
 .Zs .y2 {
-	min-width: unset !important;
-	-webkit-flex: 1 !important;
-	flex: 1 !important;
+  min-width: unset !important;
+  -webkit-flex: 1 !important;
+  flex: 1 !important;
 }
 .Zs .zA > .xW {
-	-webkit-flex-basis: 1 !important;
-	flex-basis: 1 !important;
-	flex-grow: 400 !important;
-	flex-basis: 0 !important;
+  -webkit-flex-basis: 1 !important;
+  flex-basis: 1 !important;
+  flex-grow: 400 !important;
+  flex-basis: 0 !important;
 }
 .Zs .y6 {
-	order: 1 !important;
+  order: 1 !important;
 }
 .Zs .zA > .yX {
-	flex: initial !important;
+  flex: initial !important;
 }
 .Zs .zA > .xY {
-	order: 1 !important;
+  order: 1 !important;
 }
 
 .add-reminder.moved {
-	right: 388px;
+  right: 388px;
 }
 
 .floating-compose.moved,
 .Yh.akV.moved {
-	right: 380px;
+  right: 380px;
 }
 
 /* Hide inbox count when Mail collapsed in left side bar */
 span.XU {
-	display: none !important;
+  display: none !important;
 }
 
 /* Inbox tips, Unsubscribe/other alerts shown on top */
 .S4 .X3 {
-	margin-left: 9px;
-	margin-right: 9px;
+  margin-left: 9px;
+  margin-right: 9px;
 }
 
 .G4, .GR, div[aria-label="Inbox tip"] {
-	border: 0 !important;
-	border-radius: 0 !important;
-	box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
 }
 
 /* New compose button */
 .Yh.akV {
-	position: fixed;
-	bottom: 16px; /* 20px; */
-	right: 38px; /* 38px */
-	z-index: 1001;
+  position: fixed;
+  bottom: 16px; /* 20px; */
+  right: 38px; /* 38px */
+  z-index: 1001;
 
-	height: 58px !important; /* 56px */
-	min-width: 58px !important; /* 56px */
+  height: 58px !important; /* 56px */
+  min-width: 58px !important; /* 56px */
 
-	background-color: #d23f31 !important;
-	border: 0 !important;
+  background-color: #d23f31 !important;
+  border: 0 !important;
 }
-/*
-.akV::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
-}
-*/
+
 .akV:hover, .akV:focus {
-	background-color: #d23f31 !important;
+  background-color: #d23f31 !important;
 }
 
 .akV:hover::before, .akV:focus::before {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
 }
 
 @media (min-resolution:144dpi),(-webkit-min-device-pixel-ratio:1.5) {
-	.akV::before {
-		background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
-	}
-	.akV:hover::before, .akV:focus::before {
-		background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
-	}
+  .akV::before {
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
+  }
+  .akV:hover::before, .akV:focus::before {
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
+  }
 }
 
 @-moz-document url-prefix() {
-	.akV::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
-	}
-	.akV:hover::before, .akV:focus::before {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
-	}
-	@media (min-resolution:144dpi),(-webkit-min-device-pixel-ratio:1.5) {
-		.akV::before {
-			background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
-		}
-		.akV:hover::before, .akV:focus::before {
-			background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
-		}
-	}
+  .akV::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
+  }
+  .akV:hover::before, .akV:focus::before {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
+  }
+  @media (min-resolution:144dpi),(-webkit-min-device-pixel-ratio:1.5) {
+    .akV::before {
+      background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
+    }
+    .akV:hover::before, .akV:focus::before {
+      background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
+    }
+  }
 }
 
 /* Hide Compose and Reminder buttons from Gmail's Print view */
 @media print {
-	.add-reminder,
-	.floating-compose,
-	.akV {
-		display: none;
-	}
+  .add-reminder,
+  .floating-compose,
+  .akV {
+    display: none;
+  }
 }
 
-/* === Auto-hide Gmail main message list scrollbar (Chrome & Firefox) === */
+/* =============================================================================
+   SCROLLBAR STYLING
+   ============================================================================= */
 
-/* For Chrome, Edge, and other Webkit/Blink browsers */
+/* Auto-hide Gmail main message list scrollbar (Chrome & Edge) */
 .aeF::-webkit-scrollbar {
   width: 10px;
   background: transparent;
@@ -2013,7 +2041,10 @@ span.XU {
   scrollbar-color: transparent transparent;
 }
 
-/* =================== DARK MODE =================== */
+/* =============================================================================
+   DARK MODE STYLING
+   ============================================================================= */
+
 body.dark-mode {
   background-color: #2d2d30 !important;
   color: #ffffff !important;
@@ -2335,24 +2366,23 @@ body.dark-mode .w-asV.bbg.aiw[pageTitle="calls"] {
 
 /* Inbox Email is Empty show Moon */
 body.dark-mode .ar4.z .TD > .TC {
-	background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_zero_inbox_2x_dark.png') !important;
-	background-repeat: no-repeat;
-	background-position: center;
-	padding-top: 30px;
-	height: 618px;
-	width: 456px;
-	background-color: #F2F2F2;
-	color: transparent;
-	font-size: 14px;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_zero_inbox_2x_dark.png') !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-top: 30px;
+  height: 618px;
+  width: 456px;
+  background-color: #F2F2F2;
+  color: transparent;
+  font-size: 14px;
 }
 @-moz-document url-prefix() {
-	body.dark-mode .ar4.z .TD > .TC {
-		background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_zero_inbox_2x_dark.png') !important;
-	}
+  body.dark-mode .ar4.z .TD > .TC {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_zero_inbox_2x_dark.png') !important;
+  }
 }
 
 /* Dark mode: force opaque backgrounds on all dialog windows (compose, attachments, etc) */
-
 body.dark-mode div[role="dialog"],
 body.dark-mode div[role="dialog"] * {
   background-color: #252526 !important;
@@ -2404,4 +2434,9 @@ body.dark-mode .at9 * {
   background-color: transparent !important;
   border-color: transparent !important;
   box-shadow: none !important;
+}
+
+/* Material Icons specific dark mode styling */
+body.dark-mode .material-symbols-sharp {
+  color: rgba(255, 255, 255, 0.65) !important;
 }
