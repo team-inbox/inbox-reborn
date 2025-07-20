@@ -1721,6 +1721,128 @@ const replaceAllIcons = () => {
   });
 };
 
+// Persistent category icon replacement
+function replaceCategoryIcons() {
+  const categories = [
+    { selector: '[data-tooltip="Categories"]', icon: 'label' },
+    { selector: '[data-tooltip="Social"]', icon: 'group' },
+    { selector: '[data-tooltip="Updates"]', icon: 'flag' },
+    { selector: '[data-tooltip="Forums"]', icon: 'forum' },
+    { selector: '[data-tooltip="Promotions"]', icon: 'local_offer' }
+  ];
+
+  // Explicit dark mode detection with null checks
+  const isDarkMode = (() => {
+    try {
+      return document.body && (
+        document.body.classList.contains('dark-mode') || 
+        (window.getComputedStyle(document.body) && 
+         window.getComputedStyle(document.body).backgroundColor === 'rgb(45, 45, 48)')
+      );
+    } catch (error) {
+      console.error('Dark mode detection error:', error);
+      return false;
+    }
+  })();
+
+  categories.forEach(({ selector, icon }) => {
+    const item = document.querySelector(selector);
+    if (!item) return;
+    
+    const iconContainer = item.querySelector('.qj');
+    if (!iconContainer) return;
+
+    // Clear and prepare container
+    iconContainer.innerHTML = '';
+    iconContainer.style.background = 'none';
+
+    // Create icon element
+    const iconElement = document.createElement('span');
+    iconElement.className = 'material-symbols-sharp';
+    
+    // FORCE white color in dark mode
+    const iconColor = isDarkMode 
+      ? 'rgba(255, 255, 255, 0.65)' 
+      : 'rgba(0, 0, 0, 0.65)';
+
+    iconElement.style.cssText = `
+      display: inline-block !important;
+      font-family: 'Material Symbols Sharp' !important;
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
+      font-size: 24px !important;
+      margin-left: 2px !important;
+      margin-right: 0 !important;
+      color: ${iconColor} !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    `;
+    iconElement.textContent = icon;
+
+    // Append icon
+    iconContainer.appendChild(iconElement);
+  });
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+  // Initial replacements
+  replaceCategoryIcons();
+  
+  // Periodic replacements
+  const iconInterval = setInterval(() => {
+    try {
+      replaceCategoryIcons();
+      
+      // Stop if Categories section is no longer in DOM
+      const categoriesSection = document.querySelector('[data-tooltip="Categories"]');
+      if (!categoriesSection) {
+        clearInterval(iconInterval);
+      }
+    } catch (error) {
+      console.error('Icon replacement error:', error);
+      clearInterval(iconInterval);
+    }
+  }, 500);
+});
+
+// Replace icons when Categories is clicked
+function safeAddEventListener() {
+  const categoriesEl = document.querySelector('[data-tooltip="Categories"]');
+  if (categoriesEl) {
+    categoriesEl.addEventListener('click', () => {
+      // Multiple replacement attempts
+      setTimeout(replaceCategoryIcons, 10);
+      setTimeout(replaceCategoryIcons, 50);
+      setTimeout(replaceCategoryIcons, 100);
+    });
+  } else {
+    // Retry if element not found
+    setTimeout(safeAddEventListener, 500);
+  }
+}
+
+// Initial attempt to add event listener
+safeAddEventListener();
+
+// Watch for dark mode changes using a safer method
+function checkDarkModeChange() {
+  try {
+    const currentMode = document.body && document.body.classList.contains('dark-mode');
+    if (currentMode !== window.lastKnownDarkMode) {
+      window.lastKnownDarkMode = currentMode;
+      replaceCategoryIcons();
+    }
+  } catch (error) {
+    console.error('Dark mode change check error:', error);
+  }
+}
+
+// Initialize last known mode with null check
+window.lastKnownDarkMode = document.body && document.body.classList.contains('dark-mode');
+
+// Set up periodic check for dark mode changes
+setInterval(checkDarkModeChange, 500);
+
 // =============================================================================
 // INITIALIZATION
 // =============================================================================
