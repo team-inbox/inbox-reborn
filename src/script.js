@@ -110,7 +110,7 @@ const MATERIAL_ICONS = {
   '.aHS-bnv': 'report',         // Spam
   '[data-tooltip="Categories"]': 'label',       // Categories
   '[data-tooltip="Social"]': 'group',           // Social
-  '[data-tooltip="Updates"]': 'update',         // Updates
+  '[data-tooltip="Updates"]': 'flag',         // Updates
   '[data-tooltip="Forums"]': 'forum',           // Forums
   '[data-tooltip="Promotions"]': 'local_offer'  // Promotions
 };
@@ -1602,40 +1602,46 @@ const injectMaterialIconsFont = () => {
   // Check if already loaded
   if (materialIconsLoaded) return;
   
-  // Create a preload link for the font
-  const preloadLink = document.createElement('link');
-  preloadLink.rel = 'preload';
-  preloadLink.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:FILL@1&display=swap';
-  preloadLink.as = 'style';
-  preloadLink.crossOrigin = 'anonymous';
-  document.head.appendChild(preloadLink);
+  // Add the font-face definition directly instead of loading from Google Fonts
+  const style = document.createElement('style');
+  style.textContent = `
+    @font-face {
+      font-family: 'Material Symbols Sharp';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://fonts.gstatic.com/s/materialsymbolssharp/v263/gNNBW2J8Roq16WD5tFNRaeLQk6-SHQ_R00k4c2_whPnoY9ruReYU3rHmz74m0ZkGH-VBYe1x0TV6x4yFH8F-H5OdzEL3sVTgJtfbYxOLojCL.woff2) format('woff2');
+      font-display: block;
+    }
+    
+    .${CSS_CLASSES.MATERIAL_ICON} {
+      font-family: 'Material Symbols Sharp' !important;
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
+      font-size: 24px !important;
+      display: inline-block !important;
+      line-height: 1 !important;
+      -webkit-font-smoothing: antialiased !important;
+      text-rendering: optimizeLegibility !important;
+      color: rgba(0, 0, 0, 0.65) !important; /* lighter fill (black at 65%) */
+    }
+  `;
+  document.head.appendChild(style);
   
-  // Create the actual font link
-  const fontLink = document.createElement('link');
-  fontLink.rel = 'stylesheet';
-  fontLink.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:FILL@1&display=swap';
-  fontLink.onload = () => {
+  // Create a font loader to detect when the font is ready
+  const fontLoader = new FontFace('Material Symbols Sharp', 
+    'url(https://fonts.gstatic.com/s/materialsymbolssharp/v263/gNNBW2J8Roq16WD5tFNRaeLQk6-SHQ_R00k4c2_whPnoY9ruReYU3rHmz74m0ZkGH-VBYe1x0TV6x4yFH8F-H5OdzEL3sVTgJtfbYxOLojCL.woff2)');
+  
+  fontLoader.load().then(() => {
+    // Add the font to the document
+    document.fonts.add(fontLoader);
     materialIconsLoaded = true;
     // Apply icons once the font is loaded
     replaceAllIcons();
-  };
-  document.head.appendChild(fontLink);
-
-  // Add CSS for material icons
-  const style = document.createElement('style');
-  style.textContent = `
-  .${CSS_CLASSES.MATERIAL_ICON} {
-    font-family: 'Material Symbols Sharp' !important;
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
-    font-size: 24px !important;
-    display: inline-block !important;
-    line-height: 1 !important;
-    -webkit-font-smoothing: antialiased !important;
-    text-rendering: optimizeLegibility !important;
-    color: rgba(0, 0, 0, 0.65) !important; /* lighter fill (black at 65%) */
-  }
-  `;
-  document.head.appendChild(style);
+  }).catch(err => {
+    console.error('Font loading failed:', err);
+    // Try to replace icons anyway
+    materialIconsLoaded = true;
+    replaceAllIcons();
+  });
 };
 
 /**

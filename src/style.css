@@ -2440,3 +2440,14 @@ body.dark-mode .at9 * {
 body.dark-mode .material-symbols-sharp {
   color: rgba(255, 255, 255, 0.65) !important;
 }
+
+/* Categories Fix Dark */
+body.dark-mode .byl.aJZ.a0L .qj {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+/* Categories Fix Light */
+.byl.aJZ.a0L .qj {
+  background: transparent !important;
+  background-color: transparent !important;
+}
