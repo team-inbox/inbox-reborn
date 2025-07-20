@@ -2451,3 +2451,80 @@ body.dark-mode .byl.aJZ.a0L .qj {
   background: transparent !important;
   background-color: transparent !important;
 }
+/* Make text white in compose window */
+body.dark-mode .Hy .m,
+body.dark-mode .Hy .m * {
+  color: white !important;
+}
+
+/* Make compose area text white */
+body.dark-mode div[aria-label="Message Body"],
+body.dark-mode div[aria-label="Message Body"] * {
+  color: white !important;
+}
+
+/* Make compose toolbar icons white */
+body.dark-mode .a3I,
+body.dark-mode .a3I * {
+  color: white !important;
+  fill: white !important;
+}
+
+/* Make formatting toolbar icons white */
+body.dark-mode .e5 .J-Z-I,
+body.dark-mode .e5 .J-Z-I *,
+body.dark-mode .a8X,
+body.dark-mode .a8X * {
+  color: white !important;
+  fill: white !important;
+}
+
+/* Make dropdown text white */
+body.dark-mode .a8k,
+body.dark-mode .a8k * {
+  color: white !important;
+}
+
+/* Make "Send" button more visible */
+body.dark-mode .T-I.J-J5-Ji.aoO.v7.T-I-atl.L3 {
+  background-color: #4285f4 !important;
+  color: white !important;
+}
+
+/* Make input fields white text on dark background */
+body.dark-mode input[name="to"],
+body.dark-mode input[name="cc"],
+body.dark-mode input[name="bcc"],
+body.dark-mode input[name="subjectbox"] {
+  color: white !important;
+  background-color: #252526 !important;
+}
+
+/* Make recipient chips more visible */
+body.dark-mode .vR,
+body.dark-mode .vN {
+  background-color: #3c3c3c !important;
+  color: white !important;
+}
+
+/* Make "Draft saved" text visible */
+body.dark-mode .aYF {
+  color: #8ab4f8 !important;
+}
+
+/* Make toolbar dividers visible */
+body.dark-mode .oc {
+  border-color: #444 !important;
+}
+
+/* Make dropdown menus readable */
+body.dark-mode .J-M,
+body.dark-mode .J-M * {
+  background-color: #333 !important;
+  color: white !important;
+}
+
+/* Make dropdown hover states visible */
+body.dark-mode .J-M .J-N:hover {
+  background-color: #444 !important;
+}
