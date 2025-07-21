@@ -2587,3 +2587,519 @@ body.dark-mode .avatar[style*="background-color"] {
     opacity: 1 !important;
   }
 }
+
+/* Dark Mode Quick Settings Panel Fix */
+body.dark-mode .IU {
+  background-color: #2d2d30 !important;
+}
+
+/* Headers like "Quick settings", "Density", "Apps in Gmail" */
+body.dark-mode .IU .VO,
+body.dark-mode .IU .OG {
+  color: #f1f1f1 !important;
+}
+
+/* Text labels for the options */
+body.dark-mode .IU .a21, /* "Chat and Meet" */
+body.dark-mode .IU .Q2,  /* Radio button labels */
+body.dark-mode .IU .ST   /* Checkbox labels */
+{
+  color: #e0e0e0 !important;
+}
+
+/* The container for each section */
+body.dark-mode .Q3 {
+    background-color: #252526 !important;
+    border-bottom: 1px solid #444 !important;
+}
+body.dark-mode fieldset.VM.aiL {
+    background-color: #252526 !important;
+}
+
+/* Links like "Customize" and "View All" */
+body.dark-mode .IU .OD,
+body.dark-mode .IU .Tj {
+  color: #8ab4f8 !important;
+}
+
+/* Invert icons and previews */
+body.dark-mode .IU .a2U, /* Chat and Meet icon */
+body.dark-mode .IU .QZ,  /* Density previews */
+body.dark-mode .IU .Vm,  /* Inbox Type previews */
+body.dark-mode .IU .XK   /* Reading Pane previews */
+{
+  filter: invert(0.85) brightness(1.5) !important;
+}
+
+/* Do not invert theme previews */
+body.dark-mode .IU .OF {
+  filter: none !important;
+}
+
+/* Radio button styling */
+body.dark-mode .IU .Vo {
+  border: 2px solid #888 !important;
+  background-color: transparent !important;
+}
+
+body.dark-mode .IU .Q1:checked + .Vo {
+  border-color: #8ab4f8 !important;
+}
+
+body.dark-mode .IU .Q1:checked + .Vo::after {
+   display: block;
+   content: '';
+   width: 8px;
+   height: 8px;
+   position: relative;
+   top: 2px;
+   left: 2px;
+   border-radius: 50%;
+   background-color: #8ab4f8 !important;
+}
+
+/* Checkbox Styling */
+body.dark-mode .IU .SS + .ST::before {
+    border-color: #888 !important;
+}
+body.dark-mode .IU .SS:checked + .ST::before {
+    background-color: #8ab4f8 !important;
+    border-color: #8ab4f8 !important;
+}
+body.dark-mode .IU .SS:checked + .ST::after {
+    border-bottom: 2px solid #252526 !important;
+    border-right: 2px solid #252526 !important;
+}
+
+/* Remove the boxes around the radio button options */
+body.dark-mode .IU .QX,
+body.dark-mode .IU .Vn,
+body.dark-mode .IU .XL {
+    border: 1px solid transparent !important;
+    background: transparent !important;
+}
+
+/* Also remove border from the preview images by default */
+body.dark-mode .IU .QZ,
+body.dark-mode .IU .Vm,
+body.dark-mode .IU .XK {
+    border: 1px solid transparent !important;
+}
+
+/* Add a blue border to the selected image to indicate selection */
+body.dark-mode .IU input:checked ~ img {
+    border-radius: 6px !important;
+    border: 2px solid #8ab4f8 !important;
+}
+
+/* Ensure the text part of a selected row has no special background or border */
+body.dark-mode .IU input:checked ~ div {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+body.dark-mode .IU .Q1:checked + .Vo {
+  border-color: #8ab4f8 !important;
+}
+
+/* --- Final Attempt: Force remove borders from option labels --- */
+body.dark-mode .QX, body.dark-mode .Vn, body.dark-mode .XL {
+    border: 1px solid transparent !important;
+}
+
+/* Remove boxes around radio buttons in dark mode */
+body.dark-mode .Vo {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+body.dark-mode .Q1:checked + .Vo {
+    border: none !important;
+    background: transparent !important;
+}
+
+body.dark-mode .Q1:checked + .Vo::after {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #8ab4f8 !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Remove boxes around radio buttons in dark mode for ALL sections */
+body.dark-mode .QX,
+body.dark-mode .Vn,
+body.dark-mode .XL {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+body.dark-mode .QX label,
+body.dark-mode .Vn label,
+body.dark-mode .XL label {
+    border: none !important;
+    background: transparent !important;
+}
+
+/* Ensure the radio button indicator is clean */
+body.dark-mode .Vo,
+body.dark-mode .Q1 + .Vo {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Selected state indicator */
+body.dark-mode .Q1:checked + .Vo::after {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #8ab4f8 !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Dark Mode Settings Tabs Styling */
+body.dark-mode .nH.fY {
+    background-color: #2d2d30 !important;
+    border-bottom: 1px solid #444 !important;
+}
+
+body.dark-mode .nH.fY [role="presentation"] a.f0 {
+    color: #a0a0a0 !important;  /* Lighter gray for better readability */
+    opacity: 1 !important;  /* Remove opacity reduction */
+    transition: color 0.2s ease;
+}
+
+body.dark-mode .nH.fY [role="presentation"] a.f0:hover {
+    color: #8ab4f8 !important;
+}
+
+body.dark-mode .nH.fY [role="presentation"] a.f0[aria-selected="true"] {
+    color: #8ab4f8 !important;
+    border-bottom: 2px solid #8ab4f8 !important;
+}
+
+body.dark-mode .nH.fY [role="presentation"] {
+    background-color: transparent !important;
+}
+
+/* Dark Mode Theme Selection Dialog Styling */
+body.dark-mode .uW2Fw-bHo {
+    background-color: #252526 !important;
+    color: #e0e0e0 !important;
+}
+
+/* Theme selection dialog header */
+body.dark-mode .uW2Fw-bHo .cER4xe {
+    color: #f1f1f1 !important;
+}
+
+/* Theme preview containers */
+body.dark-mode .uW2Fw-bHo .a7H {
+    background-color: #2d2d30 !important;
+    border: 1px solid #444 !important;
+}
+
+/* Theme preview labels */
+body.dark-mode .uW2Fw-bHo .a7N {
+    background-color: rgba(45, 45, 48, 0.8) !important;
+}
+
+body.dark-mode .uW2Fw-bHo .a9J {
+    color: #e0e0e0 !important;
+}
+
+/* Buttons styling */
+body.dark-mode .uW2Fw-bHo .mUIrbf-I {
+    background-color: #3a3a3a !important;
+    color: #e0e0e0 !important;
+    border: 1px solid #555 !important;
+}
+
+body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover {
+    background-color: #4a4a4a !important;
+}
+
+body.dark-mode .uW2Fw-bHo .eV8l8d {
+    background-color: #8ab4f8 !important;
+    color: #252526 !important;
+}
+
+/* More Images and My Photos buttons */
+body.dark-mode .uW2Fw-bHo .fQ1uhf,
+body.dark-mode .uW2Fw-bHo .PKBsLc button {
+    background-color: #2d2d30 !important;
+    color: #e0e0e0 !important;
+    border: 1px solid #444 !important;
+}
+
+body.dark-mode .uW2Fw-bHo .fQ1uhf:hover,
+body.dark-mode .uW2Fw-bHo .PKBsLc button:hover {
+    background-color: #3a3a3a !important;
+}
+
+/* Dark Mode Theme Selection Dialog Enhanced Styling */
+body.dark-mode .uW2Fw-bHo {
+    background-color: #252526 !important;
+    color: #e0e0e0 !important;
+}
+
+/* Theme selection dialog header */
+body.dark-mode .uW2Fw-bHo .cER4xe {
+    color: #f1f1f1 !important;
+}
+
+/* Custom theme preview containers */
+body.dark-mode .uW2Fw-bHo .a7H {
+    background-color: #2d2d30 !important;
+    border: 1px solid #444 !important;
+    transition: transform 0.2s ease;
+}
+
+body.dark-mode .uW2Fw-bHo .a7H:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* Ensure theme images are fully visible */
+body.dark-mode .uW2Fw-bHo .a7G {
+    opacity: 1 !important;
+    filter: brightness(0.8);
+    transition: filter 0.2s ease;
+}
+
+body.dark-mode .uW2Fw-bHo .a7G:hover {
+    filter: brightness(1);
+}
+
+/* Theme preview labels */
+body.dark-mode .uW2Fw-bHo .a7N {
+    background-color: rgba(45, 45, 48, 0.8) !important;
+}
+
+body.dark-mode .uW2Fw-bHo .a9J {
+    color: #e0e0e0 !important;
+}
+
+/* Buttons styling - More prominent and clear */
+body.dark-mode .uW2Fw-bHo .mUIrbf-I {
+    background-color: #3a3a3a !important;
+    color: #e0e0e0 !important;
+    border: 1px solid #555 !important;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover {
+    background-color: #4a4a4a !important;
+    color: white !important;
+}
+
+/* Save button - more prominent */
+body.dark-mode .uW2Fw-bHo .eV8l8d {
+    background-color: #8ab4f8 !important;
+    color: white !important;
+    border: 1px solid #8ab4f8 !important;
+    font-weight: bold;
+}
+
+body.dark-mode .uW2Fw-bHo .eV8l8d:hover {
+    background-color: #a0c4f9 !important;
+}
+
+/* More Images and My Photos buttons */
+body.dark-mode .uW2Fw-bHo .fQ1uhf,
+body.dark-mode .uW2Fw-bHo .PKBsLc button {
+    background-color: #2d2d30 !important;
+    color: #e0e0e0 !important;
+    border: 1px solid #444 !important;
+    transition: background-color 0.2s ease;
+}
+
+body.dark-mode .uW2Fw-bHo .fQ1uhf:hover,
+body.dark-mode .uW2Fw-bHo .PKBsLc button:hover {
+    background-color: #3a3a3a !important;
+    color: white !important;
+}
+
+/* Aggressive Dark Mode Theme Selection Dialog Styling */
+body.dark-mode .uW2Fw-bHo .a7G {
+    opacity: 1 !important;
+    filter: brightness(1) !important;
+    mix-blend-mode: normal !important;
+}
+
+body.dark-mode .uW2Fw-bHo .a7H {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+body.dark-mode .uW2Fw-bHo .a7N {
+    background-color: rgba(0,0,0,0.5) !important;
+}
+
+/* Buttons with high contrast */
+body.dark-mode .uW2Fw-bHo .mUIrbf-I {
+    background-color: #3a3a3a !important;
+    color: #ffffff !important;
+    border: 1px solid #666 !important;
+}
+
+body.dark-mode .uW2Fw-bHo .eV8l8d {
+    background-color: #4285f4 !important;
+    color: white !important;
+    border: 1px solid #4285f4 !important;
+}
+
+body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover,
+body.dark-mode .uW2Fw-bHo .eV8l8d:hover {
+    opacity: 0.9 !important;
+}
+
+/* Ensure text visibility */
+body.dark-mode .uW2Fw-bHo .a9J,
+body.dark-mode .uW2Fw-bHo .mUIrbf-anl {
+    color: #ffffff !important;
+}
+
+/* Extremely Aggressive Dark Mode Theme Selection Dialog Styling */
+body.dark-mode .uW2Fw-bHo .a7G,
+body.dark-mode .uW2Fw-bHo img.a7G,
+body.dark-mode .uW2Fw-bHo .a7H img.a7G {
+    opacity: 1 !important;
+    filter: brightness(1) contrast(1) saturate(1) !important;
+    mix-blend-mode: normal !important;
+    max-width: 100% !important;
+    max-height: 300px !important;
+    object-fit: cover !important;
+}
+
+body.dark-mode .uW2Fw-bHo .a7H,
+body.dark-mode .uW2Fw-bHo .a7Y {
+    background-color: transparent !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    transition: all 0.3s ease !important;
+}
+
+body.dark-mode .uW2Fw-bHo .a7H:hover,
+body.dark-mode .uW2Fw-bHo .a7Y:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 0 10px rgba(255,255,255,0.2) !important;
+}
+
+body.dark-mode .uW2Fw-bHo .a7N {
+    background-color: rgba(0,0,0,0.5) !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .uW2Fw-bHo .a9J {
+    color: #ffffff !important;
+}
+
+/* Button Styling with Maximum Contrast */
+body.dark-mode .uW2Fw-bHo .mUIrbf-I,
+body.dark-mode .uW2Fw-bHo .PKBsLc button {
+    background-color: #3a3a3a !important;
+    color: #ffffff !important;
+    border: 1px solid #666 !important;
+    transition: all 0.2s ease !important;
+}
+
+body.dark-mode .uW2Fw-bHo .eV8l8d {
+    background-color: #4285f4 !important;
+    color: white !important;
+    border: 1px solid #4285f4 !important;
+    font-weight: bold !important;
+}
+
+body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover,
+body.dark-mode .uW2Fw-bHo .eV8l8d:hover {
+    opacity: 0.9 !important;
+}
+
+/* Ensure text visibility */
+body.dark-mode .uW2Fw-bHo .mUIrbf-anl,
+body.dark-mode .uW2Fw-bHo .a7C {
+    color: #ffffff !important;
+}
+
+/* More Images section */
+body.dark-mode .uW2Fw-bHo .fQ1uhf {
+    background-color: #2d2d30 !important;
+    color: #ffffff !important;
+    border: 1px solid #444 !important;
+}
+
+/* Dark Mode Theme Selection Dialog Fix */
+body.dark-mode .uW2Fw-bHo {
+    background-color: #252526 !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .uW2Fw-bHo .a7G {
+    opacity: 1 !important;
+    filter: brightness(0.9) !important;
+    transition: filter 0.2s ease !important;
+}
+
+body.dark-mode .uW2Fw-bHo .a7G:hover {
+    filter: brightness(1) !important;
+}
+
+body.dark-mode .uW2Fw-bHo .a7H,
+body.dark-mode .uW2Fw-bHo .a7Y {
+    background-color: transparent !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+}
+
+body.dark-mode .uW2Fw-bHo .a7N {
+    background-color: rgba(0,0,0,0.5) !important;
+}
+
+body.dark-mode .uW2Fw-bHo .a9J {
+    color: #ffffff !important;
+}
+
+body.dark-mode .uW2Fw-bHo .mUIrbf-I {
+    background-color: #3a3a3a !important;
+    color: #ffffff !important;
+    border: 1px solid #555 !important;
+}
+
+body.dark-mode .uW2Fw-bHo .eV8l8d {
+    background-color: #4285f4 !important;
+    color: white !important;
+    border: 1px solid #4285f4 !important;
+}
+
+body.dark-mode .uW2Fw-bHo .fQ1uhf {
+    background-color: #2d2d30 !important;
+    color: #ffffff !important;
+    border: 1px solid #444 !important;
+}
+
+body.dark-mode .uW2Fw-bHo .cER4xe {
+    color: #ffffff !important;
+}
+
+/* Dark Mode Theme Dialog Overlay Fix */
+body.dark-mode .uW2Fw-bHo .a7U,
+body.dark-mode .uW2Fw-bHo .a7R {
+    display: none !important; /* remove dark overlays over thumbnails */
+}
+
+/* Ensure button labels are bright */
+body.dark-mode .uW2Fw-bHo .mUIrbf-anl {
+    color: #ffffff !important;
+}

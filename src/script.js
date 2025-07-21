@@ -15,6 +15,22 @@
  * Last Updated: 2025
  */
 
+(function logStylesheets() {
+    console.log('Available stylesheets:', 
+        Array.from(document.styleSheets).map(sheet => sheet.href)
+    );
+    
+    // Check if our specific stylesheet is loaded
+    const ourStylesheet = Array.from(document.styleSheets)
+        .find(sheet => sheet.href && sheet.href.includes('style.css'));
+    
+    if (ourStylesheet) {
+        console.log('Inbox Reborn stylesheet found!');
+    } else {
+        console.error('Inbox Reborn stylesheet NOT FOUND. Check manifest and file path.');
+    }
+})();
+
 // =============================================================================
 // DARK MODE SYNCHRONIZATION
 // =============================================================================
