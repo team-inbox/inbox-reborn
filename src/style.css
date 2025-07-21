@@ -738,13 +738,14 @@ body.dark-mode [data-tooltip="Promotions"] .qj .material-symbols-sharp {
 
 /* Important */
 .aHS-bns .qj {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/label_important_black_24dp.png') !important;
-  opacity: 0.6 !important;
+  background-image: none !important;
+  opacity: 1 !important;
 }
 
 /* Chats */
 .aHS-aHP .qj {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/hangout_black_24dp.png') !important;
+  background-image: none !important;
+  opacity: 1 !important;
 }
 
 /* Snoozed */
@@ -754,8 +755,8 @@ body.dark-mode [data-tooltip="Promotions"] .qj .material-symbols-sharp {
 
 /* Scheduled */
 .aHS-nd .qj {
-  background-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/gm3/2x/schedule_send_baseline_nv700_20dp.png') !important;
-  opacity: 0.9 !important;
+  background-image: none !important;
+  opacity: 1 !important;
 }
 
 /* All, Nested Categories / Labels */
@@ -793,7 +794,8 @@ body.dark-mode [data-tooltip="Promotions"] .qj .material-symbols-sharp {
   }
   /* Chats */
   .aHS-aHP .qj {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/hangout_black_24dp.png') !important;
+    background-image: none !important;
+    opacity: 1 !important;
   }
   /* Snoozed */
   .aHS-bu1 .qj {
@@ -2563,4 +2565,25 @@ body.dark-mode .avatar {
 body.dark-mode .avatar[style*="background-color"] {
   opacity: 1 !important;
   background-color: inherit !important;
+}
+
+/* Remove background images for specific menu items */
+.aHS-bnu .qj,   /* Sent */
+.aHS-bnq .qj,   /* Drafts */
+.aHS-aHO .qj,   /* All Mail */
+.aHS-bnx .qj,   /* Trash */
+.aHS-bnv .qj {  /* Spam */
+  background-image: none !important;
+  opacity: 1 !important;
+}
+
+@-moz-document url-prefix() {
+  .aHS-bnu .qj,   /* Sent */
+  .aHS-bnq .qj,   /* Drafts */
+  .aHS-aHO .qj,   /* All Mail */
+  .aHS-bnx .qj,   /* Trash */
+  .aHS-bnv .qj {  /* Spam */
+    background-image: none !important;
+    opacity: 1 !important;
+  }
 }

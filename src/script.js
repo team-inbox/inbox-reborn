@@ -108,9 +108,12 @@ const MATERIAL_ICONS = {
   '.aHS-aHO': 'stacked_email',  // All Mail 
   '.aHS-bnx': 'delete',         // Trash
   '.aHS-bnv': 'report',         // Spam
+  '.aHS-aHP': 'chat',           // Chats
+  '.aHS-nd': 'schedule_send',   // Scheduled
+  '.aHS-bns': 'label_important', // Important
   '[data-tooltip="Categories"]': 'label',       // Categories
   '[data-tooltip="Social"]': 'group',           // Social
-  '[data-tooltip="Updates"]': 'flag',         // Updates
+  '[data-tooltip="Updates"]': 'flag',           // Updates
   '[data-tooltip="Forums"]': 'forum',           // Forums
   '[data-tooltip="Promotions"]': 'local_offer'  // Promotions
 };
@@ -1736,64 +1739,120 @@ const replaceAllIcons = () => {
 
 // Persistent category icon replacement
 function replaceCategoryIcons() {
-  const categories = [
-    { selector: '[data-tooltip="Categories"]', icon: 'label' },
-    { selector: '[data-tooltip="Social"]', icon: 'group' },
-    { selector: '[data-tooltip="Updates"]', icon: 'flag' },
-    { selector: '[data-tooltip="Forums"]', icon: 'forum' },
-    { selector: '[data-tooltip="Promotions"]', icon: 'local_offer' }
-  ];
+  // Existing category and other icon replacements
+  Object.entries(MATERIAL_ICONS).forEach(([selector, iconName]) => {
+    // Use querySelectorAll to catch multiple potential matches
+    const elements = document.querySelectorAll(selector + ' .qj');
+    elements.forEach(el => {
+      // Skip if already processed
+      if (el.classList.contains('material-icons-replaced')) return;
 
-  // Explicit dark mode detection with null checks
-  const isDarkMode = (() => {
-    try {
-      return document.body && (
-        document.body.classList.contains('dark-mode') || 
-        (window.getComputedStyle(document.body) && 
-         window.getComputedStyle(document.body).backgroundColor === 'rgb(45, 45, 48)')
-      );
-    } catch (error) {
-      console.error('Dark mode detection error:', error);
-      return false;
-    }
-  })();
-
-  categories.forEach(({ selector, icon }) => {
-    const item = document.querySelector(selector);
-    if (!item) return;
-    
-    const iconContainer = item.querySelector('.qj');
-    if (!iconContainer) return;
-
-    // Clear and prepare container
-    iconContainer.innerHTML = '';
-    iconContainer.style.background = 'none';
-
-    // Create icon element
-    const iconElement = document.createElement('span');
-    iconElement.className = 'material-symbols-sharp';
-    
-    // FORCE white color in dark mode
-    const iconColor = isDarkMode 
-      ? 'rgba(255, 255, 255, 0.65)' 
-      : 'rgba(0, 0, 0, 0.65)';
-
-    iconElement.style.cssText = `
-      display: inline-block !important;
-      font-family: 'Material Symbols Sharp' !important;
-      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
-      font-size: 24px !important;
-      margin-left: 2px !important;
-      margin-right: 0 !important;
-      color: ${iconColor} !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-    `;
-    iconElement.textContent = icon;
-
-    // Append icon
-    iconContainer.appendChild(iconElement);
+      // Create Material Icon element
+      const iconElement = document.createElement('span');
+      iconElement.className = 'material-symbols-sharp';
+      iconElement.textContent = iconName;
+      
+      // Clear existing content and add new icon
+      el.innerHTML = '';
+      el.appendChild(iconElement);
+      el.classList.add('material-icons-replaced');
+      el.style.visibility = 'visible';
+    });
   });
+
+  // Additional selectors for Firefox-specific cases
+  const firefoxSpecificIcons = {
+    '.aHS-bnu .qj': 'send',           // Sent
+    '.aHS-bnq .qj': 'drafts',         // Drafts
+    '.aHS-aHO .qj': 'stacked_email',  // All Mail
+    '.aHS-bnx .qj': 'delete',         // Trash
+    '.aHS-bnv .qj': 'report'          // Spam
+  };
+
+  Object.entries(firefoxSpecificIcons).forEach(([selector, iconName]) => {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(el => {
+      // Skip if already processed
+      if (el.classList.contains('material-icons-replaced')) return;
+
+      // Create Material Icon element
+      const iconElement = document.createElement('span');
+      iconElement.className = 'material-symbols-sharp';
+      iconElement.textContent = iconName;
+      
+      // Clear existing content and add new icon
+      el.innerHTML = '';
+      el.appendChild(iconElement);
+      el.classList.add('material-icons-replaced');
+      el.style.visibility = 'visible';
+    });
+  });
+
+  // Handle Less/More sections dynamically
+  const lessMoreSections = document.querySelectorAll('.byl.aJZ.a0L');
+  lessMoreSections.forEach(section => {
+    const iconEl = section.querySelector('.qj');
+    if (iconEl && !iconEl.classList.contains('material-icons-replaced')) {
+      const label = section.getAttribute('data-tooltip');
+      let iconName = 'label'; // default icon
+
+      // Map specific labels to icons
+      const labelToIconMap = {
+        'Important': 'label_important',
+        'Chats': 'chat',
+        'Scheduled': 'schedule_send'
+      };
+
+      iconName = labelToIconMap[label] || iconName;
+
+      // Create Material Icon element
+      const iconElement = document.createElement('span');
+      iconElement.className = 'material-symbols-sharp';
+      iconElement.textContent = iconName;
+      
+      // Clear existing content and add new icon
+      iconEl.innerHTML = '';
+      iconEl.appendChild(iconElement);
+      iconEl.classList.add('material-icons-replaced');
+      iconEl.style.visibility = 'visible';
+    }
+  });
+}
+
+function startCategoryIconObserver() {
+  // Create a MutationObserver to watch for changes in the sidebar
+  const observer = new MutationObserver((mutations) => {
+    let shouldReplace = false;
+
+    for (const mutation of mutations) {
+      if (mutation.type === 'childList' || 
+          mutation.type === 'attributes' || 
+          mutation.type === 'characterData') {
+        shouldReplace = true;
+        break;
+      }
+    }
+
+    // Debounce icon replacement
+    if (shouldReplace) {
+      // Use a small timeout to allow DOM to stabilize
+      setTimeout(replaceCategoryIcons, 50);
+    }
+  });
+
+  // Try to find the sidebar and observe it
+  const sidebar = document.querySelector('.wT');
+  if (sidebar) {
+    observer.observe(sidebar, {
+      childList: true,     // Observe direct children
+      subtree: true,       // Observe all descendants
+      attributes: true,    // Observe attribute changes
+      characterData: true  // Observe text content changes
+    });
+  }
+
+  // Initial replacement
+  replaceCategoryIcons();
 }
 
 // Initialize on page load
