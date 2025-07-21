@@ -1703,7 +1703,6 @@ header form input {
 
 /* Name avatar */
 .avatar {
-  background: url('chrome-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png');
   color: rgba(255, 255, 255, 0.65);
   border-radius: 50%;
   font-size: 18px;
@@ -1716,23 +1715,16 @@ header form input {
   height: 32px;
   text-align: center;
   line-height: 32px;
-  background-size: 75% 75% !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-  /* background-color: #444 !important; -- Removed to preserve original colors */
 }
+
+.reminder .avatar {
+  background: url('chrome-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png') center/75% no-repeat !important;
+}
+
 @-moz-document url-prefix() {
-  .avatar {
-    background: url('moz-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png');
+  .reminder .avatar {
+    background: url('moz-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png') center/75% no-repeat !important;
   }
-}
-
-.zA:hover .avatar {
-  display: none;
-}
-
-.zA > .oZ-x3 > div[aria-checked="true"] + .avatar {
-  display: none;
 }
 
 /* Alignment of calendar icon */
@@ -2457,8 +2449,11 @@ body.dark-mode .AO a {
   color: #8ab4f8 !important;
 }
 body.dark-mode .avatar {
-  background-color: #607d8b !important; /* Material Blue Grey as default */
   color: #ffffff !important;
+  background-color: inherit !important;
+}
+body.dark-mode .avatar[style*="background-color"] {
+  opacity: 1 !important;
 }
 /* Fix Labels from being cut off */
 body.dark-mode .at9,
@@ -2559,4 +2554,13 @@ body.dark-mode .J-M * {
 /* Make dropdown hover states visible */
 body.dark-mode .J-M .J-N:hover {
   background-color: #444 !important;
+}
+
+body.dark-mode .avatar {
+  color: #ffffff !important;
+}
+
+body.dark-mode .avatar[style*="background-color"] {
+  opacity: 1 !important;
+  background-color: inherit !important;
 }

@@ -1115,7 +1115,20 @@ const updateReminders = () => {
 
         // Set background color based on first letter
         if (firstLetterCode >= 65 && firstLetterCode <= 90) {
-          avatarElement.style.background = '#' + NAME_COLORS[firstLetterCode - 65];
+          const baseColor = '#' + NAME_COLORS[firstLetterCode - 65];
+          
+          // Force background color, even in dark mode
+          avatarElement.style.setProperty('background-color', baseColor, 'important');
+          
+          // Ensure text is white
+          avatarElement.style.color = '#ffffff';
+          
+          // Debug logging
+          console.log('Avatar created:', {
+            letter: firstLetter,
+            baseColor: baseColor,
+            isDarkMode: document.body.classList.contains('dark-mode')
+          });
         } else {
           avatarElement.style.background = '#000000';
           // Some unicode characters need special handling
