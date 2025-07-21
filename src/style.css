@@ -3103,3 +3103,93 @@ body.dark-mode .uW2Fw-bHo .a7R {
 body.dark-mode .uW2Fw-bHo .mUIrbf-anl {
     color: #ffffff !important;
 }
+
+body.dark-mode .zA.yO {
+  background: #292929 !important;
+}
+
+/* Dark mode: highlight UNREAD email rows */
+body.dark-mode .zA.zE {
+  background-color: #383838 !important; /* lighter background to stand out */
+  border-left: 3px solid #4cc2ff !important; /* accent color aligns with link color */
+  padding-left: 7px !important; /* adjust for border width */
+}
+body.dark-mode .zA.zE:hover {
+  background-color: #414141 !important;
+}
+
+/* =============================
+   Dark mode: compose window icon visibility
+   ============================= */
+body.dark-mode .aaA,
+body.dark-mode .aaB,
+body.dark-mode .J-J5-Ji .aaA,
+body.dark-mode .J-J5-Ji .aaB,
+body.dark-mode .Hl,
+body.dark-mode .Hk,
+body.dark-mode .Hq,
+body.dark-mode .Ha,
+body.dark-mode .e5 .J-Z-I div[class*="aaA"],
+body.dark-mode .e5 .J-Z-I div[class*="aaB"] {
+  filter: brightness(0) invert(1); /* glyphs white, keep transparency */
+}
+
+body.dark-mode .aaA,
+body.dark-mode .aaB {
+  background-color: transparent !important; /* eliminate white square */
+}
+
+/* Dark mode: compose icon glyphs (a3I) */
+body.dark-mode .a3I {
+  background-color: transparent !important; /* remove square */
+  filter: invert(1) !important; /* black glyph -> white */
+}
+
+/* Dark mode: reset wrapper squares so they don't invert */
+body.dark-mode .aaA,
+body.dark-mode .aaB,
+body.dark-mode .J-J5-Ji .aaA,
+body.dark-mode .J-J5-Ji .aaB,
+body.dark-mode .e5 .J-Z-I div[class*="aaA"],
+body.dark-mode .e5 .J-Z-I div[class*="aaB"] {
+  filter: none !important;               /* stop inverting whole square */
+  background-color: transparent !important;/* and keep transparent */
+}
+
+/* Apply inversion only on glyph holder */
+body.dark-mode .a3I {
+  filter: invert(1) !important;
+}
+
+/* ------------------------------------------------------------------
+   Dark mode: adjust compose popup to dark-gray #313131 and white icons
+------------------------------------------------------------------ */
+body.dark-mode .nH.Hd,
+body.dark-mode .nH.Hd * {
+  background-color: #696969 !important; /* dark gray surface */
+  color: #e8eaed !important;            /* light text */
+}
+/* slightly lighter header / toolbars for separation */
+body.dark-mode .nH.Hd .Hy .m,
+body.dark-mode .nH.Hd .Ur,
+body.dark-mode .nH.Hd .aDj,
+body.dark-mode .nH.Hd .aDl,
+body.dark-mode .nH.Hd .aX {
+  background-color: #3a3a3a !important;
+}
+/* make glyphs white again */
+body.dark-mode .nH.Hd .a3I {
+  filter: invert(1) !important;
+}
+
+/* Override inline white backgrounds inside compose popup */
+body.dark-mode .nH.Hd [style*="background:#fff"],
+body.dark-mode .nH.Hd [style*="background: #fff"],
+body.dark-mode .nH.Hd [style*="background-color:#fff"],
+body.dark-mode .nH.Hd [style*="background-color: #fff"],
+body.dark-mode .nH.Hd [style*="background-color: white"],
+body.dark-mode .nH.Hd [style*="background: white"],
+body.dark-mode .nH.Hd [style*="background-color: rgb(255"],
+body.dark-mode .nH.Hd [style*="background: rgb(255"] {
+  background-color: #696969 !important;
+}
