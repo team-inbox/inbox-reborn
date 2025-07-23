@@ -1650,13 +1650,13 @@ const injectMaterialIconsFont = () => {
     // Add the font to the document
     document.fonts.add(fontLoader);
     materialIconsLoaded = true;
-    // Apply icons once the font is loaded
-    replaceAllIcons();
+    // Start the robust icon replacement system
+    initIconReplacementSystem();
   }).catch(err => {
     console.error('Font loading failed:', err);
     // Try to replace icons anyway
     materialIconsLoaded = true;
-    replaceAllIcons();
+    initIconReplacementSystem();
   });
 };
 
@@ -1671,249 +1671,213 @@ const setFavicon = () => {
 };
 
 /**
- * Replaces Gmail sidebar icons with Material Symbols, handling system vs. category items appropriately.
- * @param {string} selector - CSS selector for the container
- * @param {string} iconName - Material icon name
+ * Robust icon replacement system that handles refreshes and dynamic changes
  */
-const replaceGmailIcon = (selector, iconName) => {
+const initIconReplacementSystem = () => {
   if (!materialIconsLoaded) return;
 
-  waitForElement(selector, (container) => {
-    if (!container) return;
+  let iconReplacementInterval;
+  let sidebarObserver;
+  let systemStarted = false;
+  
+  /**
+   * Replaces a single icon for a given selector
+   * @param {string} selector - CSS selector for the container
+   * @param {string} iconName - Material icon name
+   */
+  const replaceIcon = (selector, iconName) => {
+    const elements = document.querySelectorAll(selector);
+    
+    elements.forEach(container => {
+      if (!container) return;
 
-    // Prevent duplicate icons
-    const existingIcon = container.querySelector(`.${CSS_CLASSES.MATERIAL_ICON}`);
-    if (existingIcon) return;
+      // Skip if already has our icon
+      const existingIcon = container.querySelector(`.${CSS_CLASSES.MATERIAL_ICON}`);
+      if (existingIcon) return;
 
-    // CATEGORY HANDLING (Social, Promotions, etc.)
-    const iconContainer = container.querySelector('.qj');
-    const gmailDefaultIcon = container.querySelector('.TH.J-J5-Ji');
-    const isCategory = !!iconContainer && !!gmailDefaultIcon;
+      // CATEGORY HANDLING (Social, Promotions, etc.) - Look for .qj within container
+      const iconContainer = container.querySelector('.qj');
+      const gmailDefaultIcon = container.querySelector('.TH.J-J5-Ji');
+      const isCategory = !!iconContainer;
 
-    if (isCategory) {
-      gmailDefaultIcon.style.display = 'none';
-      iconContainer.innerHTML = '';
-      iconContainer.style.background = 'none';
-      // Also clear background for .qj
-      if (iconContainer.classList.contains('qj')) {
+      if (isCategory) {
+        // Clear any existing content and background
+        iconContainer.innerHTML = '';
         iconContainer.style.background = 'none';
+        iconContainer.style.backgroundImage = 'none';
+        
+        if (gmailDefaultIcon) {
+          gmailDefaultIcon.style.display = 'none';
+        }
+
+        // Create and add our icon
+        const icon = document.createElement('span');
+        icon.className = CSS_CLASSES.MATERIAL_ICON;
+        icon.textContent = iconName;
+        icon.setAttribute('data-icon-replaced', 'true');
+        iconContainer.appendChild(icon);
+        iconContainer.setAttribute('data-icon-replaced', 'true');
+        return;
       }
+
+      // SYSTEM LABEL HANDLING (Sent, Drafts, All Mail, etc.)
+      const label = container.querySelector('.aio, .nU a, .nU span, .n0');
+      if (!label) return;
+
+      // Don't add if we already have an icon in this container
+      if (container.querySelector(`.${CSS_CLASSES.MATERIAL_ICON}`)) return;
 
       const icon = document.createElement('span');
       icon.className = CSS_CLASSES.MATERIAL_ICON;
       icon.textContent = iconName;
-      icon.style.display = 'inline-block';
-      icon.style.marginLeft = '2px';
+      icon.style.position = 'absolute';
+      icon.style.left = '26px';
+      icon.style.fontSize = '20px';
+      icon.style.lineHeight = '1';
       icon.style.marginRight = '0';
-      iconContainer.appendChild(icon);
+      icon.setAttribute('data-icon-replaced', 'true');
+      
+      container.insertBefore(icon, label);
+      container.setAttribute('data-icon-replaced', 'true');
+    });
+  };
+
+  /**
+   * Main icon replacement function
+   */
+  const performIconReplacement = () => {
+    try {
+      // Replace standard icons
+      Object.entries(MATERIAL_ICONS).forEach(([selector, iconName]) => {
+        replaceIcon(selector, iconName);
+      });
+
+      // Handle dynamic labels in Less/More sections
+      const lessMoreSections = document.querySelectorAll('.byl.aJZ.a0L:not([data-icon-replaced])');
+      lessMoreSections.forEach(section => {
+        const iconEl = section.querySelector('.qj');
+        if (!iconEl || iconEl.querySelector(`.${CSS_CLASSES.MATERIAL_ICON}`)) return;
+
+        const label = section.getAttribute('data-tooltip');
+        const labelToIconMap = {
+          'Important': 'label_important',
+          'Chats': 'chat', 
+          'Scheduled': 'schedule_send'
+        };
+        
+        const iconName = labelToIconMap[label] || 'label';
+        
+        iconEl.innerHTML = '';
+        iconEl.style.background = 'none';
+        iconEl.style.backgroundImage = 'none';
+        
+        const iconElement = document.createElement('span');
+        iconElement.className = CSS_CLASSES.MATERIAL_ICON;
+        iconElement.textContent = iconName;
+        iconElement.setAttribute('data-icon-replaced', 'true');
+        
+        iconEl.appendChild(iconElement);
+        section.setAttribute('data-icon-replaced', 'true');
+      });
+
+    } catch (error) {
+      console.warn('Icon replacement error:', error);
+    }
+  };
+
+  /**
+   * Set up sidebar observer for dynamic changes
+   */
+  const setupSidebarObserver = () => {
+    const sidebar = document.querySelector('.wT');
+    if (!sidebar) {
+      setTimeout(setupSidebarObserver, 100);
       return;
     }
 
-    // SYSTEM LABEL HANDLING (Sent, Drafts, All Mail, etc.)
-    const label = container.querySelector('.aio, .nU a, .nU span');
-    if (!label) return;
+    // Disconnect existing observer
+    if (sidebarObserver) {
+      sidebarObserver.disconnect();
+    }
 
-    const icon = document.createElement('span');
-    icon.className = CSS_CLASSES.MATERIAL_ICON;
-    icon.textContent = iconName;
-    icon.style.position = 'absolute';
-    icon.style.left = '26px';
-    icon.style.fontSize = '20px';
-    icon.style.lineHeight = '1';
-    icon.style.marginRight = '0';
-    container.insertBefore(icon, label);
-  });
-};
+    sidebarObserver = new MutationObserver((mutations) => {
+      let shouldReplace = false;
 
-/**
- * Replaces all Gmail sidebar icons with Material icons
- */
-const replaceAllIcons = () => {
-  if (!materialIconsLoaded) return; // Wait until font is loaded
-  
-  // Replace each icon with its Material Design equivalent
-  Object.entries(MATERIAL_ICONS).forEach(([selector, iconName]) => {
-    replaceGmailIcon(selector, iconName);
-  });
-};
+      for (const mutation of mutations) {
+        // Check if new nodes were added or attributes changed
+        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+          shouldReplace = true;
+          break;
+        }
+        if (mutation.type === 'attributes' && 
+            (mutation.attributeName === 'class' || mutation.attributeName === 'style')) {
+          shouldReplace = true;
+          break;
+        }
+      }
 
-// Persistent category icon replacement
-function replaceCategoryIcons() {
-  // Existing category and other icon replacements
-  Object.entries(MATERIAL_ICONS).forEach(([selector, iconName]) => {
-    // Use querySelectorAll to catch multiple potential matches
-    const elements = document.querySelectorAll(selector + ' .qj');
-    elements.forEach(el => {
-      // Skip if already processed
-      if (el.classList.contains('material-icons-replaced')) return;
-
-      // Create Material Icon element
-      const iconElement = document.createElement('span');
-      iconElement.className = 'material-symbols-sharp';
-      iconElement.textContent = iconName;
-      
-      // Clear existing content and add new icon
-      el.innerHTML = '';
-      el.appendChild(iconElement);
-      el.classList.add('material-icons-replaced');
-      el.style.visibility = 'visible';
+      if (shouldReplace) {
+        // Small delay to let DOM settle
+        setTimeout(performIconReplacement, 50);
+      }
     });
-  });
 
-  // Additional selectors for Firefox-specific cases
-  const firefoxSpecificIcons = {
-    '.aHS-bnu .qj': 'send',           // Sent
-    '.aHS-bnq .qj': 'drafts',         // Drafts
-    '.aHS-aHO .qj': 'stacked_email',  // All Mail
-    '.aHS-bnx .qj': 'delete',         // Trash
-    '.aHS-bnv .qj': 'report'          // Spam
+    sidebarObserver.observe(sidebar, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['class', 'style', 'data-tooltip']
+    });
   };
 
-  Object.entries(firefoxSpecificIcons).forEach(([selector, iconName]) => {
-    const elements = document.querySelectorAll(selector);
-    elements.forEach(el => {
-      // Skip if already processed
-      if (el.classList.contains('material-icons-replaced')) return;
+  /**
+   * Start the replacement system
+   */
+  const startSystem = () => {
+    if (systemStarted) return;
+    systemStarted = true;
+    window.iconSystemStarted = true;
+    
+    // Initial replacement with multiple attempts
+    performIconReplacement();
+    setTimeout(performIconReplacement, 100);
+    setTimeout(performIconReplacement, 500);
+    
+    // Set up observer
+    setupSidebarObserver();
+    
+    // Set up periodic check (every 1 second) as a fallback
+    clearInterval(iconReplacementInterval);
+    iconReplacementInterval = setInterval(() => {
+      performIconReplacement();
+    }, 1000);
+  };
 
-      // Create Material Icon element
-      const iconElement = document.createElement('span');
-      iconElement.className = 'material-symbols-sharp';
-      iconElement.textContent = iconName;
-      
-      // Clear existing content and add new icon
-      el.innerHTML = '';
-      el.appendChild(iconElement);
-      el.classList.add('material-icons-replaced');
-      el.style.visibility = 'visible';
-    });
-  });
-
-  // Handle Less/More sections dynamically
-  const lessMoreSections = document.querySelectorAll('.byl.aJZ.a0L');
-  lessMoreSections.forEach(section => {
-    const iconEl = section.querySelector('.qj');
-    if (iconEl && !iconEl.classList.contains('material-icons-replaced')) {
-      const label = section.getAttribute('data-tooltip');
-      let iconName = 'label'; // default icon
-
-      // Map specific labels to icons
-      const labelToIconMap = {
-        'Important': 'label_important',
-        'Chats': 'chat',
-        'Scheduled': 'schedule_send'
-      };
-
-      iconName = labelToIconMap[label] || iconName;
-
-      // Create Material Icon element
-      const iconElement = document.createElement('span');
-      iconElement.className = 'material-symbols-sharp';
-      iconElement.textContent = iconName;
-      
-      // Clear existing content and add new icon
-      iconEl.innerHTML = '';
-      iconEl.appendChild(iconElement);
-      iconEl.classList.add('material-icons-replaced');
-      iconEl.style.visibility = 'visible';
+  // Wait for sidebar to be available before starting
+  const waitForSidebar = () => {
+    const sidebar = document.querySelector('.wT');
+    if (sidebar) {
+      startSystem();
+    } else {
+      setTimeout(waitForSidebar, 100);
     }
-  });
-}
+  };
 
-function startCategoryIconObserver() {
-  // Create a MutationObserver to watch for changes in the sidebar
-  const observer = new MutationObserver((mutations) => {
-    let shouldReplace = false;
+  // Start waiting for sidebar
+  waitForSidebar();
 
-    for (const mutation of mutations) {
-      if (mutation.type === 'childList' || 
-          mutation.type === 'attributes' || 
-          mutation.type === 'characterData') {
-        shouldReplace = true;
-        break;
-      }
-    }
-
-    // Debounce icon replacement
-    if (shouldReplace) {
-      // Use a small timeout to allow DOM to stabilize
-      setTimeout(replaceCategoryIcons, 50);
+  // Handle page visibility changes (when switching tabs)
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      setTimeout(performIconReplacement, 100);
     }
   });
 
-  // Try to find the sidebar and observe it
-  const sidebar = document.querySelector('.wT');
-  if (sidebar) {
-    observer.observe(sidebar, {
-      childList: true,     // Observe direct children
-      subtree: true,       // Observe all descendants
-      attributes: true,    // Observe attribute changes
-      characterData: true  // Observe text content changes
-    });
-  }
-
-  // Initial replacement
-  replaceCategoryIcons();
-}
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', () => {
-  // Initial replacements
-  replaceCategoryIcons();
-  
-  // Periodic replacements
-  const iconInterval = setInterval(() => {
-    try {
-      replaceCategoryIcons();
-      
-      // Stop if Categories section is no longer in DOM
-      const categoriesSection = document.querySelector('[data-tooltip="Categories"]');
-      if (!categoriesSection) {
-        clearInterval(iconInterval);
-      }
-    } catch (error) {
-      console.error('Icon replacement error:', error);
-      clearInterval(iconInterval);
-    }
-  }, 500);
-});
-
-// Replace icons when Categories is clicked
-function safeAddEventListener() {
-  const categoriesEl = document.querySelector('[data-tooltip="Categories"]');
-  if (categoriesEl) {
-    categoriesEl.addEventListener('click', () => {
-      // Multiple replacement attempts
-      setTimeout(replaceCategoryIcons, 10);
-      setTimeout(replaceCategoryIcons, 50);
-      setTimeout(replaceCategoryIcons, 100);
-    });
-  } else {
-    // Retry if element not found
-    setTimeout(safeAddEventListener, 500);
-  }
-}
-
-// Initial attempt to add event listener
-safeAddEventListener();
-
-// Watch for dark mode changes using a safer method
-function checkDarkModeChange() {
-  try {
-    const currentMode = document.body && document.body.classList.contains('dark-mode');
-    if (currentMode !== window.lastKnownDarkMode) {
-      window.lastKnownDarkMode = currentMode;
-      replaceCategoryIcons();
-    }
-  } catch (error) {
-    console.error('Dark mode change check error:', error);
-  }
-}
-
-// Initialize last known mode with null check
-window.lastKnownDarkMode = document.body && document.body.classList.contains('dark-mode');
-
-// Set up periodic check for dark mode changes
-setInterval(checkDarkModeChange, 500);
+  // Handle hash changes (navigation within Gmail)
+  window.addEventListener('hashchange', () => {
+    setTimeout(performIconReplacement, 200);
+  });
+};
 
 // =============================================================================
 // INITIALIZATION
@@ -1927,6 +1891,13 @@ const init = () => {
   setupMenuNodes();
   reorderMenuItems();
   injectMaterialIconsFont();
+  
+  // Ensure icon system starts even if sidebar isn't ready yet
+  setTimeout(() => {
+    if (materialIconsLoaded && !window.iconSystemStarted) {
+      initIconReplacementSystem();
+    }
+  }, 1000);
 };
 
 // Initialize if document.head is available, otherwise wait for DOMContentLoaded
@@ -1960,16 +1931,13 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Set up side panel handler
   waitForElement('div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I[aria-label^="Get "]', sidePanelHandler);
+  
+  // Ensure icon system starts after a delay to catch late-loading elements
+  setTimeout(() => {
+    if (materialIconsLoaded && !window.iconSystemStarted) {
+      initIconReplacementSystem();
+    }
+  }, 2000);
 });
 
-// Set up observer for sidebar changes to maintain icon replacements
-let debounceTimer;
-waitForElement('.wT .byl', (sidebar) => {
-  const iconObserver = new MutationObserver(() => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      replaceAllIcons();
-    }, 250); // 250ms debounce
-  });
-  iconObserver.observe(sidebar, { childList: true, subtree: true });
-});
+// The icon replacement system is now handled by initIconReplacementSystem()

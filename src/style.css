@@ -674,11 +674,54 @@ td.apU.xY .T-KT.xf::before {
   display: inline-block !important;
   line-height: 1 !important;
   color: rgba(0, 0, 0, 0.65) !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-font-smoothing: antialiased !important;
+  text-rendering: optimizeLegibility !important;
+  visibility: visible !important;
+  text-align: center !important;
+}
+
+/* Ensure Material Icons persist and override Gmail's icon changes */
+[data-icon-replaced="true"] .material-symbols-sharp {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: inline-block !important;
+}
+
+/* Prevent Gmail from hiding our replaced icons */
+[data-icon-replaced="true"] .qj {
+  background: none !important;
+  background-image: none !important;
+  visibility: visible !important;
+}
+
+[data-icon-replaced="true"] .qj .material-symbols-sharp {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* Dark mode Material Icons styling */
 body.dark-mode .material-symbols-sharp {
   color: rgba(255, 255, 255, 0.65) !important;
+  background: none !important;
+  background-image: none !important;
+  visibility: visible !important;
+}
+
+/* Dark mode icon persistence */
+body.dark-mode [data-icon-replaced="true"] .material-symbols-sharp {
+  color: rgba(255, 255, 255, 0.65) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: inline-block !important;
+}
+
+body.dark-mode [data-icon-replaced="true"] .qj {
+  background: none !important;
+  background-image: none !important;
+  visibility: visible !important;
 }
 
 /* Categories Fix for both light and dark modes */
@@ -2088,8 +2131,460 @@ body.dark-mode textarea {
 body.dark-mode a {
   color: #4cc2ff !important;
 }
+
+/* COMPOSE WINDOW DARK MODE - Comprehensive styling */
+body.dark-mode .nH.Hd[role="dialog"] {
+  background-color: #5f5f5f !important;
+  color: #ffffff !important;
+}
+
+/* Compose window header (New Message area) - Complete fill */
+body.dark-mode .nH.Hd[role="dialog"] .Hp,
+body.dark-mode .nH.Hd[role="dialog"] .Hp *,
+body.dark-mode .nH.Hd[role="dialog"] .a3E,
+body.dark-mode .nH.Hd[role="dialog"] .a3E *,
+body.dark-mode .nH.Hd[role="dialog"] .aYF,
+body.dark-mode .nH.Hd[role="dialog"] .aYF *,
+body.dark-mode .nH.Hd[role="dialog"] .cf.Ht,
+body.dark-mode .nH.Hd[role="dialog"] .cf.Ht *,
+body.dark-mode .nH.Hd[role="dialog"] .nH.Njo3Cf,
+body.dark-mode .nH.Hd[role="dialog"] .aCk,
+body.dark-mode .nH.Hd[role="dialog"] .k,
+body.dark-mode .nH.Hd[role="dialog"] .l.n,
+body.dark-mode .nH.Hd[role="dialog"] .l.m,
+body.dark-mode .nH.Hd[role="dialog"] .nH,
+body.dark-mode .nH.Hd[role="dialog"] .AD {
+  background-color: #4b4b4b !important;
+  color: #ffffff !important;
+}
+
+/* Remove border under New Message */
+body.dark-mode .nH.Hd[role="dialog"] .Hp {
+  border-bottom: none !important;
+}
+
+/* Compose subject input - Better visibility */
+body.dark-mode .aoT {
+  color: #ffffff !important;
+  background-color: #3b3b3b !important;
+  border: 1px solid #555 !important;
+  padding: 8px !important;
+}
+
+body.dark-mode .aoT::placeholder {
+  color: #c7c7c7 !important;
+}
+
+/* Subject field container */
+body.dark-mode .nH.Hd[role="dialog"] [name="subjectbox"],
+body.dark-mode .nH.Hd[role="dialog"] .aoT {
+  background-color: #3b3b3b !important;
+  color: #ffffff !important;
+  border: 1px solid #555 !important;
+}
+
+/* Make sure subject label is visible */
+body.dark-mode .nH.Hd[role="dialog"] .aD7 {
+  color: #ffffff !important;
+}
+
+/* Compose message body */
+body.dark-mode div[aria-label="Message Body"],
+body.dark-mode div[aria-label="Message Body"] * {
+  color: #ffffff !important;
+}
+
+/* To/CC/BCC input fields */
+body.dark-mode input[name="to"],
+body.dark-mode input[name="cc"],
+body.dark-mode input[name="bcc"],
+body.dark-mode input[name="subjectbox"] {
+  color: #ffffff !important;
+  background-color: #3b3b3b !important;
+  border: 1px solid #555 !important;
+}
+
+/* All compose input fields */
+body.dark-mode .nH.Hd[role="dialog"] input {
+  color: #ffffff !important;
+  background-color: #3b3b3b !important;
+  border: 1px solid #555 !important;
+}
+
+/* Input placeholders */
+body.dark-mode .nH.Hd[role="dialog"] input::placeholder {
+  color: #c7c7c7 !important;
+}
+
+/* Send button styling */
+body.dark-mode .T-I.J-J5-Ji.aoO.v7,
+body.dark-mode .T-I.J-J5-Ji.aoO.v7:hover,
+body.dark-mode .T-I.J-J5-Ji.aoO.v7:focus,
+body.dark-mode .T-I.J-J5-Ji.aoO.v7:active {
+  background-color: #4F7BEC !important;
+  border-color: #4F7BEC !important;
+  color: #ffffff !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove any border/outline around send button container */
+body.dark-mode .T-I.J-J5-Ji.aoO.v7 {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Send button dropdown arrow */
+body.dark-mode .T-I.J-J5-Ji.hG.T-I-atl.L3,
+body.dark-mode .T-I.J-J5-Ji.hG.T-I-atl.L3:hover,
+body.dark-mode .T-I.J-J5-Ji.hG.T-I-atl.L3:focus,
+body.dark-mode .T-I.J-J5-Ji.hG.T-I-atl.L3:active {
+  background-color: #4F7BEC !important;
+  border-color: #4F7BEC !important;
+  color: #ffffff !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove any border/outline around send button dropdown */
+body.dark-mode .T-I.J-J5-Ji.hG.T-I-atl.L3 {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Send dropdown arrow styling */
+body.dark-mode .T-I.J-J5-Ji.hG.T-I-atl.L3 .G-asx {
+  background-color: #4F7BEC !important;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="4" viewBox="0 0 8 4"><path d="M0 0h8L4 4z" fill="%23ffffff"/></svg>') !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 8px 4px !important;
+  border-left: none !important;
+  border: none !important;
+  outline: none !important;
+}
+
+/* Remove borders from send button containers and parent elements */
+body.dark-mode .nH.Hd[role="dialog"] .T-I.J-J5-Ji.aoO.v7,
+body.dark-mode .nH.Hd[role="dialog"] .T-I.J-J5-Ji.hG.T-I-atl.L3,
+body.dark-mode .nH.Hd[role="dialog"] .T-I.J-J5-Ji.aoO.v7 *,
+body.dark-mode .nH.Hd[role="dialog"] .T-I.J-J5-Ji.hG.T-I-atl.L3 * {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Ensure send button has no focus outline */
+body.dark-mode .T-I.J-J5-Ji.aoO.v7:focus,
+body.dark-mode .T-I.J-J5-Ji.hG.T-I-atl.L3:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Compose formatting toolbar */
+body.dark-mode .nH.Hd[role="dialog"] .J-Z-I,
+body.dark-mode .nH.Hd[role="dialog"] .J-Z,
+body.dark-mode .nH.Hd[role="dialog"] .J-Z * {
+  background-color: #5f5f5f !important;
+  border-color: #666 !important;
+}
+
+/* Formatting toolbar buttons */
+body.dark-mode .nH.Hd[role="dialog"] .J-J5-Ji,
+body.dark-mode .nH.Hd[role="dialog"] [role="button"] {
+  background-color: #5f5f5f !important;
+  border-color: #666 !important;
+  color: #ffffff !important;
+}
+
+/* Dropdown menus in compose */
+body.dark-mode .nH.Hd[role="dialog"] .J-M {
+  background-color: #5f5f5f !important;
+  border: 1px solid #666 !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+}
+
+/* Menu items */
+body.dark-mode .nH.Hd[role="dialog"] .J-M .J-N,
+body.dark-mode .nH.Hd[role="dialog"] .J-M .J-N-JT {
+  background-color: #5f5f5f !important;
+  color: #ffffff !important;
+}
+
+/* Menu hover states */
+body.dark-mode .nH.Hd[role="dialog"] .J-M .J-N:hover,
+body.dark-mode .nH.Hd[role="dialog"] .J-M .J-N-JT:hover {
+  background-color: #666 !important;
+}
+
+/* Bottom toolbar in compose */
+body.dark-mode .nH.Hd[role="dialog"] .gU.Up,
+body.dark-mode .nH.Hd[role="dialog"] .dC,
+body.dark-mode .nH.Hd[role="dialog"] .btA {
+  background-color: #747474 !important;
+}
+
+/* Toolbar icons white */
+body.dark-mode .nH.Hd[role="dialog"] .a3I {
+  filter: invert(1) !important;
+}
 body.dark-mode hr {
   border-color: #3b3b3b !important;
+}
+
+/* MAIN INTERFACE DARK MODE */
+
+/* Email list and sidebar backgrounds */
+body.dark-mode .WR.aeN,
+body.dark-mode .ar4,
+body.dark-mode .nH.aqk.aql.bkL,
+body.dark-mode .aBO,
+body.dark-mode .aB6,
+body.dark-mode .bn .bl,
+body.dark-mode .bzJiD,
+body.dark-mode .vIO7af,
+body.dark-mode .no,
+body.dark-mode .AO,
+body.dark-mode .Tm.aeJ,
+body.dark-mode .nH.oy8Mbf.nn.aeN,
+body.dark-mode .brC-aT5-aOt-Jw,
+body.dark-mode .aj5 .J-KU,
+body.dark-mode .aj5.J-KU-Jg,
+body.dark-mode .aeH,
+body.dark-mode .aKh,
+body.dark-mode .aRs {
+  background: #292929 !important;
+}
+
+/* Email row styling */
+body.dark-mode .zA,
+body.dark-mode .zA:hover,
+body.dark-mode .Bs.nH.iY.bAt {
+  background: #292929 !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .zA * {
+  color: #ffffff !important;
+}
+
+/* Sidebar text colors */
+body.dark-mode .TO .nU > .n0,
+body.dark-mode .TO.NQ .nU > .n0,
+body.dark-mode .TO.nZ .nU > .n0,
+body.dark-mode .ah9 > .CJ,
+body.dark-mode .n3 > .CL > .CK,
+body.dark-mode .aAv {
+  color: #c7c7c7 !important;
+}
+
+body.dark-mode .TO.nZ .n0 {
+  color: #ffffff !important;
+}
+
+body.dark-mode .TO .n0 {
+  color: #c7c7c7 !important;
+}
+
+/* Active sidebar item */
+body.dark-mode .TO.nZ {
+  background-color: #383838 !important;
+}
+
+/* Unread email highlight */
+body.dark-mode .zA.zE {
+  background-color: #383838 !important;
+  border-left: 3px solid #4cc2ff !important;
+  padding-left: 7px !important;
+}
+
+body.dark-mode .zA.zE:hover {
+  background-color: #414141 !important;
+}
+
+/* Bundle styling */
+body.dark-mode .brc {
+  background-color: #3b3b3b !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 1px rgba(0,0,0,.31), 0 1px 2px rgba(0,0,0,.42) !important;
+}
+
+body.dark-mode .bundle-senders {
+  color: #ffffff !important;
+}
+
+body.dark-mode .bundle-wrapper .label-link .bundle-count {
+  color: #c7c7c7 !important;
+}
+
+body.dark-mode .bundle-wrapper:not(.contains-unread) .bundle-image img {
+  filter: brightness(0.8);
+}
+
+/* Calendar attachments */
+body.dark-mode .calendar-attachment .event-time {
+  color: #c7c7c7 !important;
+}
+
+/* Time stamps */
+body.dark-mode .time {
+  color: #c7c7c7 !important;
+}
+
+/* Header areas */
+body.dark-mode .D.E.G-atb {
+  background: #292929 !important;
+}
+
+body.dark-mode .nH .AO .aeF {
+  background: #292929 !important;
+}
+
+body.dark-mode .nH .AO {
+  background: #292929 !important;
+}
+
+/* Search bar */
+body.dark-mode header form {
+  background: rgba(41,41,41,0.5) !important;
+}
+
+body.dark-mode header form input {
+  color: #ffffff !important;
+  background-color: transparent !important;
+}
+
+body.dark-mode header form input::placeholder {
+  color: #c7c7c7 !important;
+}
+
+/* Material Icons */
+body.dark-mode .material-symbols-sharp {
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+/* Category icons */
+body.dark-mode .byl.aJZ.a0L .qj {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Avatar styling */
+body.dark-mode .avatar {
+  color: #ffffff !important;
+  background-color: inherit !important;
+}
+
+body.dark-mode .avatar[style*="background-color"] {
+  opacity: 1 !important;
+}
+
+/* QUICK SETTINGS PANEL */
+body.dark-mode .IU {
+  background-color: #2d2d30 !important;
+}
+
+body.dark-mode .IU .VO,
+body.dark-mode .IU .OG {
+  color: #f1f1f1 !important;
+}
+
+body.dark-mode .IU .a21,
+body.dark-mode .IU .Q2,
+body.dark-mode .IU .ST {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .Q3 {
+  background-color: #252526 !important;
+  border-bottom: 1px solid #444 !important;
+}
+
+body.dark-mode fieldset.VM.aiL {
+  background-color: #252526 !important;
+}
+
+body.dark-mode .IU .OD,
+body.dark-mode .IU .Tj {
+  color: #8ab4f8 !important;
+}
+
+/* SETTINGS TABS */
+body.dark-mode .nH.fY {
+  background-color: #2d2d30 !important;
+  border-bottom: 1px solid #444 !important;
+}
+
+body.dark-mode .nH.fY [role="presentation"] a.f0 {
+  color: #a0a0a0 !important;
+  opacity: 1 !important;
+}
+
+body.dark-mode .nH.fY [role="presentation"] a.f0:hover {
+  color: #8ab4f8 !important;
+}
+
+body.dark-mode .nH.fY [role="presentation"] a.f0[aria-selected="true"] {
+  color: #8ab4f8 !important;
+  border-bottom: 2px solid #8ab4f8 !important;
+}
+
+/* EMAIL VIEWER */
+body.dark-mode .AO {
+  background-color: #1e1e1e !important;
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .AO * {
+  background-color: transparent !important;
+  color: #e0e0e0 !important;
+  border-color: #444 !important;
+}
+
+body.dark-mode .AO a {
+  color: #8ab4f8 !important;
+}
+
+/* LABELS AND CHIPS */
+body.dark-mode .at9,
+body.dark-mode .at9 * {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* DROPDOWN MENUS */
+body.dark-mode .J-M,
+body.dark-mode .J-M * {
+  background-color: #333 !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .J-M .J-N:hover {
+  background-color: #444 !important;
+}
+
+/* EMPTY INBOX DARK IMAGE */
+body.dark-mode .ar4.z .TD > .TC {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_zero_inbox_2x_dark.png') !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-top: 30px;
+  height: 618px;
+  width: 456px;
+  background-color: #292929;
+  color: transparent;
+  font-size: 14px;
+}
+
+@-moz-document url-prefix() {
+  body.dark-mode .ar4.z .TD > .TC {
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_zero_inbox_2x_dark.png') !important;
+  }
 }
 body.dark-mode .WR.aeN,
 body.dark-mode .ar4,
