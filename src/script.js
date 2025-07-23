@@ -1637,7 +1637,12 @@ const injectMaterialIconsFont = () => {
       line-height: 1 !important;
       -webkit-font-smoothing: antialiased !important;
       text-rendering: optimizeLegibility !important;
-      color: rgba(0, 0, 0, 0.65) !important; /* lighter fill (black at 65%) */
+      color: rgba(0, 0, 0, 0.65) !important; /* light mode color */
+    }
+    
+    /* Dark mode override for Material Icons */
+    body.dark-mode .${CSS_CLASSES.MATERIAL_ICON} {
+      color: rgba(255, 255, 255, 0.65) !important; /* dark mode color */
     }
   `;
   document.head.appendChild(style);
@@ -1715,6 +1720,11 @@ const initIconReplacementSystem = () => {
         icon.className = CSS_CLASSES.MATERIAL_ICON;
         icon.textContent = iconName;
         icon.setAttribute('data-icon-replaced', 'true');
+        // Force light mode styling
+        icon.style.color = 'rgba(0, 0, 0, 0.65)';
+        icon.style.opacity = '1';
+        icon.style.visibility = 'visible';
+        icon.style.display = 'inline-block';
         iconContainer.appendChild(icon);
         iconContainer.setAttribute('data-icon-replaced', 'true');
         return;
@@ -1736,6 +1746,11 @@ const initIconReplacementSystem = () => {
       icon.style.lineHeight = '1';
       icon.style.marginRight = '0';
       icon.setAttribute('data-icon-replaced', 'true');
+      // Force light mode styling
+      icon.style.color = 'rgba(0, 0, 0, 0.65)';
+      icon.style.opacity = '1';
+      icon.style.visibility = 'visible';
+      icon.style.display = 'inline-block';
       
       container.insertBefore(icon, label);
       container.setAttribute('data-icon-replaced', 'true');

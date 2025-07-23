@@ -682,6 +682,16 @@ td.apU.xY .T-KT.xf::before {
   text-align: center !important;
 }
 
+/* Force visibility for Material Icons in light mode */
+.material-symbols-sharp,
+[data-icon-replaced="true"] .material-symbols-sharp,
+.qj .material-symbols-sharp {
+  color: rgba(0, 0, 0, 0.65) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: inline-block !important;
+}
+
 /* Ensure Material Icons persist and override Gmail's icon changes */
 [data-icon-replaced="true"] .material-symbols-sharp {
   opacity: 1 !important;
