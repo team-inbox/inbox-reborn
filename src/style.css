@@ -725,27 +725,19 @@ td.apU.xY .T-KT.xf::before {
 
 /* Sent */
 .aHS-bnu .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_sent_right_g60_24dp_r1_2x.png');
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_sent_right_g60_24dp_r1_2x.png');
-	-webkit-mask-position: center;
-	-webkit-mask-repeat: no-repeat;
-	-webkit-mask-size: 24px;
-	mask-position: center;
-	mask-repeat: no-repeat;
-	mask-size: 24px;
-	background-color: #4C4F4D;
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	-webkit-mask-size: 24px !important;
+	mask-size: 24px !important;
+	background-color: #4C4F4D !important;
 }
 /* Drafts */
 .aHS-bnq .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_draft_g60_24dp_r2_2x.png');
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_draft_g60_24dp_r2_2x.png');
-	-webkit-mask-position: center;
-	-webkit-mask-repeat: no-repeat;
-	-webkit-mask-size: 24px;
-	mask-position: center;
-	mask-repeat: no-repeat;
-	mask-size: 24px;
-	background-color: #4C4F4D;
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	-webkit-mask-size: 24px !important;
+	mask-size: 24px !important;
+	background-color: #4C4F4D !important;
 }
 /* Scheduled */
 .aHS-nd .qj {
@@ -754,39 +746,27 @@ td.apU.xY .T-KT.xf::before {
 }
 /* All Mail */
 .aHS-aHO .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png');
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png');
-	-webkit-mask-position: center;
-	-webkit-mask-repeat: no-repeat;
-	-webkit-mask-size: 24px;
-	mask-position: center;
-	mask-repeat: no-repeat;
-	mask-size: 24px;
-	background-color: #4C4F4D;
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	-webkit-mask-size: 24px !important;
+	mask-size: 24px !important;
+	background-color: #4C4F4D !important;
 }
 /* Trash */
 .aHS-bnx .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_trash_g60_24dp_r2_2x.png');
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_trash_g60_24dp_r2_2x.png');
-	-webkit-mask-position: center;
-	-webkit-mask-repeat: no-repeat;
-	-webkit-mask-size: 24px;
-	mask-position: center;
-	mask-repeat: no-repeat;
-	mask-size: 24px;
-	background-color: #4C4F4D;
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	-webkit-mask-size: 24px !important;
+	mask-size: 24px !important;
+	background-color: #4C4F4D !important;
 }
 /* Spam */
 .aHS-bnv .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_spam_g60_24dp_r2_2x.png');
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_spam_g60_24dp_r2_2x.png');
-	-webkit-mask-position: center;
-	-webkit-mask-repeat: no-repeat;
-	-webkit-mask-size: 24px;
-	mask-position: center;
-	mask-repeat: no-repeat;
-	mask-size: 24px;
-	background-color: #4C4F4D;
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	-webkit-mask-size: 24px !important;
+	mask-size: 24px !important;
+	background-color: #4C4F4D !important;
 }
 
 /* Chats */
@@ -844,54 +824,38 @@ td.apU.xY .T-KT.xf::before {
 
 /* Social */
 [data-tooltip="Social"] .qj {
-  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png');
-  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png');
-  -webkit-mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: 24px;
-  mask-position: center;
-  mask-repeat: no-repeat;
-  mask-size: 24px;
-  background-color: #4C4F4D;
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	-webkit-mask-size: 24px !important;
+	mask-size: 24px !important;
+	background-color: #4C4F4D !important;
 }
 
 /* Updates */
 [data-tooltip="Updates"] .qj {
-  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png');
-  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png');
-  -webkit-mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: 24px;
-  mask-position: center;
-  mask-repeat: no-repeat;
-  mask-size: 24px;
-  background-color: #4C4F4D;
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	-webkit-mask-size: 24px !important;
+	mask-size: 24px !important;
+	background-color: #4C4F4D !important;
 }
 
 /* Forums */
 [data-tooltip="Forums"] .qj {
-  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png');
-  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png');
-  -webkit-mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: 24px;
-  mask-position: center;
-  mask-repeat: no-repeat;
-  mask-size: 24px;
-  background-color: #4C4F4D;
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	-webkit-mask-size: 24px !important;
+	mask-size: 24px !important;
+	background-color: #4C4F4D !important;
 }
 
 /* Promotions */
 [data-tooltip="Promotions"] .qj {
-  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png');
-  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png');
-  -webkit-mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: 24px;
-  mask-position: center;
-  mask-repeat: no-repeat;
-  mask-size: 24px;
-  background-color: #4C4F4D;
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	-webkit-mask-size: 24px !important;
+	mask-size: 24px !important;
+	background-color: #4C4F4D !important;
 }
 
 /* Category buttons */
@@ -942,19 +906,27 @@ td.apU.xY .T-KT.xf::before {
   }
   /* Sent */
   .aHS-bnu .qj {
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_sent_right_g60_24dp_r1_2x.png');
-    mask-position: center;
-    mask-repeat: no-repeat;
-    mask-size: 24px;
-    background-color: #4C4F4D;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    background-color: #4C4F4D !important;
   }
   /* Drafts */
   .aHS-bnq .qj {
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_draft_g60_24dp_r2_2x.png');
-    mask-position: center;
-    mask-repeat: no-repeat;
-    mask-size: 24px;
-    background-color: #4C4F4D;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    background-color: #4C4F4D !important;
   }
   /* Scheduled */
   .aHS-nd .qj {
@@ -963,27 +935,39 @@ td.apU.xY .T-KT.xf::before {
   }
   /* All Mail */
   .aHS-aHO .qj {
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png');
-    mask-position: center;
-    mask-repeat: no-repeat;
-    mask-size: 24px;
-    background-color: #4C4F4D;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    background-color: #4C4F4D !important;
   }
   /* Trash */
   .aHS-bnx .qj {
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_trash_g60_24dp_r2_2x.png');
-    mask-position: center;
-    mask-repeat: no-repeat;
-    mask-size: 24px;
-    background-color: #4C4F4D;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    background-color: #4C4F4D !important;
   }
   /* Spam */
   .aHS-bnv .qj {
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_spam_g60_24dp_r2_2x.png');
-    mask-position: center;
-    mask-repeat: no-repeat;
-    mask-size: 24px;
-    background-color: #4C4F4D;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    background-color: #4C4F4D !important;
   }
   /* Category */
   .aHS-bnr .qj /*:not(.aEe)*/ {
@@ -991,32 +975,48 @@ td.apU.xY .T-KT.xf::before {
   }
   /* Category icons */
   [data-tooltip="Social"] .qj {
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png');
-    mask-position: center;
-    mask-repeat: no-repeat;
-    mask-size: 24px;
-    background-color: #4C4F4D;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    background-color: #4C4F4D !important;
   }
   [data-tooltip="Updates"] .qj {
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png');
-    mask-position: center;
-    mask-repeat: no-repeat;
-    mask-size: 24px;
-    background-color: #4C4F4D;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    background-color: #4C4F4D !important;
   }
   [data-tooltip="Forums"] .qj {
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png');
-    mask-position: center;
-    mask-repeat: no-repeat;
-    mask-size: 24px;
-    background-color: #4C4F4D;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    background-color: #4C4F4D !important;
   }
   [data-tooltip="Promotions"] .qj {
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png');
-    mask-position: center;
-    mask-repeat: no-repeat;
-    mask-size: 24px;
-    background-color: #4C4F4D;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    background-color: #4C4F4D !important;
   }
 }
 
