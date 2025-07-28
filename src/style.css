@@ -692,12 +692,18 @@ td.apU.xY .T-KT.xf::before {
 
 /* Important */
 .aHS-bns .qj {
-  opacity: 0.6 !important;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/label_important_black_24dp.png') !important;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
 }
 
 /* Chats */
 .aHS-aHP .qj {
-  /* Let Gmail use its default icon */
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/hangout_black_24dp.png') !important;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
 }
 
 /* Snoozed */
@@ -707,7 +713,10 @@ td.apU.xY .T-KT.xf::before {
 
 /* Scheduled */
 .aHS-nd .qj {
-  /* Let Gmail use its default icon */
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_snooze_black_24dp_2x.png') !important;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
 }
 
 /* All, Nested Categories / Labels */
@@ -739,11 +748,7 @@ td.apU.xY .T-KT.xf::before {
 	mask-size: 24px !important;
 	background-color: #4C4F4D !important;
 }
-/* Scheduled */
-.aHS-nd .qj {
-	background-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/gm3/2x/schedule_send_baseline_nv700_20dp.png') !important;
-	opacity: 0.9 !important;
-}
+
 /* All Mail */
 .aHS-aHO .qj {
 	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -769,57 +774,13 @@ td.apU.xY .T-KT.xf::before {
 	background-color: #4C4F4D !important;
 }
 
-/* Chats */
-.aHS-aHP .qj {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/hangout_black_24dp.png') !important;
-  background-size: 20px !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-}
-
-/* Scheduled */
-.aHS-nd .qj {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_snooze_black_24dp_2x.png') !important;
-  background-size: 20px !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-}
-
-/* Important */
-.aHS-bns .qj {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/label_important_black_24dp.png') !important;
-  background-size: 20px !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-}
-
-/* Categories only - use mask-image approach */
-.aEe,
-.aEc.aHS-bnr .qj {
-	opacity: 0.9 !important;
-	background-color: #4C4F4D;
-	-webkit-mask-position: center;
-	-webkit-mask-repeat: no-repeat;
-	-webkit-mask-size: 24px;
-	mask-position: center;
-	mask-repeat: no-repeat;
-	mask-size: 24px;
-}
-
-/* Labels - let Gmail use default colorful icons */
-.aHS-bnr .qj {
-	opacity: 0.9 !important;
-	/* Let Gmail use its default colorful square icons */
-}
-/* Labels (only) - let Gmail use default colorful icons */
-.zw .aHS-bnr .qj {
-	/* Let Gmail use its default colorful square icons */
-}
-
 /* Categories */
-[data-tooltip="Categories"] .qj {
-  background-color: transparent !important;
-  background-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/gm3/2x/label_baseline_nv700_20dp.png') !important;
+[data-tooltip="Categories"] .aEc.aHS-bnr .qj {
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+	-webkit-mask-size: 24px !important;
+	mask-size: 24px !important;
+	background-color: #4C4F4D !important;
 }
 
 /* Social */
@@ -1017,6 +978,31 @@ td.apU.xY .T-KT.xf::before {
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
     background-color: #4C4F4D !important;
+  }
+  
+  /* Categories */
+  [data-tooltip="Categories"] .aEc.aHS-bnr .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    background-color: #4C4F4D !important;
+    background-image: none !important;
+  }
+  
+  /* Firefox dark mode for Categories */
+  body.dark-mode [data-tooltip="Categories"] .qj {
+    background-color: #ffffff !important;
+  }
+  
+  /* Firefox dark mode override for Categories to preserve mask-image */
+  body.dark-mode [data-tooltip="Categories"] .aEc.aHS-bnr .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
   }
 }
 
@@ -2837,6 +2823,27 @@ body.dark-mode .aEc.aHS-bnr .qj {
   mask-image: none !important;
 }
 
+/* Override the above rule for Categories to preserve its mask-image */
+body.dark-mode [data-tooltip="Categories"] .aEc.aHS-bnr .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  background-color: #ffffff !important;
+}
+
+/* Firefox-specific dark mode override for Categories */
+@-moz-document url-prefix() {
+  body.dark-mode [data-tooltip="Categories"] .aEc.aHS-bnr .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+  }
+}
+
 /* Labels - let Gmail use default colorful icons in dark mode too */
 body.dark-mode .aHS-bnr .qj,
 body.dark-mode .zw .aHS-bnr .qj {
@@ -2976,6 +2983,10 @@ body.dark-mode .aHS-bnx .qj {
 }
 
 body.dark-mode .aHS-bnv .qj {
+  background-color: #ffffff !important;
+}
+
+body.dark-mode [data-tooltip="Categories"] .qj {
   background-color: #ffffff !important;
 }
 
