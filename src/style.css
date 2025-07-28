@@ -38,14 +38,7 @@
   --dark-color-shadow: rgba(0, 0, 0, 0.44);
 }
 
-/* Hide default Gmail icons to prevent flicker before replacement */
-.aHS-bnu .qj,
-.aHS-bnq .qj,
-.aHS-aHO .qj,
-.aHS-bnx .qj,
-.aHS-bnv .qj {
-  visibility: hidden !important;
-}
+/* Let Gmail use its default colorful icons for system labels */
 
 /* =============================================================================
    TYPOGRAPHY AND BASE STYLES
@@ -661,99 +654,7 @@ td.apU.xY .T-KT.xf::before {
   background-color: rgba(0,0,0,.05) !important;
 }
 
-/* Material Icons styling for light mode */
-.material-symbols-sharp {
-  font-family: 'Material Symbols Sharp' !important;
-  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
-  font-size: 24px !important;
-  width: 24px !important;
-  height: 24px !important;
-  opacity: 1 !important;
-  margin-right: 24px !important;
-  background-size: 24px !important;
-  display: inline-block !important;
-  line-height: 1 !important;
-  color: rgba(0, 0, 0, 0.65) !important;
-  background: none !important;
-  background-image: none !important;
-  -webkit-font-smoothing: antialiased !important;
-  text-rendering: optimizeLegibility !important;
-  visibility: visible !important;
-  text-align: center !important;
-}
 
-/* Force visibility for Material Icons in light mode */
-.material-symbols-sharp,
-[data-icon-replaced="true"] .material-symbols-sharp,
-.qj .material-symbols-sharp {
-  color: rgba(0, 0, 0, 0.65) !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  display: inline-block !important;
-}
-
-/* Ensure Material Icons persist and override Gmail's icon changes */
-[data-icon-replaced="true"] .material-symbols-sharp {
-  opacity: 1 !important;
-  visibility: visible !important;
-  display: inline-block !important;
-}
-
-/* Prevent Gmail from hiding our replaced icons */
-[data-icon-replaced="true"] .qj {
-  background: none !important;
-  background-image: none !important;
-  visibility: visible !important;
-}
-
-[data-icon-replaced="true"] .qj .material-symbols-sharp {
-  display: inline-block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-/* Dark mode Material Icons styling */
-body.dark-mode .material-symbols-sharp {
-  color: rgba(255, 255, 255, 0.65) !important;
-  background: none !important;
-  background-image: none !important;
-  visibility: visible !important;
-}
-
-/* Dark mode icon persistence */
-body.dark-mode [data-icon-replaced="true"] .material-symbols-sharp {
-  color: rgba(255, 255, 255, 0.65) !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  display: inline-block !important;
-}
-
-body.dark-mode [data-icon-replaced="true"] .qj {
-  background: none !important;
-  background-image: none !important;
-  visibility: visible !important;
-}
-
-/* Categories Fix for both light and dark modes */
-.byl.aJZ.a0L .qj,
-body.dark-mode .byl.aJZ.a0L .qj {
-  background: none !important;
-  background-color: transparent !important;
-}
-
-/* Force Material Icons in Categories for both modes */
-[data-tooltip="Social"] .qj .material-symbols-sharp,
-[data-tooltip="Updates"] .qj .material-symbols-sharp,
-[data-tooltip="Forums"] .qj .material-symbols-sharp,
-[data-tooltip="Promotions"] .qj .material-symbols-sharp,
-body.dark-mode [data-tooltip="Social"] .qj .material-symbols-sharp,
-body.dark-mode [data-tooltip="Updates"] .qj .material-symbols-sharp,
-body.dark-mode [data-tooltip="Forums"] .qj .material-symbols-sharp,
-body.dark-mode [data-tooltip="Promotions"] .qj .material-symbols-sharp {
-  display: inline-block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
 
 .qj {
   width: 24px !important;
@@ -791,14 +692,12 @@ body.dark-mode [data-tooltip="Promotions"] .qj .material-symbols-sharp {
 
 /* Important */
 .aHS-bns .qj {
-  background-image: none !important;
-  opacity: 1 !important;
+  opacity: 0.6 !important;
 }
 
 /* Chats */
 .aHS-aHP .qj {
-  background-image: none !important;
-  opacity: 1 !important;
+  /* Let Gmail use its default icon */
 }
 
 /* Snoozed */
@@ -808,8 +707,7 @@ body.dark-mode [data-tooltip="Promotions"] .qj .material-symbols-sharp {
 
 /* Scheduled */
 .aHS-nd .qj {
-  background-image: none !important;
-  opacity: 1 !important;
+  /* Let Gmail use its default icon */
 }
 
 /* All, Nested Categories / Labels */
@@ -825,11 +723,200 @@ body.dark-mode [data-tooltip="Promotions"] .qj .material-symbols-sharp {
   background-color: #444746 !important;
 }
 
-/* Category icons will be handled by Material Icons in JavaScript */
+/* Sent */
+.aHS-bnu .qj {
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_sent_right_g60_24dp_r1_2x.png');
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_sent_right_g60_24dp_r1_2x.png');
+	-webkit-mask-position: center;
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-size: 24px;
+	mask-position: center;
+	mask-repeat: no-repeat;
+	mask-size: 24px;
+	background-color: #4C4F4D;
+}
+/* Drafts */
+.aHS-bnq .qj {
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_draft_g60_24dp_r2_2x.png');
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_draft_g60_24dp_r2_2x.png');
+	-webkit-mask-position: center;
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-size: 24px;
+	mask-position: center;
+	mask-repeat: no-repeat;
+	mask-size: 24px;
+	background-color: #4C4F4D;
+}
+/* Scheduled */
+.aHS-nd .qj {
+	background-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/gm3/2x/schedule_send_baseline_nv700_20dp.png') !important;
+	opacity: 0.9 !important;
+}
+/* All Mail */
+.aHS-aHO .qj {
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png');
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png');
+	-webkit-mask-position: center;
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-size: 24px;
+	mask-position: center;
+	mask-repeat: no-repeat;
+	mask-size: 24px;
+	background-color: #4C4F4D;
+}
+/* Trash */
+.aHS-bnx .qj {
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_trash_g60_24dp_r2_2x.png');
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_trash_g60_24dp_r2_2x.png');
+	-webkit-mask-position: center;
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-size: 24px;
+	mask-position: center;
+	mask-repeat: no-repeat;
+	mask-size: 24px;
+	background-color: #4C4F4D;
+}
+/* Spam */
+.aHS-bnv .qj {
+	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_spam_g60_24dp_r2_2x.png');
+	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_spam_g60_24dp_r2_2x.png');
+	-webkit-mask-position: center;
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-size: 24px;
+	mask-position: center;
+	mask-repeat: no-repeat;
+	mask-size: 24px;
+	background-color: #4C4F4D;
+}
+
+/* Chats */
+.aHS-aHP .qj {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/hangout_black_24dp.png') !important;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+/* Scheduled */
+.aHS-nd .qj {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_snooze_black_24dp_2x.png') !important;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+/* Important */
+.aHS-bns .qj {
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/label_important_black_24dp.png') !important;
+  background-size: 20px !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+/* Categories only - use mask-image approach */
+.aEe,
+.aEc.aHS-bnr .qj {
+	opacity: 0.9 !important;
+	background-color: #4C4F4D;
+	-webkit-mask-position: center;
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-size: 24px;
+	mask-position: center;
+	mask-repeat: no-repeat;
+	mask-size: 24px;
+}
+
+/* Labels - let Gmail use default colorful icons */
+.aHS-bnr .qj {
+	opacity: 0.9 !important;
+	/* Let Gmail use its default colorful square icons */
+}
+/* Labels (only) - let Gmail use default colorful icons */
+.zw .aHS-bnr .qj {
+	/* Let Gmail use its default colorful square icons */
+}
+
+/* Categories */
+[data-tooltip="Categories"] .qj {
+  background-color: transparent !important;
+  background-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/gm3/2x/label_baseline_nv700_20dp.png') !important;
+}
+
+/* Social */
+[data-tooltip="Social"] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png');
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png');
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 24px;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: 24px;
+  background-color: #4C4F4D;
+}
+
+/* Updates */
+[data-tooltip="Updates"] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png');
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png');
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 24px;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: 24px;
+  background-color: #4C4F4D;
+}
+
+/* Forums */
+[data-tooltip="Forums"] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png');
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png');
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 24px;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: 24px;
+  background-color: #4C4F4D;
+}
+
+/* Promotions */
+[data-tooltip="Promotions"] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png');
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png');
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 24px;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: 24px;
+  background-color: #4C4F4D;
+}
 
 /* Category buttons */
 .CL.Q7::before, .CL.Wj::before {
   opacity: 0.9 !important;
+}
+
+
+
+/* Hide scrollbars globally for all browsers */
+.aeF,
+.wT,
+.nH .AO,
+.nH .AO .aeF {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.aeF::-webkit-scrollbar,
+.wT::-webkit-scrollbar,
+.nH .AO::-webkit-scrollbar,
+.nH .AO .aeF::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 @-moz-document url-prefix() {
@@ -847,15 +934,93 @@ body.dark-mode [data-tooltip="Promotions"] .qj .material-symbols-sharp {
   }
   /* Chats */
   .aHS-aHP .qj {
-    background-image: none !important;
-    opacity: 1 !important;
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/hangout_black_24dp.png') !important;
   }
   /* Snoozed */
   .aHS-bu1 .qj {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_upcoming_clr_24dp_r5_2x.png') !important;
   }
-  /* Category icons will be handled by Material Icons in JavaScript */
+  /* Sent */
+  .aHS-bnu .qj {
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_sent_right_g60_24dp_r1_2x.png');
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: 24px;
+    background-color: #4C4F4D;
+  }
+  /* Drafts */
+  .aHS-bnq .qj {
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_draft_g60_24dp_r2_2x.png');
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: 24px;
+    background-color: #4C4F4D;
+  }
+  /* Scheduled */
+  .aHS-nd .qj {
+    background-image: url('https://ssl.gstatic.com/ui/v1/icons/mail/gm3/2x/schedule_send_baseline_nv700_20dp.png') !important;
+    opacity: 0.9 !important;
+  }
+  /* All Mail */
+  .aHS-aHO .qj {
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png');
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: 24px;
+    background-color: #4C4F4D;
+  }
+  /* Trash */
+  .aHS-bnx .qj {
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_trash_g60_24dp_r2_2x.png');
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: 24px;
+    background-color: #4C4F4D;
+  }
+  /* Spam */
+  .aHS-bnv .qj {
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_spam_g60_24dp_r2_2x.png');
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: 24px;
+    background-color: #4C4F4D;
+  }
+  /* Category */
+  .aHS-bnr .qj /*:not(.aEe)*/ {
+    /*background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png') !important;*/
+  }
+  /* Category icons */
+  [data-tooltip="Social"] .qj {
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png');
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: 24px;
+    background-color: #4C4F4D;
+  }
+  [data-tooltip="Updates"] .qj {
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png');
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: 24px;
+    background-color: #4C4F4D;
+  }
+  [data-tooltip="Forums"] .qj {
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png');
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: 24px;
+    background-color: #4C4F4D;
+  }
+  [data-tooltip="Promotions"] .qj {
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png');
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: 24px;
+    background-color: #4C4F4D;
+  }
 }
+
+/* Let Gmail use its default colorful icons for system labels */
 
 .TO.nZ .n0 {
   color: #212121 !important;
@@ -2472,16 +2637,7 @@ body.dark-mode header form input::placeholder {
   color: #c7c7c7 !important;
 }
 
-/* Material Icons */
-body.dark-mode .material-symbols-sharp {
-  color: rgba(255, 255, 255, 0.65) !important;
-}
 
-/* Category icons */
-body.dark-mode .byl.aJZ.a0L .qj {
-  background: transparent !important;
-  background-color: transparent !important;
-}
 
 /* Avatar styling */
 body.dark-mode .avatar {
@@ -2675,10 +2831,16 @@ body.dark-mode .brc .brg {
   color: #ffffff !important;
 }
 body.dark-mode .aEe,
-body.dark-mode .aEc.aHS-bnr .qj,
+body.dark-mode .aEc.aHS-bnr .qj {
+  background-color: transparent !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}
+
+/* Labels - let Gmail use default colorful icons in dark mode too */
 body.dark-mode .aHS-bnr .qj,
 body.dark-mode .zw .aHS-bnr .qj {
-  background-color: #3b3b3b !important;
+  /* Let Gmail use its default colorful square icons */
 }
 body.dark-mode .G4, body.dark-mode .GR, body.dark-mode div[aria-label="Inbox tip"] {
   box-shadow: 0 -1px 0 #3b3b3b, 0 0 2px rgba(0,0,0,.32), 0 2px 4px rgba(0,0,0,.44) !important;
@@ -2794,6 +2956,43 @@ body.dark-mode .aHS-bnr .qj,
 body.dark-mode .aEc.aHS-bnr .qj,
 body.dark-mode .aEe {
   background-color: #505050 !important;
+}
+
+/* Dark mode overrides for specific icons - keep mask-image but use white background */
+body.dark-mode .aHS-bnu .qj {
+  background-color: #ffffff !important;
+}
+
+body.dark-mode .aHS-bnq .qj {
+  background-color: #ffffff !important;
+}
+
+body.dark-mode .aHS-aHO .qj {
+  background-color: #ffffff !important;
+}
+
+body.dark-mode .aHS-bnx .qj {
+  background-color: #ffffff !important;
+}
+
+body.dark-mode .aHS-bnv .qj {
+  background-color: #ffffff !important;
+}
+
+body.dark-mode [data-tooltip="Social"] .qj {
+  background-color: #ffffff !important;
+}
+
+body.dark-mode [data-tooltip="Updates"] .qj {
+  background-color: #ffffff !important;
+}
+
+body.dark-mode [data-tooltip="Forums"] .qj {
+  background-color: #ffffff !important;
+}
+
+body.dark-mode [data-tooltip="Promotions"] .qj {
+  background-color: #ffffff !important;
 }
 body.dark-mode .wT > .n3 .byl:first-child .aim:first-child .nZ {
   background-color: rgba(255,255,255,.05) !important;
@@ -2970,21 +3169,7 @@ body.dark-mode .at9 * {
   box-shadow: none !important;
 }
 
-/* Material Icons specific dark mode styling */
-body.dark-mode .material-symbols-sharp {
-  color: rgba(255, 255, 255, 0.65) !important;
-}
 
-/* Categories Fix Dark */
-body.dark-mode .byl.aJZ.a0L .qj {
-  background: transparent !important;
-  background-color: transparent !important;
-}
-/* Categories Fix Light */
-.byl.aJZ.a0L .qj {
-  background: transparent !important;
-  background-color: transparent !important;
-}
 /* Make text white in compose window */
 body.dark-mode .Hy .m,
 body.dark-mode .Hy .m * {
@@ -3072,26 +3257,7 @@ body.dark-mode .avatar[style*="background-color"] {
   background-color: inherit !important;
 }
 
-/* Remove background images for specific menu items */
-.aHS-bnu .qj,   /* Sent */
-.aHS-bnq .qj,   /* Drafts */
-.aHS-aHO .qj,   /* All Mail */
-.aHS-bnx .qj,   /* Trash */
-.aHS-bnv .qj {  /* Spam */
-  background-image: none !important;
-  opacity: 1 !important;
-}
-
-@-moz-document url-prefix() {
-  .aHS-bnu .qj,   /* Sent */
-  .aHS-bnq .qj,   /* Drafts */
-  .aHS-aHO .qj,   /* All Mail */
-  .aHS-bnx .qj,   /* Trash */
-  .aHS-bnv .qj {  /* Spam */
-    background-image: none !important;
-    opacity: 1 !important;
-  }
-}
+/* Let Gmail use its default colorful icons for system labels */
 
 /* Dark Mode Quick Settings Panel Fix */
 body.dark-mode .IU {

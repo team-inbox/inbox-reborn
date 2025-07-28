@@ -86,7 +86,7 @@ const CSS_CLASSES = {
   AVATAR_OPTION: 'show-avatar-enabled',
   STYLE_NODE_ID_PREFIX: 'hide-email-',
   PRIORITY_INBOX_OPTION: 'priority-inbox-enabled',
-  MATERIAL_ICON: 'material-symbols-sharp'
+
 };
 
 /**
@@ -102,21 +102,7 @@ const DATE_LABELS = {
 /**
  * Material icon mapping for sidebar items
  */
-const MATERIAL_ICONS = {
-  '.aHS-bnu': 'send',           // Sent
-  '.aHS-bnq': 'drafts',         // Drafts
-  '.aHS-aHO': 'stacked_email',  // All Mail 
-  '.aHS-bnx': 'delete',         // Trash
-  '.aHS-bnv': 'report',         // Spam
-  '.aHS-aHP': 'chat',           // Chats
-  '.aHS-nd': 'schedule_send',   // Scheduled
-  '.aHS-bns': 'label_important', // Important
-  '[data-tooltip="Categories"]': 'label',       // Categories
-  '[data-tooltip="Social"]': 'group',           // Social
-  '[data-tooltip="Updates"]': 'flag',           // Updates
-  '[data-tooltip="Forums"]': 'forum',           // Forums
-  '[data-tooltip="Promotions"]': 'local_offer'  // Promotions
-};
+
 
 // =============================================================================
 // ELEMENT SELECTORS
@@ -194,7 +180,7 @@ let labelStats = {};
 let hiddenEmailIds = [];
 let options = {};
 let menuNodes = {};
-let materialIconsLoaded = false;
+
 
 // =============================================================================
 // UTILITY FUNCTIONS
@@ -1610,60 +1596,7 @@ const sidePanelMutationHandler = () => {
   });
 };
 
-/**
- * Injects Material Icons font for custom icons
- * This improved version preloads the font and ensures it's ready before use
- */
-const injectMaterialIconsFont = () => {
-  // Check if already loaded
-  if (materialIconsLoaded) return;
-  
-  // Add the font-face definition directly instead of loading from Google Fonts
-  const style = document.createElement('style');
-  style.textContent = `
-    @font-face {
-      font-family: 'Material Symbols Sharp';
-      font-style: normal;
-      font-weight: 400;
-      src: url(https://fonts.gstatic.com/s/materialsymbolssharp/v263/gNNBW2J8Roq16WD5tFNRaeLQk6-SHQ_R00k4c2_whPnoY9ruReYU3rHmz74m0ZkGH-VBYe1x0TV6x4yFH8F-H5OdzEL3sVTgJtfbYxOLojCL.woff2) format('woff2');
-      font-display: block;
-    }
-    
-    .${CSS_CLASSES.MATERIAL_ICON} {
-      font-family: 'Material Symbols Sharp' !important;
-      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24 !important;
-      font-size: 24px !important;
-      display: inline-block !important;
-      line-height: 1 !important;
-      -webkit-font-smoothing: antialiased !important;
-      text-rendering: optimizeLegibility !important;
-      color: rgba(0, 0, 0, 0.65) !important; /* light mode color */
-    }
-    
-    /* Dark mode override for Material Icons */
-    body.dark-mode .${CSS_CLASSES.MATERIAL_ICON} {
-      color: rgba(255, 255, 255, 0.65) !important; /* dark mode color */
-    }
-  `;
-  document.head.appendChild(style);
-  
-  // Create a font loader to detect when the font is ready
-  const fontLoader = new FontFace('Material Symbols Sharp', 
-    'url(https://fonts.gstatic.com/s/materialsymbolssharp/v263/gNNBW2J8Roq16WD5tFNRaeLQk6-SHQ_R00k4c2_whPnoY9ruReYU3rHmz74m0ZkGH-VBYe1x0TV6x4yFH8F-H5OdzEL3sVTgJtfbYxOLojCL.woff2)');
-  
-  fontLoader.load().then(() => {
-    // Add the font to the document
-    document.fonts.add(fontLoader);
-    materialIconsLoaded = true;
-    // Start the robust icon replacement system
-    initIconReplacementSystem();
-  }).catch(err => {
-    console.error('Font loading failed:', err);
-    // Try to replace icons anyway
-    materialIconsLoaded = true;
-    initIconReplacementSystem();
-  });
-};
+
 
 /**
  * Sets a custom favicon
@@ -1905,14 +1838,7 @@ const init = () => {
   setFavicon();
   setupMenuNodes();
   reorderMenuItems();
-  injectMaterialIconsFont();
-  
-  // Ensure icon system starts even if sidebar isn't ready yet
-  setTimeout(() => {
-    if (materialIconsLoaded && !window.iconSystemStarted) {
-      initIconReplacementSystem();
-    }
-  }, 1000);
+
 };
 
 // Initialize if document.head is available, otherwise wait for DOMContentLoaded
@@ -1947,12 +1873,6 @@ document.addEventListener('DOMContentLoaded', function() {
   // Set up side panel handler
   waitForElement('div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I[aria-label^="Get "]', sidePanelHandler);
   
-  // Ensure icon system starts after a delay to catch late-loading elements
-  setTimeout(() => {
-    if (materialIconsLoaded && !window.iconSystemStarted) {
-      initIconReplacementSystem();
-    }
-  }, 2000);
+
 });
 
-// The icon replacement system is now handled by initIconReplacementSystem()
