@@ -30,7 +30,7 @@
   --color-shadow: rgba(0, 0, 0, 0.24);
   
   /* Dark mode colors (will be applied with .dark-mode class) */
-  --dark-color-background: #292929;
+  --dark-color-background: #141414;
   --dark-color-surface: #252526;
   --dark-color-text-primary: #ffffff;
   --dark-color-text-secondary: #c7c7c7;
@@ -971,10 +971,6 @@ td.apU.xY .T-KT.xf::before {
   [data-tooltip="Promotions"] .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
     background-color: #4C4F4D !important;
@@ -1038,11 +1034,40 @@ td.apU.xY .T-KT.xf::before {
   background-color: transparent !important;
 }
 
-/* left menu border under trash */
+/* left menu border under trash - matches Gmail default styling */
 .TN.bzz.aHS-bnx {
   padding-bottom: 5px;
   padding-top: 5px;
-  border-bottom: 1px solid #DDDDDD;
+  border-bottom: 1px solid #e0e0e0;
+  border-bottom-width: 1px !important;
+  border-bottom-style: solid !important;
+  border-bottom-color: #e0e0e0 !important;
+  position: relative;
+}
+
+/* Force full width border for trash line */
+.TN.bzz.aHS-bnx::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -16px;
+  right: -16px;
+  height: 1px;
+  background-color: #e0e0e0;
+  z-index: 1;
+}
+
+/* Dark mode: border under trash */
+body.dark-mode .TN.bzz.aHS-bnx {
+  border-bottom: 1px solid #5f6368 !important;
+  border-bottom-width: 1px !important;
+  border-bottom-style: solid !important;
+  border-bottom-color: #5f6368 !important;
+}
+
+/* Force full width border for trash line in dark mode */
+body.dark-mode .TN.bzz.aHS-bnx::after {
+  background-color: #5f6368 !important;
 }
 
 /* Mail / Chat / Spaces Side Panels */
@@ -2249,13 +2274,13 @@ span.XU {
   transition: background 0.2s;
 }
 .aeF::-webkit-scrollbar-thumb {
-  background: rgba(160, 160, 160, 0.15);
+  background: rgba(80, 80, 80, 0.5);
   border-radius: 8px;
   transition: background 0.2s;
 }
 .aeF:hover::-webkit-scrollbar-thumb,
 .aeF:active::-webkit-scrollbar-thumb {
-  background: rgba(160, 160, 160, 0.33);
+  background: rgba(80, 80, 80, 0.7);
 }
 .aeF:not(:hover)::-webkit-scrollbar-thumb {
   background: transparent;
@@ -2264,7 +2289,7 @@ span.XU {
 /* For Firefox */
 .aeF {
   scrollbar-width: thin;
-  scrollbar-color: rgba(160,160,160,0.33) transparent;
+  scrollbar-color: rgba(80,80,80,0.5) transparent;
   transition: scrollbar-color 0.2s;
 }
 .aeF:not(:hover) {
@@ -2276,7 +2301,7 @@ span.XU {
    ============================================================================= */
 
 body.dark-mode {
-  background-color: #2d2d30 !important;
+  background-color: #141414 !important;
   color: #ffffff !important;
 }
 body.dark-mode .zA,
@@ -2284,8 +2309,8 @@ body.dark-mode .Cp,
 body.dark-mode .Bs.nH.iY.bAt {
   background-color: #252526 !important;
 }
-body.dark-mode input,
-body.dark-mode textarea {
+body.dark-mode input:not([name="to"]):not([name="cc"]):not([name="bcc"]):not([name="subjectbox"]):not([aria-label="To recipients"]):not([aria-label="Subject"]):not(.ZH):not([class*="ZH"]):not(.nr):not([class*="nr"]),
+body.dark-mode textarea:not([aria-label="Message Body"]) {
   background-color: #3b3b3b !important;
   color: #ffffff !important;
 }
@@ -2293,206 +2318,9 @@ body.dark-mode a {
   color: #4cc2ff !important;
 }
 
-/* COMPOSE WINDOW DARK MODE - Comprehensive styling */
-body.dark-mode .nH.Hd[role="dialog"] {
-  background-color: #5f5f5f !important;
-  color: #ffffff !important;
-}
 
-/* Compose window header (New Message area) - Complete fill */
-body.dark-mode .nH.Hd[role="dialog"] .Hp,
-body.dark-mode .nH.Hd[role="dialog"] .Hp *,
-body.dark-mode .nH.Hd[role="dialog"] .a3E,
-body.dark-mode .nH.Hd[role="dialog"] .a3E *,
-body.dark-mode .nH.Hd[role="dialog"] .aYF,
-body.dark-mode .nH.Hd[role="dialog"] .aYF *,
-body.dark-mode .nH.Hd[role="dialog"] .cf.Ht,
-body.dark-mode .nH.Hd[role="dialog"] .cf.Ht *,
-body.dark-mode .nH.Hd[role="dialog"] .nH.Njo3Cf,
-body.dark-mode .nH.Hd[role="dialog"] .aCk,
-body.dark-mode .nH.Hd[role="dialog"] .k,
-body.dark-mode .nH.Hd[role="dialog"] .l.n,
-body.dark-mode .nH.Hd[role="dialog"] .l.m,
-body.dark-mode .nH.Hd[role="dialog"] .nH,
-body.dark-mode .nH.Hd[role="dialog"] .AD {
-  background-color: #4b4b4b !important;
-  color: #ffffff !important;
-}
 
-/* Remove border under New Message */
-body.dark-mode .nH.Hd[role="dialog"] .Hp {
-  border-bottom: none !important;
-}
 
-/* Compose subject input - Better visibility */
-body.dark-mode .aoT {
-  color: #ffffff !important;
-  background-color: #3b3b3b !important;
-  border: 1px solid #555 !important;
-  padding: 8px !important;
-}
-
-body.dark-mode .aoT::placeholder {
-  color: #c7c7c7 !important;
-}
-
-/* Subject field container */
-body.dark-mode .nH.Hd[role="dialog"] [name="subjectbox"],
-body.dark-mode .nH.Hd[role="dialog"] .aoT {
-  background-color: #3b3b3b !important;
-  color: #ffffff !important;
-  border: 1px solid #555 !important;
-}
-
-/* Make sure subject label is visible */
-body.dark-mode .nH.Hd[role="dialog"] .aD7 {
-  color: #ffffff !important;
-}
-
-/* Compose message body */
-body.dark-mode div[aria-label="Message Body"],
-body.dark-mode div[aria-label="Message Body"] * {
-  color: #ffffff !important;
-}
-
-/* To/CC/BCC input fields */
-body.dark-mode input[name="to"],
-body.dark-mode input[name="cc"],
-body.dark-mode input[name="bcc"],
-body.dark-mode input[name="subjectbox"] {
-  color: #ffffff !important;
-  background-color: #3b3b3b !important;
-  border: 1px solid #555 !important;
-}
-
-/* All compose input fields */
-body.dark-mode .nH.Hd[role="dialog"] input {
-  color: #ffffff !important;
-  background-color: #3b3b3b !important;
-  border: 1px solid #555 !important;
-}
-
-/* Input placeholders */
-body.dark-mode .nH.Hd[role="dialog"] input::placeholder {
-  color: #c7c7c7 !important;
-}
-
-/* Send button styling */
-body.dark-mode .T-I.J-J5-Ji.aoO.v7,
-body.dark-mode .T-I.J-J5-Ji.aoO.v7:hover,
-body.dark-mode .T-I.J-J5-Ji.aoO.v7:focus,
-body.dark-mode .T-I.J-J5-Ji.aoO.v7:active {
-  background-color: #4F7BEC !important;
-  border-color: #4F7BEC !important;
-  color: #ffffff !important;
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* Remove any border/outline around send button container */
-body.dark-mode .T-I.J-J5-Ji.aoO.v7 {
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* Send button dropdown arrow */
-body.dark-mode .T-I.J-J5-Ji.hG.T-I-atl.L3,
-body.dark-mode .T-I.J-J5-Ji.hG.T-I-atl.L3:hover,
-body.dark-mode .T-I.J-J5-Ji.hG.T-I-atl.L3:focus,
-body.dark-mode .T-I.J-J5-Ji.hG.T-I-atl.L3:active {
-  background-color: #4F7BEC !important;
-  border-color: #4F7BEC !important;
-  color: #ffffff !important;
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* Remove any border/outline around send button dropdown */
-body.dark-mode .T-I.J-J5-Ji.hG.T-I-atl.L3 {
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* Send dropdown arrow styling */
-body.dark-mode .T-I.J-J5-Ji.hG.T-I-atl.L3 .G-asx {
-  background-color: #4F7BEC !important;
-  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="4" viewBox="0 0 8 4"><path d="M0 0h8L4 4z" fill="%23ffffff"/></svg>') !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-  background-size: 8px 4px !important;
-  border-left: none !important;
-  border: none !important;
-  outline: none !important;
-}
-
-/* Remove borders from send button containers and parent elements */
-body.dark-mode .nH.Hd[role="dialog"] .T-I.J-J5-Ji.aoO.v7,
-body.dark-mode .nH.Hd[role="dialog"] .T-I.J-J5-Ji.hG.T-I-atl.L3,
-body.dark-mode .nH.Hd[role="dialog"] .T-I.J-J5-Ji.aoO.v7 *,
-body.dark-mode .nH.Hd[role="dialog"] .T-I.J-J5-Ji.hG.T-I-atl.L3 * {
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* Ensure send button has no focus outline */
-body.dark-mode .T-I.J-J5-Ji.aoO.v7:focus,
-body.dark-mode .T-I.J-J5-Ji.hG.T-I-atl.L3:focus {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* Compose formatting toolbar */
-body.dark-mode .nH.Hd[role="dialog"] .J-Z-I,
-body.dark-mode .nH.Hd[role="dialog"] .J-Z,
-body.dark-mode .nH.Hd[role="dialog"] .J-Z * {
-  background-color: #5f5f5f !important;
-  border-color: #666 !important;
-}
-
-/* Formatting toolbar buttons */
-body.dark-mode .nH.Hd[role="dialog"] .J-J5-Ji,
-body.dark-mode .nH.Hd[role="dialog"] [role="button"] {
-  background-color: #5f5f5f !important;
-  border-color: #666 !important;
-  color: #ffffff !important;
-}
-
-/* Dropdown menus in compose */
-body.dark-mode .nH.Hd[role="dialog"] .J-M {
-  background-color: #5f5f5f !important;
-  border: 1px solid #666 !important;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
-}
-
-/* Menu items */
-body.dark-mode .nH.Hd[role="dialog"] .J-M .J-N,
-body.dark-mode .nH.Hd[role="dialog"] .J-M .J-N-JT {
-  background-color: #5f5f5f !important;
-  color: #ffffff !important;
-}
-
-/* Menu hover states */
-body.dark-mode .nH.Hd[role="dialog"] .J-M .J-N:hover,
-body.dark-mode .nH.Hd[role="dialog"] .J-M .J-N-JT:hover {
-  background-color: #666 !important;
-}
-
-/* Bottom toolbar in compose */
-body.dark-mode .nH.Hd[role="dialog"] .gU.Up,
-body.dark-mode .nH.Hd[role="dialog"] .dC,
-body.dark-mode .nH.Hd[role="dialog"] .btA {
-  background-color: #747474 !important;
-}
-
-/* Toolbar icons white */
-body.dark-mode .nH.Hd[role="dialog"] .a3I {
-  filter: invert(1) !important;
-}
 body.dark-mode hr {
   border-color: #3b3b3b !important;
 }
@@ -2500,8 +2328,6 @@ body.dark-mode hr {
 /* MAIN INTERFACE DARK MODE */
 
 /* Email list and sidebar backgrounds */
-body.dark-mode .WR.aeN,
-body.dark-mode .ar4,
 body.dark-mode .nH.aqk.aql.bkL,
 body.dark-mode .aBO,
 body.dark-mode .aB6,
@@ -2511,21 +2337,51 @@ body.dark-mode .vIO7af,
 body.dark-mode .no,
 body.dark-mode .AO,
 body.dark-mode .Tm.aeJ,
-body.dark-mode .nH.oy8Mbf.nn.aeN,
 body.dark-mode .brC-aT5-aOt-Jw,
 body.dark-mode .aj5 .J-KU,
 body.dark-mode .aj5.J-KU-Jg,
-body.dark-mode .aeH,
 body.dark-mode .aKh,
 body.dark-mode .aRs {
-  background: #292929 !important;
+  background: #2a2a2a !important;
 }
+
+/* Main menu - use the correct dark background */
+body.dark-mode .ar4,
+body.dark-mode .aeN,
+body.dark-mode .WR,
+body.dark-mode .baA,
+body.dark-mode .oy8Mbf,
+body.dark-mode .ajl,
+body.dark-mode .aib,
+body.dark-mode .aZ6,
+body.dark-mode .wT,
+body.dark-mode .n3,
+body.dark-mode .byl,
+body.dark-mode .TK,
+body.dark-mode .aim,
+body.dark-mode .TO {
+  background: #141414 !important;
+}
+
+/* Exclude compose window from dark mode backgrounds - let Google handle it */
+body.dark-mode .nH.Hd[role="dialog"] {
+  background: initial !important;
+  background-color: initial !important;
+}
+
+/* Exclude search window from dark mode - let Google handle it */
+body.dark-mode .ZZ {
+  background: initial !important;
+  background-color: initial !important;
+}
+
+/* Removed duplicate rule - consolidated with more specific rules below */
 
 /* Email row styling */
 body.dark-mode .zA,
 body.dark-mode .zA:hover,
 body.dark-mode .Bs.nH.iY.bAt {
-  background: #292929 !important;
+  background: #2a2a2a !important;
   color: #ffffff !important;
 }
 
@@ -2596,22 +2452,228 @@ body.dark-mode .time {
   color: #c7c7c7 !important;
 }
 
-/* Header areas */
+/* ========================================
+   MAIN INBOX - DARK MODE TOOLBAR FIXES
+   ======================================== */
+
+/* Main toolbar container - force dark background and borders */
 body.dark-mode .D.E.G-atb {
-  background: #292929 !important;
+  background: #141414 !important;
+  border-bottom-color: #141414 !important;
+  border-left-color: #141414 !important;
+  border-right-color: #141414 !important;
+  border-top-color: #141414 !important;
+  border-color: #141414 !important;
+}
+
+/* Override any inline border styles on main toolbar */
+body.dark-mode .D.E.G-atb[style*="border"] {
+  border-bottom-color: #141414 !important;
+  border-left-color: #141414 !important;
+  border-right-color: #141414 !important;
+  border-top-color: #141414 !important;
+  border-color: #141414 !important;
+}
+
+/* Force all toolbar elements to have dark borders */
+body.dark-mode .D.E.G-atb *,
+body.dark-mode .Cr.aqJ *,
+body.dark-mode .nH.aqK * {
+  border-color: #141414 !important;
+  border-bottom-color: #141414 !important;
+  border-left-color: #141414 !important;
+  border-right-color: #141414 !important;
+  border-top-color: #141414 !important;
+}
+
+/* Override any inline styles on toolbar elements */
+body.dark-mode .D.E.G-atb *[style*="border"],
+body.dark-mode .Cr.aqJ *[style*="border"],
+body.dark-mode .nH.aqK *[style*="border"] {
+  border-color: #141414 !important;
+  border-bottom-color: #141414 !important;
+  border-left-color: #141414 !important;
+  border-right-color: #141414 !important;
+  border-top-color: #141414 !important;
+}
+
+/* Nuclear option: Force all #444 colors to #141414 in toolbar area */
+body.dark-mode .D.E.G-atb,
+body.dark-mode .D.E.G-atb *,
+body.dark-mode .Cr.aqJ,
+body.dark-mode .Cr.aqJ *,
+body.dark-mode .nH.aqK,
+body.dark-mode .nH.aqK * {
+  border-color: #141414 !important;
+  border-bottom-color: #141414 !important;
+  border-left-color: #141414 !important;
+  border-right-color: #141414 !important;
+  border-top-color: #141414 !important;
+  background-color: #141414 !important;
+}
+
+/* Additional toolbar elements that needed border fixes */
+body.dark-mode .Q3 {
+  background-color: #252526 !important;
+  border-bottom: 1px solid #141414 !important;
+}
+
+/* Removed conflicting rule - search window should use Google's default styling */
+
+body.dark .Hp {
+  background-color: #141414 !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid #141414 !important;
+}
+
+/* Fix email viewer borders that were causing toolbar issues */
+body.dark-mode .AO * {
+  background-color: transparent !important;
+  color: #e0e0e0 !important;
+  border-color: #141414 !important;
 }
 
 body.dark-mode .nH .AO .aeF {
-  background: #292929 !important;
+  background: #141414 !important;
 }
 
 body.dark-mode .nH .AO {
-  background: #292929 !important;
+  background: #141414 !important;
+}
+
+/* Toolbar specific elements */
+body.dark-mode .nH.aqK {
+  background: #141414 !important;
+}
+
+body.dark-mode .Cq.aqL {
+  background: #141414 !important;
+}
+
+body.dark-mode .Cr.aqJ {
+  background: #141414 !important;
+  background-color: #141414 !important;
+}
+
+/* Force override for Cr aqJ with maximum specificity */
+body.dark-mode .D.E.G-atb .Cr.aqJ,
+body.dark-mode .nH.aqK .Cr.aqJ,
+body.dark-mode .Cq.aqL + .Cr.aqJ {
+  background: #141414 !important;
+  background-color: #141414 !important;
+  background-image: none !important;
+}
+
+/* Override any inline styles on Cr aqJ */
+body.dark-mode .Cr.aqJ[style*="background"] {
+  background: #141414 !important;
+  background-color: #141414 !important;
+}
+
+/* Target the specific pagination area within Cr aqJ */
+body.dark-mode .Cr.aqJ .ar5 {
+  background: #141414 !important;
+  background-color: #141414 !important;
+}
+
+body.dark-mode .Cr.aqJ .Di {
+  background: #141414 !important;
+  background-color: #141414 !important;
+}
+
+body.dark-mode .Cr.aqJ .amH {
+  background: #141414 !important;
+  background-color: #141414 !important;
+}
+
+/* Try targeting the parent container that might be overriding */
+body.dark-mode .nH.aqK > .Cr.aqJ {
+  background: #141414 !important;
+  background-color: #141414 !important;
+}
+
+/* Target any potential wrapper elements */
+body.dark-mode .D.E.G-atb .nH.aqK .Cr.aqJ {
+  background: #141414 !important;
+  background-color: #141414 !important;
+}
+
+/* Use attribute selector to override any inline styles */
+body.dark-mode .Cr.aqJ[style*="background"] {
+  background: #141414 !important;
+  background-color: #141414 !important;
+}
+
+/* Override the border colors that are making it look lighter */
+body.dark-mode .Cr.aqJ {
+  border-bottom-color: #141414 !important;
+  border-left-color: #141414 !important;
+  border-right-color: #141414 !important;
+  border-top-color: #141414 !important;
+  border-color: #141414 !important;
+}
+
+/* Also target any inline border styles */
+body.dark-mode .Cr.aqJ[style*="border"] {
+  border-bottom-color: #141414 !important;
+  border-left-color: #141414 !important;
+  border-right-color: #141414 !important;
+  border-top-color: #141414 !important;
+  border-color: #141414 !important;
+}
+
+body.dark-mode .bzn {
+  background: #141414 !important;
+}
+
+body.dark-mode .G-tF {
+  background: #141414 !important;
+}
+
+body.dark-mode .G-Ni {
+  background: #141414 !important;
+}
+
+/* Pagination controls */
+body.dark-mode .ar5 {
+  background: #141414 !important;
+  background-color: #141414 !important;
+}
+
+body.dark-mode .Di {
+  background: #141414 !important;
+  background-color: #141414 !important;
+}
+
+body.dark-mode .amH {
+  background: #141414 !important;
+  background-color: #141414 !important;
+}
+
+body.dark-mode .amD {
+  background: #141414 !important;
+  background-color: #141414 !important;
+}
+
+body.dark-mode .amG {
+  background: #141414 !important;
+  background-color: #141414 !important;
+}
+
+/* Additional pagination elements */
+body.dark-mode .Dj {
+  background: #141414 !important;
+  background-color: #141414 !important;
+}
+
+body.dark-mode .ts {
+  background: #141414 !important;
+  background-color: #141414 !important;
 }
 
 /* Search bar */
 body.dark-mode header form {
-  background: rgba(41,41,41,0.5) !important;
+  background: #141414 !important;
 }
 
 body.dark-mode header form input {
@@ -2637,7 +2699,7 @@ body.dark-mode .avatar[style*="background-color"] {
 
 /* QUICK SETTINGS PANEL */
 body.dark-mode .IU {
-  background-color: #2d2d30 !important;
+  background-color: #141414 !important;
 }
 
 body.dark-mode .IU .VO,
@@ -2651,11 +2713,6 @@ body.dark-mode .IU .ST {
   color: #e0e0e0 !important;
 }
 
-body.dark-mode .Q3 {
-  background-color: #252526 !important;
-  border-bottom: 1px solid #444 !important;
-}
-
 body.dark-mode fieldset.VM.aiL {
   background-color: #252526 !important;
 }
@@ -2665,11 +2722,7 @@ body.dark-mode .IU .Tj {
   color: #8ab4f8 !important;
 }
 
-/* SETTINGS TABS */
-body.dark-mode .nH.fY {
-  background-color: #2d2d30 !important;
-  border-bottom: 1px solid #444 !important;
-}
+
 
 body.dark-mode .nH.fY [role="presentation"] a.f0 {
   color: #a0a0a0 !important;
@@ -2689,12 +2742,6 @@ body.dark-mode .nH.fY [role="presentation"] a.f0[aria-selected="true"] {
 body.dark-mode .AO {
   background-color: #1e1e1e !important;
   color: #e0e0e0 !important;
-}
-
-body.dark-mode .AO * {
-  background-color: transparent !important;
-  color: #e0e0e0 !important;
-  border-color: #444 !important;
 }
 
 body.dark-mode .AO a {
@@ -2738,7 +2785,6 @@ body.dark-mode .ar4.z .TD > .TC {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_zero_inbox_2x_dark.png') !important;
   }
 }
-body.dark-mode .WR.aeN,
 body.dark-mode .ar4,
 body.dark-mode .nH.aqk.aql.bkL,
 body.dark-mode .aBO,
@@ -2749,19 +2795,17 @@ body.dark-mode .vIO7af,
 body.dark-mode .no,
 body.dark-mode .AO,
 body.dark-mode .Tm.aeJ,
-body.dark-mode .nH.oy8Mbf.nn.aeN,
 body.dark-mode .brC-aT5-aOt-Jw,
 body.dark-mode .aj5 .J-KU,
 body.dark-mode .aj5.J-KU-Jg,
-body.dark-mode .aeH,
 body.dark-mode .aKh,
 body.dark-mode .aRs {
-  background: #292929 !important;
+  background: #2a2a2a !important;
 }
 body.dark-mode .zA,
 body.dark-mode .zA:hover,
 body.dark-mode .Bs.nH.iY.bAt {
-  background: #292929 !important;
+  background: #2a2a2a !important;
   color: #ffffff !important;
 }
 body.dark-mode .zA * {
@@ -2808,7 +2852,7 @@ body.dark-mode .wT > .n3 .byl:first-child .aim:first-child .nZ {
   background-color: rgba(255,255,255,.05) !important;
 }
 body.dark-mode .wT {
-  background-color: #292929 !important;
+  background-color: #2a2a2a !important;
 }
 body.dark-mode .bundle-wrapper:not(.contains-unread) .bundle-image img {
   opacity: 0.8;
@@ -2829,7 +2873,12 @@ body.dark-mode [data-tooltip="Categories"] .aEc.aHS-bnr .qj {
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
   mask-size: 24px !important;
-  background-color: #ffffff !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-color: #9f9f9f !important;
+  background-image: none !important;
 }
 
 /* Firefox-specific dark mode override for Categories */
@@ -2839,7 +2888,11 @@ body.dark-mode [data-tooltip="Categories"] .aEc.aHS-bnr .qj {
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
-    background-color: #ffffff !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    background-color: #9f9f9f !important;
     background-image: none !important;
   }
 }
@@ -2853,13 +2906,13 @@ body.dark-mode .G4, body.dark-mode .GR, body.dark-mode div[aria-label="Inbox tip
   box-shadow: 0 -1px 0 #3b3b3b, 0 0 2px rgba(0,0,0,.32), 0 2px 4px rgba(0,0,0,.44) !important;
 }
 body.dark-mode .D.E.G-atb {
-  background: #292929 !important;
+  background: #141414 !important;
 }
 body.dark-mode .nH .AO .aeF {
-  background: #292929 !important;
+  background: #141414 !important;
 }
 body.dark-mode .nH .AO {
-  background: #292929 !important;
+  background: #141414 !important;
 }
 body.dark-mode .nH > .ha > .J-J5-Ji,
 body.dark-mode .nH > .nH > .hj > .ade,
@@ -2870,42 +2923,42 @@ body.dark-mode .aTV {
   border-color: transparent transparent #3b3b3b #3b3b3b !important;
 }
 body.dark-mode .nH.aqK {
-  background: #292929 !important;
+  background: #2a2a2a !important;
 }
 body.dark-mode .no {
-  background-color: #292929 !important;
+  background-color: #141414 !important;
 }
 body.dark-mode .aB6,
 body.dark-mode .bn .bl {
-  background-color: #292929 !important;
+  background-color: #2a2a2a !important;
 }
 body.dark-mode .aBO {
-  background-color: #292929 !important;
+  background-color: #2a2a2a !important;
 }
 body.dark-mode .bzJiD,
 body.dark-mode .vIO7af {
-  background: #292929 !important;
+  background: #2a2a2a !important;
 }
 body.dark-mode .ar4.z .TD > .TC {
-  background-color: #292929 !important;
+  background-color: #2a2a2a !important;
 }
 body.dark-mode .nH.bkK.nn + .nH.nn {
   background-color: #3b3b3b !important;
 }
 body.dark-mode [aria-label="Hangouts"][role="complementary"] {
-  background-color: #292929 !important;
+  background-color: #2a2a2a !important;
 }
 body.dark-mode .nH.aqk.aql.bkL {
-  background: #292929 !important;
+  background: #2a2a2a !important;
 }
 body.dark-mode .nH .AO .aeF {
-  background: #292929 !important;
+  background: #2a2a2a !important;
 }
 body.dark-mode .nH.bAw.nn {
-  background-color: #292929 !important;
+  background-color: #2a2a2a !important;
 }
 body.dark-mode .zA.yO {
-  background: #292929 !important;
+  background: #2a2a2a !important;
 }
 body.dark-mode .zA .apU.xY .T-KT::before,
 body.dark-mode .zA .apU.xY .T-KT.xl::before,
@@ -2947,7 +3000,7 @@ body.dark-mode header svg {
   color: #ffffff !important;
 }
 body.dark-mode header form {
-  background: rgba(41,41,41,0.5) !important;
+  background: #141414 !important;
 }
 body.dark-mode header form input {
   color: #ffffff !important;
@@ -2965,51 +3018,274 @@ body.dark-mode .aEe {
   background-color: #505050 !important;
 }
 
-/* Dark mode overrides for specific icons - keep mask-image but use white background */
+/* Dark mode overrides for specific icons - use #9f9f9f with proper mask-image to prevent Google icons showing through */
 body.dark-mode .aHS-bnu .qj {
-  background-color: #ffffff !important;
+  background-color: #9f9f9f !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-image: none !important;
 }
 
 body.dark-mode .aHS-bnq .qj {
-  background-color: #ffffff !important;
+  background-color: #9f9f9f !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-image: none !important;
 }
 
 body.dark-mode .aHS-aHO .qj {
-  background-color: #ffffff !important;
+  background-color: #9f9f9f !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-image: none !important;
 }
 
 body.dark-mode .aHS-bnx .qj {
-  background-color: #ffffff !important;
+  background-color: #9f9f9f !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-image: none !important;
 }
 
 body.dark-mode .aHS-bnv .qj {
-  background-color: #ffffff !important;
+  background-color: #9f9f9f !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-image: none !important;
 }
 
 body.dark-mode [data-tooltip="Categories"] .qj {
-  background-color: #ffffff !important;
+  background-color: #9f9f9f !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-image: none !important;
 }
 
 body.dark-mode [data-tooltip="Social"] .qj {
-  background-color: #ffffff !important;
+  background-color: #9f9f9f !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-image: none !important;
 }
 
 body.dark-mode [data-tooltip="Updates"] .qj {
-  background-color: #ffffff !important;
+  background-color: #9f9f9f !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-image: none !important;
 }
 
 body.dark-mode [data-tooltip="Forums"] .qj {
-  background-color: #ffffff !important;
+  background-color: #9f9f9f !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-image: none !important;
 }
 
 body.dark-mode [data-tooltip="Promotions"] .qj {
-  background-color: #ffffff !important;
+  background-color: #9f9f9f !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-image: none !important;
+}
+
+/* Firefox-specific dark mode overrides for all icons */
+@-moz-document url-prefix() {
+  body.dark-mode .aHS-bnu .qj {
+    background-color: #9f9f9f !important;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    background-image: none !important;
+  }
+
+  body.dark-mode .aHS-bnq .qj {
+    background-color: #9f9f9f !important;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    background-image: none !important;
+  }
+
+  body.dark-mode .aHS-aHO .qj {
+    background-color: #9f9f9f !important;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    background-image: none !important;
+  }
+
+  body.dark-mode .aHS-bnx .qj {
+    background-color: #9f9f9f !important;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    background-image: none !important;
+  }
+
+  body.dark-mode .aHS-bnv .qj {
+    background-color: #9f9f9f !important;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    background-image: none !important;
+  }
+
+  body.dark-mode [data-tooltip="Categories"] .qj {
+    background-color: #9f9f9f !important;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    background-image: none !important;
+  }
+
+  body.dark-mode [data-tooltip="Social"] .qj {
+    background-color: #9f9f9f !important;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    background-image: none !important;
+  }
+
+  body.dark-mode [data-tooltip="Updates"] .qj {
+    background-color: #9f9f9f !important;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    background-image: none !important;
+  }
+
+  body.dark-mode [data-tooltip="Forums"] .qj {
+    background-color: #9f9f9f !important;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    background-image: none !important;
+  }
+
+  body.dark-mode [data-tooltip="Promotions"] .qj {
+    background-color: #9f9f9f !important;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    background-image: none !important;
+  }
 }
 body.dark-mode .wT > .n3 .byl:first-child .aim:first-child .nZ {
   background-color: rgba(255,255,255,.05) !important;
 }
 body.dark-mode .aKk>tbody, .body.dark-mode .aAA, .body.dark-mode .aRz.J-KU {
-  background: #292929 !important;
+  background: #2a2a2a !important;
 }
 
 /* Dark mode: highlight active sidebar menu item */
@@ -3123,112 +3399,7 @@ body.dark-mode .ar4.z .TD > .TC {
   }
 }
 
-/* Dark mode: force opaque backgrounds on all dialog windows (compose, attachments, etc) */
-body.dark-mode div[role="dialog"],
-body.dark-mode div[role="dialog"] * {
-  background-color: #252526 !important;
-  color: #444746 !important;
-  border-color: #444746 !important;
-}
-body.dark .Hp {
-  background-color: #2a2a2a !important;
-  color: #ffffff !important;
-  border-bottom: 1px solid #444 !important;
-}
 
-body.dark .a3E span {
-  color: #ffffff !important;
-}
-
-/* Force background of email viewer in dark mode */
-body.dark-mode .AO {
-  background-color: #1e1e1e !important;
-  color: #e0e0e0 !important;
-}
-
-/* Target content inside .AO and force it to inherit dark theme */
-body.dark-mode .AO * {
-  background-color: transparent !important;
-  color: #e0e0e0 !important;
-  border-color: #444 !important;
-}
-
-/* Target divs with inline white background override */
-body.dark-mode .AO div[style*="background-color: white"],
-body.dark-mode .AO div[style*="background:#fff"],
-body.dark-mode .AO table[style*="background-color: white"],
-body.dark-mode .AO table[style*="background:#fff"] {
-  background-color: #1e1e1e !important;
-}
-
-/* Optional: style links in dark mode */
-body.dark-mode .AO a {
-  color: #8ab4f8 !important;
-}
-body.dark-mode .avatar {
-  color: #ffffff !important;
-  background-color: inherit !important;
-}
-body.dark-mode .avatar[style*="background-color"] {
-  opacity: 1 !important;
-}
-/* Fix Labels from being cut off */
-body.dark-mode .at9,
-body.dark-mode .at9 * {
-  background-color: transparent !important;
-  border-color: transparent !important;
-  box-shadow: none !important;
-}
-
-
-/* Make text white in compose window */
-body.dark-mode .Hy .m,
-body.dark-mode .Hy .m * {
-  color: white !important;
-}
-
-/* Make compose area text white */
-body.dark-mode div[aria-label="Message Body"],
-body.dark-mode div[aria-label="Message Body"] * {
-  color: white !important;
-}
-
-/* Make compose toolbar icons white */
-body.dark-mode .a3I,
-body.dark-mode .a3I * {
-  color: white !important;
-  fill: white !important;
-}
-
-/* Make formatting toolbar icons white */
-body.dark-mode .e5 .J-Z-I,
-body.dark-mode .e5 .J-Z-I *,
-body.dark-mode .a8X,
-body.dark-mode .a8X * {
-  color: white !important;
-  fill: white !important;
-}
-
-/* Make dropdown text white */
-body.dark-mode .a8k,
-body.dark-mode .a8k * {
-  color: white !important;
-}
-
-/* Make "Send" button more visible */
-body.dark-mode .T-I.J-J5-Ji.aoO.v7.T-I-atl.L3 {
-  background-color: #4285f4 !important;
-  color: white !important;
-}
-
-/* Make input fields white text on dark background */
-body.dark-mode input[name="to"],
-body.dark-mode input[name="cc"],
-body.dark-mode input[name="bcc"],
-body.dark-mode input[name="subjectbox"] {
-  color: white !important;
-  background-color: #252526 !important;
-}
 
 /* Make recipient chips more visible */
 body.dark-mode .vR,
@@ -3272,7 +3443,7 @@ body.dark-mode .avatar[style*="background-color"] {
 
 /* Dark Mode Quick Settings Panel Fix */
 body.dark-mode .IU {
-  background-color: #2d2d30 !important;
+  background-color: #141414 !important;
 }
 
 /* Headers like "Quick settings", "Density", "Apps in Gmail" */
@@ -3290,10 +3461,6 @@ body.dark-mode .IU .ST   /* Checkbox labels */
 }
 
 /* The container for each section */
-body.dark-mode .Q3 {
-    background-color: #252526 !important;
-    border-bottom: 1px solid #444 !important;
-}
 body.dark-mode fieldset.VM.aiL {
     background-color: #252526 !important;
 }
@@ -3453,11 +3620,6 @@ body.dark-mode .Q1:checked + .Vo::after {
 }
 
 /* Dark Mode Settings Tabs Styling */
-body.dark-mode .nH.fY {
-    background-color: #2d2d30 !important;
-    border-bottom: 1px solid #444 !important;
-}
-
 body.dark-mode .nH.fY [role="presentation"] a.f0 {
     color: #a0a0a0 !important;  /* Lighter gray for better readability */
     opacity: 1 !important;  /* Remove opacity reduction */
@@ -3490,7 +3652,7 @@ body.dark-mode .uW2Fw-bHo .cER4xe {
 
 /* Theme preview containers */
 body.dark-mode .uW2Fw-bHo .a7H {
-    background-color: #2d2d30 !important;
+    background-color: #141414 !important;
     border: 1px solid #444 !important;
 }
 
@@ -3511,7 +3673,7 @@ body.dark-mode .uW2Fw-bHo .mUIrbf-I {
 }
 
 body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover {
-    background-color: #4a4a4a !important;
+    background-color: #9f9f9f !important;
 }
 
 body.dark-mode .uW2Fw-bHo .eV8l8d {
@@ -3522,7 +3684,7 @@ body.dark-mode .uW2Fw-bHo .eV8l8d {
 /* More Images and My Photos buttons */
 body.dark-mode .uW2Fw-bHo .fQ1uhf,
 body.dark-mode .uW2Fw-bHo .PKBsLc button {
-    background-color: #2d2d30 !important;
+    background-color: #141414 !important;
     color: #e0e0e0 !important;
     border: 1px solid #444 !important;
 }
@@ -3545,7 +3707,7 @@ body.dark-mode .uW2Fw-bHo .cER4xe {
 
 /* Custom theme preview containers */
 body.dark-mode .uW2Fw-bHo .a7H {
-    background-color: #2d2d30 !important;
+    background-color: #141414 !important;
     border: 1px solid #444 !important;
     transition: transform 0.2s ease;
 }
@@ -3584,7 +3746,7 @@ body.dark-mode .uW2Fw-bHo .mUIrbf-I {
 }
 
 body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover {
-    background-color: #4a4a4a !important;
+    background-color: #9f9f9f !important;
     color: white !important;
 }
 
@@ -3603,7 +3765,7 @@ body.dark-mode .uW2Fw-bHo .eV8l8d:hover {
 /* More Images and My Photos buttons */
 body.dark-mode .uW2Fw-bHo .fQ1uhf,
 body.dark-mode .uW2Fw-bHo .PKBsLc button {
-    background-color: #2d2d30 !important;
+    background-color: #141414 !important;
     color: #e0e0e0 !important;
     border: 1px solid #444 !important;
     transition: background-color 0.2s ease;
@@ -3718,7 +3880,7 @@ body.dark-mode .uW2Fw-bHo .a7C {
 
 /* More Images section */
 body.dark-mode .uW2Fw-bHo .fQ1uhf {
-    background-color: #2d2d30 !important;
+    background-color: #141414 !important;
     color: #ffffff !important;
     border: 1px solid #444 !important;
 }
@@ -3766,7 +3928,7 @@ body.dark-mode .uW2Fw-bHo .eV8l8d {
 }
 
 body.dark-mode .uW2Fw-bHo .fQ1uhf {
-    background-color: #2d2d30 !important;
+    background-color: #141414 !important;
     color: #ffffff !important;
     border: 1px solid #444 !important;
 }
@@ -3787,7 +3949,7 @@ body.dark-mode .uW2Fw-bHo .mUIrbf-anl {
 }
 
 body.dark-mode .zA.yO {
-  background: #292929 !important;
+  background: #2a2a2a !important;
 }
 
 /* Dark mode: highlight UNREAD email rows */
@@ -3843,35 +4005,159 @@ body.dark-mode .a3I {
   filter: invert(1) !important;
 }
 
-/* ------------------------------------------------------------------
-   Dark mode: adjust compose popup to dark-gray #313131 and white icons
------------------------------------------------------------------- */
-body.dark-mode .nH.Hd,
-body.dark-mode .nH.Hd * {
-  background-color: #696969 !important; /* dark gray surface */
-  color: #e8eaed !important;            /* light text */
-}
-/* slightly lighter header / toolbars for separation */
-body.dark-mode .nH.Hd .Hy .m,
-body.dark-mode .nH.Hd .Ur,
-body.dark-mode .nH.Hd .aDj,
-body.dark-mode .nH.Hd .aDl,
-body.dark-mode .nH.Hd .aX {
-  background-color: #3a3a3a !important;
-}
-/* make glyphs white again */
-body.dark-mode .nH.Hd .a3I {
-  filter: invert(1) !important;
+
+
+/* =============================================================================
+   FORCE DARK MODE OVERRIDES - HIGH PRIORITY
+   ============================================================================= */
+
+/* Force header background to be #141414 (but preserve interactive states) */
+body.dark-mode .D.E.G-atb {
+  background-color: #141414 !important;
+  background: #141414 !important;
 }
 
-/* Override inline white backgrounds inside compose popup */
-body.dark-mode .nH.Hd [style*="background:#fff"],
-body.dark-mode .nH.Hd [style*="background: #fff"],
-body.dark-mode .nH.Hd [style*="background-color:#fff"],
-body.dark-mode .nH.Hd [style*="background-color: #fff"],
-body.dark-mode .nH.Hd [style*="background-color: white"],
-body.dark-mode .nH.Hd [style*="background: white"],
-body.dark-mode .nH.Hd [style*="background-color: rgb(255"],
-body.dark-mode .nH.Hd [style*="background: rgb(255"] {
-  background-color: #696969 !important;
+body.dark-mode .nH .AO .aeF {
+  background-color: #141414 !important;
+  background: #141414 !important;
 }
+
+body.dark-mode .nH .AO {
+  background-color: #141414 !important;
+  background: #141414 !important;
+}
+
+/* Force right sidebar to be #141414 */
+body.dark-mode .no,
+body.dark-mode .nH.bkK.nn + .nH.nn,
+body.dark-mode [aria-label="Hangouts"][role="complementary"] {
+  background-color: #141414 !important;
+  background: #141414 !important;
+}
+
+/* Force menu background to be #141414 - COMPREHENSIVE APPROACH */
+body.dark-mode .aeN.WR.baA.nH.oy8Mbf,
+body.dark-mode .aeN,
+body.dark-mode .WR,
+body.dark-mode .baA,
+body.dark-mode .oy8Mbf,
+body.dark-mode .ajl,
+body.dark-mode .aib,
+body.dark-mode .aZ6,
+body.dark-mode .wT,
+body.dark-mode .n3,
+body.dark-mode .byl,
+body.dark-mode .TK,
+body.dark-mode .aim,
+body.dark-mode .TO,
+body.dark-mode .aic,
+body.dark-mode .z0,
+body.dark-mode .V3,
+body.dark-mode .aam,
+body.dark-mode .ada,
+body.dark-mode .at9,
+body.dark-mode .Ls77Lb,
+body.dark-mode .aZ6,
+body.dark-mode .pp,
+body.dark-mode .nM,
+body.dark-mode .yJ {
+  background-color: #141414 !important;
+  background: #141414 !important;
+}
+
+/* Force Categories icon to work properly */
+body.dark-mode [data-tooltip="Categories"] .aEc.aHS-bnr .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-color: #9f9f9f !important;
+  background-image: none !important;
+}
+
+/* Firefox-specific Categories override */
+@-moz-document url-prefix() {
+  body.dark-mode [data-tooltip="Categories"] .aEc.aHS-bnr .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-size: 24px !important;
+    mask-size: 24px !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+    background-color: #9f9f9f !important;
+    background-image: none !important;
+  }
+}
+
+/* ========================================
+   SEARCH FORM INPUT FIELDS - LIGHT BACKGROUNDS
+   ======================================== */
+
+/* Removed duplicate rule - consolidated with more specific rules below */
+
+/* Exclude search window from dark mode - let Google handle it */
+body.dark-mode .nH.fY {
+  background: initial !important;
+  background-color: initial !important;
+}
+
+/* Make all search form inputs light (Google's default) */
+body.dark-mode .nH.fY input[type="text"],
+body.dark-mode .nH.fY input[type="email"],
+body.dark-mode .nH.fY input[type="search"],
+body.dark-mode .nH.fY textarea,
+body.dark-mode .nH.fY select,
+body.dark-mode .nH.fY .ZH {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+/* Make the main search box background #3b3b3b */
+body.dark-mode .gb_jd.gb_df.bas.aJf,
+body.dark-mode .gb_se.aJh,
+body.dark-mode input[aria-label="Search mail"] {
+  background-color: #3b3b3b !important;
+  color: #ffffff !important;
+}
+
+/* Make search form inputs light (From, To, Subject, etc.) */
+body.dark-mode .ZZ .ZH,
+body.dark-mode .ZZ input[type="text"],
+body.dark-mode .ZZ input[type="email"],
+body.dark-mode .ZZ input.ZH.nr,
+body.dark-mode .ZZ input[class*="ZH"],
+body.dark-mode .ZZ input.ZH.nr.aQa,
+body.dark-mode .ZZ input.ZH.nr.aQf,
+body.dark-mode .ZZ input.ZH.nr.aQd,
+body.dark-mode .ZZ input.ZH.nr.aQb,
+body.dark-mode .ZZ input.ZH.nr.aP9 {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ccc !important;
+}
+
+/* Make search form dropdowns and additional inputs light (Size, Date within, Search scope) */
+body.dark-mode .ZZ select,
+body.dark-mode .ZZ input[type="number"],
+body.dark-mode .ZZ input[type="date"],
+body.dark-mode .ZZ input[type="datetime-local"],
+body.dark-mode .ZZ input.nr[aria-label="Size value"],
+body.dark-mode .ZZ input.nr[aria-label="Date"],
+body.dark-mode .ZZ input.nr,
+body.dark-mode .ZZ input[class*="nr"] {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ccc !important;
+}
+
+
+
+
