@@ -3,7 +3,7 @@
 
 Web extension which modifies Gmail™ to bring back the features and uncluttered design you knew and loved from Google's discontinued Inbox
 
-![inbox screenshot](https://github.com/team-inbox/inbox-reborn/blob/master/screenshots/inbox.png?raw=true)
+![inbox screenshot](https://github.com/team-inbox/inbox-reborn/blob/master/screenshots/light_dark.gif)
 
 ## Installing
 
@@ -18,7 +18,7 @@ https://addons.mozilla.org/en-GB/firefox/addon/inbox-reborn-theme-gmail/
 
 ## Features
 
-- Bundle emails by label and category
+- Dark Mode Support
 - Group emails by date (today, yesterday, this month, etc)
 - Clean interface to return to the simplicity of Inbox
 - Display emails sent to yourself with the subject "Reminder" as reminders
@@ -32,28 +32,33 @@ https://addons.mozilla.org/en-GB/firefox/addon/inbox-reborn-theme-gmail/
 
 Click the extension's icon at the top right of your browser to adjust the behavior of some features:
 
+#### Dark Mode
+This option is used to enable dark mode on and off
+
+- Toggle Dark Mode On and then goto Settings/Theme -> Dark
+- Toggle Dark Mode Off and then goto Settings/Theme -> Default 
+
 #### Reminders
 This option is used to determine how to treat emails sent to yourself.
 
-- All are treated as reminders. 
-- Only emails with a subject containing the word "reminder" are treated as reminders. 
-- Leave the emails as they are. (Disable)
+- All messages in Inbox are treated as reminders. 
+- Subject (reminder) only are treated as reminders. 
+- None (no reminders) is set to disabled.
 
 #### Email Bundling
 This option is used to bundle emails by label in the inbox.
 
-- Toggle Enable/Disable
+- Toggle On/Off
 - Bundle if only one email
 - Move Bundles to the top of your Inbox
 
 #### Avatars
 This option will show a circle with the first letter initial of the sender, to the left of the email in your folder.
-- Toggle Enable/Disable
+- Toggle  On/Off
 
 #### Hide Priority Inbox Headings
-This option provides a cleaner inbox UI if the "Priority Inbox" type is enabled via the settings
-- Toggle Enable/Disable
-
+This option provides a cleEnable/Disableaner inbox UI if the "Priority Inbox" type is enabled via the settings
+- Toggle  On/Off
 
 ## Recommended Gmail™ Settings
 
@@ -82,8 +87,6 @@ If you'd like a specific label not to be bundled, create a label called 'Unbundl
 ## Known Issues
 
 - This extension works best in English because it relies on specific date formats.
-- This currently only supports Gmail™'s default theme. You will experience white/invisible text and icons if you enable the Dark theme.
-
 
 ## Privacy
 
