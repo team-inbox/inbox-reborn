@@ -2108,6 +2108,34 @@ header form input {
   display: none;
 }
 
+/* Show checkbox when hovering over email row with avatar */
+.show-avatar-enabled .zA:hover:not(.aqw) .oZ-x3.xY .T-Jo {
+  display: inline !important;
+}
+
+/* Hide avatar when hovering to show checkbox (but not when checked) */
+.show-avatar-enabled .zA:hover:not(.aqw) .oZ-x3.xY .avatar {
+  display: none !important;
+}
+
+/* When email is checked (selected), keep checkbox visible and avatar hidden */
+.show-avatar-enabled .zA.aqw .oZ-x3.xY .T-Jo {
+  display: inline !important;
+}
+
+.show-avatar-enabled .zA.aqw .oZ-x3.xY .avatar {
+  display: none !important;
+}
+
+/* Alternative: Target by aria-checked attribute for checked emails */
+.show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked="true"] {
+  display: inline !important;
+}
+
+.show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked="true"] + .avatar {
+  display: none !important;
+}
+
 .zA .oZ-jc.T-Jo.J-J5-Ji {
   margin-left: -4px;
 }
