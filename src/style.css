@@ -1876,7 +1876,7 @@ header form input {
   mask-repeat: no-repeat !important;
   -webkit-mask-position: center !important;
   mask-position: center !important;
-  background-color: #9f9f9f !important; /* Light grey color for better visibility */
+  background-color: #5f6368 !important; /* Medium gray for consistent visibility in light mode */
   background-image: none !important;
   border: none !important;
   outline: none !important;
@@ -1893,6 +1893,8 @@ header form input {
 .ar8.T-I-J3.J-J5-Ji::after {
   display: none !important;
 }
+
+
 
 /* Snooze button (inbox email, opened email) */
 .brv, .brW {
@@ -1922,12 +1924,16 @@ header form input {
     mask-repeat: no-repeat !important;
     -webkit-mask-position: center !important;
     mask-position: center !important;
-    background-color: #9f9f9f !important; /* Light grey color for better visibility */
+    background-color: #5f6368 !important; /* Medium gray for consistent visibility in light mode */
     background-image: none !important;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
   }
+  
+
+  
+
 }
 
 /* Action buttons on email row */
@@ -3007,8 +3013,10 @@ body.dark-mode .avatar[style*="background-color"] {
 body.dark-mode .brq,
 body.dark-mode .ar8,
 body.dark-mode .ar8.T-I-J3.J-J5-Ji {
-  background-color: #9f9f9f !important; /* Light grey for better visibility in dark mode */
+  background-color: #e8eaed !important; /* Light gray for better visibility in dark mode */
 }
+
+
 
 /* QUICK SETTINGS PANEL */
 body.dark-mode .IU {
