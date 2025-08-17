@@ -509,12 +509,15 @@ td.apU.xY .T-KT.xf::before {
   display: block;
   position: absolute;
   left: 0;
-  right: 0;
   bottom: -13px; /* Adjust for spacing; matches Trash and Categories divider gap */
+  width: 200px; /* Fixed width - adjust this value to control line length */
   height: 1px;
-  background: #ddd;
-  margin-left: 0;
-  margin-right: 0;
+  background: #e0e0e0; /* Match trash divider color for consistency */
+}
+
+/* Dark mode: Done divider */
+body.dark-mode .TO.inbox-reborn-done::after {
+  background: #5f6368 !important; /* Match trash divider dark mode color */
 }
 
 /* Add vertical spacing after Done divider to match Categories gap */
@@ -1042,18 +1045,14 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
 
 
 /* Hide scrollbars globally for all browsers */
-.aeF,
 .wT,
-.nH .AO,
-.nH .AO .aeF {
+.nH .AO {
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
 }
 
-.aeF::-webkit-scrollbar,
 .wT::-webkit-scrollbar,
-.nH .AO::-webkit-scrollbar,
-.nH .AO .aeF::-webkit-scrollbar {
+.nH .AO::-webkit-scrollbar {
   display: none !important;
   width: 0 !important;
   height: 0 !important;
@@ -1304,40 +1303,28 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
   background-color: transparent !important;
 }
 
-/* left menu border under trash - matches Gmail default styling */
+/* left menu border under trash - matches Done divider styling */
 .TN.bzz.aHS-bnx {
   padding-bottom: 5px;
   padding-top: 5px;
-  border-bottom: 1px solid #e0e0e0;
-  border-bottom-width: 1px !important;
-  border-bottom-style: solid !important;
-  border-bottom-color: #e0e0e0 !important;
   position: relative;
 }
 
-/* Force full width border for trash line */
+/* Trash divider - match Done divider exactly */
 .TN.bzz.aHS-bnx::after {
   content: '';
+  display: block;
   position: absolute;
+  left: 0;
   bottom: 0;
-  left: -16px;
-  right: -16px;
+  width: 200px; /* Fixed width - same as Done divider */
   height: 1px;
-  background-color: #e0e0e0;
-  z-index: 1;
+  background: #e0e0e0; /* Match Done divider color */
 }
 
-/* Dark mode: border under trash */
-body.dark-mode .TN.bzz.aHS-bnx {
-  border-bottom: 1px solid #5f6368 !important;
-  border-bottom-width: 1px !important;
-  border-bottom-style: solid !important;
-  border-bottom-color: #5f6368 !important;
-}
-
-/* Force full width border for trash line in dark mode */
+/* Dark mode: Trash divider */
 body.dark-mode .TN.bzz.aHS-bnx::after {
-  background-color: #5f6368 !important;
+  background: #5f6368 !important; /* Match Done divider dark mode color */
 }
 
 /* Mail / Chat / Spaces Side Panels */
@@ -2092,7 +2079,7 @@ header form input {
 
 /* Email selected with keyboard shortcut (remove left padding so blue bar is still right against the left edge) */
 .zA.btb {
-  padding-left: 5px !important;
+  padding-left: 5px !important; /* Restore original - needed for blue bar positioning */
 }
 .zA.btb .PF.xY.PE {
   margin-right: 10px;
@@ -2105,7 +2092,7 @@ header form input {
 
 /* Moves the selection indicator to the left */
 .PF.xY.PE {
-  margin-left: -5px;
+  margin-left: -5px; /* Restore original positioning from light theme */
   margin-right: 5px;
 }
 
@@ -2280,7 +2267,7 @@ header form input {
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
   position: relative;
-  left: -6px;
+  left: -6px; /* Restore original positioning from light theme */
   flex: 32px 0 0;
   width: 32px;
   height: 32px;
@@ -2607,35 +2594,35 @@ span.XU {
    SCROLLBAR STYLING
    ============================================================================= */
 
-/* Auto-hide Gmail main message list scrollbar (Chrome & Edge) */
-.aeF::-webkit-scrollbar {
+/* Auto-hide Gmail main message list scrollbar (Chrome & Edge) - LIGHT MODE ONLY */
+body:not(.dark-mode) .aeF::-webkit-scrollbar {
   width: 10px;
   background: transparent;
   transition: background 0.2s;
 }
-.aeF::-webkit-scrollbar-thumb {
+body:not(.dark-mode) .aeF::-webkit-scrollbar-thumb {
   background: transparent;
   border-radius: 8px;
   transition: background 0.2s;
 }
-.aeF:hover::-webkit-scrollbar-thumb,
-.aeF:active::-webkit-scrollbar-thumb {
+body:not(.dark-mode) .aeF:hover::-webkit-scrollbar-thumb,
+body:not(.dark-mode) .aeF:active::-webkit-scrollbar-thumb {
   background: #a1a1a1;
 }
-.aeF:not(:hover)::-webkit-scrollbar-thumb {
+body:not(.dark-mode) .aeF:not(:hover)::-webkit-scrollbar-thumb {
   background: transparent;
 }
 
-/* For Firefox */
-.aeF {
+/* For Firefox - LIGHT MODE ONLY */
+body:not(.dark-mode) .aeF {
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
   transition: scrollbar-color 0.2s;
 }
-.aeF:hover {
+body:not(.dark-mode) .aeF:hover {
   scrollbar-color: #a1a1a1 transparent;
 }
-.aeF:not(:hover) {
+body:not(.dark-mode) .aeF:not(:hover) {
   scrollbar-color: transparent transparent;
 }
 
@@ -2803,8 +2790,14 @@ body.dark-mode .TO.nZ {
 /* Unread email highlight */
 body.dark-mode .zA.zE {
   background-color: #383838 !important;
-  border-left: 3px solid #4cc2ff !important;
-  padding-left: 7px !important;
+  padding-left: 10px !important; /* Match standard padding */
+}
+
+/* Selected email highlight - blue border for selection */
+body.dark-mode .zA.x7 {
+  border-left: 3px solid #8ab4f8 !important; /* Lighter, more subtle blue like Gmail stock */
+  padding-left: 7px !important; /* Compensate for the 3px border to maintain alignment */
+  margin-left: 0px !important; /* Ensure no left margin */
 }
 
 body.dark-mode .zA.zE:hover {
@@ -3163,62 +3156,141 @@ body.dark-mode .wT > .n3 .byl:first-child .aim:first-child .nZ {
 /* ========================================
    EMAIL VIEWS - DARK MODE STYLING
    ======================================== */
+
+/* Email content area - match Gmail's official dark mode behavior */
 body.dark-mode .nH.a98.iY.aHo {
-  background: #2a2a2a !important;
-  background-color: #2a2a2a !important;
+  background: #ffffff !important; /* Email content stays white like Gmail */
+  background-color: #ffffff !important;
 }
 
-/* Email content text colors - make text light for dark background */
+/* Email content text colors - match Gmail's white email content */
 body.dark-mode .nH.a98.iY.aHo * {
-  color: #e8eaed !important; /* Light grey text for dark background */
+  color: #202124 !important; /* Dark text on white background like Gmail */
 }
 
-/* Email header elements */
+/* Email header elements - dark text on white background */
 body.dark-mode .nH.a98.iY.aHo .hP {
-  color: #e8eaed !important; /* Subject line - light grey */
+  color: #202124 !important; /* Subject line - dark text */
 }
 
 body.dark-mode .nH.a98.iY.aHo .gD {
-  color: #e8eaed !important; /* Sender name - light grey */
+  color: #202124 !important; /* Sender name - dark text */
 }
 
 body.dark-mode .nH.a98.iY.aHo .aXjCH {
-  color: #9aa0a6 !important; /* Timestamp - medium grey */
+  color: #5f6368 !important; /* Timestamp - medium grey text */
 }
 
-/* Email action buttons/icons */
+/* Email action buttons/icons - dark text on white background */
 body.dark-mode .nH.a98.iY.aHo .T-I {
-  color: #9aa0a6 !important; /* Action icons like print, star, etc. */
+  color: #5f6368 !important; /* Action icons - medium grey */
+}
+
+/* Schedule send menu item - white background */
+body.dark-mode .nH.a98.iY.aHo .J-N.yr {
+  background-color: #ffffff !important;
+  color: #202124 !important; /* Dark text on white background */
 }
 
 body.dark-mode .nH.a98.iY.aHo .T-I:hover {
-  color: #e8eaed !important; /* Lighter on hover */
+  color: #202124 !important; /* Darker on hover */
 }
 
-/* Email body content */
+/* Email body content - dark text on white background */
 body.dark-mode .nH.a98.iY.aHo .a3s {
-  color: #e8eaed !important; /* Email body text - light grey */
+  color: #202124 !important; /* Email body text - dark text */
 }
 
-/* Links in email */
+/* Links in email - Gmail's standard link colors */
 body.dark-mode .nH.a98.iY.aHo a {
-  color: #8ab4f8 !important; /* Light blue for dark background */
+  color: #1a73e8 !important; /* Gmail's standard blue for light background */
 }
 
 body.dark-mode .nH.a98.iY.aHo a:hover {
-  color: #aecbfa !important; /* Lighter blue on hover */
+  color: #174ea6 !important; /* Darker blue on hover */
 }
 
-/* Reply/Forward buttons - target the actual button containers */
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7 {
+/* Reply/Forward/Send buttons - target reply/forward/send buttons */
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7[aria-label="Reply"],
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7[aria-label="Forward"],
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7[aria-label="Send"],
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7[aria-label="More send options"] {
   color: #202124 !important; /* Dark text for light button background */
   background-color: #ffffff !important;
-  border: 1px solid #dadce0 !important;
+  border: 1px solid #202124 !important; /* Black border for reply/forward/send buttons */
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-color: #202124 !important;
+  border-image: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove border from Reply button specifically */
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7.aaq[aria-label="Reply"] {
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  border-image: none !important;
+}
+
+/* Set white background for older messages button */
+body.dark-mode .nH.a98.iY.aHo .adx {
+  background-color: #ffffff !important;
+  color: #202124 !important; /* Dark text for contrast */
+}
+
+/* Remove borders from action icons (reactions, etc.) */
+body.dark-mode .nH.a98.iY.aHo .T-I:not(.J-J5-Ji) {
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  border-image: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove borders from icon images specifically */
+body.dark-mode .nH.a98.iY.aHo .T-I:not(.J-J5-Ji) img,
+body.dark-mode .nH.a98.iY.aHo .T-I:not(.J-J5-Ji) .T-I-J3 {
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  border-image: none !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7:hover {
   color: #202124 !important;
   background-color: #f8f9fa !important;
+}
+
+/* Send+ button - blue styling for reply/compose */
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*="Send and archive"],
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*="Send & archive"],
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*="send and archive"],
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*="send & archive"],
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[data-tooltip*="Send and archive"],
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[data-tooltip*="Send & archive"] {
+  color: #ffffff !important; /* White text on blue background */
+  background-color: #1a73e8 !important; /* Gmail's blue for Send+ */
+  border: 1px solid #1a73e8 !important;
+  background-image: none !important;
+}
+
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*="Send and archive"]:hover,
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*="Send & archive"]:hover,
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*="send and archive"]:hover,
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*="send & archive"]:hover,
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[data-tooltip*="Send and archive"]:hover,
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[data-tooltip*="send & archive"]:hover {
+  background-color: #1557b0 !important; /* Darker blue on hover */
+  border-color: #1557b0 !important;
+  background-image: none !important;
 }
 
 /* Email header dropdown menu - target specific class */
@@ -3258,6 +3330,53 @@ body.dark-mode .nH.a98.iY.aHo .T-I:not(.J-J5-Ji) {
   outline: none !important;
   box-shadow: none !important;
 }
+
+/* Remove borders from all action icons including reaction buttons */
+body.dark-mode .nH.a98.iY.aHo .T-I {
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Specific styling for reaction/emoji buttons */
+body.dark-mode .nH.a98.iY.aHo .T-I-Js-IF {
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+
+/* Remove borders from .og class elements */
+body.dark-mode .nH.a98.iY.aHo .og {
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove borders from table cells and specific button classes */
+body.dark-mode .nH.a98.iY.aHo .gH.acX.bAm,
+body.dark-mode .nH.a98.iY.aHo .T-I-Js-IF,
+body.dark-mode .nH.a98.iY.aHo .T-I-Js-Gs,
+body.dark-mode .nH.a98.iY.aHo .aaq,
+body.dark-mode .nH.a98.iY.aHo .aap {
+  border: none !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+
 
 body.dark-mode .nH.a98.iY.aHo .T-I:not(.J-J5-Ji):hover {
   background-color: transparent !important;
@@ -3488,6 +3607,85 @@ body.dark-mode .aeF:not(:hover)::-webkit-scrollbar-thumb {
   }
 }
 
+/* Dark mode scrollbar styling for right sidebar and other areas */
+body.dark-mode .wT::-webkit-scrollbar,
+body.dark-mode .nH .AO::-webkit-scrollbar {
+  display: block !important;
+  width: 10px !important;
+  background: transparent !important;
+}
+
+body.dark-mode .wT::-webkit-scrollbar-thumb,
+body.dark-mode .nH .AO::-webkit-scrollbar-thumb {
+  display: block !important;
+  background: transparent !important;
+  border-radius: 8px !important;
+  transition: background 0.2s !important;
+}
+
+body.dark-mode .wT:hover::-webkit-scrollbar-thumb,
+body.dark-mode .wT:active::-webkit-scrollbar-thumb,
+body.dark-mode .nH .AO:hover::-webkit-scrollbar-thumb,
+body.dark-mode .nH .AO:active::-webkit-scrollbar-thumb {
+  background: #323232 !important;
+}
+
+body.dark-mode .wT:not(:hover)::-webkit-scrollbar-thumb,
+body.dark-mode .nH .AO:not(:hover)::-webkit-scrollbar-thumb {
+  background: transparent !important;
+}
+
+/* Chrome scrollbar-color support for right sidebar and other areas */
+body.dark-mode .wT,
+body.dark-mode .nH .AO {
+  scrollbar-color: transparent transparent !important;
+  transition: scrollbar-color 0.2s !important;
+}
+
+body.dark-mode .wT:hover,
+body.dark-mode .nH .AO:hover {
+  scrollbar-color: #323232 transparent !important;
+}
+
+body.dark-mode .wT:not(:hover),
+body.dark-mode .nH .AO:not(:hover) {
+  scrollbar-color: transparent transparent !important;
+}
+
+/* Force Chrome scrollbar colors with higher specificity */
+body.dark-mode .wT::-webkit-scrollbar-thumb,
+body.dark-mode .nH .AO::-webkit-scrollbar-thumb {
+  background-color: #323232 !important;
+  background: #323232 !important;
+}
+
+/* Override any default scrollbar colors */
+body.dark-mode .wT::-webkit-scrollbar,
+body.dark-mode .nH .AO::-webkit-scrollbar {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* Firefox scrollbar styling for right sidebar and other areas in dark mode */
+@-moz-document url-prefix() {
+  body.dark-mode .wT,
+  body.dark-mode .nH .AO {
+    scrollbar-width: thin !important;
+    scrollbar-color: transparent transparent !important;
+    transition: scrollbar-color 0.2s !important;
+  }
+  
+  body.dark-mode .wT:hover,
+  body.dark-mode .nH .AO:hover {
+    scrollbar-color: #323232 transparent !important;
+  }
+  
+  body.dark-mode .wT:not(:hover),
+  body.dark-mode .nH .AO:not(:hover) {
+    scrollbar-color: transparent transparent !important;
+  }
+}
+
 /* =============================================================================
    EMAIL PREVIEW SCROLLBAR STYLING (LIGHT MODE)
    ============================================================================= */
@@ -3546,7 +3744,30 @@ body.dark-mode .aUx {
 
 /* Email row backgrounds - different colors for read vs unread */
 body.dark-mode .zA.yO {
-  background: #2a2a2a !important; /* Slightly lighter for read emails */
+  background: #232323 !important; /* Darker background for read emails */
+}
+
+/* Lighter borders and text for email list items to work with darker background */
+body.dark-mode .zA {
+  border-top: 1px solid #5f6368 !important; /* Very dark, extremely subtle border */
+  border-top-width: 1px !important; /* Ensure exactly 1px width */
+  color: #e8eaed !important; /* Lighter text for better contrast */
+}
+
+/* Override any other border rules for email rows */
+body.dark-mode .zA.yO,
+body.dark-mode .zA.btb,
+body.dark-mode .zA.byw {
+  border-top: 1px solid #5f6368 !important;
+  border-top-width: 1px !important;
+  border-top-style: solid !important;
+  border-top-color: #5f6368 !important;
+}
+
+/* Override the bright box-shadow border that's creating the white line */
+body.dark-mode .zA,
+body.dark-mode .zA:hover {
+  box-shadow: none !important; /* Remove the bright white border */
 }
 
 body.dark-mode .zA.yO.zE {
@@ -3575,7 +3796,7 @@ body.dark-mode .zA .apU.xY .T-KT.xf::before {
 /* Dark mode star icons - use SVG with mask-image approach */
 body.dark-mode .zA .apU.xY .T-KT::before,
 body.dark-mode .zA .apU.xY .T-KT.xl::before {
-  background-color: #9f9f9f !important;
+  background-color: #c6c6c5 !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
   -webkit-mask-size: 20px !important;
@@ -3888,7 +4109,7 @@ body.dark-mode [data-tooltip="Promotions"] .qj {
   /* Firefox dark mode star icons - email list */
   body.dark-mode .zA .apU.xY .T-KT::before,
   body.dark-mode .zA .apU.xY .T-KT.xl::before {
-    background-color: #9f9f9f !important;
+    background-color: #c6c6c5 !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
     -webkit-mask-size: 20px !important;

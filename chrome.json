@@ -1,6 +1,6 @@
 {
   "name": "Inbox Reborn theme for Gmail™",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "manifest_version": 3,
   "permissions": ["storage"],
   "description": "Adds features like reminders, email bundling, and Inbox's minimalistic style to Gmail™",
