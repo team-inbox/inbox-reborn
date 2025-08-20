@@ -68,6 +68,20 @@ const NAME_COLORS = [
 ];
 
 /**
+ * Domains that are known to be slow or problematic - skip them
+ */
+const SKIP_DOMAINS = new Set([
+  'gmail.com',
+  'google.com',
+  'googleusercontent.com'
+]);
+
+/**
+ * Avatar cache to avoid repeated API calls
+ */
+const avatarCache = new Map();
+
+/**
  * CSS class names used throughout the application
  */
 const CSS_CLASSES = {
@@ -84,6 +98,8 @@ const CSS_CLASSES = {
   AVATAR_EMAIL: 'email-with-avatar',
   AVATAR: 'avatar',
   AVATAR_OPTION: 'show-avatar-enabled',
+  WEB_AVATAR: 'web-avatar',
+  LETTER_AVATAR: 'letter-avatar',
   STYLE_NODE_ID_PREFIX: 'hide-email-',
   PRIORITY_INBOX_OPTION: 'priority-inbox-enabled',
 
@@ -216,6 +232,73 @@ const htmlToElements = (html) => {
   const template = document.createElement('template');
   template.innerHTML = html.trim();
   return template.content.firstElementChild;
+};
+
+/**
+ * Extracts domain from email address
+ * @param {string} email - Email address
+ * @returns {string} Domain name or empty string
+ */
+const extractDomain = (email) => {
+  if (!email || !email.includes('@')) return '';
+  return email.split('@')[1].toLowerCase();
+};
+
+/**
+ * Gets root domain by removing subdomains and www
+ * @param {string} domain - Full domain (e.g., email.apple.com)
+ * @returns {string} Root domain (e.g., apple.com)
+ */
+const getMainDomain = (domain) => {
+  if (!domain) return '';
+  
+  // Remove www. prefix if present
+  domain = domain.replace(/^www\./, '');
+  
+  // Split by dots and get last 2 parts for most domains
+  const parts = domain.split('.');
+  if (parts.length <= 2) return domain;
+  
+  // Handle special cases like .co.uk, .com.au, etc.
+  const specialTLDs = ['.co.uk', '.com.au', '.co.jp', '.co.za', '.com.br'];
+  for (const tld of specialTLDs) {
+    if (domain.endsWith(tld)) {
+      const beforeTLD = domain.slice(0, -tld.length);
+      const tldParts = beforeTLD.split('.');
+      return tldParts.slice(-1)[0] + tld;
+    }
+  }
+  
+  // Default: last 2 parts
+  return parts.slice(-2).join('.');
+};
+
+/**
+ * Tests if an image URL is valid
+ * @param {string} url - URL to test
+ * @returns {Promise<string|null>} URL if valid, null if failed
+ */
+const testImageUrl = (url) => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const timeout = setTimeout(() => {
+      img.onload = null;
+      img.onerror = null;
+      resolve(null);
+    }, 2000);
+    
+    img.onload = () => {
+      clearTimeout(timeout);
+      resolve(url);
+    };
+    
+    img.onerror = () => {
+      clearTimeout(timeout);
+      resolve(null);
+    };
+    
+    img.src = url;
+  });
 };
 
 /**
@@ -1113,12 +1196,7 @@ const updateReminders = () => {
           // Ensure text is white
           avatarElement.style.color = '#ffffff';
           
-          // Debug logging
-          console.log('Avatar created:', {
-            letter: firstLetter,
-            baseColor: baseColor,
-            isDarkMode: document.body.classList.contains('dark-mode')
-          });
+
         } else {
           avatarElement.style.background = '#000000';
           // Some unicode characters need special handling
@@ -1128,6 +1206,24 @@ const updateReminders = () => {
 
         avatarElement.innerText = firstLetter;
         targetElement.appendChild(avatarElement);
+        
+        // Try to fetch BIMI brand logo asynchronously
+        const email = firstParticipant.getAttribute('email');
+        if (email) {
+          const domain = extractDomain(email);
+          
+          if (domain) {
+            // Try to fetch brand logo (BIMI)
+            fetchBrandLogo(domain).then(brandLogoUrl => {
+              if (brandLogoUrl) {
+                // Replace letter avatar with brand logo
+                replaceAvatarWithWeb(targetElement, brandLogoUrl, name);
+              }
+            }).catch(error => {
+              // Silently handle errors
+            });
+          }
+        }
       }
 
       // Mark as processed
@@ -1597,6 +1693,120 @@ const sidePanelMutationHandler = () => {
   });
 };
 
+/**
+ * Fetch brand logo - tries BIMI first, then favicon as fallback
+ * @param {string} domain - Domain name
+ * @returns {Promise<string|null>} Logo URL or null if failed
+ */
+const fetchBrandLogo = async (domain) => {
+  // Check cache first
+  if (avatarCache.has(domain)) {
+    return avatarCache.get(domain);
+  }
+
+  // Skip known problematic domains
+  if (SKIP_DOMAINS.has(domain) || SKIP_DOMAINS.has(getMainDomain(domain))) {
+    return null;
+  }
+
+  // Use the exact domain from the email (don't strip subdomains)
+  const emailDomain = domain;
+  
+  // Try BIMI/VMC logo from DNS TXT records - highest quality
+  try {
+    // Query DNS for BIMI TXT record using default selector
+    const bimiSelector = 'default._bimi';
+    const bimiRecord = `${bimiSelector}.${emailDomain}`;
+    
+    // Use multiple DNS-over-HTTPS services for better compatibility
+    const dnsServices = [
+      `https://dns.google/resolve?name=${bimiRecord}&type=TXT`,
+      `https://cloudflare-dns.com/dns-query?name=${bimiRecord}&type=TXT`,
+      `https://doh.pub/dns-query?name=${bimiRecord}&type=TXT`
+    ];
+    
+    // Try each DNS service until one works
+    for (const dnsUrl of dnsServices) {
+      try {
+        const response = await fetch(dnsUrl, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/dns-json',
+            'User-Agent': navigator.userAgent
+          }
+        });
+        
+        if (response.ok) {
+          const dnsData = await response.json();
+          if (dnsData.Answer && dnsData.Answer.length > 0) {
+            // Parse the BIMI TXT record
+            const txtRecord = dnsData.Answer[0].data.replace(/"/g, '');
+            
+            // Parse for logo URL (l= parameter)
+            const logoMatch = txtRecord.match(/l=([^\s;]+)/);
+            if (logoMatch) {
+              const logoUrl = logoMatch[1];
+              
+              // Test if the logo loads
+              const result = await testImageUrl(logoUrl);
+              if (result) {
+                avatarCache.set(domain, result);
+                return result;
+              }
+            }
+          }
+          break; // Found working service, exit loop
+        }
+      } catch (serviceError) {
+        // Try next service
+        continue;
+      }
+    }
+  } catch (error) {
+    // Silently handle errors
+  }
+  
+  // No BIMI logo available - fall back to letter avatar
+  return null;
+};
+
+
+
+/**
+ * Creates a web avatar element for BIMI logos
+ * @param {string} logoUrl - URL of the logo image
+ * @param {string} name - Name for alt text
+ * @returns {Element} Avatar element
+ */
+const createWebAvatar = (logoUrl, name) => {
+  const avatarElement = document.createElement('img');
+  avatarElement.className = `${CSS_CLASSES.AVATAR} ${CSS_CLASSES.WEB_AVATAR}`;
+  avatarElement.src = logoUrl;
+  avatarElement.alt = name;
+  avatarElement.title = name;
+  avatarElement.style.objectFit = 'cover';
+  return avatarElement;
+};
+
+/**
+ * Replaces a letter avatar with a web avatar
+ * @param {Element} targetElement - The avatar wrapper element
+ * @param {string} logoUrl - URL of the web avatar
+ * @param {string} name - Name for alt text
+ */
+const replaceAvatarWithWeb = (targetElement, logoUrl, name) => {
+  // Remove existing letter avatar
+  const existingAvatar = targetElement.querySelector(`.${CSS_CLASSES.AVATAR}`);
+  if (existingAvatar) {
+    existingAvatar.remove();
+  }
+  
+  // Create and add web avatar
+  const webAvatar = createWebAvatar(logoUrl, name);
+  targetElement.appendChild(webAvatar);
+  
+
+};
 
 
 /**

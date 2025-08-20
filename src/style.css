@@ -2275,6 +2275,24 @@ header form input {
   line-height: 32px;
 }
 
+/* Web avatar (BIMI logos) */
+.avatar.web-avatar {
+  color: transparent;
+  background: none;
+  border-radius: 50%;
+  object-fit: cover;
+  width: 32px;
+  height: 32px;
+  left: -6px;
+  flex: 32px 0 0;
+}
+
+/* Letter avatar fallback */
+.avatar.letter-avatar {
+  color: rgba(255, 255, 255, 0.65);
+  background-color: var(--avatar-bg-color, #1bbc9b);
+}
+
 .reminder .avatar {
   background: url('chrome-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png') center/75% no-repeat !important;
 }
@@ -5052,3 +5070,40 @@ body.dark-mode .ZZ input[class*="nr"] {
   color: #000000 !important;
   border-color: #ccc !important;
 }
+
+/* Avatar styling */
+body.dark-mode .avatar {
+  color: #ffffff !important;
+  background-color: inherit !important;
+}
+
+body.dark-mode .avatar[style*="background-color"] {
+  opacity: 1 !important;
+}
+
+/* Web avatar dark mode support */
+body.dark-mode .avatar.web-avatar {
+  color: transparent !important;
+  background: none !important;
+  opacity: 1 !important;
+}
+
+/* Avatar styling */
+body.dark-mode .avatar {
+  color: #ffffff !important;
+  background-color: inherit !important;
+  left: -6px !important; /* Ensure consistent positioning in dark mode */
+}
+
+body.dark-mode .avatar[style*="background-color"] {
+  opacity: 1 !important;
+}
+
+/* Web avatar dark mode support */
+body.dark-mode .avatar.web-avatar {
+  color: transparent !important;
+  background: none !important;
+  opacity: 1 !important;
+  left: -6px !important; /* Ensure consistent positioning in dark mode */
+}
+
