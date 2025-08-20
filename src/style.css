@@ -2818,6 +2818,30 @@ body.dark-mode .zA.x7 {
   margin-left: 0px !important; /* Ensure no left margin */
 }
 
+/* Fix blue selection line positioning in dark mode - match light theme exactly */
+body.dark-mode .PF.xY.PE {
+  margin-left: -5px !important;
+  margin-right: 5px !important;
+}
+
+/* Create blue line that extends to the very edge without moving the avatar */
+body.dark-mode .PF.xY.PE::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 3px !important;
+  height: 100% !important;
+  background-color: #8ab4f8 !important;
+  z-index: 1 !important;
+}
+
+/* Ensure image avatars maintain proper spacing from blue line when highlighted */
+body.dark-mode .zA.btb .avatar.web-avatar {
+  margin-left: 0 !important;
+  left: var(--avatar-left) !important;
+}
+
 body.dark-mode .zA.zE:hover {
   background-color: #414141 !important;
 }
