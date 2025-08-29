@@ -2718,7 +2718,7 @@ body.dark-mode .Cp,
 body.dark-mode .Bs.nH.iY.bAt {
   background-color: #2a2a2a !important;
 }
-body.dark-mode input:not([name="to"]):not([name="cc"]):not([name="bcc"]):not([name="subjectbox"]):not([aria-label="To recipients"]):not([aria-label="Subject"]):not(.ZH):not([class*="ZH"]):not(.nr):not([class*="nr"]),
+body.dark-mode input:not([name="to"]):not([name="cc"]):not([name="bcc"]):not([name="subjectbox"]):not([aria-label="To recipients"]):not([aria-label="Subject"]):not([aria-label="Search mail"]):not(.ZH):not([class*="ZH"]):not(.nr):not([class*="nr"]),
 body.dark-mode textarea:not([aria-label="Message Body"]) {
   background-color: #3b3b3b !important;
   color: #ffffff !important;
@@ -5038,17 +5038,9 @@ body.dark-mode .nH.fY .ZH {
   color: #000000 !important;
 }
 
-/* Override the high-specificity rule for search box - give it light background */
-body.dark-mode .gb_jd.gb_df.bas.aJf,
-body.dark-mode .gb_se.aJh,
+/* Search box styling - transparent background for clean integration */
 body.dark-mode input[aria-label="Search mail"] {
-  background-color: #ffffff !important; /* Light background to match light mode */
-  color: #000000 !important; /* Dark text for contrast on light background */
-}
-
-/* Simple search box styling - dark background like it used to be */
-body.dark-mode input[aria-label="Search mail"] {
-  background-color: #141414 !important; /* Dark background like it used to be */
+  background-color: transparent !important; /* Transparent background for clean look */
   color: #ffffff !important; /* White text for contrast */
 }
 
