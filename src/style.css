@@ -2096,6 +2096,22 @@ header form input {
   margin-right: 5px;
 }
 
+/* ========================================
+   EMAIL SELECTION STYLING - LIGHT MODE (Gmail Default)
+   ======================================== */
+
+/* Email selected with keyboard shortcut - Gmail's default blue selection */
+.zA.x7 {
+  /* Let Gmail handle the default blue selection styling */
+  /* Only adjust positioning to work with our avatar system */
+}
+
+/* Email checked/selected via checkbox - Gmail's default selection */
+.zA.aqw {
+  /* Let Gmail handle the default selection styling */
+  /* Only adjust positioning to work with our avatar system */
+}
+
 /* Hides the checkbox when not checked */
 .show-avatar-enabled .zA .oZ-x3.xY .T-Jo {
   display: none;
@@ -2261,7 +2277,6 @@ header form input {
 
 /* Name avatar */
 .avatar {
-  color: rgba(255, 255, 255, 0.65);
   border-radius: 50%;
   font-size: 18px;
   font-family: 'Roboto', sans-serif;
@@ -2289,8 +2304,7 @@ header form input {
 
 /* Letter avatar fallback */
 .avatar.letter-avatar {
-  color: rgba(255, 255, 255, 0.65);
-  background-color: var(--avatar-bg-color, #1bbc9b);
+  /* Let JavaScript handle all styling */
 }
 
 .reminder .avatar {
@@ -2770,11 +2784,10 @@ body.dark-mode .ZZ {
 
 /* Removed duplicate rule - consolidated with more specific rules below */
 
-/* Email row styling */
+/* Email row styling - base state only */
 body.dark-mode .zA,
-body.dark-mode .zA:hover,
 body.dark-mode .Bs.nH.iY.bAt {
-  background: #2a2a2a !important;
+  background: #232323 !important; /* Dark background for read emails */
   color: #ffffff !important;
 }
 
@@ -2805,46 +2818,45 @@ body.dark-mode .TO.nZ {
   background-color: #383838 !important;
 }
 
-/* Unread email highlight */
+/* Unread email highlight - same positioning as light mode */
 body.dark-mode .zA.zE {
   background-color: #383838 !important;
-  padding-left: 10px !important; /* Match standard padding */
+  /* No special padding - match light mode exactly */
 }
 
-/* Selected email highlight - blue border for selection */
+/* ========================================
+   EMAIL SELECTION STYLING - DARK MODE (Identical to Light Mode)
+   ======================================== */
+
+/* Email selected with keyboard shortcut - same as light mode */
 body.dark-mode .zA.x7 {
-  border-left: 3px solid #8ab4f8 !important; /* Lighter, more subtle blue like Gmail stock */
-  padding-left: 7px !important; /* Compensate for the 3px border to maintain alignment */
-  margin-left: 0px !important; /* Ensure no left margin */
+  /* Let Gmail handle the default blue selection styling - same as light mode */
 }
 
-/* Fix blue selection line positioning in dark mode - match light theme exactly */
+/* Email checked/selected via checkbox - same as light mode */
+body.dark-mode .zA.aqw {
+  /* Let Gmail handle the default blue selection styling - same as light mode */
+}
+
+/* Selection indicator positioning - same as light mode */
 body.dark-mode .PF.xY.PE {
-  margin-left: -5px !important;
+  margin-left: -5px !important; /* Match light theme exactly */
   margin-right: 5px !important;
 }
 
-/* Create blue line that extends to the very edge without moving the avatar */
-body.dark-mode .PF.xY.PE::before {
-  content: '' !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 3px !important;
-  height: 100% !important;
-  background-color: #8ab4f8 !important;
-  z-index: 1 !important;
+/* Email selected with keyboard shortcut - same padding adjustment as light mode */
+body.dark-mode .zA.btb {
+  padding-left: 5px !important; /* Restore original - needed for blue bar positioning */
 }
 
-/* Ensure image avatars maintain proper spacing from blue line when highlighted */
-body.dark-mode .zA.btb .avatar.web-avatar {
-  margin-left: 0 !important;
-  left: var(--avatar-left) !important;
+/* Selection indicator within .btb emails - same as light mode */
+body.dark-mode .zA.btb .PF.xY.PE {
+  margin-right: 10px !important; /* Additional right margin for .btb emails */
 }
 
-body.dark-mode .zA.zE:hover {
-  background-color: #414141 !important;
-}
+
+
+/* Removed duplicate rule - consolidated above */
 
 /* Bundle styling */
 body.dark-mode .brc {
@@ -3018,31 +3030,22 @@ body.dark-mode .ts {
   background-color: #141414 !important;
 }
 
-/* Search bar */
+/* Search bar - match light mode styling but adapted for dark mode */
 body.dark-mode header form {
-  background: #141414 !important;
+  background: rgba(255, 255, 255, 0.08) !important; /* Semi-transparent white, darker than light mode */
+  max-width: 90% !important;
 }
 
 body.dark-mode header form input {
-  color: #ffffff !important;
-  background-color: transparent !important;
+  color: white !important; /* Match light mode */
+  background-color: transparent !important; /* Let Gmail handle background */
 }
 
 body.dark-mode header form input::placeholder {
-  color: #c7c7c7 !important;
+  color: #FFF !important; /* Match light mode exactly */
 }
 
 
-
-/* Avatar styling */
-body.dark-mode .avatar {
-  color: #ffffff !important;
-  background-color: inherit !important;
-}
-
-body.dark-mode .avatar[style*="background-color"] {
-  opacity: 1 !important;
-}
 
 /* Archive button - dark mode styling */
 body.dark-mode .brq,
@@ -3785,36 +3788,25 @@ body.dark-mode .aUx {
 }
 
 /* Email row backgrounds - different colors for read vs unread */
-body.dark-mode .zA.yO {
-  background: #232323 !important; /* Darker background for read emails */
-}
+/* Removed duplicate rule - consolidated above */
 
-/* Lighter borders and text for email list items to work with darker background */
+/* Dark mode email styling - match light mode behavior exactly */
 body.dark-mode .zA {
-  border-top: 1px solid #5f6368 !important; /* Very dark, extremely subtle border */
-  border-top-width: 1px !important; /* Ensure exactly 1px width */
   color: #e8eaed !important; /* Lighter text for better contrast */
+  background: #232323 !important; /* Dark background for read emails */
 }
 
-/* Override any other border rules for email rows */
-body.dark-mode .zA.yO,
-body.dark-mode .zA.btb,
-body.dark-mode .zA.byw {
-  border-top: 1px solid #5f6368 !important;
-  border-top-width: 1px !important;
-  border-top-style: solid !important;
-  border-top-color: #5f6368 !important;
+/* Unread emails - same background as light mode but darker */
+body.dark-mode .zA.zE {
+  background: #383838 !important; /* Darker background for unread emails */
 }
 
-/* Override the bright box-shadow border that's creating the white line */
-body.dark-mode .zA,
+/* Hover state - same as light mode */
 body.dark-mode .zA:hover {
-  box-shadow: none !important; /* Remove the bright white border */
+  background: #2a2a2a !important; /* Slightly lighter on hover */
 }
 
-body.dark-mode .zA.yO.zE {
-  background: #4c4c4c !important; /* Even lighter for unread emails */
-}
+/* Removed duplicate rule - consolidated above */
 
 
 body.dark-mode .zA .apU.xY .T-KT::before,
@@ -3871,14 +3863,14 @@ body.dark-mode header svg {
   color: #ffffff !important;
 }
 body.dark-mode header form {
-  background: #141414 !important;
+  /* Remove forced background - let Gmail handle it naturally */
 }
 body.dark-mode header form input {
-  color: #ffffff !important;
-  background-color: transparent !important;
+  color: white !important; /* Match light mode */
+  background-color: transparent !important; /* Let Gmail handle background */
 }
 body.dark-mode header form input::placeholder {
-  color: #c7c7c7 !important;
+  color: #FFF !important; /* Match light mode exactly */
 }
 body.dark-mode .Yc {
   color: #ffffff !important;
@@ -4392,15 +4384,6 @@ body.dark-mode .oc {
 }
 
 /* Make dropdown menus readable - removed black background */
-
-body.dark-mode .avatar {
-  color: #ffffff !important;
-}
-
-body.dark-mode .avatar[style*="background-color"] {
-  opacity: 1 !important;
-  background-color: inherit !important;
-}
 
 /* Let Gmail use its default colorful icons for system labels */
 
@@ -5055,12 +5038,18 @@ body.dark-mode .nH.fY .ZH {
   color: #000000 !important;
 }
 
-/* Make the main search box background #3b3b3b */
+/* Override the high-specificity rule for search box - give it light background */
 body.dark-mode .gb_jd.gb_df.bas.aJf,
 body.dark-mode .gb_se.aJh,
 body.dark-mode input[aria-label="Search mail"] {
-  background-color: #3b3b3b !important;
-  color: #ffffff !important;
+  background-color: #ffffff !important; /* Light background to match light mode */
+  color: #000000 !important; /* Dark text for contrast on light background */
+}
+
+/* Simple search box styling - dark background like it used to be */
+body.dark-mode input[aria-label="Search mail"] {
+  background-color: #141414 !important; /* Dark background like it used to be */
+  color: #ffffff !important; /* White text for contrast */
 }
 
 /* Make search form inputs light (From, To, Subject, etc.) */
@@ -5095,39 +5084,55 @@ body.dark-mode .ZZ input[class*="nr"] {
   border-color: #ccc !important;
 }
 
-/* Avatar styling */
-body.dark-mode .avatar {
-  color: #ffffff !important;
-  background-color: inherit !important;
+/* ========================================
+   DARK MODE AVATAR RULES - IDENTICAL TO LIGHT MODE
+   ======================================== */
+
+/* Reminder avatar background - same as light mode */
+body.dark-mode .reminder .avatar {
+  background: url('chrome-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png') center/75% no-repeat !important;
 }
 
-body.dark-mode .avatar[style*="background-color"] {
-  opacity: 1 !important;
+/* Firefox-specific reminder avatar override - same as light mode */
+@-moz-document url-prefix() {
+  body.dark-mode .reminder .avatar {
+    background: url('moz-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png') center/75% no-repeat !important;
+  }
 }
 
-/* Web avatar dark mode support */
-body.dark-mode .avatar.web-avatar {
-  color: transparent !important;
-  background: none !important;
-  opacity: 1 !important;
+/* Complete avatar visibility control - identical to light mode */
+/* Hides the checkbox when not checked - same as light mode */
+body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo {
+  display: none;
 }
 
-/* Avatar styling */
-body.dark-mode .avatar {
-  color: #ffffff !important;
-  background-color: inherit !important;
-  left: -6px !important; /* Ensure consistent positioning in dark mode */
+/* Show checkbox when hovering over email row with avatar - same as light mode */
+body.dark-mode .show-avatar-enabled .zA:hover:not(.aqw) .oZ-x3.xY .T-Jo {
+  display: inline !important;
 }
 
-body.dark-mode .avatar[style*="background-color"] {
-  opacity: 1 !important;
+/* Hide avatar when hovering to show checkbox (but not when checked) - same as light mode */
+body.dark-mode .show-avatar-enabled .zA:hover:not(.aqw) .oZ-x3.xY .avatar {
+  display: none !important;
 }
 
-/* Web avatar dark mode support */
-body.dark-mode .avatar.web-avatar {
-  color: transparent !important;
-  background: none !important;
-  opacity: 1 !important;
-  left: -6px !important; /* Ensure consistent positioning in dark mode */
+/* When email is checked (selected), keep checkbox visible and avatar hidden - same as light mode */
+body.dark-mode .show-avatar-enabled .zA.aqw .oZ-x3.xY .T-Jo {
+  display: inline !important;
 }
+
+body.dark-mode .show-avatar-enabled .zA.aqw .oZ-x3.xY .avatar {
+  display: none !important;
+}
+
+/* Alternative: Target by aria-checked attribute for checked emails - same as light mode */
+body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked="true"] {
+  display: inline !important;
+}
+
+body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked="true"] + .avatar {
+  display: none !important;
+}
+
+
 
