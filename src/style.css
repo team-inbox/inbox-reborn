@@ -3338,9 +3338,12 @@ body.dark-mode .G-atb .T-I[data-tooltip^='Back'] div.T-I-J3 {
 }
 
 /* Back and Move-to buttons carry their glyph in varying markup, so mask the
-   whole button by its label and blank out whatever Gmail renders inside */
-body.dark-mode .G-atb [aria-label^='Back'],
-body.dark-mode .G-atb [data-tooltip^='Back'] {
+   whole button by its label and blank out whatever Gmail renders inside.
+   The .D.E.G-atb prefix outranks the catch-all toolbar rule that paints all
+   descendants with the dark background (which filled these masks with dark,
+   making the icons invisible). */
+body.dark-mode .D.E.G-atb [aria-label^='Back'],
+body.dark-mode .D.E.G-atb [data-tooltip^='Back'] {
   -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_arrow_back_24dp.svg')
     center / 20px no-repeat !important;
   mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_arrow_back_24dp.svg') center /
@@ -3349,8 +3352,8 @@ body.dark-mode .G-atb [data-tooltip^='Back'] {
   background-image: none !important;
 }
 
-body.dark-mode .G-atb [aria-label='Move to'],
-body.dark-mode .G-atb [data-tooltip='Move to'] {
+body.dark-mode .D.E.G-atb [aria-label='Move to'],
+body.dark-mode .D.E.G-atb [data-tooltip='Move to'] {
   -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_drive_file_move_24dp.svg')
     center / 20px no-repeat !important;
   mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_drive_file_move_24dp.svg')
