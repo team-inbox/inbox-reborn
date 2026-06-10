@@ -23,18 +23,26 @@
  * Applies stored settings on page load and listens for changes
  */
 (function initDarkMode() {
+  // The content script runs at document_start, so <body> may not exist yet
+  // when the storage callback fires - defer applying the class until it does
+  const applyDarkMode = (enabled) => {
+    const apply = () => document.body.classList.toggle('dark-mode', enabled);
+    if (document.body) {
+      apply();
+    } else {
+      document.addEventListener('DOMContentLoaded', apply, { once: true });
+    }
+  };
+
   // Apply stored dark-mode setting on page load
   chrome.storage?.local.get('options', ({ options }) => {
-    if (options && options.darkMode === 'enabled') {
-      document.body.classList.add('dark-mode');
-    }
+    applyDarkMode(!!options && options.darkMode === 'enabled');
   });
 
   // Listen for changes to options and toggle class dynamically
   chrome.storage?.onChanged.addListener((changes, area) => {
     if (area === 'local' && changes.options) {
-      const enabled = changes.options.newValue.darkMode === 'enabled';
-      document.body.classList.toggle('dark-mode', enabled);
+      applyDarkMode(changes.options.newValue.darkMode === 'enabled');
     }
   });
 })();
@@ -689,8 +697,9 @@ const getBundleTitleColorForLabel = (email, label) => {
   labelEls.forEach((labelEl) => {
     if (labelEl.innerText === label) {
       const labelColor = labelEl.style.backgroundColor;
-      // Ignore default label color (light gray)
-      if (labelColor !== 'rgb(221, 221, 221)') {
+      // Ignore Gmail's default label chip grays (old and current palettes),
+      // otherwise the near-white default reads as a custom bundle color
+      if (labelColor !== 'rgb(221, 221, 221)' && labelColor !== 'rgb(225, 227, 225)') {
         bundleTitleColor = labelColor;
       }
     }
@@ -888,45 +897,63 @@ const addEventAttachment = (email) => {
  * Reloads user options and applies them to the UI
  */
 const reloadOptions = () => {
-  // Get options from Chrome storage
+  // Get options from Chrome storage and apply them once the fresh values
+  // arrive, so toggles take effect without waiting an extra polling cycle
   chrome.runtime.sendMessage({ method: 'getOptions' }, function (ops) {
     options = ops;
+
+    // Apply avatar options
+    if (options.showAvatar === 'enabled') {
+      addClassToBody(CSS_CLASSES.AVATAR_OPTION);
+    } else if (options.showAvatar === 'disabled') {
+      removeClassFromBody(CSS_CLASSES.AVATAR_OPTION);
+      // Remove avatar elements
+      document
+        .querySelectorAll('.' + CSS_CLASSES.AVATAR_EMAIL)
+        .forEach((avatarEl) => avatarEl.classList.remove(CSS_CLASSES.AVATAR_EMAIL));
+      document.querySelectorAll('.' + CSS_CLASSES.AVATAR).forEach((avatarEl) => avatarEl.remove());
+    }
+
+    // Apply priority inbox options
+    if (options.priorityInbox === 'enabled') {
+      addClassToBody(CSS_CLASSES.PRIORITY_INBOX_OPTION);
+    } else {
+      removeClassFromBody(CSS_CLASSES.PRIORITY_INBOX_OPTION);
+    }
+
+    // Apply email bundling options
+    if (options.emailBundling === 'enabled') {
+      addClassToBody(CSS_CLASSES.BUNDLING_OPTION);
+    } else if (options.emailBundling === 'disabled') {
+      removeClassFromBody(CSS_CLASSES.BUNDLING_OPTION);
+      // Unbundle emails
+      document
+        .querySelectorAll('.' + CSS_CLASSES.BUNDLED_EMAIL)
+        .forEach((emailEl) => emailEl.classList.remove(CSS_CLASSES.BUNDLED_EMAIL));
+      // Remove bundle wrapper rows
+      document
+        .querySelectorAll('.' + CSS_CLASSES.BUNDLE_WRAPPER)
+        .forEach((bundleEl) => bundleEl.remove());
+    }
   });
-
-  // Apply avatar options
-  if (options.showAvatar === 'enabled') {
-    addClassToBody(CSS_CLASSES.AVATAR_OPTION);
-  } else if (options.showAvatar === 'disabled') {
-    removeClassFromBody(CSS_CLASSES.AVATAR_OPTION);
-    // Remove avatar elements
-    document
-      .querySelectorAll('.' + CSS_CLASSES.AVATAR_EMAIL)
-      .forEach((avatarEl) => avatarEl.classList.remove(CSS_CLASSES.AVATAR_EMAIL));
-    document.querySelectorAll('.' + CSS_CLASSES.AVATAR).forEach((avatarEl) => avatarEl.remove());
-  }
-
-  // Apply priority inbox options
-  if (options.priorityInbox === 'enabled') {
-    addClassToBody(CSS_CLASSES.PRIORITY_INBOX_OPTION);
-  } else if (options.hidePriorityInboxHeadings === 'disabled') {
-    removeClassFromBody(CSS_CLASSES.PRIORITY_INBOX_OPTION);
-  }
-
-  // Apply email bundling options
-  if (options.emailBundling === 'enabled') {
-    addClassToBody(CSS_CLASSES.BUNDLING_OPTION);
-  } else if (options.emailBundling === 'disabled') {
-    removeClassFromBody(CSS_CLASSES.BUNDLING_OPTION);
-    // Unbundle emails
-    document
-      .querySelectorAll('.' + CSS_CLASSES.BUNDLED_EMAIL)
-      .forEach((emailEl) => emailEl.classList.remove(CSS_CLASSES.BUNDLED_EMAIL));
-    // Remove bundle wrapper rows
-    document
-      .querySelectorAll('.' + CSS_CLASSES.BUNDLE_WRAPPER)
-      .forEach((bundleEl) => bundleEl.remove());
-  }
 };
+
+// Reload the page when options change in the popup, so every setting takes
+// effect from a clean state. Dark mode is excluded - it applies instantly
+// via the initDarkMode storage listener without needing a refresh.
+chrome.storage?.onChanged.addListener((changes, area) => {
+  if (area !== 'local' || !changes.options) return;
+
+  const oldOpts = changes.options.oldValue || {};
+  const newOpts = changes.options.newValue || {};
+  const changedKeys = Object.keys({ ...oldOpts, ...newOpts }).filter(
+    (key) => oldOpts[key] !== newOpts[key],
+  );
+
+  if (changedKeys.length && !changedKeys.every((key) => key === 'darkMode')) {
+    location.reload();
+  }
+});
 
 // =============================================================================
 // EMAIL PROCESSING
