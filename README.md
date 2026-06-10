@@ -33,10 +33,7 @@ Click the extension's icon at the top right of your browser to adjust the behavi
 
 #### Dark Mode
 
-This option is used to enable dark mode on and off
-
-- Toggle Dark Mode On and then goto Settings/Theme -> Dark
-- Toggle Dark Mode Off and then goto Settings/Theme -> Default
+This option toggles the extension's built-in dark theme. It works out of the box — no need to change Gmail's own theme setting.
 
 #### Reminders
 
@@ -80,13 +77,34 @@ Using these settings will more closely replicate the visual style of Inbox:
 
 ## Email Bundling Tips
 
-Disable inbox category tabs:
+Bundles are built from the labels shown on your inbox emails: any label shared by two or more
+inbox emails collapses into a bundle row (tick "Show bundle if only one email" in the extension
+options to bundle single emails too). Starred emails always stay out of bundles.
 
-- Settings Dropdown/Configure Inbox -> Leave only Primary ticked -> Save
+### Recreate Inbox's default bundles (Purchases, Social, Updates, Forums, Promotions)
 
-Allow default category labels (Promotions, Social, Updates, Forums) to be bundled:
+Follow this checklist to get Google Inbox's classic default bundles back. The five names above
+are special — bundles with these names get their original Inbox colored icons automatically.
 
-- Settings/Labels/Categories/Show in message List -> Click Show for each category
+- [ ] **Disable inbox category tabs** — bundles only form in the inbox itself:
+  - Settings/Inbox/Categories -> Leave only Primary ticked -> Save
+- [ ] **Optionally show Social, Promotions, and Forums in the message list** — this makes Gmail
+      tag inbox emails with those category chips, which the extension bundles like any label:
+  - Settings/Labels/Categories/Show in message list -> Click "show" per category
+  - Leave **Updates** hidden: Gmail classifies almost all automated mail as Updates, so showing
+    it would collapse most of your inbox into a single bundle.
+- [ ] **Purchases (and any other bundle you want)** — Gmail's smarter sections (Purchases,
+      Subscriptions, Trips) are classified server-side and expose no label the extension can
+      read, so recreate them with a label and a filter:
+  1. Create a label named `Purchases`.
+  2. Settings/Filters and Blocked Addresses -> Create a new filter -> in "From", list your
+     common store/receipt senders, e.g.
+     `auto-confirm@amazon.com OR shipment-tracking@amazon.com OR service@paypal.com OR transaction@etsy.com OR tracking@shipstation.com`
+  3. Choose "Apply the label: Purchases" and tick "Also apply to matching conversations".
+     Do **not** tick "Skip the Inbox" — bundles only form from inbox mail.
+
+  The same recipe works for any custom bundle (Shipping, Receipts, Newsletters, ...) — filters
+  apply the label as mail arrives, so bundles maintain themselves.
 
 If you'd like a specific label not to be bundled, create a label called 'Unbundled', and nest that label within it.
 

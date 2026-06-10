@@ -2946,10 +2946,76 @@ body.dark-mode .nH.Hd[role='dialog'] video {
   filter: invert(1) hue-rotate(180deg);
 }
 
-/* Exclude search window from dark mode - let Google handle it */
+/* =============================================================================
+   STANDALONE DARK MODE FOUNDATION
+   Dark mode no longer relies on Gmail's own dark theme being enabled. These
+   rules cover the floating surfaces (menus, dialogs, search) that Google's
+   theme used to darken for us. Role selectors survive Gmail's class-name
+   churn; more specific rules later in this file still win over these.
+   ============================================================================= */
+
+/* Floating menus, pickers and autocomplete lists (More actions, label-as,
+   move-to, snooze, search suggestions). Menus inside the compose dialog are
+   excluded - the whole dialog is inverted, so light menus come out dark. */
+body.dark-mode [role='menu']:not(.nH.Hd [role='menu']),
+body.dark-mode [role='listbox']:not(.nH.Hd [role='listbox']),
+body.dark-mode .J-M:not(.nH.Hd .J-M) {
+  background-color: var(--dm-surface-raised) !important;
+  border-color: var(--dm-border-muted) !important;
+  color: var(--dm-text-secondary) !important;
+}
+
+body.dark-mode [role='menuitem']:not(.nH.Hd [role='menuitem']),
+body.dark-mode [role='option']:not(.nH.Hd [role='option']),
+body.dark-mode .J-N:not(.nH.Hd .J-N) {
+  background-color: transparent !important;
+  color: var(--dm-text-secondary) !important;
+}
+
+/* Hovered / keyboard-highlighted menu items */
+body.dark-mode .J-N-JT:not(.nH.Hd .J-N-JT),
+body.dark-mode [role='menuitem']:hover:not(.nH.Hd [role='menuitem']),
+body.dark-mode [role='option']:hover:not(.nH.Hd [role='option']) {
+  background-color: var(--dm-hover) !important;
+  color: #fff !important;
+}
+
+/* Menu separators */
+body.dark-mode .J-Kh {
+  border-color: var(--dm-hover) !important;
+  background-color: var(--dm-hover) !important;
+}
+
+/* Modal dialogs and hovercards (confirmations, keyboard help, contact cards).
+   The compose dialog (.nH.Hd) keeps its invert-filter treatment instead. */
+body.dark-mode [role='dialog']:not(.nH.Hd),
+body.dark-mode [role='alertdialog'] {
+  background-color: var(--dm-surface) !important;
+  color: var(--dm-text-secondary) !important;
+}
+
+body.dark-mode [role='alertdialog'] .Kj-JD-K7-K0,
+body.dark-mode [role='alertdialog'] h2,
+body.dark-mode [role='dialog']:not(.nH.Hd) h2 {
+  color: #fff !important;
+}
+
+body.dark-mode [role='alertdialog'] button {
+  background-color: var(--dm-surface-raised) !important;
+  color: var(--dm-text-secondary) !important;
+  border-color: var(--dm-border-muted) !important;
+}
+
+/* Search box overlay and its suggestion list - previously deferred to
+   Gmail's dark theme, now themed by the extension */
 body.dark-mode .ZZ {
-  background: initial !important;
-  background-color: initial !important;
+  background-color: var(--dm-surface-raised) !important;
+}
+
+body.dark-mode .gssb_c .gssb_e,
+body.dark-mode .gssb_c td {
+  background-color: var(--dm-surface-raised) !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 /* Email row styling - base state only */
@@ -3030,6 +3096,12 @@ body.dark-mode .brc {
   box-shadow:
     0 0 1px rgb(0 0 0 / 31%),
     0 1px 2px rgb(0 0 0 / 42%) !important;
+}
+
+/* Bundle icons - the mask fill colors are tuned for light backgrounds, so
+   brighten them in dark mode while keeping each bundle's hue */
+body.dark-mode .bundle-wrapper > .bundle-image {
+  filter: brightness(1.6) !important;
 }
 
 body.dark-mode .bundle-senders {
@@ -3118,7 +3190,7 @@ body.dark-mode .Q3 {
   border-bottom: 1px solid var(--dm-bg) !important;
 }
 
-/* Removed conflicting rule - search window should use Google's default styling */
+/* Search window background is handled by the standalone dark foundation above */
 
 body.dark .Hp {
   background-color: #141414 !important;
@@ -3189,6 +3261,15 @@ body.dark-mode .Dj {
 body.dark-mode .ts {
   background: var(--dm-bg) !important;
   background-color: var(--dm-bg) !important;
+}
+
+/* Pagination counter text - light text now that it is no longer inherited
+   from Gmail's dark theme */
+body.dark-mode .Dj,
+body.dark-mode .Dj *,
+body.dark-mode .ar5,
+body.dark-mode .amH {
+  color: var(--dm-text-secondary) !important;
 }
 
 /* Search bar - match light mode styling but adapted for dark mode */
@@ -4255,6 +4336,29 @@ body.dark-mode [data-tooltip='Promotions'] .qj {
   -webkit-mask-position: center !important;
   mask-position: center !important;
   background-image: none !important;
+}
+
+/* Sidebar utility rows (Manage subscriptions / Manage labels / Create new
+   label) - newer Gmail UI not covered by the class-based rules above. Keep
+   their background dark and text toned down to match the other rows. Their
+   icons get the monochrome mask treatment at the end of this file. */
+body.dark-mode [data-tooltip='Manage subscriptions'],
+body.dark-mode [data-tooltip='Manage labels'],
+body.dark-mode [data-tooltip='Create new label'],
+body.dark-mode [aria-label='Manage subscriptions'],
+body.dark-mode [aria-label='Manage labels'],
+body.dark-mode [aria-label='Create new label'] {
+  background-color: transparent !important;
+  color: var(--dm-text-secondary) !important;
+}
+
+body.dark-mode [data-tooltip='Manage subscriptions'] .n0,
+body.dark-mode [data-tooltip='Manage labels'] .n0,
+body.dark-mode [data-tooltip='Create new label'] .n0,
+body.dark-mode [aria-label='Manage subscriptions'] .n0,
+body.dark-mode [aria-label='Manage labels'] .n0,
+body.dark-mode [aria-label='Create new label'] .n0 {
+  color: var(--dm-text-secondary) !important;
 }
 
 /* Firefox-specific dark mode overrides for all icons */
@@ -5345,4 +5449,111 @@ body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked='true'] {
 
 body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked='true'] + .avatar {
   display: none !important;
+}
+
+/* =============================================================================
+   PURCHASES SIDEBAR ICON (LIGHT + DARK)
+   The bundled colored cart used as a mask so it renders monochrome like the
+   Social / Updates / Forums icons: dark gray in light mode, muted light gray
+   in dark mode. Kept at the end of the file so it wins over the generic
+   label icon rules in both modes.
+   ============================================================================= */
+[data-tooltip='Purchases'] .qj,
+[data-tooltip='Purchased'] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-color: #444746 !important;
+  background-image: none !important;
+}
+
+body.dark-mode [data-tooltip='Purchases'] .qj,
+body.dark-mode [data-tooltip='Purchased'] .qj {
+  background-color: var(--dm-text-muted) !important;
+}
+
+@-moz-document url-prefix() {
+  [data-tooltip='Purchases'] .qj,
+  [data-tooltip='Purchased'] .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
+  }
+}
+
+/* =============================================================================
+   SIDEBAR UTILITY ROW ICONS (LIGHT + DARK)
+   Manage subscriptions / Manage labels / Create new label - monochrome mask
+   icons matching the Sent / Drafts / All Mail treatment: dark gray fill in
+   light mode, muted light gray in dark mode.
+   ============================================================================= */
+[data-tooltip='Manage subscriptions'] .qj,
+[aria-label='Manage subscriptions'] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_subscriptions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_subscriptions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+}
+
+[data-tooltip='Manage labels'] .qj,
+[aria-label='Manage labels'] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_settings_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_settings_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+}
+
+[data-tooltip='Create new label'] .qj,
+[aria-label='Create new label'] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+}
+
+/* Shared mask geometry and light-mode fill */
+[data-tooltip='Manage subscriptions'] .qj,
+[data-tooltip='Manage labels'] .qj,
+[data-tooltip='Create new label'] .qj,
+[aria-label='Manage subscriptions'] .qj,
+[aria-label='Manage labels'] .qj,
+[aria-label='Create new label'] .qj {
+  -webkit-mask-size: 20px !important;
+  mask-size: 20px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-color: #4c4f4d !important;
+  background-image: none !important;
+  opacity: 1 !important;
+}
+
+/* Dark-mode fill */
+body.dark-mode [data-tooltip='Manage subscriptions'] .qj,
+body.dark-mode [data-tooltip='Manage labels'] .qj,
+body.dark-mode [data-tooltip='Create new label'] .qj,
+body.dark-mode [aria-label='Manage subscriptions'] .qj,
+body.dark-mode [aria-label='Manage labels'] .qj,
+body.dark-mode [aria-label='Create new label'] .qj {
+  background-color: var(--dm-text-muted) !important;
+}
+
+/* Firefox extension-URL variants */
+@-moz-document url-prefix() {
+  [data-tooltip='Manage subscriptions'] .qj,
+  [aria-label='Manage subscriptions'] .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_subscriptions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_subscriptions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  }
+
+  [data-tooltip='Manage labels'] .qj,
+  [aria-label='Manage labels'] .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_settings_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_settings_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  }
+
+  [data-tooltip='Create new label'] .qj,
+  [aria-label='Create new label'] .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  }
 }

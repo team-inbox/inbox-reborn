@@ -888,45 +888,63 @@ const addEventAttachment = (email) => {
  * Reloads user options and applies them to the UI
  */
 const reloadOptions = () => {
-  // Get options from Chrome storage
+  // Get options from Chrome storage and apply them once the fresh values
+  // arrive, so toggles take effect without waiting an extra polling cycle
   chrome.runtime.sendMessage({ method: 'getOptions' }, function (ops) {
     options = ops;
+
+    // Apply avatar options
+    if (options.showAvatar === 'enabled') {
+      addClassToBody(CSS_CLASSES.AVATAR_OPTION);
+    } else if (options.showAvatar === 'disabled') {
+      removeClassFromBody(CSS_CLASSES.AVATAR_OPTION);
+      // Remove avatar elements
+      document
+        .querySelectorAll('.' + CSS_CLASSES.AVATAR_EMAIL)
+        .forEach((avatarEl) => avatarEl.classList.remove(CSS_CLASSES.AVATAR_EMAIL));
+      document.querySelectorAll('.' + CSS_CLASSES.AVATAR).forEach((avatarEl) => avatarEl.remove());
+    }
+
+    // Apply priority inbox options
+    if (options.priorityInbox === 'enabled') {
+      addClassToBody(CSS_CLASSES.PRIORITY_INBOX_OPTION);
+    } else {
+      removeClassFromBody(CSS_CLASSES.PRIORITY_INBOX_OPTION);
+    }
+
+    // Apply email bundling options
+    if (options.emailBundling === 'enabled') {
+      addClassToBody(CSS_CLASSES.BUNDLING_OPTION);
+    } else if (options.emailBundling === 'disabled') {
+      removeClassFromBody(CSS_CLASSES.BUNDLING_OPTION);
+      // Unbundle emails
+      document
+        .querySelectorAll('.' + CSS_CLASSES.BUNDLED_EMAIL)
+        .forEach((emailEl) => emailEl.classList.remove(CSS_CLASSES.BUNDLED_EMAIL));
+      // Remove bundle wrapper rows
+      document
+        .querySelectorAll('.' + CSS_CLASSES.BUNDLE_WRAPPER)
+        .forEach((bundleEl) => bundleEl.remove());
+    }
   });
-
-  // Apply avatar options
-  if (options.showAvatar === 'enabled') {
-    addClassToBody(CSS_CLASSES.AVATAR_OPTION);
-  } else if (options.showAvatar === 'disabled') {
-    removeClassFromBody(CSS_CLASSES.AVATAR_OPTION);
-    // Remove avatar elements
-    document
-      .querySelectorAll('.' + CSS_CLASSES.AVATAR_EMAIL)
-      .forEach((avatarEl) => avatarEl.classList.remove(CSS_CLASSES.AVATAR_EMAIL));
-    document.querySelectorAll('.' + CSS_CLASSES.AVATAR).forEach((avatarEl) => avatarEl.remove());
-  }
-
-  // Apply priority inbox options
-  if (options.priorityInbox === 'enabled') {
-    addClassToBody(CSS_CLASSES.PRIORITY_INBOX_OPTION);
-  } else if (options.hidePriorityInboxHeadings === 'disabled') {
-    removeClassFromBody(CSS_CLASSES.PRIORITY_INBOX_OPTION);
-  }
-
-  // Apply email bundling options
-  if (options.emailBundling === 'enabled') {
-    addClassToBody(CSS_CLASSES.BUNDLING_OPTION);
-  } else if (options.emailBundling === 'disabled') {
-    removeClassFromBody(CSS_CLASSES.BUNDLING_OPTION);
-    // Unbundle emails
-    document
-      .querySelectorAll('.' + CSS_CLASSES.BUNDLED_EMAIL)
-      .forEach((emailEl) => emailEl.classList.remove(CSS_CLASSES.BUNDLED_EMAIL));
-    // Remove bundle wrapper rows
-    document
-      .querySelectorAll('.' + CSS_CLASSES.BUNDLE_WRAPPER)
-      .forEach((bundleEl) => bundleEl.remove());
-  }
 };
+
+// Reload the page when options change in the popup, so every setting takes
+// effect from a clean state. Dark mode is excluded - it applies instantly
+// via the initDarkMode storage listener without needing a refresh.
+chrome.storage?.onChanged.addListener((changes, area) => {
+  if (area !== 'local' || !changes.options) return;
+
+  const oldOpts = changes.options.oldValue || {};
+  const newOpts = changes.options.newValue || {};
+  const changedKeys = Object.keys({ ...oldOpts, ...newOpts }).filter(
+    (key) => oldOpts[key] !== newOpts[key],
+  );
+
+  if (changedKeys.length && !changedKeys.every((key) => key === 'darkMode')) {
+    location.reload();
+  }
+});
 
 // =============================================================================
 // EMAIL PROCESSING
