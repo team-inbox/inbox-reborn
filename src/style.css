@@ -29,13 +29,20 @@
   --color-divider: #ddd;
   --color-shadow: rgb(0 0 0 / 24%);
 
-  /* Dark mode colors (will be applied with .dark-mode class) */
-  --dark-color-background: #141414;
-  --dark-color-surface: #252526;
-  --dark-color-text-primary: #fff;
-  --dark-color-text-secondary: #c7c7c7;
-  --dark-color-divider: #3b3b3b;
-  --dark-color-shadow: rgb(0 0 0 / 44%);
+  /* Dark mode palette (applied with .dark-mode class) — OWA/Fluent-inspired
+     neutral grays instead of near-black, with Outlook's communication blue */
+  --dm-bg: #1f1f1f; /* app frame, sidebars */
+  --dm-surface: #292929; /* cards, email list, dialogs */
+  --dm-surface-raised: #333; /* menus, raised elements */
+  --dm-hover: #3d3d3d; /* hover states, inputs, dividers */
+  --dm-selected: #4a4a4a; /* selected rows */
+  --dm-border: #525252; /* strong borders */
+  --dm-border-muted: #666; /* muted borders, divider lines */
+  --dm-text-secondary: #d6d6d6;
+  --dm-text-muted: #adadad;
+  --dm-accent: #479ef5; /* links, icons, focus rings */
+  --dm-accent-surface: #62abf5; /* accent backgrounds with dark text */
+  --dm-accent-strong: #115ea3; /* primary buttons with white text */
 }
 
 /* Let Gmail use its default colorful icons for system labels */
@@ -545,7 +552,7 @@ td.apU.xY .T-KT.xf::before {
 
 /* Dark mode: Done divider */
 body.dark-mode .TO.inbox-reborn-done::after {
-  background: #5f6368 !important; /* Match trash divider dark mode color */
+  background: var(--dm-border-muted) !important; /* Match trash divider dark mode color */
 }
 
 /* Add vertical spacing after Done divider to match Categories gap */
@@ -720,7 +727,7 @@ body.dark-mode .TO.inbox-reborn-done::after {
 
 /* Settings menu background in dark mode */
 body.dark-mode .a8Y {
-  background-color: #252526 !important;
+  background-color: var(--dm-surface) !important;
 }
 
 /* =============================================================================
@@ -729,7 +736,7 @@ body.dark-mode .a8Y {
 
 /* New Label popup - improve text readability in dark mode */
 body.dark-mode .uW2Fw-bHo {
-  background-color: #2a2a2a !important;
+  background-color: var(--dm-surface) !important;
   color: #e8eaed !important;
 }
 
@@ -741,13 +748,13 @@ body.dark-mode .uW2Fw-bHo .cER4xe {
 
 /* New Label popup input fields */
 body.dark-mode .uW2Fw-bHo .a7H {
-  background-color: #3c4043 !important;
+  background-color: var(--dm-hover) !important;
   color: #e8eaed !important;
-  border: 1px solid #5f6368 !important;
+  border: 1px solid var(--dm-border-muted) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .a7H:focus {
-  border-color: #8ab4f8 !important;
+  border-color: var(--dm-accent) !important;
   box-shadow: 0 0 0 2px rgb(138 180 248 / 20%) !important;
 }
 
@@ -764,18 +771,18 @@ body.dark-mode .uW2Fw-bHo .a9J {
 
 /* New Label popup buttons */
 body.dark-mode .uW2Fw-bHo .mUIrbf-I {
-  background-color: #3c4043 !important;
+  background-color: var(--dm-hover) !important;
   color: #e8eaed !important;
-  border: 1px solid #5f6368 !important;
+  border: 1px solid var(--dm-border-muted) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover {
-  background-color: #4c4c4c !important;
+  background-color: var(--dm-selected) !important;
 }
 
 /* New Label popup primary button (Create) */
 body.dark-mode .uW2Fw-bHo .eV8l8d {
-  background-color: #8ab4f8 !important;
+  background-color: var(--dm-accent-surface) !important;
   color: #202124 !important;
   border: none !important;
 }
@@ -787,23 +794,23 @@ body.dark-mode .uW2Fw-bHo .eV8l8d:hover {
 /* New Label popup secondary button (Cancel) */
 body.dark-mode .uW2Fw-bHo .fQ1uhf {
   background-color: transparent !important;
-  color: #8ab4f8 !important;
-  border: 1px solid #5f6368 !important;
+  color: var(--dm-accent) !important;
+  border: 1px solid var(--dm-border-muted) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .fQ1uhf:hover {
-  background-color: #3c4043 !important;
-  border-color: #8ab4f8 !important;
+  background-color: var(--dm-hover) !important;
+  border-color: var(--dm-accent) !important;
 }
 
 /* New Label popup checkbox */
 body.dark-mode .uW2Fw-bHo .a7G {
-  background-color: #3c4043 !important;
-  border: 1px solid #5f6368 !important;
+  background-color: var(--dm-hover) !important;
+  border: 1px solid var(--dm-border-muted) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .a7G:hover {
-  background-color: #4c4c4c !important;
+  background-color: var(--dm-selected) !important;
 }
 
 /* New Label popup dropdown arrow */
@@ -836,7 +843,7 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-track {
 }
 
 body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb {
-  background-color: #141414 !important;
+  background-color: var(--dm-bg) !important;
   border-radius: 4px !important;
   border: none !important;
   outline: none !important;
@@ -844,22 +851,22 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb {
 }
 
 body.dark-mode .V3.aam.ada:hover::-webkit-scrollbar-thumb {
-  background-color: #323232 !important;
+  background-color: var(--dm-surface-raised) !important;
 }
 
 body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
-  background-color: #323232 !important;
+  background-color: var(--dm-surface-raised) !important;
 }
 
 /* Firefox scrollbar styling for V3 aam ada */
 @-moz-document url-prefix() {
   body.dark-mode .V3.aam.ada {
     scrollbar-width: thin !important;
-    scrollbar-color: #141414 transparent !important;
+    scrollbar-color: var(--dm-bg) transparent !important;
   }
 
   body.dark-mode .V3.aam.ada:hover {
-    scrollbar-color: #323232 transparent !important;
+    scrollbar-color: var(--dm-surface-raised) transparent !important;
   }
 }
 
@@ -1371,7 +1378,7 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
 
 /* Dark mode: Trash divider */
 body.dark-mode .TN.bzz.aHS-bnx::after {
-  background: #5f6368 !important; /* Match Done divider dark mode color */
+  background: var(--dm-border-muted) !important; /* Match Done divider dark mode color */
 }
 
 /* Mail / Chat / Spaces Side Panels */
@@ -2857,14 +2864,14 @@ body:not(.dark-mode) .aeF:not(:hover) {
    ============================================================================= */
 
 body.dark-mode {
-  background-color: #141414 !important;
+  background-color: var(--dm-bg) !important;
   color: #fff !important;
 }
 
 body.dark-mode .zA,
 body.dark-mode .Cp,
 body.dark-mode .Bs.nH.iY.bAt {
-  background-color: #2a2a2a !important;
+  background-color: var(--dm-surface) !important;
 }
 
 body.dark-mode
@@ -2882,16 +2889,16 @@ body.dark-mode
     [class*='nr']
   ),
 body.dark-mode textarea:not([aria-label='Message Body']) {
-  background-color: #3b3b3b !important;
+  background-color: var(--dm-hover) !important;
   color: #fff !important;
 }
 
 body.dark-mode a {
-  color: #4cc2ff !important;
+  color: var(--dm-accent) !important;
 }
 
 body.dark-mode hr {
-  border-color: #3b3b3b !important;
+  border-color: var(--dm-hover) !important;
 }
 
 /* MAIN INTERFACE DARK MODE */
@@ -2910,7 +2917,7 @@ body.dark-mode .aj5 .J-KU,
 body.dark-mode .aj5.J-KU-Jg,
 body.dark-mode .aKh,
 body.dark-mode .aRs {
-  background: #2a2a2a !important;
+  background: var(--dm-surface) !important;
 }
 
 /* Main menu - use the correct dark background */
@@ -2928,13 +2935,20 @@ body.dark-mode .byl,
 body.dark-mode .TK,
 body.dark-mode .aim,
 body.dark-mode .TO {
-  background: #141414 !important;
+  background: var(--dm-bg) !important;
 }
 
-/* Exclude compose window from dark mode backgrounds - let Google handle it */
+/* Compose window: invert the whole dialog instead of styling Gmail's
+   obfuscated classes - white flips to #1f1f1f, black text to light gray,
+   and it cannot half-apply when Gmail changes its DOM */
 body.dark-mode .nH.Hd[role='dialog'] {
-  background: initial !important;
-  background-color: initial !important;
+  filter: invert(0.88) hue-rotate(180deg);
+}
+
+/* Flip images and video back to their true colors */
+body.dark-mode .nH.Hd[role='dialog'] img,
+body.dark-mode .nH.Hd[role='dialog'] video {
+  filter: invert(1) hue-rotate(180deg);
 }
 
 /* Exclude search window from dark mode - let Google handle it */
@@ -2948,7 +2962,7 @@ body.dark-mode .ZZ {
 /* Email row styling - base state only */
 body.dark-mode .zA,
 body.dark-mode .Bs.nH.iY.bAt {
-  background: #232323 !important; /* Dark background for read emails */
+  background: var(--dm-surface) !important; /* Dark background for read emails */
   color: #fff !important;
 }
 
@@ -2963,7 +2977,7 @@ body.dark-mode .TO.nZ .nU > .n0,
 body.dark-mode .ah9 > .CJ,
 body.dark-mode .n3 > .CL > .CK,
 body.dark-mode .aAv {
-  color: #c7c7c7 !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 body.dark-mode .TO.nZ .n0 {
@@ -2971,17 +2985,17 @@ body.dark-mode .TO.nZ .n0 {
 }
 
 body.dark-mode .TO .n0 {
-  color: #c7c7c7 !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 /* Active sidebar item */
 body.dark-mode .TO.nZ {
-  background-color: #383838 !important;
+  background-color: var(--dm-hover) !important;
 }
 
 /* Unread email highlight - same positioning as light mode */
 body.dark-mode .zA.zE {
-  background-color: #383838 !important;
+  background-color: var(--dm-hover) !important;
 
   /* No special padding - match light mode exactly */
 }
@@ -3020,7 +3034,7 @@ body.dark-mode .zA.btb .PF.xY.PE {
 
 /* Bundle styling */
 body.dark-mode .brc {
-  background-color: #3b3b3b !important;
+  background-color: var(--dm-hover) !important;
   color: #fff !important;
   box-shadow:
     0 0 1px rgb(0 0 0 / 31%),
@@ -3032,7 +3046,7 @@ body.dark-mode .bundle-senders {
 }
 
 body.dark-mode .bundle-wrapper .label-link .bundle-count {
-  color: #c7c7c7 !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 body.dark-mode .bundle-wrapper:not(.contains-unread) .bundle-image img {
@@ -3041,12 +3055,12 @@ body.dark-mode .bundle-wrapper:not(.contains-unread) .bundle-image img {
 
 /* Calendar attachments */
 body.dark-mode .calendar-attachment .event-time {
-  color: #c7c7c7 !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 /* Time stamps */
 body.dark-mode .time {
-  color: #c7c7c7 !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 /* ========================================
@@ -3055,43 +3069,43 @@ body.dark-mode .time {
 
 /* Main toolbar container - force dark background and borders */
 body.dark-mode .D.E.G-atb {
-  background: #141414 !important;
-  border-bottom-color: #141414 !important;
-  border-left-color: #141414 !important;
-  border-right-color: #141414 !important;
-  border-top-color: #141414 !important;
-  border-color: #141414 !important;
+  background: var(--dm-bg) !important;
+  border-bottom-color: var(--dm-bg) !important;
+  border-left-color: var(--dm-bg) !important;
+  border-right-color: var(--dm-bg) !important;
+  border-top-color: var(--dm-bg) !important;
+  border-color: var(--dm-bg) !important;
 }
 
 /* Override any inline border styles on main toolbar */
 body.dark-mode .D.E.G-atb[style*='border'] {
-  border-bottom-color: #141414 !important;
-  border-left-color: #141414 !important;
-  border-right-color: #141414 !important;
-  border-top-color: #141414 !important;
-  border-color: #141414 !important;
+  border-bottom-color: var(--dm-bg) !important;
+  border-left-color: var(--dm-bg) !important;
+  border-right-color: var(--dm-bg) !important;
+  border-top-color: var(--dm-bg) !important;
+  border-color: var(--dm-bg) !important;
 }
 
 /* Force all toolbar elements to have dark borders */
 body.dark-mode .D.E.G-atb *,
 body.dark-mode .Cr.aqJ *,
 body.dark-mode .nH.aqK * {
-  border-color: #141414 !important;
-  border-bottom-color: #141414 !important;
-  border-left-color: #141414 !important;
-  border-right-color: #141414 !important;
-  border-top-color: #141414 !important;
+  border-color: var(--dm-bg) !important;
+  border-bottom-color: var(--dm-bg) !important;
+  border-left-color: var(--dm-bg) !important;
+  border-right-color: var(--dm-bg) !important;
+  border-top-color: var(--dm-bg) !important;
 }
 
 /* Override any inline styles on toolbar elements */
 body.dark-mode .D.E.G-atb *[style*='border'],
 body.dark-mode .Cr.aqJ *[style*='border'],
 body.dark-mode .nH.aqK *[style*='border'] {
-  border-color: #141414 !important;
-  border-bottom-color: #141414 !important;
-  border-left-color: #141414 !important;
-  border-right-color: #141414 !important;
-  border-top-color: #141414 !important;
+  border-color: var(--dm-bg) !important;
+  border-bottom-color: var(--dm-bg) !important;
+  border-left-color: var(--dm-bg) !important;
+  border-right-color: var(--dm-bg) !important;
+  border-top-color: var(--dm-bg) !important;
 }
 
 /* Nuclear option: Force all #444 colors to #141414 in toolbar area */
@@ -3099,18 +3113,18 @@ body.dark-mode .D.E.G-atb,
 body.dark-mode .D.E.G-atb *,
 body.dark-mode .nH.aqK:not(.Cr.aqJ .nH.aqK),
 body.dark-mode .nH.aqK:not(.Cr.aqJ .nH.aqK) * {
-  border-color: #141414 !important;
-  border-bottom-color: #141414 !important;
-  border-left-color: #141414 !important;
-  border-right-color: #141414 !important;
-  border-top-color: #141414 !important;
-  background-color: #141414 !important;
+  border-color: var(--dm-bg) !important;
+  border-bottom-color: var(--dm-bg) !important;
+  border-left-color: var(--dm-bg) !important;
+  border-right-color: var(--dm-bg) !important;
+  border-top-color: var(--dm-bg) !important;
+  background-color: var(--dm-bg) !important;
 }
 
 /* Additional toolbar elements that needed border fixes */
 body.dark-mode .Q3 {
-  background-color: #252526 !important;
-  border-bottom: 1px solid #141414 !important;
+  background-color: var(--dm-surface) !important;
+  border-bottom: 1px solid var(--dm-bg) !important;
 }
 
 /* Removed conflicting rule - search window should use Google's default styling */
@@ -3125,65 +3139,65 @@ body.dark .Hp {
 body.dark-mode .AO * {
   background-color: transparent !important;
   color: #e0e0e0 !important;
-  border-color: #141414 !important;
+  border-color: var(--dm-bg) !important;
 }
 
 /* Toolbar specific elements - only for main email list, not opened email view */
 body.dark-mode .nH.aqK:not(.Cr.aqJ .nH.aqK) {
-  background: #141414 !important;
+  background: var(--dm-bg) !important;
 }
 
 body.dark-mode .Cq.aqL {
-  background: #141414 !important;
+  background: var(--dm-bg) !important;
 }
 
 body.dark-mode .bzn {
-  background: #141414 !important;
+  background: var(--dm-bg) !important;
 }
 
 body.dark-mode .G-tF {
-  background: #141414 !important;
+  background: var(--dm-bg) !important;
 }
 
 body.dark-mode .G-Ni {
-  background: #141414 !important;
+  background: var(--dm-bg) !important;
 }
 
 /* Pagination controls */
 body.dark-mode .ar5 {
-  background: #141414 !important;
-  background-color: #141414 !important;
+  background: var(--dm-bg) !important;
+  background-color: var(--dm-bg) !important;
 }
 
 body.dark-mode .Di {
-  background: #141414 !important;
-  background-color: #141414 !important;
+  background: var(--dm-bg) !important;
+  background-color: var(--dm-bg) !important;
 }
 
 body.dark-mode .amH {
-  background: #141414 !important;
-  background-color: #141414 !important;
+  background: var(--dm-bg) !important;
+  background-color: var(--dm-bg) !important;
 }
 
 body.dark-mode .amD {
-  background: #141414 !important;
-  background-color: #141414 !important;
+  background: var(--dm-bg) !important;
+  background-color: var(--dm-bg) !important;
 }
 
 body.dark-mode .amG {
-  background: #141414 !important;
-  background-color: #141414 !important;
+  background: var(--dm-bg) !important;
+  background-color: var(--dm-bg) !important;
 }
 
 /* Additional pagination elements */
 body.dark-mode .Dj {
-  background: #141414 !important;
-  background-color: #141414 !important;
+  background: var(--dm-bg) !important;
+  background-color: var(--dm-bg) !important;
 }
 
 body.dark-mode .ts {
-  background: #141414 !important;
-  background-color: #141414 !important;
+  background: var(--dm-bg) !important;
+  background-color: var(--dm-bg) !important;
 }
 
 /* Search bar - match light mode styling but adapted for dark mode */
@@ -3210,7 +3224,7 @@ body.dark-mode .ar8.T-I-J3.J-J5-Ji {
 
 /* QUICK SETTINGS PANEL */
 body.dark-mode .IU {
-  background-color: #141414 !important;
+  background-color: var(--dm-bg) !important;
 }
 
 body.dark-mode .IU .VO,
@@ -3225,12 +3239,12 @@ body.dark-mode .IU .ST {
 }
 
 body.dark-mode fieldset.VM.aiL {
-  background-color: #252526 !important;
+  background-color: var(--dm-surface) !important;
 }
 
 body.dark-mode .IU .OD,
 body.dark-mode .IU .Tj {
-  color: #8ab4f8 !important;
+  color: var(--dm-accent) !important;
 }
 
 body.dark-mode .nH.fY [role='presentation'] a.f0 {
@@ -3239,12 +3253,12 @@ body.dark-mode .nH.fY [role='presentation'] a.f0 {
 }
 
 body.dark-mode .nH.fY [role='presentation'] a.f0:hover {
-  color: #8ab4f8 !important;
+  color: var(--dm-accent) !important;
 }
 
 body.dark-mode .nH.fY [role='presentation'] a.f0[aria-selected='true'] {
-  color: #8ab4f8 !important;
-  border-bottom: 2px solid #8ab4f8 !important;
+  color: var(--dm-accent) !important;
+  border-bottom: 2px solid var(--dm-accent) !important;
 }
 
 /* EMAIL VIEWER */
@@ -3253,7 +3267,7 @@ body.dark-mode .AO {
 }
 
 body.dark-mode .AO a {
-  color: #8ab4f8 !important;
+  color: var(--dm-accent) !important;
 }
 
 /* LABELS AND CHIPS */
@@ -3298,13 +3312,13 @@ body.dark-mode .aj5 .J-KU,
 body.dark-mode .aj5.J-KU-Jg,
 body.dark-mode .aKh,
 body.dark-mode .aRs {
-  background: #2a2a2a !important;
+  background: var(--dm-surface) !important;
 }
 
 body.dark-mode .zA,
 body.dark-mode .zA:hover,
 body.dark-mode .Bs.nH.iY.bAt {
-  background: #2a2a2a !important;
+  background: var(--dm-surface) !important;
   color: #fff !important;
 }
 
@@ -3318,7 +3332,7 @@ body.dark-mode .TO.nZ .nU > .n0,
 body.dark-mode .ah9 > .CJ,
 body.dark-mode .n3 > .CL > .CK,
 body.dark-mode .aAv {
-  color: #c7c7c7 !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 body.dark-mode .TO.nZ .n0 {
@@ -3326,11 +3340,11 @@ body.dark-mode .TO.nZ .n0 {
 }
 
 body.dark-mode .TO .n0 {
-  color: #c7c7c7 !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 body.dark-mode .brc {
-  background-color: #3b3b3b !important;
+  background-color: var(--dm-hover) !important;
   color: #fff !important;
   box-shadow:
     0 0 1px rgb(0 0 0 / 31%),
@@ -3342,23 +3356,23 @@ body.dark-mode .bundle-senders {
 }
 
 body.dark-mode .bundle-wrapper .label-link .bundle-count {
-  color: #c7c7c7 !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 body.dark-mode .calendar-attachment .event-time {
-  color: #c7c7c7 !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 body.dark-mode .time {
-  color: #c7c7c7 !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 body.dark-mode .nH.bkK.nn + .nH.nn {
-  background-color: #3b3b3b !important;
+  background-color: var(--dm-hover) !important;
 }
 
 body.dark-mode .IU {
-  background-color: #3b3b3b !important;
+  background-color: var(--dm-hover) !important;
 }
 
 body.dark-mode .wT > .n3 .byl:first-child .aim:first-child .nZ {
@@ -3369,57 +3383,59 @@ body.dark-mode .wT > .n3 .byl:first-child .aim:first-child .nZ {
    EMAIL VIEWS - DARK MODE STYLING
    ======================================== */
 
-/* Email content area - match Gmail's official dark mode behavior */
+/* Email content area - dark reading pane (emails with their own inline
+   backgrounds, e.g. HTML newsletters, keep them) */
 body.dark-mode .nH.a98.iY.aHo {
-  background: #fff !important; /* Email content stays white like Gmail */
-  background-color: #fff !important;
+  background: var(--dm-surface) !important;
+  background-color: var(--dm-surface) !important;
 }
 
-/* Email content text colors - match Gmail's white email content */
+/* Email content text colors - light text on dark surface */
 body.dark-mode .nH.a98.iY.aHo * {
-  color: #202124 !important; /* Dark text on white background like Gmail */
+  color: #e8eaed !important;
 }
 
-/* Email header elements - dark text on white background */
+/* Email header elements - light text on dark surface */
 body.dark-mode .nH.a98.iY.aHo .hP {
-  color: #202124 !important; /* Subject line - dark text */
+  color: #fff !important; /* Subject line */
 }
 
 body.dark-mode .nH.a98.iY.aHo .gD {
-  color: #202124 !important; /* Sender name - dark text */
+  color: #fff !important; /* Sender name */
 }
 
 body.dark-mode .nH.a98.iY.aHo .aXjCH {
-  color: #5f6368 !important; /* Timestamp - medium grey text */
+  color: var(--dm-text-muted) !important; /* Timestamp - medium grey text */
 }
 
 /* Email action buttons/icons - dark text on white background */
 body.dark-mode .nH.a98.iY.aHo .T-I {
-  color: #5f6368 !important; /* Action icons - medium grey */
+  color: var(--dm-text-muted) !important; /* Action icons - medium grey */
 }
 
-/* Schedule send menu item - white background */
+/* Schedule send menu item */
 body.dark-mode .nH.a98.iY.aHo .J-N.yr {
-  background-color: #fff !important;
-  color: #202124 !important; /* Dark text on white background */
+  background-color: var(--dm-surface-raised) !important;
+  color: #e8eaed !important;
 }
 
 body.dark-mode .nH.a98.iY.aHo .T-I:hover {
-  color: #202124 !important; /* Darker on hover */
+  color: #fff !important; /* Brighter on hover */
 }
 
-/* Email body content - dark text on white background */
+/* Email body content - light default text (inline email styles still win
+   inside messages that bring their own colors) */
 body.dark-mode .nH.a98.iY.aHo .a3s {
-  color: #202124 !important; /* Email body text - dark text */
+  color: #e8eaed !important;
 }
 
-/* Links in email - Gmail's standard link colors */
+/* Links in email */
 body.dark-mode .nH.a98.iY.aHo a {
-  color: #1a73e8 !important; /* Gmail's standard blue for light background */
+  color: var(--dm-accent) !important;
 }
 
 body.dark-mode .nH.a98.iY.aHo a:hover {
-  color: #174ea6 !important; /* Darker blue on hover */
+  color: #62abf5 !important; /* Lighter blue on hover */
 }
 
 /* Reply/Forward/Send buttons - target reply/forward/send buttons */
@@ -3427,12 +3443,12 @@ body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7[aria-label='Reply'],
 body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7[aria-label='Forward'],
 body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7[aria-label='Send'],
 body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7[aria-label='More send options'] {
-  color: #202124 !important; /* Dark text for light button background */
-  background-color: #fff !important;
-  border: 1px solid #202124 !important; /* Black border for reply/forward/send buttons */
+  color: #e8eaed !important;
+  background-color: var(--dm-surface-raised) !important;
+  border: 1px solid var(--dm-border-muted) !important;
   border-width: 1px !important;
   border-style: solid !important;
-  border-color: #202124 !important;
+  border-color: var(--dm-border-muted) !important;
   border-image: none !important;
   outline: none !important;
   box-shadow: none !important;
@@ -3447,10 +3463,10 @@ body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7.aaq[aria-label='Reply'] {
   border-image: none !important;
 }
 
-/* Set white background for older messages button */
+/* Older messages button */
 body.dark-mode .nH.a98.iY.aHo .adx {
-  background-color: #fff !important;
-  color: #202124 !important; /* Dark text for contrast */
+  background-color: var(--dm-surface-raised) !important;
+  color: #e8eaed !important;
 }
 
 /* Remove borders from action icons (reactions, etc.) */
@@ -3477,8 +3493,8 @@ body.dark-mode .nH.a98.iY.aHo .T-I:not(.J-J5-Ji) .T-I-J3 {
 }
 
 body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7:hover {
-  color: #202124 !important;
-  background-color: #f8f9fa !important;
+  color: #fff !important;
+  background-color: var(--dm-hover) !important;
 }
 
 /* Send+ button - blue styling for reply/compose */
@@ -3489,8 +3505,8 @@ body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*='send & archive'],
 body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[data-tooltip*='Send and archive'],
 body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[data-tooltip*='Send & archive'] {
   color: #fff !important; /* White text on blue background */
-  background-color: #1a73e8 !important; /* Gmail's blue for Send+ */
-  border: 1px solid #1a73e8 !important;
+  background-color: var(--dm-accent-strong) !important;
+  border: 1px solid var(--dm-accent-strong) !important;
   background-image: none !important;
 }
 
@@ -3507,9 +3523,9 @@ body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[data-tooltip*='send & archive']:hover
 
 /* Email header dropdown menu - target specific class */
 body.dark-mode .nH.a98.iY.aHo .ajA.SK {
-  background-color: #2a2a2a !important;
+  background-color: var(--dm-surface) !important;
   color: #e8eaed !important;
-  border: 1px solid #5f6368 !important;
+  border: 1px solid var(--dm-border-muted) !important;
   box-shadow: 0 2px 10px rgb(0 0 0 / 30%) !important;
 }
 
@@ -3520,12 +3536,12 @@ body.dark-mode .nH.a98.iY.aHo .ajA.SK * {
 
 /* Dropdown menu item hover states */
 body.dark-mode .nH.a98.iY.aHo .ajA.SK div:hover {
-  background-color: #3c4043 !important;
+  background-color: var(--dm-hover) !important;
 }
 
 /* Links in dropdown */
 body.dark-mode .nH.a98.iY.aHo .ajA.SK a {
-  color: #8ab4f8 !important;
+  color: var(--dm-accent) !important;
 }
 
 body.dark-mode .nH.a98.iY.aHo .ajA.SK a:hover {
@@ -3604,30 +3620,30 @@ body.dark-mode .nH.a98.iY.aHo .T-I:not(.J-J5-Ji):hover {
 
 /* Email list container background */
 body.dark-mode .nH.ar4.z {
-  background: #141414 !important;
+  background: var(--dm-bg) !important;
 }
 
 /* Email list container - overall background */
 body.dark-mode .wT {
-  background-color: #4c4c4c !important;
+  background-color: var(--dm-selected) !important;
 }
 
 /* Individual email rows in the list */
 body.dark-mode .zA,
 body.dark-mode .zA:hover,
 body.dark-mode .Bs.nH.iY.bAt {
-  background: #141414 !important;
+  background: var(--dm-bg) !important;
   color: #fff !important;
 }
 
 /* Email list scrollable area */
 body.dark-mode .nH .AO .aeF {
-  background: #141414 !important;
+  background: var(--dm-bg) !important;
 }
 
 /* Email list container */
 body.dark-mode .nH .AO {
-  background: #141414 !important;
+  background: var(--dm-bg) !important;
 }
 
 body.dark-mode .bundle-wrapper:not(.contains-unread) .bundle-image img {
@@ -3655,7 +3671,7 @@ body.dark-mode [data-tooltip='Categories'] .aEc.aHS-bnr .qj {
   mask-repeat: no-repeat !important;
   -webkit-mask-position: center !important;
   mask-position: center !important;
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
   background-image: none !important;
 }
 
@@ -3670,7 +3686,7 @@ body.dark-mode [data-tooltip='Categories'] .aEc.aHS-bnr .qj {
     mask-repeat: no-repeat !important;
     -webkit-mask-position: center !important;
     mask-position: center !important;
-    background-color: #9f9f9f !important;
+    background-color: var(--dm-text-muted) !important;
     background-image: none !important;
   }
 }
@@ -3685,13 +3701,13 @@ body.dark-mode .G4,
 body.dark-mode .GR,
 body.dark-mode div[aria-label='Inbox tip'] {
   box-shadow:
-    0 -1px 0 #3b3b3b,
+    0 -1px 0 var(--dm-hover),
     0 0 2px rgb(0 0 0 / 32%),
     0 2px 4px rgb(0 0 0 / 44%) !important;
 }
 
 body.dark-mode .D.E.G-atb {
-  background: #141414 !important;
+  background: var(--dm-bg) !important;
 }
 
 body.dark-mode .nH > .ha > .J-J5-Ji,
@@ -3701,54 +3717,54 @@ body.dark-mode .iw > .qu > .go {
 }
 
 body.dark-mode .aTV {
-  border-color: transparent transparent #3b3b3b #3b3b3b !important;
+  border-color: transparent transparent var(--dm-hover) var(--dm-hover) !important;
 }
 
 body.dark-mode .nH.aqK {
-  background: #141414 !important;
+  background: var(--dm-bg) !important;
 }
 
 body.dark-mode .no {
-  background-color: #141414 !important;
+  background-color: var(--dm-bg) !important;
 }
 
 body.dark-mode .aB6,
 body.dark-mode .bn .bl {
-  background-color: #2a2a2a !important;
+  background-color: var(--dm-surface) !important;
 }
 
 body.dark-mode .aBO {
-  background-color: #2a2a2a !important;
+  background-color: var(--dm-surface) !important;
 }
 
 body.dark-mode .bzJiD,
 body.dark-mode .vIO7af {
-  background: #2a2a2a !important;
+  background: var(--dm-surface) !important;
 }
 
 body.dark-mode .ar4.z .TD > .TC {
-  background-color: #141414 !important;
+  background-color: var(--dm-bg) !important;
 }
 
 body.dark-mode .nH.bkK.nn + .nH.nn {
-  background-color: #3b3b3b !important;
+  background-color: var(--dm-hover) !important;
 }
 
 body.dark-mode [aria-label='Hangouts'][role='complementary'] {
-  background-color: #2a2a2a !important;
+  background-color: var(--dm-surface) !important;
 }
 
 body.dark-mode .nH.bAw.nn {
-  background-color: #141414 !important;
+  background-color: var(--dm-bg) !important;
 }
 
 body.dark-mode .bAw.bcf {
-  background-color: #141414 !important;
+  background-color: var(--dm-bg) !important;
 }
 
 body.dark-mode .Tm.aeJ {
-  background-color: #141414 !important;
-  background: #141414 !important;
+  background-color: var(--dm-bg) !important;
+  background: var(--dm-bg) !important;
 }
 
 /* Email view scrollbar styling */
@@ -3766,7 +3782,7 @@ body.dark-mode .Tm.aeJ::-webkit-scrollbar-track {
 }
 
 body.dark-mode .Tm.aeJ::-webkit-scrollbar-thumb {
-  background-color: #141414 !important;
+  background-color: var(--dm-bg) !important;
   border-radius: 4px !important;
   border: none !important;
   outline: none !important;
@@ -3774,22 +3790,22 @@ body.dark-mode .Tm.aeJ::-webkit-scrollbar-thumb {
 }
 
 body.dark-mode .Tm.aeJ:hover::-webkit-scrollbar-thumb {
-  background-color: #323232 !important;
+  background-color: var(--dm-surface-raised) !important;
 }
 
 body.dark-mode .Tm.aeJ::-webkit-scrollbar-thumb:hover {
-  background-color: #323232 !important;
+  background-color: var(--dm-surface-raised) !important;
 }
 
 /* Firefox scrollbar styling */
 @-moz-document url-prefix() {
   body.dark-mode .Tm.aeJ {
     scrollbar-width: thin !important;
-    scrollbar-color: #141414 transparent !important;
+    scrollbar-color: var(--dm-bg) transparent !important;
   }
 
   body.dark-mode .Tm.aeJ:hover {
-    scrollbar-color: #323232 transparent !important;
+    scrollbar-color: var(--dm-surface-raised) transparent !important;
   }
 }
 
@@ -3812,7 +3828,7 @@ body.dark-mode .aeF::-webkit-scrollbar-thumb {
 
 body.dark-mode .aeF:hover::-webkit-scrollbar-thumb,
 body.dark-mode .aeF:active::-webkit-scrollbar-thumb {
-  background: #323232 !important;
+  background: var(--dm-surface-raised) !important;
 }
 
 body.dark-mode .aeF:not(:hover)::-webkit-scrollbar-thumb {
@@ -3828,7 +3844,7 @@ body.dark-mode .aeF:not(:hover)::-webkit-scrollbar-thumb {
   }
 
   body.dark-mode .aeF:hover {
-    scrollbar-color: #323232 transparent !important;
+    scrollbar-color: var(--dm-surface-raised) transparent !important;
   }
 
   body.dark-mode .aeF:not(:hover) {
@@ -3856,7 +3872,7 @@ body.dark-mode .wT:hover::-webkit-scrollbar-thumb,
 body.dark-mode .wT:active::-webkit-scrollbar-thumb,
 body.dark-mode .nH .AO:hover::-webkit-scrollbar-thumb,
 body.dark-mode .nH .AO:active::-webkit-scrollbar-thumb {
-  background: #323232 !important;
+  background: var(--dm-surface-raised) !important;
 }
 
 body.dark-mode .wT:not(:hover)::-webkit-scrollbar-thumb,
@@ -3873,7 +3889,7 @@ body.dark-mode .nH .AO {
 
 body.dark-mode .wT:hover,
 body.dark-mode .nH .AO:hover {
-  scrollbar-color: #323232 transparent !important;
+  scrollbar-color: var(--dm-surface-raised) transparent !important;
 }
 
 body.dark-mode .wT:not(:hover),
@@ -3884,8 +3900,8 @@ body.dark-mode .nH .AO:not(:hover) {
 /* Force Chrome scrollbar colors with higher specificity */
 body.dark-mode .wT::-webkit-scrollbar-thumb,
 body.dark-mode .nH .AO::-webkit-scrollbar-thumb {
-  background-color: #323232 !important;
-  background: #323232 !important;
+  background-color: var(--dm-surface-raised) !important;
+  background: var(--dm-surface-raised) !important;
 }
 
 /* Override any default scrollbar colors */
@@ -3906,7 +3922,7 @@ body.dark-mode .nH .AO::-webkit-scrollbar {
 
   body.dark-mode .wT:hover,
   body.dark-mode .nH .AO:hover {
-    scrollbar-color: #323232 transparent !important;
+    scrollbar-color: var(--dm-surface-raised) transparent !important;
   }
 
   body.dark-mode .wT:not(:hover),
@@ -3962,13 +3978,13 @@ body.dark-mode .nH .AO::-webkit-scrollbar {
 }
 
 body.dark-mode .nH.ar4.C {
-  background-color: #141414 !important;
-  background: #141414 !important;
+  background-color: var(--dm-bg) !important;
+  background: var(--dm-bg) !important;
 }
 
 body.dark-mode .aUx {
-  background-color: #141414 !important;
-  background: #141414 !important;
+  background-color: var(--dm-bg) !important;
+  background: var(--dm-bg) !important;
 }
 
 /* Email row backgrounds - different colors for read vs unread */
@@ -3978,17 +3994,17 @@ body.dark-mode .aUx {
 /* Dark mode email styling - match light mode behavior exactly */
 body.dark-mode .zA {
   color: #e8eaed !important; /* Lighter text for better contrast */
-  background: #232323 !important; /* Dark background for read emails */
+  background: var(--dm-surface) !important; /* Dark background for read emails */
 }
 
 /* Unread emails - same background as light mode but darker */
 body.dark-mode .zA.zE {
-  background: #383838 !important; /* Darker background for unread emails */
+  background: var(--dm-hover) !important; /* Darker background for unread emails */
 }
 
 /* Hover state - same as light mode */
 body.dark-mode .zA:hover {
-  background: #2a2a2a !important; /* Slightly lighter on hover */
+  background: var(--dm-surface) !important; /* Slightly lighter on hover */
 }
 
 /* Removed duplicate rule - consolidated above */
@@ -4028,16 +4044,16 @@ body.dark-mode .zA .apU.xY .T-KT.xl::before {
 }
 
 body.dark-mode .brc {
-  background-color: #3b3b3b !important;
+  background-color: var(--dm-hover) !important;
   color: #fff !important;
 }
 
 body.dark-mode .calendar-attachment .event-time {
-  color: #c7c7c7 !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 body.dark-mode .bundle-wrapper .label-link .bundle-count {
-  color: #c7c7c7 !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 body.dark-mode .bundle-senders {
@@ -4072,7 +4088,7 @@ body.dark-mode .Yc {
 body.dark-mode .aHS-bnr .qj,
 body.dark-mode .aEc.aHS-bnr .qj,
 body.dark-mode .aEe {
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
   -webkit-mask-size: 20px !important;
@@ -4086,7 +4102,7 @@ body.dark-mode .aEe {
 
 /* Dark mode overrides for specific icons - use #9f9f9f with proper mask-image to prevent Google icons showing through */
 body.dark-mode .aHS-bnu .qj {
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -4099,7 +4115,7 @@ body.dark-mode .aHS-bnu .qj {
 }
 
 body.dark-mode .aHS-bnq .qj {
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -4112,7 +4128,7 @@ body.dark-mode .aHS-bnq .qj {
 }
 
 body.dark-mode .aHS-aHO .qj {
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -4125,7 +4141,7 @@ body.dark-mode .aHS-aHO .qj {
 }
 
 body.dark-mode .aHS-bnx .qj {
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -4138,7 +4154,7 @@ body.dark-mode .aHS-bnx .qj {
 }
 
 body.dark-mode .aHS-bnv .qj {
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -4151,7 +4167,7 @@ body.dark-mode .aHS-bnv .qj {
 }
 
 body.dark-mode .aHS-bns .qj {
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
   -webkit-mask-size: 20px !important;
@@ -4164,7 +4180,7 @@ body.dark-mode .aHS-bns .qj {
 }
 
 body.dark-mode .aHS-nd .qj {
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_schedule_send_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_schedule_send_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
   -webkit-mask-size: 20px !important;
@@ -4177,7 +4193,7 @@ body.dark-mode .aHS-nd .qj {
 }
 
 body.dark-mode .aHS-aHP .qj {
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_chat_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_chat_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
   -webkit-mask-size: 20px !important;
@@ -4190,7 +4206,7 @@ body.dark-mode .aHS-aHP .qj {
 }
 
 body.dark-mode [data-tooltip='Categories'] .qj {
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -4203,7 +4219,7 @@ body.dark-mode [data-tooltip='Categories'] .qj {
 }
 
 body.dark-mode [data-tooltip='Social'] .qj {
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -4216,7 +4232,7 @@ body.dark-mode [data-tooltip='Social'] .qj {
 }
 
 body.dark-mode [data-tooltip='Updates'] .qj {
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -4229,7 +4245,7 @@ body.dark-mode [data-tooltip='Updates'] .qj {
 }
 
 body.dark-mode [data-tooltip='Forums'] .qj {
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -4242,7 +4258,7 @@ body.dark-mode [data-tooltip='Forums'] .qj {
 }
 
 body.dark-mode [data-tooltip='Promotions'] .qj {
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -4257,7 +4273,7 @@ body.dark-mode [data-tooltip='Promotions'] .qj {
 /* Firefox-specific dark mode overrides for all icons */
 @-moz-document url-prefix() {
   body.dark-mode .aHS-bnu .qj {
-    background-color: #9f9f9f !important;
+    background-color: var(--dm-text-muted) !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
@@ -4270,7 +4286,7 @@ body.dark-mode [data-tooltip='Promotions'] .qj {
   }
 
   body.dark-mode .aHS-bnq .qj {
-    background-color: #9f9f9f !important;
+    background-color: var(--dm-text-muted) !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
@@ -4283,7 +4299,7 @@ body.dark-mode [data-tooltip='Promotions'] .qj {
   }
 
   body.dark-mode .aHS-aHO .qj {
-    background-color: #9f9f9f !important;
+    background-color: var(--dm-text-muted) !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
@@ -4296,7 +4312,7 @@ body.dark-mode [data-tooltip='Promotions'] .qj {
   }
 
   body.dark-mode .aHS-bnx .qj {
-    background-color: #9f9f9f !important;
+    background-color: var(--dm-text-muted) !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
@@ -4309,7 +4325,7 @@ body.dark-mode [data-tooltip='Promotions'] .qj {
   }
 
   body.dark-mode .aHS-bnv .qj {
-    background-color: #9f9f9f !important;
+    background-color: var(--dm-text-muted) !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
@@ -4322,7 +4338,7 @@ body.dark-mode [data-tooltip='Promotions'] .qj {
   }
 
   body.dark-mode .aHS-bns .qj {
-    background-color: #9f9f9f !important;
+    background-color: var(--dm-text-muted) !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
     -webkit-mask-size: 20px !important;
@@ -4350,7 +4366,7 @@ body.dark-mode [data-tooltip='Promotions'] .qj {
   }
 
   body.dark-mode .aHS-nd .qj {
-    background-color: #9f9f9f !important;
+    background-color: var(--dm-text-muted) !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_schedule_send_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_schedule_send_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
     -webkit-mask-size: 20px !important;
@@ -4363,7 +4379,7 @@ body.dark-mode [data-tooltip='Promotions'] .qj {
   }
 
   body.dark-mode .aHS-aHP .qj {
-    background-color: #9f9f9f !important;
+    background-color: var(--dm-text-muted) !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_chat_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_chat_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
     -webkit-mask-size: 20px !important;
@@ -4379,7 +4395,7 @@ body.dark-mode [data-tooltip='Promotions'] .qj {
   body.dark-mode .aHS-bnr .qj,
   body.dark-mode .aEc.aHS-bnr .qj,
   body.dark-mode .aEe {
-    background-color: #9f9f9f !important;
+    background-color: var(--dm-text-muted) !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
     -webkit-mask-size: 20px !important;
@@ -4392,7 +4408,7 @@ body.dark-mode [data-tooltip='Promotions'] .qj {
   }
 
   body.dark-mode [data-tooltip='Categories'] .qj {
-    background-color: #9f9f9f !important;
+    background-color: var(--dm-text-muted) !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
@@ -4405,7 +4421,7 @@ body.dark-mode [data-tooltip='Promotions'] .qj {
   }
 
   body.dark-mode [data-tooltip='Social'] .qj {
-    background-color: #9f9f9f !important;
+    background-color: var(--dm-text-muted) !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
@@ -4418,7 +4434,7 @@ body.dark-mode [data-tooltip='Promotions'] .qj {
   }
 
   body.dark-mode [data-tooltip='Updates'] .qj {
-    background-color: #9f9f9f !important;
+    background-color: var(--dm-text-muted) !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
@@ -4431,7 +4447,7 @@ body.dark-mode [data-tooltip='Promotions'] .qj {
   }
 
   body.dark-mode [data-tooltip='Forums'] .qj {
-    background-color: #9f9f9f !important;
+    background-color: var(--dm-text-muted) !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
@@ -4444,7 +4460,7 @@ body.dark-mode [data-tooltip='Promotions'] .qj {
   }
 
   body.dark-mode [data-tooltip='Promotions'] .qj {
-    background-color: #9f9f9f !important;
+    background-color: var(--dm-text-muted) !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
@@ -4464,13 +4480,13 @@ body.dark-mode .wT > .n3 .byl:first-child .aim:first-child .nZ {
 body.dark-mode .aKk > tbody,
 .body.dark-mode .aAA,
 .body.dark-mode .aRz.J-KU {
-  background: #2a2a2a !important;
+  background: var(--dm-surface) !important;
 }
 
 /* Dark mode: highlight active sidebar menu item */
 body.dark-mode .TO.nZ {
   /* slightly lighter row for active state */
-  background-color: #383838 !important;
+  background-color: var(--dm-hover) !important;
 }
 
 /* Ensure the label text on the active row stays fully white */
@@ -4487,7 +4503,7 @@ body.dark-mode .G4,
 body.dark-mode .GR,
 body.dark-mode div[aria-label='Inbox tip'] {
   box-shadow:
-    0 -1px 0 #3b3b3b,
+    0 -1px 0 var(--dm-hover),
     0 0 2px rgb(0 0 0 / 32%),
     0 2px 4px rgb(0 0 0 / 44%) !important;
 }
@@ -4595,12 +4611,12 @@ body.dark-mode .vN {
 
 /* Make "Draft saved" text visible */
 body.dark-mode .aYF {
-  color: #8ab4f8 !important;
+  color: var(--dm-accent) !important;
 }
 
 /* Make toolbar dividers visible */
 body.dark-mode .oc {
-  border-color: #444 !important;
+  border-color: var(--dm-selected) !important;
 }
 
 /* Make dropdown menus readable - removed black background */
@@ -4609,7 +4625,7 @@ body.dark-mode .oc {
 
 /* Dark Mode Quick Settings Panel Fix */
 body.dark-mode .IU {
-  background-color: #141414 !important;
+  background-color: var(--dm-bg) !important;
 }
 
 /* Headers like "Quick settings", "Density", "Apps in Gmail" */
@@ -4627,13 +4643,13 @@ body.dark-mode .IU .ST   /* Checkbox labels */ {
 
 /* The container for each section */
 body.dark-mode fieldset.VM.aiL {
-  background-color: #252526 !important;
+  background-color: var(--dm-surface) !important;
 }
 
 /* Links like "Customize" and "View All" */
 body.dark-mode .IU .OD,
 body.dark-mode .IU .Tj {
-  color: #8ab4f8 !important;
+  color: var(--dm-accent) !important;
 }
 
 /* Invert icons and previews */
@@ -4656,7 +4672,7 @@ body.dark-mode .IU .Vo {
 }
 
 body.dark-mode .IU .Q1:checked + .Vo {
-  border-color: #8ab4f8 !important;
+  border-color: var(--dm-accent) !important;
 }
 
 body.dark-mode .IU .Q1:checked + .Vo::after {
@@ -4668,7 +4684,7 @@ body.dark-mode .IU .Q1:checked + .Vo::after {
   top: 2px;
   left: 2px;
   border-radius: 50%;
-  background-color: #8ab4f8 !important;
+  background-color: var(--dm-accent-surface) !important;
 }
 
 /* Checkbox Styling */
@@ -4677,13 +4693,13 @@ body.dark-mode .IU .SS + .ST::before {
 }
 
 body.dark-mode .IU .SS:checked + .ST::before {
-  background-color: #8ab4f8 !important;
-  border-color: #8ab4f8 !important;
+  background-color: var(--dm-accent-surface) !important;
+  border-color: var(--dm-accent) !important;
 }
 
 body.dark-mode .IU .SS:checked + .ST::after {
-  border-bottom: 2px solid #252526 !important;
-  border-right: 2px solid #252526 !important;
+  border-bottom: 2px solid var(--dm-surface) !important;
+  border-right: 2px solid var(--dm-surface) !important;
 }
 
 /* Remove the boxes around the radio button options */
@@ -4704,7 +4720,7 @@ body.dark-mode .IU .XK {
 /* Add a blue border to the selected image to indicate selection */
 body.dark-mode .IU input:checked ~ img {
   border-radius: 6px !important;
-  border: 2px solid #8ab4f8 !important;
+  border: 2px solid var(--dm-accent) !important;
 }
 
 /* Ensure the text part of a selected row has no special background or border */
@@ -4714,7 +4730,7 @@ body.dark-mode .IU input:checked ~ div {
 }
 
 body.dark-mode .IU .Q1:checked + .Vo {
-  border-color: #8ab4f8 !important;
+  border-color: var(--dm-accent) !important;
 }
 
 /* --- Final Attempt: Force remove borders from option labels --- */
@@ -4742,7 +4758,7 @@ body.dark-mode .Q1:checked + .Vo::after {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: #8ab4f8 !important;
+  background-color: var(--dm-accent-surface) !important;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -4780,7 +4796,7 @@ body.dark-mode .Q1:checked + .Vo::after {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: #8ab4f8 !important;
+  background-color: var(--dm-accent-surface) !important;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -4795,12 +4811,12 @@ body.dark-mode .nH.fY [role='presentation'] a.f0 {
 }
 
 body.dark-mode .nH.fY [role='presentation'] a.f0:hover {
-  color: #8ab4f8 !important;
+  color: var(--dm-accent) !important;
 }
 
 body.dark-mode .nH.fY [role='presentation'] a.f0[aria-selected='true'] {
-  color: #8ab4f8 !important;
-  border-bottom: 2px solid #8ab4f8 !important;
+  color: var(--dm-accent) !important;
+  border-bottom: 2px solid var(--dm-accent) !important;
 }
 
 body.dark-mode .nH.fY [role='presentation'] {
@@ -4809,7 +4825,7 @@ body.dark-mode .nH.fY [role='presentation'] {
 
 /* Dark Mode Theme Selection Dialog Styling */
 body.dark-mode .uW2Fw-bHo {
-  background-color: #252526 !important;
+  background-color: var(--dm-surface) !important;
   color: #e0e0e0 !important;
 }
 
@@ -4820,8 +4836,8 @@ body.dark-mode .uW2Fw-bHo .cER4xe {
 
 /* Theme preview containers */
 body.dark-mode .uW2Fw-bHo .a7H {
-  background-color: #141414 !important;
-  border: 1px solid #444 !important;
+  background-color: var(--dm-bg) !important;
+  border: 1px solid var(--dm-selected) !important;
 }
 
 /* Theme preview labels */
@@ -4835,36 +4851,36 @@ body.dark-mode .uW2Fw-bHo .a9J {
 
 /* Buttons styling */
 body.dark-mode .uW2Fw-bHo .mUIrbf-I {
-  background-color: #3a3a3a !important;
+  background-color: var(--dm-hover) !important;
   color: #e0e0e0 !important;
-  border: 1px solid #555 !important;
+  border: 1px solid var(--dm-border) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover {
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .eV8l8d {
-  background-color: #8ab4f8 !important;
-  color: #252526 !important;
+  background-color: var(--dm-accent-surface) !important;
+  color: var(--dm-surface) !important;
 }
 
 /* More Images and My Photos buttons */
 body.dark-mode .uW2Fw-bHo .fQ1uhf,
 body.dark-mode .uW2Fw-bHo .PKBsLc button {
-  background-color: #141414 !important;
+  background-color: var(--dm-bg) !important;
   color: #e0e0e0 !important;
-  border: 1px solid #444 !important;
+  border: 1px solid var(--dm-selected) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .fQ1uhf:hover,
 body.dark-mode .uW2Fw-bHo .PKBsLc button:hover {
-  background-color: #3a3a3a !important;
+  background-color: var(--dm-hover) !important;
 }
 
 /* Dark Mode Theme Selection Dialog Enhanced Styling */
 body.dark-mode .uW2Fw-bHo {
-  background-color: #252526 !important;
+  background-color: var(--dm-surface) !important;
   color: #e0e0e0 !important;
 }
 
@@ -4875,8 +4891,8 @@ body.dark-mode .uW2Fw-bHo .cER4xe {
 
 /* Custom theme preview containers */
 body.dark-mode .uW2Fw-bHo .a7H {
-  background-color: #141414 !important;
-  border: 1px solid #444 !important;
+  background-color: var(--dm-bg) !important;
+  border: 1px solid var(--dm-selected) !important;
   transition: transform 0.2s ease;
 }
 
@@ -4907,24 +4923,24 @@ body.dark-mode .uW2Fw-bHo .a9J {
 
 /* Buttons styling - More prominent and clear */
 body.dark-mode .uW2Fw-bHo .mUIrbf-I {
-  background-color: #3a3a3a !important;
+  background-color: var(--dm-hover) !important;
   color: #e0e0e0 !important;
-  border: 1px solid #555 !important;
+  border: 1px solid var(--dm-border) !important;
   transition:
     background-color 0.2s ease,
     color 0.2s ease;
 }
 
 body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover {
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
   color: white !important;
 }
 
 /* Save button - more prominent */
 body.dark-mode .uW2Fw-bHo .eV8l8d {
-  background-color: #8ab4f8 !important;
+  background-color: var(--dm-accent-surface) !important;
   color: white !important;
-  border: 1px solid #8ab4f8 !important;
+  border: 1px solid var(--dm-accent) !important;
   font-weight: bold;
 }
 
@@ -4935,15 +4951,15 @@ body.dark-mode .uW2Fw-bHo .eV8l8d:hover {
 /* More Images and My Photos buttons */
 body.dark-mode .uW2Fw-bHo .fQ1uhf,
 body.dark-mode .uW2Fw-bHo .PKBsLc button {
-  background-color: #141414 !important;
+  background-color: var(--dm-bg) !important;
   color: #e0e0e0 !important;
-  border: 1px solid #444 !important;
+  border: 1px solid var(--dm-selected) !important;
   transition: background-color 0.2s ease;
 }
 
 body.dark-mode .uW2Fw-bHo .fQ1uhf:hover,
 body.dark-mode .uW2Fw-bHo .PKBsLc button:hover {
-  background-color: #3a3a3a !important;
+  background-color: var(--dm-hover) !important;
   color: white !important;
 }
 
@@ -4965,15 +4981,15 @@ body.dark-mode .uW2Fw-bHo .a7N {
 
 /* Buttons with high contrast */
 body.dark-mode .uW2Fw-bHo .mUIrbf-I {
-  background-color: #3a3a3a !important;
+  background-color: var(--dm-hover) !important;
   color: #fff !important;
   border: 1px solid #666 !important;
 }
 
 body.dark-mode .uW2Fw-bHo .eV8l8d {
-  background-color: #4285f4 !important;
+  background-color: var(--dm-accent-strong) !important;
   color: white !important;
-  border: 1px solid #4285f4 !important;
+  border: 1px solid var(--dm-accent) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover,
@@ -5024,16 +5040,16 @@ body.dark-mode .uW2Fw-bHo .a9J {
 /* Button Styling with Maximum Contrast */
 body.dark-mode .uW2Fw-bHo .mUIrbf-I,
 body.dark-mode .uW2Fw-bHo .PKBsLc button {
-  background-color: #3a3a3a !important;
+  background-color: var(--dm-hover) !important;
   color: #fff !important;
   border: 1px solid #666 !important;
   transition: all 0.2s ease !important;
 }
 
 body.dark-mode .uW2Fw-bHo .eV8l8d {
-  background-color: #4285f4 !important;
+  background-color: var(--dm-accent-strong) !important;
   color: white !important;
-  border: 1px solid #4285f4 !important;
+  border: 1px solid var(--dm-accent) !important;
   font-weight: bold !important;
 }
 
@@ -5050,14 +5066,14 @@ body.dark-mode .uW2Fw-bHo .a7C {
 
 /* More Images section */
 body.dark-mode .uW2Fw-bHo .fQ1uhf {
-  background-color: #141414 !important;
+  background-color: var(--dm-bg) !important;
   color: #fff !important;
-  border: 1px solid #444 !important;
+  border: 1px solid var(--dm-selected) !important;
 }
 
 /* Dark Mode Theme Selection Dialog Fix */
 body.dark-mode .uW2Fw-bHo {
-  background-color: #252526 !important;
+  background-color: var(--dm-surface) !important;
   color: #fff !important;
 }
 
@@ -5086,21 +5102,21 @@ body.dark-mode .uW2Fw-bHo .a9J {
 }
 
 body.dark-mode .uW2Fw-bHo .mUIrbf-I {
-  background-color: #3a3a3a !important;
+  background-color: var(--dm-hover) !important;
   color: #fff !important;
-  border: 1px solid #555 !important;
+  border: 1px solid var(--dm-border) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .eV8l8d {
-  background-color: #4285f4 !important;
+  background-color: var(--dm-accent-strong) !important;
   color: white !important;
-  border: 1px solid #4285f4 !important;
+  border: 1px solid var(--dm-accent) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .fQ1uhf {
-  background-color: #141414 !important;
+  background-color: var(--dm-bg) !important;
   color: #fff !important;
-  border: 1px solid #444 !important;
+  border: 1px solid var(--dm-selected) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .cER4xe {
@@ -5171,8 +5187,8 @@ body.dark-mode .a3I {
 body.dark-mode .no,
 body.dark-mode .nH.bkK.nn + .nH.nn,
 body.dark-mode [aria-label='Hangouts'][role='complementary'] {
-  background-color: #141414 !important;
-  background: #141414 !important;
+  background-color: var(--dm-bg) !important;
+  background: var(--dm-bg) !important;
 }
 
 /* Force menu background to be #141414 - COMPREHENSIVE APPROACH */
@@ -5198,8 +5214,8 @@ body.dark-mode .aZ6,
 body.dark-mode .pp,
 body.dark-mode .nM,
 body.dark-mode .yJ {
-  background-color: #141414 !important;
-  background: #141414 !important;
+  background-color: var(--dm-bg) !important;
+  background: var(--dm-bg) !important;
 }
 
 /* Force Categories icon to work properly */
@@ -5212,7 +5228,7 @@ body.dark-mode [data-tooltip='Categories'] .aEc.aHS-bnr .qj {
   mask-repeat: no-repeat !important;
   -webkit-mask-position: center !important;
   mask-position: center !important;
-  background-color: #9f9f9f !important;
+  background-color: var(--dm-text-muted) !important;
   background-image: none !important;
 }
 
@@ -5227,7 +5243,7 @@ body.dark-mode [data-tooltip='Categories'] .aEc.aHS-bnr .qj {
     mask-repeat: no-repeat !important;
     -webkit-mask-position: center !important;
     mask-position: center !important;
-    background-color: #9f9f9f !important;
+    background-color: var(--dm-text-muted) !important;
     background-image: none !important;
   }
 }
