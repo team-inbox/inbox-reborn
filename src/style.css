@@ -3319,8 +3319,7 @@ body.dark-mode .G-atb .asa > .bq5,
 body.dark-mode .G-atb .asa > .asb,
 body.dark-mode .G-atb .asa > .bjy,
 body.dark-mode .G-atb .asa > .asf,
-body.dark-mode .G-atb .T-I[aria-label^='Back'] div.T-I-J3,
-body.dark-mode .G-atb .T-I[data-tooltip^='Back'] div.T-I-J3 {
+body.dark-mode .G-atb .asa > .ar6 {
   -webkit-mask-size: 20px !important;
   mask-size: 20px !important;
   -webkit-mask-repeat: no-repeat !important;
@@ -3331,28 +3330,19 @@ body.dark-mode .G-atb .T-I[data-tooltip^='Back'] div.T-I-J3 {
   background-image: none !important;
 }
 
-body.dark-mode .G-atb .T-I[aria-label^='Back'] div.T-I-J3,
-body.dark-mode .G-atb .T-I[data-tooltip^='Back'] div.T-I-J3 {
+/* Back arrow glyph (.ar6) - class is present from page load, unlike the
+   aria-label/data-tooltip attributes which Gmail attaches lazily on the
+   first mouse interaction */
+body.dark-mode .G-atb .asa > .ar6 {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_arrow_back_24dp.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_arrow_back_24dp.svg') !important;
 }
 
-/* Back and Move-to buttons carry their glyph in varying markup, so mask the
-   whole button by its label and blank out whatever Gmail renders inside.
+/* Move-to button carries its glyph in varying markup, so mask the whole
+   button by its label and blank out whatever Gmail renders inside.
    The .D.E.G-atb prefix outranks the catch-all toolbar rule that paints all
    descendants with the dark background (which filled these masks with dark,
    making the icons invisible). */
-body.dark-mode .D.E.G-atb [aria-label^='Back'],
-body.dark-mode .D.E.G-atb [data-tooltip^='Back'] {
-  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_arrow_back_24dp.svg')
-    center / 20px no-repeat !important;
-  mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_arrow_back_24dp.svg') center /
-    20px no-repeat !important;
-  background-color: #e8eaed !important;
-  background-image: none !important;
-  opacity: 1 !important;
-}
-
 body.dark-mode .D.E.G-atb [aria-label='Move to'],
 body.dark-mode .D.E.G-atb [data-tooltip='Move to'] {
   -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_drive_file_move_24dp.svg')
@@ -3367,15 +3357,11 @@ body.dark-mode .D.E.G-atb [data-tooltip='Move to'] {
 /* After a refresh Gmail parks this toolbar region dimmed by lowering an
    ancestor's opacity until first interaction; with a constant mask fill the
    icons just look faded, so force the ancestor chain opaque */
-body.dark-mode .D.E.G-atb div:has([aria-label^='Back']),
-body.dark-mode .D.E.G-atb div:has([data-tooltip^='Back']),
 body.dark-mode .D.E.G-atb div:has([aria-label='Move to']),
 body.dark-mode .D.E.G-atb div:has([data-tooltip='Move to']) {
   opacity: 1 !important;
 }
 
-body.dark-mode .G-atb [aria-label^='Back'] *,
-body.dark-mode .G-atb [data-tooltip^='Back'] *,
 body.dark-mode .G-atb [aria-label='Move to'] *,
 body.dark-mode .G-atb [data-tooltip='Move to'] * {
   opacity: 0 !important;
