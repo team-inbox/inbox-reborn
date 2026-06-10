@@ -697,8 +697,9 @@ const getBundleTitleColorForLabel = (email, label) => {
   labelEls.forEach((labelEl) => {
     if (labelEl.innerText === label) {
       const labelColor = labelEl.style.backgroundColor;
-      // Ignore default label color (light gray)
-      if (labelColor !== 'rgb(221, 221, 221)') {
+      // Ignore Gmail's default label chip grays (old and current palettes),
+      // otherwise the near-white default reads as a custom bundle color
+      if (labelColor !== 'rgb(221, 221, 221)' && labelColor !== 'rgb(225, 227, 225)') {
         bundleTitleColor = labelColor;
       }
     }

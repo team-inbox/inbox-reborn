@@ -2992,6 +2992,15 @@ body.dark-mode [role='option']:hover:not(.nH.Hd [role='option']) {
   color: #fff !important;
 }
 
+/* Menu item icons (context menu, More menu) are light-theme dark sprites
+   that cannot be recolored - invert them to read on the dark menu */
+body.dark-mode .J-M .J-N-JX:not(.nH.Hd .J-N-JX),
+body.dark-mode .J-M .J-N-J5:not(.nH.Hd .J-N-J5),
+body.dark-mode [role='menu'] .J-N-JX:not(.nH.Hd .J-N-JX) {
+  filter: invert(0.82) !important;
+  opacity: 1 !important;
+}
+
 /* Menu separators */
 body.dark-mode .J-Kh {
   border-color: var(--dm-hover) !important;
@@ -3110,10 +3119,11 @@ body.dark-mode .brc {
     0 1px 2px rgb(0 0 0 / 42%) !important;
 }
 
-/* Bundle icons - the mask fill colors are tuned for light backgrounds, so
-   brighten them in dark mode while keeping each bundle's hue */
+/* Bundle icons - in dark mode use the same light fill as the Material
+   toolbar icons, overriding whatever per-label color the JS painted */
 body.dark-mode .bundle-wrapper > .bundle-image {
-  filter: brightness(1.6) !important;
+  background-color: #e8eaed !important;
+  filter: none !important;
 }
 
 body.dark-mode .bundle-senders {
@@ -3306,6 +3316,43 @@ body.dark-mode .ar8.T-I-J3.J-J5-Ji {
   background-color: #e8eaed !important; /* Light gray for better visibility in dark mode */
 }
 
+/* Row hover actions - delete, mark read/unread, and snooze are plain dark
+   sprites (only archive is a mask), so replace them with Material Symbols
+   masks with the same light fill */
+body.dark-mode .bqY .bqX.bru,
+body.dark-mode .bqY .bqX.brr,
+body.dark-mode .bqY .bqX.SHFPQe,
+body.dark-mode .bqY .bqX.brv {
+  -webkit-mask-size: 20px !important;
+  mask-size: 20px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-color: #e8eaed !important;
+  background-image: none !important;
+}
+
+body.dark-mode .bqY .bqX.bru {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_delete_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_delete_24dp.svg') !important;
+}
+
+body.dark-mode .bqY .bqX.brr {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_mark_email_read_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_mark_email_read_24dp.svg') !important;
+}
+
+body.dark-mode .bqY .bqX.SHFPQe {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_mark_email_unread_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_mark_email_unread_24dp.svg') !important;
+}
+
+body.dark-mode .bqY .bqX.brv {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_schedule_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_schedule_24dp.svg') !important;
+}
+
 /* Toolbar glyphs - Gmail's light-theme sprites are dark glyphs with no mask
    to recolor, so replace them with Google Material Symbols masks filled with
    the same light gray as the archive button. Covered: back, report spam,
@@ -3329,6 +3376,10 @@ body.dark-mode .G-atb .asa > .ase {
   mask-position: center !important;
   background-color: #e8eaed !important;
   background-image: none !important;
+
+  /* The list-toolbar catch-all (.nH.aqK :not()) outranks any background-color
+     here, but it never touches box-shadow - paint the fill with that instead */
+  box-shadow: inset 0 0 0 24px #e8eaed !important;
 }
 
 /* Back arrow glyph (.ar6) - class is present from page load, unlike the
@@ -5696,4 +5747,139 @@ body.dark-mode [aria-label='Create new label'] .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   }
+}
+
+/* =============================================================================
+   DARK MODE: LIST-TOOLBAR MATERIAL REPLACEMENTS
+   The Select checkbox, dropdown arrows (.G-asx), pagination arrows, and the
+   split-pane toggle are plain dark sprites, and the toolbar catch-all paints
+   their backgrounds - replace each glyph with a Material Symbols mask (the
+   shorthand form the bundle icons use) so only the icon shape shows in the
+   light fill.
+   ============================================================================= */
+body.dark-mode .D.E.G-atb .G-tF .T-Jo {
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_check_box_outline_blank_24dp.svg')
+    center / 20px no-repeat !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_check_box_outline_blank_24dp.svg')
+    center / 20px no-repeat !important;
+  background-color: #e8eaed !important;
+  background-image: none !important;
+  box-shadow: inset 0 0 0 24px #e8eaed !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+body.dark-mode .D.E.G-atb .G-tF .T-Jo[aria-checked='true'] {
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_check_box_24dp.svg')
+    center / 20px no-repeat !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_check_box_24dp.svg') center /
+    20px no-repeat !important;
+  background-color: #e8eaed !important;
+  background-image: none !important;
+  box-shadow: inset 0 0 0 24px #e8eaed !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+body.dark-mode .D.E.G-atb .G-tF .T-Jo[aria-checked='mixed'] {
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_indeterminate_check_box_24dp.svg')
+    center / 20px no-repeat !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_indeterminate_check_box_24dp.svg')
+    center / 20px no-repeat !important;
+  background-color: #e8eaed !important;
+  background-image: none !important;
+  box-shadow: inset 0 0 0 24px #e8eaed !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+body.dark-mode .D.E.G-atb .G-tF .T-Jo .T-Jo-auh {
+  background: none !important;
+}
+
+body.dark-mode .D.E.G-atb .G-asx {
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_arrow_drop_down_24dp.svg')
+    center / 20px no-repeat !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_arrow_drop_down_24dp.svg')
+    center / 20px no-repeat !important;
+  background-color: #e8eaed !important;
+  background-image: none !important;
+  box-shadow: inset 0 0 0 24px #e8eaed !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+body.dark-mode .D.E.G-atb .amI {
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_chevron_left_24dp.svg')
+    center / 20px no-repeat !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_chevron_left_24dp.svg')
+    center / 20px no-repeat !important;
+  background-color: #e8eaed !important;
+  background-image: none !important;
+  box-shadow: inset 0 0 0 24px #e8eaed !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+body.dark-mode .D.E.G-atb .amJ {
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_chevron_right_24dp.svg')
+    center / 20px no-repeat !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_chevron_right_24dp.svg')
+    center / 20px no-repeat !important;
+  background-color: #e8eaed !important;
+  background-image: none !important;
+  box-shadow: inset 0 0 0 24px #e8eaed !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+body.dark-mode .D.E.G-atb .apH {
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_splitscreen_24dp.svg')
+    center / 20px no-repeat !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_splitscreen_24dp.svg')
+    center / 20px no-repeat !important;
+  background-color: #e8eaed !important;
+  background-image: none !important;
+  box-shadow: inset 0 0 0 24px #e8eaed !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+body.dark-mode .D.E.G-atb .G-tF .T-Jo {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_check_box_outline_blank_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_check_box_outline_blank_24dp.svg') !important;
+}
+
+body.dark-mode .D.E.G-atb .G-tF .T-Jo[aria-checked='true'] {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_check_box_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_check_box_24dp.svg') !important;
+}
+
+body.dark-mode .D.E.G-atb .G-tF .T-Jo[aria-checked='mixed'] {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_indeterminate_check_box_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_indeterminate_check_box_24dp.svg') !important;
+}
+
+body.dark-mode .D.E.G-atb .G-tF .T-Jo .T-Jo-auh {
+  background: none !important;
+}
+
+body.dark-mode .D.E.G-atb .G-asx {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_arrow_drop_down_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_arrow_drop_down_24dp.svg') !important;
+}
+
+body.dark-mode .D.E.G-atb .amI {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_chevron_left_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_chevron_left_24dp.svg') !important;
+}
+
+body.dark-mode .D.E.G-atb .amJ {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_chevron_right_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_chevron_right_24dp.svg') !important;
+}
+
+body.dark-mode .D.E.G-atb .apH {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_splitscreen_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_splitscreen_24dp.svg') !important;
 }
