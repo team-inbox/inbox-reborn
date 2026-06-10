@@ -108,7 +108,6 @@ const avatarCache = new Map();
  */
 const CSS_CLASSES = {
   REMINDER_EMAIL: 'reminder',
-  CALENDAR_EVENT: 'calendar-event',
   CALENDAR_ATTACHMENT: 'calendar-attachment',
   BUNDLE_PAGE: 'bundle-page',
   BUNDLE_WRAPPER: 'bundle-wrapper',
@@ -121,7 +120,6 @@ const CSS_CLASSES = {
   AVATAR: 'avatar',
   AVATAR_OPTION: 'show-avatar-enabled',
   WEB_AVATAR: 'web-avatar',
-  LETTER_AVATAR: 'letter-avatar',
   STYLE_NODE_ID_PREFIX: 'hide-email-',
   PRIORITY_INBOX_OPTION: 'priority-inbox-enabled',
 };

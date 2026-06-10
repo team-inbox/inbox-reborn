@@ -42,9 +42,7 @@ function saveOptions() {
     darkMode,
   };
 
-  browserAPI.storage.local.set({ options: options }, function () {
-    console.log('Options saved:', options);
-  });
+  browserAPI.storage.local.set({ options: options });
 }
 
 function restoreOptions() {

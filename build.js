@@ -9,16 +9,8 @@ const path = require('path');
 const archiver = require('archiver');
 const os = require('os');
 
-const FILES_TO_INCLUDE = [
-  'docs',
-  'icons',
-  'images',
-  'screenshots',
-  'src',
-  '.gitignore',
-  'LICENSE',
-  'README.md',
-];
+// Only what the extension needs at runtime ships in the package
+const FILES_TO_INCLUDE = ['icons', 'images', 'src', 'LICENSE'];
 
 const BUILD_DIR = 'build';
 
