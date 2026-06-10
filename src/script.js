@@ -23,18 +23,26 @@
  * Applies stored settings on page load and listens for changes
  */
 (function initDarkMode() {
+  // The content script runs at document_start, so <body> may not exist yet
+  // when the storage callback fires - defer applying the class until it does
+  const applyDarkMode = (enabled) => {
+    const apply = () => document.body.classList.toggle('dark-mode', enabled);
+    if (document.body) {
+      apply();
+    } else {
+      document.addEventListener('DOMContentLoaded', apply, { once: true });
+    }
+  };
+
   // Apply stored dark-mode setting on page load
   chrome.storage?.local.get('options', ({ options }) => {
-    if (options && options.darkMode === 'enabled') {
-      document.body.classList.add('dark-mode');
-    }
+    applyDarkMode(!!options && options.darkMode === 'enabled');
   });
 
   // Listen for changes to options and toggle class dynamically
   chrome.storage?.onChanged.addListener((changes, area) => {
     if (area === 'local' && changes.options) {
-      const enabled = changes.options.newValue.darkMode === 'enabled';
-      document.body.classList.toggle('dark-mode', enabled);
+      applyDarkMode(changes.options.newValue.darkMode === 'enabled');
     }
   });
 })();
