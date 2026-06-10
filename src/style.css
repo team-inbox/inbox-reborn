@@ -3306,11 +3306,80 @@ body.dark-mode .ar8.T-I-J3.J-J5-Ji {
   background-color: #e8eaed !important; /* Light gray for better visibility in dark mode */
 }
 
-/* All other toolbar glyphs - same mask-sprite system as the archive button
-   above (the glyph shape is a mask, background-color is the fill), so give
-   every toolbar icon the same light fill instead of Gmail's light-theme dark */
-body.dark-mode .G-atb .T-I .asa > div.T-I-J3 {
+/* Toolbar glyphs - Gmail's light-theme sprites are dark glyphs with no mask
+   to recolor, so replace them with Google Material Symbols masks filled with
+   the same light gray as the archive button. Covered: back, report spam,
+   delete, mark read, snooze, add to tasks, move to, labels, more, refresh. */
+body.dark-mode .G-atb .asa > .asl,
+body.dark-mode .G-atb .asa > .ar9,
+body.dark-mode .G-atb .asa > .bAO,
+body.dark-mode .G-atb .asa > .brW,
+body.dark-mode .G-atb .asa > .Vj,
+body.dark-mode .G-atb .asa > .bq5,
+body.dark-mode .G-atb .asa > .asb,
+body.dark-mode .G-atb .asa > .bjy,
+body.dark-mode .G-atb .asa > .asf,
+body.dark-mode .G-atb .T-I[aria-label^='Back'] div.T-I-J3,
+body.dark-mode .G-atb .T-I[data-tooltip^='Back'] div.T-I-J3 {
+  -webkit-mask-size: 20px !important;
+  mask-size: 20px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
   background-color: #e8eaed !important;
+  background-image: none !important;
+}
+
+body.dark-mode .G-atb .T-I[aria-label^='Back'] div.T-I-J3,
+body.dark-mode .G-atb .T-I[data-tooltip^='Back'] div.T-I-J3 {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_arrow_back_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_arrow_back_24dp.svg') !important;
+}
+
+body.dark-mode .G-atb .asa > .asl {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_report_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_report_24dp.svg') !important;
+}
+
+body.dark-mode .G-atb .asa > .ar9 {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_delete_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_delete_24dp.svg') !important;
+}
+
+body.dark-mode .G-atb .asa > .bAO {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_mark_email_read_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_mark_email_read_24dp.svg') !important;
+}
+
+body.dark-mode .G-atb .asa > .brW {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_schedule_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_schedule_24dp.svg') !important;
+}
+
+body.dark-mode .G-atb .asa > .Vj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_add_task_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_add_task_24dp.svg') !important;
+}
+
+body.dark-mode .G-atb .asa > .bq5 {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_drive_file_move_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_drive_file_move_24dp.svg') !important;
+}
+
+body.dark-mode .G-atb .asa > .asb {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_label_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_label_24dp.svg') !important;
+}
+
+body.dark-mode .G-atb .asa > .bjy {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') !important;
+}
+
+body.dark-mode .G-atb .asa > .asf {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_refresh_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_refresh_24dp.svg') !important;
 }
 
 /* Toolbar icons drawn as inline SVG (e.g. Mark as unread) */
