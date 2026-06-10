@@ -3422,7 +3422,9 @@ body.dark-mode .amn {
   background-color: var(--dm-surface) !important;
 }
 
-body.dark-mode .amn .ams {
+body.dark-mode .amn .ams,
+body.dark-mode .nH.a98.iY.aHo .amn .ams,
+body.dark-mode .nH.a98.iY.aHo .amn .ams * {
   background-color: #e8eaed !important;
   color: #202124 !important;
   border-color: var(--dm-border-muted) !important;
