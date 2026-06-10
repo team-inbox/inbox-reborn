@@ -2966,15 +2966,27 @@ body.dark-mode .J-M:not(.nH.Hd .J-M) {
 }
 
 body.dark-mode [role='menuitem']:not(.nH.Hd [role='menuitem']),
+body.dark-mode [role='menuitemcheckbox']:not(.nH.Hd [role='menuitemcheckbox']),
+body.dark-mode [role='menuitemradio']:not(.nH.Hd [role='menuitemradio']),
 body.dark-mode [role='option']:not(.nH.Hd [role='option']),
 body.dark-mode .J-N:not(.nH.Hd .J-N) {
   background-color: transparent !important;
   color: var(--dm-text-secondary) !important;
 }
 
+/* Menu item inner text (e.g. label names in the "Label as" menu) keeps
+   Gmail's light-theme dark color unless forced to inherit */
+body.dark-mode [role='menuitem']:not(.nH.Hd [role='menuitem']) *,
+body.dark-mode [role='menuitemcheckbox']:not(.nH.Hd [role='menuitemcheckbox']) *,
+body.dark-mode [role='menuitemradio']:not(.nH.Hd [role='menuitemradio']) * {
+  color: inherit !important;
+}
+
 /* Hovered / keyboard-highlighted menu items */
 body.dark-mode .J-N-JT:not(.nH.Hd .J-N-JT),
 body.dark-mode [role='menuitem']:hover:not(.nH.Hd [role='menuitem']),
+body.dark-mode [role='menuitemcheckbox']:hover:not(.nH.Hd [role='menuitemcheckbox']),
+body.dark-mode [role='menuitemradio']:hover:not(.nH.Hd [role='menuitemradio']),
 body.dark-mode [role='option']:hover:not(.nH.Hd [role='option']) {
   background-color: var(--dm-hover) !important;
   color: #fff !important;
