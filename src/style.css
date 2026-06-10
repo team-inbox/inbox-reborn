@@ -5883,3 +5883,84 @@ body.dark-mode .D.E.G-atb .apH {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_splitscreen_24dp.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_splitscreen_24dp.svg') !important;
 }
+
+/* =============================================================================
+   DARK MODE: INLINE REPLY FORMATTING TOOLBAR
+   The popup compose is inverted wholesale (.nH.Hd[role='dialog']), but inline
+   replies are not a dialog, so their formatting bar keeps Gmail's dark sprite
+   glyphs. Give the bar a dark surface and invert just the glyphs - scoped to
+   exclude the popup so nothing gets double-inverted.
+   ============================================================================= */
+body.dark-mode .aZ:not(.nH.Hd[role='dialog'] .aZ) {
+  background-color: var(--dm-surface) !important;
+  color: var(--dm-text-secondary) !important;
+}
+
+body.dark-mode .aZ:not(.nH.Hd[role='dialog'] .aZ) .J-Z-M-I-Jm {
+  color: var(--dm-text-secondary) !important;
+}
+
+body.dark-mode .aZ .aaA:not(.nH.Hd[role='dialog'] .aaA),
+body.dark-mode .aZ .aaB:not(.nH.Hd[role='dialog'] .aaB) {
+  filter: invert(0.82) !important;
+  background-color: transparent !important;
+}
+
+/* Inline reply bottom row (attach, link, emoji, Drive, photo, confidential,
+   signature, Help me write) - same situation as the formatting bar above.
+   Invert the .aaA wrapper and force the inner .a3I glyph holder to no filter:
+   a parent filter applies to the whole subtree, so this yields exactly one
+   inversion whether Gmail draws the sprite on the wrapper or on .a3I. */
+body.dark-mode .gU .aaA:not(.nH.Hd[role='dialog'] .aaA) {
+  filter: invert(0.82) !important;
+  background-color: transparent !important;
+}
+
+body.dark-mode .gU .aaA:not(.nH.Hd[role='dialog'] .aaA) .a3I {
+  filter: none !important;
+}
+
+/* Inline reply: when scrolling, Gmail docks the compose toolbars in a
+   position:fixed wrapper (.aDj.ahe) with a white background - in normal flow
+   these elements are transparent over the dark pane. Paint the wrapper dark
+   and keep its children transparent so both states match. */
+body.dark-mode .aDj:not(.nH.Hd[role='dialog'] .aDj) {
+  background-color: var(--dm-surface) !important;
+}
+
+body.dark-mode .aDj:not(.nH.Hd[role='dialog'] .aDj) .aDl,
+body.dark-mode .aDj:not(.nH.Hd[role='dialog'] .aDj) .aDh,
+body.dark-mode .aDj:not(.nH.Hd[role='dialog'] .aDj) .aDx,
+body.dark-mode .aDj:not(.nH.Hd[role='dialog'] .aDj) .IZ,
+body.dark-mode .aDj:not(.nH.Hd[role='dialog'] .aDj) .btC,
+body.dark-mode .aDj:not(.nH.Hd[role='dialog'] .aDj) .btC td {
+  background-color: transparent !important;
+}
+
+/* The docked send row is styled as a floating white pill - paint the pill
+   itself dark (it floats over message content, so it cannot be transparent)
+   and clear the layers inside it */
+body.dark-mode .IZ:not(.nH.Hd[role='dialog'] .IZ) {
+  background-color: var(--dm-surface) !important;
+}
+
+body.dark-mode .aDh:not(.nH.Hd[role='dialog'] .aDh),
+body.dark-mode .aDx:not(.nH.Hd[role='dialog'] .aDx),
+body.dark-mode .btC td:not(.nH.Hd[role='dialog'] .btC td) {
+  background-color: transparent !important;
+}
+
+/* Send row extras outside the dialog: discard-draft trash, the Send+
+   dropdown arrow sprites, and the More options / formatting toggle arrows */
+body.dark-mode .btC .og:not(.nH.Hd[role='dialog'] .og),
+body.dark-mode .btC .aPa:not(.nH.Hd[role='dialog'] .aPa),
+body.dark-mode .btC .G-asx:not(.nH.Hd[role='dialog'] .G-asx),
+body.dark-mode .btC .Y1:not(.nH.Hd[role='dialog'] .Y1),
+body.dark-mode .btC .dv:not(.nH.Hd[role='dialog'] .dv) {
+  filter: invert(0.82) !important;
+}
+
+body.dark-mode .btC .dv:not(.nH.Hd[role='dialog'] .dv) .a3I,
+body.dark-mode .btC .J-JN-M-I-Jm .a3I:not(.nH.Hd[role='dialog'] .a3I) {
+  filter: none !important;
+}
