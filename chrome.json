@@ -29,7 +29,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": [ "images/*"],
+      "resources": ["images/*"],
       "matches": ["https://mail.google.com/*"]
     }
   ]

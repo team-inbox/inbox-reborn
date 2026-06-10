@@ -36,19 +36,11 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://mail.google.com/mail/*"
-      ],
-      "css": [
-        "src/style.css"
-      ],
-      "js": [
-        "src/script.js"
-      ],
+      "matches": ["https://mail.google.com/mail/*"],
+      "css": ["src/style.css"],
+      "js": ["src/script.js"],
       "run_at": "document_start"
     }
   ],
-  "web_accessible_resources": [
-    "images/*"
-  ]
+  "web_accessible_resources": ["images/*"]
 }

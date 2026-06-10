@@ -1,6 +1,6 @@
 /**
  * Gmail Enhancement Script
- * 
+ *
  * This script enhances the Gmail interface with additional features:
  * - Dark mode synchronization
  * - Email bundling and organization
@@ -10,7 +10,7 @@
  * - Custom sidebar with improved navigation
  * - Reminder functionality
  * - UI enhancements and Material Design icons
- * 
+ *
  * Version: 2.0.0
  * Last Updated: 2025
  */
@@ -47,34 +47,56 @@
  * Date and time constants
  */
 const MONTHS = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December'
-];
-
-const DAYS = [
-  'Sunday', 'Monday', 'Tuesday', 'Wednesday',
-  'Thursday', 'Friday', 'Saturday'
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ];
 
 /**
  * Avatar color palette for user initials
  */
 const NAME_COLORS = [
-  '1bbc9b', '16a086', 'f1c40f', 'f39c11', '2dcc70', '27ae61',
-  'd93939', 'd25400', '3598db', '297fb8', 'e84c3d', 'c1392b',
-  '9a59b5', '8d44ad', 'bec3c7', '34495e', '2d3e50', '95a5a4',
-  '7e8e8e', 'ec87bf', 'd870ad', 'f69785', '9ba37e', 'b49255',
-  'b49255', 'a94136'
+  '1bbc9b',
+  '16a086',
+  'f1c40f',
+  'f39c11',
+  '2dcc70',
+  '27ae61',
+  'd93939',
+  'd25400',
+  '3598db',
+  '297fb8',
+  'e84c3d',
+  'c1392b',
+  '9a59b5',
+  '8d44ad',
+  'bec3c7',
+  '34495e',
+  '2d3e50',
+  '95a5a4',
+  '7e8e8e',
+  'ec87bf',
+  'd870ad',
+  'f69785',
+  '9ba37e',
+  'b49255',
+  'b49255',
+  'a94136',
 ];
 
 /**
  * Domains that are known to be slow or problematic - skip them
  */
-const SKIP_DOMAINS = new Set([
-  'gmail.com',
-  'google.com',
-  'googleusercontent.com'
-]);
+const SKIP_DOMAINS = new Set(['gmail.com', 'google.com', 'googleusercontent.com']);
 
 /**
  * Avatar cache to avoid repeated API calls
@@ -102,8 +124,6 @@ const CSS_CLASSES = {
   LETTER_AVATAR: 'letter-avatar',
   STYLE_NODE_ID_PREFIX: 'hide-email-',
   PRIORITY_INBOX_OPTION: 'priority-inbox-enabled',
-
-
 };
 
 /**
@@ -113,13 +133,12 @@ const DATE_LABELS = {
   TODAY: 'Today',
   YESTERDAY: 'Yesterday',
   THIS_MONTH: 'This month',
-  LAST_YEAR: 'Last year'
+  LAST_YEAR: 'Last year',
 };
 
 /**
  * Material icon mapping for sidebar items
  */
-
 
 // =============================================================================
 // ELEMENT SELECTORS
@@ -127,7 +146,7 @@ const DATE_LABELS = {
 
 /**
  * Centralized DOM element selectors
- * 
+ *
  * All the selectors for Gmail elements in one place
  * so that when they inevitably break, they can be corrected.
  * This also makes it easier for implementing more reliable
@@ -135,52 +154,52 @@ const DATE_LABELS = {
  */
 const select = {
   // General UI elements
-  emailAddress:        () => document.querySelector("a[aria-label^='Google Account:']"),
-  tabs:                () => document.querySelectorAll('.aKz'),
-  bundleWrappers:      () => document.querySelectorAll('.oy8Mbf[role=main] .bundle-wrapper'),
-  inbox:               () => document.querySelector('.nZ[data-tooltip=Inbox]'),
-  importanceMarkers:   () => document.querySelector('td.WA.xY'),
-  emails:              () => document.querySelectorAll('.oy8Mbf .zA'),
-  currentTab:          () => document.querySelector('.aAy[aria-selected="true"]'),
-  
+  emailAddress: () => document.querySelector("a[aria-label^='Google Account:']"),
+  tabs: () => document.querySelectorAll('.aKz'),
+  bundleWrappers: () => document.querySelectorAll('.oy8Mbf[role=main] .bundle-wrapper'),
+  inbox: () => document.querySelector('.nZ[data-tooltip=Inbox]'),
+  importanceMarkers: () => document.querySelector('td.WA.xY'),
+  emails: () => document.querySelectorAll('.oy8Mbf .zA'),
+  currentTab: () => document.querySelector('.aAy[aria-selected="true"]'),
+
   // Menu elements
-  menu:                () => document.body.querySelector('.J-Ke.n4.ah9'),
-  composeButtonNew:    () => document.querySelector('.Yh.akV'),
-  composeButtonOld:    () => document.querySelector('.T-I.T-I-KE.L3'),
-  composeButton:       () => select.composeButtonOld() || select.composeButtonNew(),
-  menuParent:          () => document.querySelector('.wT .byl'),
-  menuRefer:           () => document.querySelector('.wT .byl>.TK'),
-  
+  menu: () => document.body.querySelector('.J-Ke.n4.ah9'),
+  composeButtonNew: () => document.querySelector('.Yh.akV'),
+  composeButtonOld: () => document.querySelector('.T-I.T-I-KE.L3'),
+  composeButton: () => select.composeButtonOld() || select.composeButtonNew(),
+  menuParent: () => document.querySelector('.wT .byl'),
+  menuRefer: () => document.querySelector('.wT .byl>.TK'),
+
   // Header elements
-  titleNode:           () => document.querySelectorAll('a[aria-label="Gmail"]')[1],
-  headerElement:       () => document.querySelector('.w-asV.bbg.aiw'),
-  
+  titleNode: () => document.querySelectorAll('a[aria-label="Gmail"]')[1],
+  headerElement: () => document.querySelector('.w-asV.bbg.aiw'),
+
   // Compose elements
-  messageBody:         () => document.querySelector('div[aria-label="Message Body"]'),
-  messageFrom:         () => document.querySelector('input[name="from"]'),
-  messageSubjectBox:   () => document.querySelector('input[name=subjectbox]'),
-  
+  messageBody: () => document.querySelector('div[aria-label="Message Body"]'),
+  messageFrom: () => document.querySelector('input[name="from"]'),
+  messageSubjectBox: () => document.querySelector('input[name=subjectbox]'),
+
   // Email-specific elements (require email element as parameter)
-  emailParticipants:   (email) => email.querySelectorAll('.yW span[email]'),
-  emailTitleNode:      (email) => email.querySelector('.y6'),
-  eventTitle:          (email) => email.querySelector('.bqe, .bog'),
-  emailCalendarEvent:  (email) => email.querySelector('.aKS .aJ6'),
-  emailDate:           (email) => email.querySelector('.xW.xY span'),
+  emailParticipants: (email) => email.querySelectorAll('.yW span[email]'),
+  emailTitleNode: (email) => email.querySelector('.y6'),
+  eventTitle: (email) => email.querySelector('.bqe, .bog'),
+  emailCalendarEvent: (email) => email.querySelector('.aKS .aJ6'),
+  emailDate: (email) => email.querySelector('.xW.xY span'),
   emailSubjectWrapper: (email) => email.querySelectorAll('.a4W'),
-  emailAction:         (email) => email.querySelector('.aKS'),
-  emailLabels:         (email) => email.querySelectorAll('.ar .at'),
-  emailLabelEls:       (email) => email.querySelectorAll('.at'),
-  emailAllLabels:      (email) => email.querySelectorAll('.ar.as'),
-  emailSnoozed:        (email) => email.querySelector('.by1.cL'),
-  emailStarred:        (email) => email.querySelector('.T-KT.T-KT-Jp'),
-  emailAvatarWrapper:  (email) => email.querySelector('.oZ-x3'),
-  emailMiscPart1:      (email) => email.querySelectorAll('.y2'),
-  emailMiscPart2:      (email) => email.querySelectorAll('.yP,.zF'),
-  emailMiscPart3:      (email) => email.querySelectorAll('.Zt'),
-  
+  emailAction: (email) => email.querySelector('.aKS'),
+  emailLabels: (email) => email.querySelectorAll('.ar .at'),
+  emailLabelEls: (email) => email.querySelectorAll('.at'),
+  emailAllLabels: (email) => email.querySelectorAll('.ar.as'),
+  emailSnoozed: (email) => email.querySelector('.by1.cL'),
+  emailStarred: (email) => email.querySelector('.T-KT.T-KT-Jp'),
+  emailAvatarWrapper: (email) => email.querySelector('.oZ-x3'),
+  emailMiscPart1: (email) => email.querySelectorAll('.y2'),
+  emailMiscPart2: (email) => email.querySelectorAll('.yP,.zF'),
+  emailMiscPart3: (email) => email.querySelectorAll('.Zt'),
+
   // Label-specific elements (require label element as parameter)
-  labelTitle:          (label) => label.querySelector('.at'),
-  labelInnerText:      (label) => label.querySelector('.av'),
+  labelTitle: (label) => label.querySelector('.at'),
+  labelInnerText: (label) => label.querySelector('.av'),
 };
 
 // =============================================================================
@@ -190,14 +209,10 @@ const select = {
 /**
  * Global state variables
  */
-let lastEmailCount = 0;
-let lastRefresh = new Date();
-let loadedMenu = false;
 let labelStats = {};
-let hiddenEmailIds = [];
+const hiddenEmailIds = [];
 let options = {};
-let menuNodes = {};
-
+const menuNodes = {};
 
 // =============================================================================
 // UTILITY FUNCTIONS
@@ -207,7 +222,7 @@ let menuNodes = {};
  * Add remove method to Element prototype if not exists
  */
 if (!Element.prototype.remove) {
-  Element.prototype.remove = function() {
+  Element.prototype.remove = function () {
     this.parentElement.removeChild(this);
   };
 }
@@ -220,7 +235,7 @@ const getMyEmailAddress = () => {
   const emailAddr = select.emailAddress();
   const emailAddress = emailAddr && emailAddr.getAttribute('aria-label');
   const emailAddressText = emailAddress && emailAddress.match(/.*?\((.*?)\)/)?.[1];
-  return emailAddressText || "";
+  return emailAddressText || '';
 };
 
 /**
@@ -251,14 +266,14 @@ const extractDomain = (email) => {
  */
 const getMainDomain = (domain) => {
   if (!domain) return '';
-  
+
   // Remove www. prefix if present
   domain = domain.replace(/^www\./, '');
-  
+
   // Split by dots and get last 2 parts for most domains
   const parts = domain.split('.');
   if (parts.length <= 2) return domain;
-  
+
   // Handle special cases like .co.uk, .com.au, etc.
   const specialTLDs = ['.co.uk', '.com.au', '.co.jp', '.co.za', '.com.br'];
   for (const tld of specialTLDs) {
@@ -268,7 +283,7 @@ const getMainDomain = (domain) => {
       return tldParts.slice(-1)[0] + tld;
     }
   }
-  
+
   // Default: last 2 parts
   return parts.slice(-2).join('.');
 };
@@ -286,31 +301,19 @@ const testImageUrl = (url) => {
       img.onerror = null;
       resolve(null);
     }, 2000);
-    
+
     img.onload = () => {
       clearTimeout(timeout);
       resolve(url);
     };
-    
+
     img.onerror = () => {
       clearTimeout(timeout);
       resolve(null);
     };
-    
+
     img.src = url;
   });
-};
-
-/**
- * Triggers a mouse event on a DOM node
- * @param {Element} node - The DOM node to trigger the event on
- * @param {string} event - The event name (e.g., 'click', 'mouseup')
- */
-const triggerMouseEvent = (node, event) => {
-  if (!node) return;
-  const mouseEvent = document.createEvent('MouseEvents');
-  mouseEvent.initEvent(event, true, true);
-  node.dispatchEvent(mouseEvent);
 };
 
 /**
@@ -349,7 +352,7 @@ const queryParentSelector = (elm, sel) => {
  * @param {string} label - The label name to encode
  * @returns {string} URL-encoded label name
  */
-const fixLabel = label => encodeURIComponent(label.replace(/[\/\\& ]/g, '-'));
+const fixLabel = (label) => encodeURIComponent(label.replace(/[/\\& ]/g, '-'));
 
 // =============================================================================
 // EMAIL CLASSIFICATION FUNCTIONS
@@ -414,7 +417,7 @@ const isSnoozed = (email, curDate, prevDate) => {
  * @param {Element} email - The email DOM element
  * @returns {boolean} True if the email is starred
  */
-const isStarred = email => {
+const isStarred = (email) => {
   const node = select.emailStarred(email);
   return node && node.ariaLabel !== 'Not starred';
 };
@@ -450,15 +453,15 @@ const checkImportantMarkers = () => select.importanceMarkers();
  * @param {string[]} labels - Array of label names
  * @returns {boolean} True if the email has an Unbundled label
  */
-const checkEmailUnbundledLabel = labels => 
-  labels.some(label => label.indexOf(CSS_CLASSES.UNBUNDLED_PARENT_LABEL) >= 0);
+const checkEmailUnbundledLabel = (labels) =>
+  labels.some((label) => label.indexOf(CSS_CLASSES.UNBUNDLED_PARENT_LABEL) >= 0);
 
 /**
  * Gets the read status of an email
  * @param {Element} emailEl - The email DOM element
  * @returns {boolean} True if the email is read
  */
-const getReadStatus = emailEl => emailEl.className.indexOf('zE') < 0;
+const getReadStatus = (emailEl) => emailEl.className.indexOf('zE') < 0;
 
 // =============================================================================
 // DATE HANDLING FUNCTIONS
@@ -479,7 +482,7 @@ const getRawDate = (email) => {
  * @param {string} rawDate - The raw date string
  * @returns {Date|undefined} The Date object
  */
-const getDate = (rawDate) => rawDate ? new Date(rawDate) : undefined;
+const getDate = (rawDate) => (rawDate ? new Date(rawDate) : undefined);
 
 /**
  * Builds a human-readable date label based on the date
@@ -488,9 +491,9 @@ const getDate = (rawDate) => rawDate ? new Date(rawDate) : undefined;
  */
 const buildDateLabel = (date) => {
   if (!date) return undefined;
-  
+
   const now = new Date();
-  
+
   if (now.getFullYear() === date.getFullYear()) {
     if (now.getMonth() === date.getMonth()) {
       if (now.getDate() === date.getDate()) return DATE_LABELS.TODAY;
@@ -499,9 +502,9 @@ const buildDateLabel = (date) => {
     }
     return MONTHS[date.getMonth()];
   }
-  
+
   if (now.getFullYear() - 1 === date.getFullYear()) return DATE_LABELS.LAST_YEAR;
-  
+
   return date.getFullYear().toString();
 };
 
@@ -520,11 +523,11 @@ const addDateLabel = (email, label) => {
   // Create new date label
   const timeRow = document.createElement('div');
   timeRow.classList.add('time-row');
-  
+
   const time = document.createElement('div');
   time.className = 'time';
   time.innerText = label;
-  
+
   timeRow.appendChild(time);
   email.parentElement.insertBefore(timeRow, email);
 };
@@ -533,7 +536,7 @@ const addDateLabel = (email, label) => {
  * Cleans up redundant or empty date labels
  */
 const cleanupDateLabels = () => {
-  document.querySelectorAll('.time-row').forEach(row => {
+  document.querySelectorAll('.time-row').forEach((row) => {
     // Delete any back to back date labels
     if (row.nextSibling && row.nextSibling.className === 'time-row') {
       row.remove();
@@ -612,7 +615,7 @@ const removeClassFromBundle = (label, klass) => {
 const addCountToBundle = (label, count) => {
   const bundleLabel = document.querySelector(`div[bundleLabel="${label}"] .label-link`);
   if (!bundleLabel) return;
-  
+
   const replacementHTML = `<span>${label}</span><span class="bundle-count">(${count})</span>`;
   if (bundleLabel.innerHTML !== replacementHTML) {
     bundleLabel.innerHTML = replacementHTML;
@@ -627,23 +630,23 @@ const addCountToBundle = (label, count) => {
 const addSendersToBundle = (label, senders) => {
   const bundleSenders = document.querySelector(`div[bundleLabel="${label}"] .bundle-senders`);
   if (!bundleSenders) return;
-  
+
   // Get unique senders, prioritizing unread status
   const uniqueSenders = senders.reverse().filter((sender, index, self) => {
-    if (self.findIndex(s => s.name === sender.name && s.isUnread === sender.isUnread) === index) {
+    if (self.findIndex((s) => s.name === sender.name && s.isUnread === sender.isUnread) === index) {
       // If this sender appears with unread status elsewhere, skip the read version
-      if (!sender.isUnread && self.findIndex(s => s.name === sender.name && s.isUnread) >= 0) {
+      if (!sender.isUnread && self.findIndex((s) => s.name === sender.name && s.isUnread) >= 0) {
         return false;
       }
       return true;
     }
     return false;
   });
-  
+
   const replacementHTML = uniqueSenders
-    .map(sender => `<span class="${sender.isUnread ? 'strong' : ''}">${sender.name}</span>`)
+    .map((sender) => `<span class="${sender.isUnread ? 'strong' : ''}">${sender.name}</span>`)
     .join(', ');
-    
+
   if (bundleSenders.innerHTML !== replacementHTML) {
     bundleSenders.innerHTML = replacementHTML;
   }
@@ -703,17 +706,18 @@ const getBundleTitleColorForLabel = (email, label) => {
  * @param {string} label - The category label
  * @returns {string} The color value
  */
-const getCategoryColor = label => ({
-  Updates: 'rgb(255, 104, 57)',
-  Promotions: 'rgb(0, 188, 212)',
-  Forums: 'rgb(63, 81, 181)',
-  Social: 'rgb(219, 68, 55)',
-  Travel: 'rgb(156, 39, 176)',
-  Trips: 'rgb(156, 39, 176)',
-  Finance: 'rgb(103, 159, 56)',
-  Orders: 'rgb(121, 85, 72)',
-  Purchases: 'rgb(121, 85, 72)',
-}[label] || '#616161');
+const getCategoryColor = (label) =>
+  ({
+    Updates: 'rgb(255, 104, 57)',
+    Promotions: 'rgb(0, 188, 212)',
+    Forums: 'rgb(63, 81, 181)',
+    Social: 'rgb(219, 68, 55)',
+    Travel: 'rgb(156, 39, 176)',
+    Trips: 'rgb(156, 39, 176)',
+    Finance: 'rgb(103, 159, 56)',
+    Orders: 'rgb(121, 85, 72)',
+    Purchases: 'rgb(121, 85, 72)',
+  })[label] || '#616161';
 
 /**
  * Builds a bundle wrapper element for a label
@@ -724,8 +728,8 @@ const getCategoryColor = label => ({
 const buildBundleWrapper = (email, label, hasImportantMarkers) => {
   const importantMarkerClass = hasImportantMarkers ? '' : 'hide-important-markers';
   const bundleImage = getBundleImageForLabel(label);
-  const bundleTitleColor = bundleImage.match(/custom-cluster/) && 
-                          getBundleTitleColorForLabel(email, label);
+  const bundleTitleColor =
+    bundleImage.match(/custom-cluster/) && getBundleTitleColorForLabel(email, label);
   const styleColor = bundleTitleColor || getCategoryColor(label);
   const style = `-webkit-mask: url(${bundleImage}) 0 0/100% 100%; background-color: ${styleColor};`;
 
@@ -744,7 +748,7 @@ const buildBundleWrapper = (email, label, hasImportantMarkers) => {
   addClassToEmail(bundleWrapper, CSS_CLASSES.BUNDLE_WRAPPER);
 
   // Add click handler to navigate to the bundle
-  bundleWrapper.onclick = () => location.href = `#search/in%3Ainbox+label%3A${fixLabel(label)}`;
+  bundleWrapper.onclick = () => (location.href = `#search/in%3Ainbox+label%3A${fixLabel(label)}`);
 
   // Insert the bundle wrapper
   if (email && email.parentNode) {
@@ -824,7 +828,7 @@ const addEventAttachment = (email) => {
   let title = 'Calendar Event';
   let time = '';
   const titleNode = select.eventTitle(email);
-  
+
   if (titleNode) {
     const titleFullText = titleNode.innerText;
     const matches = Array.from(titleFullText.matchAll(/[^:]*: ([^@]*)@(.*)/g))[0];
@@ -887,7 +891,7 @@ const addEventAttachment = (email) => {
  */
 const reloadOptions = () => {
   // Get options from Chrome storage
-  chrome.runtime.sendMessage({ method: 'getOptions' }, function(ops) {
+  chrome.runtime.sendMessage({ method: 'getOptions' }, function (ops) {
     options = ops;
   });
 
@@ -897,10 +901,10 @@ const reloadOptions = () => {
   } else if (options.showAvatar === 'disabled') {
     removeClassFromBody(CSS_CLASSES.AVATAR_OPTION);
     // Remove avatar elements
-    document.querySelectorAll('.' + CSS_CLASSES.AVATAR_EMAIL)
-      .forEach(avatarEl => avatarEl.classList.remove(CSS_CLASSES.AVATAR_EMAIL));
-    document.querySelectorAll('.' + CSS_CLASSES.AVATAR)
-      .forEach(avatarEl => avatarEl.remove());
+    document
+      .querySelectorAll('.' + CSS_CLASSES.AVATAR_EMAIL)
+      .forEach((avatarEl) => avatarEl.classList.remove(CSS_CLASSES.AVATAR_EMAIL));
+    document.querySelectorAll('.' + CSS_CLASSES.AVATAR).forEach((avatarEl) => avatarEl.remove());
   }
 
   // Apply priority inbox options
@@ -916,11 +920,13 @@ const reloadOptions = () => {
   } else if (options.emailBundling === 'disabled') {
     removeClassFromBody(CSS_CLASSES.BUNDLING_OPTION);
     // Unbundle emails
-    document.querySelectorAll('.' + CSS_CLASSES.BUNDLED_EMAIL)
-      .forEach(emailEl => emailEl.classList.remove(CSS_CLASSES.BUNDLED_EMAIL));
+    document
+      .querySelectorAll('.' + CSS_CLASSES.BUNDLED_EMAIL)
+      .forEach((emailEl) => emailEl.classList.remove(CSS_CLASSES.BUNDLED_EMAIL));
     // Remove bundle wrapper rows
-    document.querySelectorAll('.' + CSS_CLASSES.BUNDLE_WRAPPER)
-      .forEach(bundleEl => bundleEl.remove());
+    document
+      .querySelectorAll('.' + CSS_CLASSES.BUNDLE_WRAPPER)
+      .forEach((bundleEl) => bundleEl.remove());
   }
 };
 
@@ -934,15 +940,14 @@ const reloadOptions = () => {
  * @returns {string[]} Array of label names
  */
 const getLabels = (email) => {
-  return Array.from(select.emailLabels(email))
-    .map(el => el.attributes.title?.value || '');
+  return Array.from(select.emailLabels(email)).map((el) => el.attributes.title?.value || '');
 };
 
 /**
  * Gets all tabs from the UI
  * @returns {string[]} Array of tab names
  */
-const getTabs = () => Array.from(select.tabs()).map(el => el.innerText);
+const getTabs = () => Array.from(select.tabs()).map((el) => el.innerText);
 
 /**
  * Processes all emails in the current view
@@ -957,86 +962,93 @@ const getEmails = () => {
   const allLabels = new Set();
   const tabs = getTabs();
 
-  let currentTab = tabs.length && select.currentTab();
+  const currentTab = tabs.length && select.currentTab();
   let prevTimeStamp = null;
   labelStats = {};
 
   // Add or remove bundle page class based on current view
-  isInBundleFlag ? 
-    addClassToBody(CSS_CLASSES.BUNDLE_PAGE) : 
-    removeClassFromBody(CSS_CLASSES.BUNDLE_PAGE);
+  isInBundleFlag
+    ? addClassToBody(CSS_CLASSES.BUNDLE_PAGE)
+    : removeClassFromBody(CSS_CLASSES.BUNDLE_PAGE);
 
   // Process emails from last to first (bottom to top in UI)
   for (let i = emails.length - 1; i >= 0; i--) {
     const email = emails[i];
     const info = {
       emailEl: email,
-      
+
       // Email classification
       isReminder: isReminder(email, myEmailAddress),
       reminderAlreadyProcessed: () => checkEmailClass(email, CSS_CLASSES.REMINDER_EMAIL),
-      
+
       // Date information
       dateString: getRawDate(email),
       date: null, // Will be set below
       dateLabel: null, // Will be set below
-      
+
       // Email status
       isSnooze: false, // Will be set below
       isStarred: isStarred(email),
       isCalendarEvent: isCalendarEvent(email),
-      
+
       // Labels
       labels: getLabels(email),
-      
+
       // Unbundled status
       unbundledAlreadyProcessed: () => checkEmailClass(email, CSS_CLASSES.UNBUNDLED_EMAIL),
       isUnbundled: false, // Will be set below
-      
+
       // Read status
       isUnread: !getReadStatus(email),
-      
+
       // Subject
       subjectEl: select.emailTitleNode(email),
       subject: '', // Will be set below
-      
+
       // Processing status flags
       isBundleEmail: () => checkEmailClass(email, CSS_CLASSES.BUNDLED_EMAIL),
       isBundleWrapper: () => checkEmailClass(email, CSS_CLASSES.BUNDLE_WRAPPER),
       avatarAlreadyProcessed: () => checkEmailClass(email, CSS_CLASSES.AVATAR_EMAIL),
-      bundleAlreadyProcessed: () => checkEmailClass(email, CSS_CLASSES.BUNDLED_EMAIL) || 
-                                   checkEmailClass(email, CSS_CLASSES.BUNDLE_WRAPPER),
+      bundleAlreadyProcessed: () =>
+        checkEmailClass(email, CSS_CLASSES.BUNDLED_EMAIL) ||
+        checkEmailClass(email, CSS_CLASSES.BUNDLE_WRAPPER),
       calendarAlreadyProcessed: () => checkEmailClass(email, CSS_CLASSES.CALENDAR_EMAIL),
     };
-    
+
     // Set date information
     info.date = getDate(info.dateString);
     info.dateLabel = buildDateLabel(info.date);
-    
+
     // Check if email is snoozed
     info.isSnooze = isSnoozed(email, info.date, prevTimeStamp);
-    
+
     // Only update prevTimeStamp if not snoozed
     if (!info.isSnooze && info.date) {
       prevTimeStamp = info.date;
     }
-    
+
     // Add labels to the set of all labels
-    info.labels.forEach(l => allLabels.add(l));
-    
+    info.labels.forEach((l) => allLabels.add(l));
+
     // Check for Unbundled parent label
     info.isUnbundled = checkEmailUnbundledLabel(info.labels);
-    
+
     // Process unbundled emails
-    if ((isInInboxFlag || isInBundleFlag) && info.isUnbundled && !info.unbundledAlreadyProcessed()) {
+    if (
+      (isInInboxFlag || isInBundleFlag) &&
+      info.isUnbundled &&
+      !info.unbundledAlreadyProcessed()
+    ) {
       addClassToEmail(email, CSS_CLASSES.UNBUNDLED_EMAIL);
-      
+
       // Process labels for unbundled emails
-      select.emailAllLabels(info.emailEl).forEach(labelEl => {
+      select.emailAllLabels(info.emailEl).forEach((labelEl) => {
         if (select.labelTitle(labelEl).title.indexOf(CSS_CLASSES.UNBUNDLED_PARENT_LABEL) >= 0) {
           // Remove 'Unbundled/' from display in the UI
-          select.labelInnerText(labelEl).innerText = 
-            labelEl.innerText.replace(CSS_CLASSES.UNBUNDLED_PARENT_LABEL + '/', '');
+          select.labelInnerText(labelEl).innerText = labelEl.innerText.replace(
+            CSS_CLASSES.UNBUNDLED_PARENT_LABEL + '/',
+            '',
+          );
         } else {
           // Hide labels that aren't nested under UNBUNDLED_PARENT_LABEL
           labelEl.hidden = true;
@@ -1046,37 +1058,39 @@ const getEmails = () => {
 
     // Hide tab labels from emails
     if (currentTab) {
-      select.emailAllLabels(info.emailEl).forEach(labelEl => {
+      select.emailAllLabels(info.emailEl).forEach((labelEl) => {
         if (labelEl.innerText === currentTab.innerText) {
           labelEl.hidden = true;
         }
       });
     }
-    
+
     // Set subject
     info.subject = info.subjectEl ? info.subjectEl.innerText.trim() : '';
-    
+
     // Collect statistics for labels
     if (info.labels.length) {
       const participants = Array.from(select.emailParticipants(email));
       const firstParticipant = participants[0]?.getAttribute('name') || '';
-      
-      info.labels.forEach(label => {
+
+      info.labels.forEach((label) => {
         if (!(label in labelStats)) {
           labelStats[label] = {
             title: label,
             count: 1,
-            senders: [{
-              name: firstParticipant,
-              isUnread: info.isUnread
-            }],
-            containsUnread: info.isUnread
+            senders: [
+              {
+                name: firstParticipant,
+                isUnread: info.isUnread,
+              },
+            ],
+            containsUnread: info.isUnread,
           };
         } else {
           labelStats[label].count++;
           labelStats[label].senders.push({
             name: firstParticipant,
-            isUnread: info.isUnread
+            isUnread: info.isUnread,
           });
           if (info.isUnread) {
             labelStats[label].containsUnread = true;
@@ -1084,7 +1098,7 @@ const getEmails = () => {
         }
       });
     }
-    
+
     processedEmails[i] = info;
   }
 
@@ -1092,14 +1106,14 @@ const getEmails = () => {
   for (const label in labelStats) {
     // Set message count for each bundle row
     addCountToBundle(label, labelStats[label].count);
-    
+
     // Set list of senders for each bundle row
     addSendersToBundle(label, labelStats[label].senders);
-    
+
     // Set bold title class for any bundle containing an unread email
-    labelStats[label].containsUnread ? 
-      addClassToBundle(label, CSS_CLASSES.UNREAD_BUNDLE) : 
-      removeClassFromBundle(label, CSS_CLASSES.UNREAD_BUNDLE);
+    labelStats[label].containsUnread
+      ? addClassToBundle(label, CSS_CLASSES.UNREAD_BUNDLE)
+      : removeClassFromBundle(label, CSS_CLASSES.UNREAD_BUNDLE);
   }
 
   return [processedEmails, allLabels];
@@ -1111,10 +1125,10 @@ const getEmails = () => {
 const updateReminders = () => {
   // Reload user options
   reloadOptions();
-  
+
   // Get processed emails and all labels
   const [emails, allLabels] = getEmails();
-  
+
   // Get user email and UI state
   const myEmail = getMyEmailAddress();
   let lastLabel = null;
@@ -1124,7 +1138,7 @@ const updateReminders = () => {
 
   // Clean up date labels
   cleanupDateLabels();
-  
+
   // Get current bundle state
   const emailBundles = getBundledLabels();
 
@@ -1137,41 +1151,46 @@ const updateReminders = () => {
       // For emails with just "Reminder" as subject, clean up the display
       if (emailInfo.subject.toLowerCase() === 'reminder') {
         emailInfo.subjectEl.outerHTML = '';
-        select.emailMiscPart3(emailEl).forEach(node => node.outerHTML = '');
-        select.emailMiscPart1(emailEl).forEach(node => node.style.color = '#202124');
+        select.emailMiscPart3(emailEl).forEach((node) => (node.outerHTML = ''));
+        select.emailMiscPart1(emailEl).forEach((node) => (node.style.color = '#202124'));
       }
-      
+
       // Set the snippet text to "Reminder"
-      select.emailMiscPart2(emailEl).forEach(node => { node.innerHTML = 'Reminder'; });
+      select.emailMiscPart2(emailEl).forEach((node) => {
+        node.innerHTML = 'Reminder';
+      });
 
       // Add avatar for reminders
       const avatarWrapperEl = select.emailAvatarWrapper(emailEl);
-      if (avatarWrapperEl && avatarWrapperEl.getElementsByClassName(CSS_CLASSES.AVATAR).length === 0) {
+      if (
+        avatarWrapperEl &&
+        avatarWrapperEl.getElementsByClassName(CSS_CLASSES.AVATAR).length === 0
+      ) {
         const avatarElement = document.createElement('div');
         avatarElement.className = CSS_CLASSES.AVATAR;
         avatarWrapperEl.appendChild(avatarElement);
       }
-      
+
       // Mark as processed
       addClassToEmail(emailEl, CSS_CLASSES.REMINDER_EMAIL);
-    } 
+    }
     // Process avatars for non-reminders
     else if (
-      options.showAvatar === 'enabled' && 
-      !emailInfo.reminderAlreadyProcessed() && 
-      !emailInfo.avatarAlreadyProcessed() && 
+      options.showAvatar === 'enabled' &&
+      !emailInfo.reminderAlreadyProcessed() &&
+      !emailInfo.avatarAlreadyProcessed() &&
       !emailInfo.bundleAlreadyProcessed()
     ) {
-      let participants = Array.from(select.emailParticipants(emailEl));
+      const participants = Array.from(select.emailParticipants(emailEl));
       if (!participants.length) continue; // Skip emails without participants (e.g., drafts)
-      
+
       let firstParticipant = participants[0];
 
       // Prefer participants other than the current user
       const excludingMe = participants.filter(
-        node => node.getAttribute('email') !== myEmail && node.getAttribute('name')
+        (node) => node.getAttribute('email') !== myEmail && node.getAttribute('name'),
       );
-      
+
       if (excludingMe.length > 0) {
         firstParticipant = excludingMe[0];
       }
@@ -1189,14 +1208,12 @@ const updateReminders = () => {
         // Set background color based on first letter
         if (firstLetterCode >= 65 && firstLetterCode <= 90) {
           const baseColor = '#' + NAME_COLORS[firstLetterCode - 65];
-          
+
           // Force background color, even in dark mode
           avatarElement.style.setProperty('background-color', baseColor, 'important');
-          
+
           // Ensure text is white
           avatarElement.style.color = '#ffffff';
-          
-
         } else {
           avatarElement.style.background = '#000000';
           // Some unicode characters need special handling
@@ -1206,22 +1223,24 @@ const updateReminders = () => {
 
         avatarElement.innerText = firstLetter;
         targetElement.appendChild(avatarElement);
-        
+
         // Try to fetch BIMI brand logo asynchronously
         const email = firstParticipant.getAttribute('email');
         if (email) {
           const domain = extractDomain(email);
-          
+
           if (domain) {
             // Try to fetch brand logo (BIMI)
-            fetchBrandLogo(domain).then(brandLogoUrl => {
-              if (brandLogoUrl) {
-                // Replace letter avatar with brand logo
-                replaceAvatarWithWeb(targetElement, brandLogoUrl, name);
-              }
-            }).catch(error => {
-              // Silently handle errors
-            });
+            fetchBrandLogo(domain)
+              .then((brandLogoUrl) => {
+                if (brandLogoUrl) {
+                  // Replace letter avatar with brand logo
+                  replaceAvatarWithWeb(targetElement, brandLogoUrl, name);
+                }
+              })
+              .catch(() => {
+                // Silently handle errors
+              });
           }
         }
       }
@@ -1238,11 +1257,11 @@ const updateReminders = () => {
 
     // Handle date labels
     let label = emailInfo.dateLabel;
-    
+
     // Special handling for snoozed emails
     if (emailInfo.isSnooze) {
       // If this is the first email, assume Today, otherwise use previous label
-      label = (lastLabel == null) ? DATE_LABELS.TODAY : lastLabel;
+      label = lastLabel == null ? DATE_LABELS.TODAY : lastLabel;
     }
 
     // Add date label if it's a new label
@@ -1260,14 +1279,14 @@ const updateReminders = () => {
       }
 
       // Determine which labels should be bundled
-      let labelsToBundle = [];
+      const labelsToBundle = [];
       if (!options.bundleOne) {
         // Count emails per label to find labels with multiple emails
-        let labelCounts = emails.reduce((counts, email) => {
-          email.labels.forEach(label => counts[label] = (counts[label] || 0) + 1);
+        const labelCounts = emails.reduce((counts, email) => {
+          email.labels.forEach((label) => (counts[label] = (counts[label] || 0) + 1));
           return counts;
         }, {});
-        
+
         // Only bundle labels with more than one email
         for (const label in labelCounts) {
           if (labelCounts[label] > 1) {
@@ -1277,25 +1296,24 @@ const updateReminders = () => {
       }
 
       // Filter out tab labels
-      let labels = emailInfo.labels.filter(x => !tabs.includes(x));
-      
+      let labels = emailInfo.labels.filter((x) => !tabs.includes(x));
+
       // If bundleOne is disabled, only bundle labels with multiple emails
       if (!options.bundleOne) {
-        labels = labelsToBundle.length ? 
-          labels.filter(x => labelsToBundle.includes(x)) : [];
+        labels = labelsToBundle.length ? labels.filter((x) => labelsToBundle.includes(x)) : [];
       }
 
       // Bundle eligible emails
       if (
-        isInInboxFlag && 
-        !emailInfo.isStarred && 
-        labels.length && 
-        !emailInfo.isUnbundled && 
+        isInInboxFlag &&
+        !emailInfo.isStarred &&
+        labels.length &&
+        !emailInfo.isUnbundled &&
         !emailInfo.bundleAlreadyProcessed()
       ) {
-        labels.forEach(label => {
+        labels.forEach((label) => {
           addClassToEmail(emailEl, CSS_CLASSES.BUNDLED_EMAIL);
-          
+
           // Hide bundled emails with CSS
           if (!hiddenEmailIds.includes(emailEl.id)) {
             createStyleNodeWithEmailId(emailEl.id);
@@ -1307,13 +1325,9 @@ const updateReminders = () => {
             emailBundles[label] = true;
           }
         });
-      } 
+      }
       // Show previously hidden emails that are no longer bundled
-      else if (
-        !emailInfo.isUnbundled && 
-        !labels.length && 
-        hiddenEmailIds.includes(emailEl.id)
-      ) {
+      else if (!emailInfo.isUnbundled && !labels.length && hiddenEmailIds.includes(emailEl.id)) {
         removeStyleNodeWithEmailId(emailEl.id);
       }
     }
@@ -1329,25 +1343,25 @@ const updateReminders = () => {
  */
 const setupMenuNodes = () => {
   const sidebarSelector = '.wT .byl'; // Parent of the menu rows
-  
+
   const watchSidebar = () => {
     const sidebar = document.querySelector(sidebarSelector);
     if (!sidebar) return;
-    
+
     insertDoneMenuItem();
-    
+
     // Map menu items to their selectors
     [
-      { label: 'inbox',     selector: '.aHS-bnt' },
-      { label: 'snoozed',   selector: '.aHS-bu1' },
-      { label: 'allmail',   selector: '.aHS-aHO' },
-      { label: 'drafts',    selector: '.aHS-bnq' },
-      { label: 'sent',      selector: '.aHS-bnu' },
-      { label: 'spam',      selector: '.aHS-bnv' },
-      { label: 'trash',     selector: '.aHS-bnx' },
-      { label: 'starred',   selector: '.aHS-bnw' },
+      { label: 'inbox', selector: '.aHS-bnt' },
+      { label: 'snoozed', selector: '.aHS-bu1' },
+      { label: 'allmail', selector: '.aHS-aHO' },
+      { label: 'drafts', selector: '.aHS-bnq' },
+      { label: 'sent', selector: '.aHS-bnu' },
+      { label: 'spam', selector: '.aHS-bnv' },
+      { label: 'trash', selector: '.aHS-bnx' },
+      { label: 'starred', selector: '.aHS-bnw' },
       { label: 'important', selector: '.aHS-bns' },
-      { label: 'chats',     selector: '.aHS-aHP' },
+      { label: 'chats', selector: '.aHS-aHP' },
     ].forEach(({ label, selector }) => {
       const node = queryParentSelector(document.querySelector(selector), '.aim');
       if (node) menuNodes[label] = node;
@@ -1368,7 +1382,7 @@ const setupMenuNodes = () => {
 const insertDoneMenuItem = () => {
   // Prevent duplicate Done menu item
   if (document.querySelector('.TO.inbox-reborn-done')) return;
-  
+
   const snoozedTO = document.querySelector('.aHS-bu1')?.closest('.TO');
   if (!snoozedTO) return;
 
@@ -1381,7 +1395,8 @@ const insertDoneMenuItem = () => {
   // Fix icon
   const icon = doneTO.querySelector('.qj');
   if (icon) {
-    icon.style.backgroundImage = "url('chrome-extension://__MSG_@@extension_id__/images/ic_done_clr_24dp_r4_2x.png')";
+    icon.style.backgroundImage =
+      "url('chrome-extension://__MSG_@@extension_id__/images/ic_done_clr_24dp_r4_2x.png')";
   }
 
   // Fix label and link
@@ -1410,7 +1425,7 @@ const insertDoneMenuItem = () => {
     link.style.height = '100%';
     link.style.zIndex = '2';
     link.style.background = 'none';
-    link.onclick = function(e) {
+    link.onclick = function (e) {
       e.preventDefault();
       window.location.hash = '#archive';
     };
@@ -1418,7 +1433,7 @@ const insertDoneMenuItem = () => {
   }
 
   // Make the whole row clickable
-  doneTO.onclick = function(e) {
+  doneTO.onclick = function (e) {
     if (e.target.tagName.toLowerCase() !== 'a') {
       window.location.hash = '#archive';
     }
@@ -1431,7 +1446,7 @@ const insertDoneMenuItem = () => {
   function updateDoneHighlight() {
     const doneMenu = document.querySelector('.TO.inbox-reborn-done');
     if (!doneMenu) return;
-    
+
     if (window.location.hash === '#archive') {
       doneMenu.classList.add('nZ');
       snoozedTO.classList.remove('nZ');
@@ -1439,7 +1454,7 @@ const insertDoneMenuItem = () => {
       doneMenu.classList.remove('nZ');
     }
   }
-  
+
   window.addEventListener('hashchange', updateDoneHighlight);
   updateDoneHighlight();
 };
@@ -1455,28 +1470,26 @@ const reorderMenuItems = () => {
     '.aHS-bnx', // Trash
     '.aHS-bnv', // Spam
   ];
-  
+
   const parent = select.menuParent();
   const refer = select.menuRefer();
 
   function tryReorder() {
     // Find all the menu nodes in the desired order
-    const nodes = desiredOrder.map(sel => 
-      document.querySelector(sel)?.closest('.TO')
-    );
-    
-    if (nodes.some(n => !n) || !parent || !refer) {
+    const nodes = desiredOrder.map((sel) => document.querySelector(sel)?.closest('.TO'));
+
+    if (nodes.some((n) => !n) || !parent || !refer) {
       setTimeout(tryReorder, 250);
       return;
     }
-    
+
     // Remove from current position
-    nodes.forEach(node => parent.contains(node) && parent.removeChild(node));
-    
+    nodes.forEach((node) => parent.contains(node) && parent.removeChild(node));
+
     // Insert in the new order before the reference node
-    nodes.forEach(node => parent.insertBefore(node, refer));
+    nodes.forEach((node) => parent.insertBefore(node, refer));
   }
-  
+
   tryReorder();
 };
 
@@ -1489,7 +1502,7 @@ const reorderMenuItems = () => {
  */
 const handleHashChange = () => {
   let hash = window.location.hash;
-  
+
   if (isInBundle()) {
     hash = '#inbox';
   } else {
@@ -1499,20 +1512,20 @@ const handleHashChange = () => {
     if (hash.startsWith('#category/forums')) hash = '#forums';
     if (hash.startsWith('#category/promotions')) hash = '#promotions';
     if (hash.startsWith('#settings/labels')) hash = '#labels';
-    
+
     // Handle user-created/dynamic labels
     if (hash.startsWith('#label/')) {
       // Get the header element and Gmail link node
       const headerElement = select.headerElement();
       const titleNode = select.titleNode();
-      
+
       // Extract and decode the full label path (e.g., "Software/Chess")
       const raw = hash.slice('#label/'.length);
       const labelName = decodeURIComponent(raw.replace(/\+/g, ' '));
-      
+
       // Extract only the last part of the label path (the "leaf" label)
       const leafLabel = labelName.split('/').pop().trim();
-      
+
       if (headerElement && titleNode && titleNode.setAttribute) {
         headerElement.setAttribute('pageTitle', 'label');
         // Show just the last sub-label in the header
@@ -1523,17 +1536,17 @@ const handleHashChange = () => {
       }
       return; // Skip the rest of the logic for label pages
     }
-    
+
     // Remove label-title attribute if not on a label page
     const titleNode = select.titleNode();
     if (titleNode && titleNode.removeAttribute) {
       titleNode.removeAttribute('data-label-title');
       titleNode.removeAttribute('title');
     }
-    
+
     hash = hash.split('/')[0].split('?')[0];
   }
-  
+
   const headerElement = select.headerElement();
   const titleNode = select.titleNode();
 
@@ -1547,11 +1560,12 @@ const handleHashChange = () => {
  * Fixes label colors to ensure they're applied with !important
  */
 const fixLabelColors = () => {
-  [...document.querySelectorAll('.qj.aEe')].forEach(el => {
-    let elStyle = el.getAttribute('style');
+  [...document.querySelectorAll('.qj.aEe')].forEach((el) => {
+    const elStyle = el.getAttribute('style');
     if (elStyle) {
-      el.setAttribute('style', 
-        elStyle.replace(/(background-color:.*(?<!important));/g, '$1 !important;')
+      el.setAttribute(
+        'style',
+        elStyle.replace(/(background-color:.*(?<!important));/g, '$1 !important;'),
       );
     }
   });
@@ -1561,17 +1575,17 @@ const fixLabelColors = () => {
  * Sets up an observer to watch for label color changes
  */
 const watchLabelColorChanges = () => {
-  const LABEL_CONTAINER_SELECTOR = ".aAw.FgKVne ~ .yJ";
+  const LABEL_CONTAINER_SELECTOR = '.aAw.FgKVne ~ .yJ';
   const labelBaseNode = document.querySelector(LABEL_CONTAINER_SELECTOR);
-  
+
   if (!labelBaseNode) return;
-  
+
   const observer = new MutationObserver(() => {
     observer.disconnect();
     fixLabelColors();
     observer.observe(labelBaseNode, { attributes: true, childList: true, subtree: true });
   });
-  
+
   fixLabelColors();
   observer.observe(labelBaseNode, { attributes: true, childList: true, subtree: true });
 };
@@ -1581,14 +1595,14 @@ const watchLabelColorChanges = () => {
  */
 const addFloatingComposeButton = () => {
   if (document.querySelector('.floating-compose')) return;
-  
+
   const floatingComposeButton = document.createElement('div');
   floatingComposeButton.className = 'floating-compose';
-  floatingComposeButton.addEventListener('click', function() {
+  floatingComposeButton.addEventListener('click', function () {
     const composeButton = select.composeButton();
     composeButton?.click();
   });
-  
+
   document.body.appendChild(floatingComposeButton);
 };
 
@@ -1598,14 +1612,14 @@ const addFloatingComposeButton = () => {
 const addReminderButton = () => {
   const addReminder = document.createElement('div');
   addReminder.className = 'add-reminder';
-  
-  addReminder.addEventListener('click', function() {
+
+  addReminder.addEventListener('click', function () {
     const myEmail = getMyEmailAddress();
     const composeButton = select.composeButton();
     composeButton?.click();
 
     // Wait for compose window to open
-    waitForElement('input[peoplekit-id="BbVjBd"]', to => {
+    waitForElement('input[peoplekit-id="BbVjBd"]', (to) => {
       const title = select.messageSubjectBox();
       const body = select.messageBody();
       const from = select.messageFrom();
@@ -1616,7 +1630,7 @@ const addReminderButton = () => {
       if (body) body.focus();
     });
   });
-  
+
   document.body.appendChild(addReminder);
 };
 
@@ -1626,7 +1640,7 @@ const addReminderButton = () => {
 const moveFloatersLeft = () => {
   const reminderButton = document.querySelector('.add-reminder');
   const composeButton = document.querySelector('.floating-compose');
-  
+
   if (reminderButton) reminderButton.classList.add('moved');
   if (composeButton) composeButton.classList.add('moved');
 };
@@ -1637,7 +1651,7 @@ const moveFloatersLeft = () => {
 const moveFloatersRight = () => {
   const reminderButton = document.querySelector('.add-reminder');
   const composeButton = document.querySelector('.floating-compose');
-  
+
   if (reminderButton) reminderButton.classList.remove('moved');
   if (composeButton) composeButton.classList.remove('moved');
 };
@@ -1648,13 +1662,13 @@ const moveFloatersRight = () => {
 const sidePanelHandler = () => {
   const sidePanel = document.querySelector('div[aria-label="Side panel"]');
   if (!sidePanel) return;
-  
+
   const sidePanelBtns = sidePanel.querySelectorAll('.bse-bvF-I.aT5-aOt-I:not(#qJTzr)'); // ignore the + btn
   const addOnsFrame = document.querySelector('.buW');
 
   // Add click handlers to side panel buttons
   for (let b = 0; b < sidePanelBtns.length; b++) {
-    sidePanelBtns[b].addEventListener('click', function() {
+    sidePanelBtns[b].addEventListener('click', function () {
       moveFloatersLeft();
       sidePanelMutationHandler();
     });
@@ -1678,9 +1692,9 @@ const sidePanelMutationHandler = () => {
   waitForElement('.buW', () => {
     const addOnsPanel = document.querySelector('.buW');
     if (!addOnsPanel) return;
-    
+
     const panelResized = new ResizeObserver((entries) => {
-      for (let entry of entries) {
+      for (const entry of entries) {
         if (entry.contentRect.width === 0) {
           moveFloatersRight();
         } else {
@@ -1688,7 +1702,7 @@ const sidePanelMutationHandler = () => {
         }
       }
     });
-    
+
     panelResized.observe(addOnsPanel);
   });
 };
@@ -1711,42 +1725,42 @@ const fetchBrandLogo = async (domain) => {
 
   // Use the exact domain from the email (don't strip subdomains)
   const emailDomain = domain;
-  
+
   // Try BIMI/VMC logo from DNS TXT records - highest quality
   try {
     // Query DNS for BIMI TXT record using default selector
     const bimiSelector = 'default._bimi';
     const bimiRecord = `${bimiSelector}.${emailDomain}`;
-    
+
     // Use multiple DNS-over-HTTPS services for better compatibility
     const dnsServices = [
       `https://dns.google/resolve?name=${bimiRecord}&type=TXT`,
       `https://cloudflare-dns.com/dns-query?name=${bimiRecord}&type=TXT`,
-      `https://doh.pub/dns-query?name=${bimiRecord}&type=TXT`
+      `https://doh.pub/dns-query?name=${bimiRecord}&type=TXT`,
     ];
-    
+
     // Try each DNS service until one works
     for (const dnsUrl of dnsServices) {
       try {
         const response = await fetch(dnsUrl, {
           method: 'GET',
           headers: {
-            'Accept': 'application/dns-json',
-            'User-Agent': navigator.userAgent
-          }
+            Accept: 'application/dns-json',
+            'User-Agent': navigator.userAgent,
+          },
         });
-        
+
         if (response.ok) {
           const dnsData = await response.json();
           if (dnsData.Answer && dnsData.Answer.length > 0) {
             // Parse the BIMI TXT record
             const txtRecord = dnsData.Answer[0].data.replace(/"/g, '');
-            
+
             // Parse for logo URL (l= parameter)
             const logoMatch = txtRecord.match(/l=([^\s;]+)/);
             if (logoMatch) {
               const logoUrl = logoMatch[1];
-              
+
               // Test if the logo loads
               const result = await testImageUrl(logoUrl);
               if (result) {
@@ -1757,20 +1771,18 @@ const fetchBrandLogo = async (domain) => {
           }
           break; // Found working service, exit loop
         }
-      } catch (serviceError) {
+      } catch {
         // Try next service
         continue;
       }
     }
-  } catch (error) {
+  } catch {
     // Silently handle errors
   }
-  
+
   // No BIMI logo available - fall back to letter avatar
   return null;
 };
-
-
 
 /**
  * Creates a web avatar element for BIMI logos
@@ -1800,14 +1812,11 @@ const replaceAvatarWithWeb = (targetElement, logoUrl, name) => {
   if (existingAvatar) {
     existingAvatar.remove();
   }
-  
+
   // Create and add web avatar
   const webAvatar = createWebAvatar(logoUrl, name);
   targetElement.appendChild(webAvatar);
-  
-
 };
-
 
 /**
  * Sets a custom favicon
@@ -1818,8 +1827,6 @@ const setFavicon = () => {
     faviconLink.href = chrome.runtime.getURL('images/favicon.png');
   }
 };
-
-
 
 // =============================================================================
 // INITIALIZATION
@@ -1832,7 +1839,6 @@ const init = () => {
   setFavicon();
   setupMenuNodes();
   reorderMenuItems();
-
 };
 
 // Initialize if document.head is available, otherwise wait for DOMContentLoaded
@@ -1850,23 +1856,23 @@ if (document.head) {
 window.addEventListener('hashchange', handleHashChange);
 
 // Set up main event listeners when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   // Add reminder button
   addReminderButton();
-  
+
   // Initialize header and compose button
   waitForElement('a[aria-label="Gmail"]', handleHashChange);
   waitForElement('a[aria-label="Gmail"]', addFloatingComposeButton);
-  
+
   // Set up label color observer
-  waitForElement(".aAw.FgKVne ~ .yJ", watchLabelColorChanges);
-  
+  waitForElement('.aAw.FgKVne ~ .yJ', watchLabelColorChanges);
+
   // Set up periodic email updates
   setInterval(updateReminders, 250);
-  
+
   // Set up side panel handler
-  waitForElement('div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I[aria-label^="Get "]', sidePanelHandler);
-  
-
+  waitForElement(
+    'div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I[aria-label^="Get "]',
+    sidePanelHandler,
+  );
 });
-

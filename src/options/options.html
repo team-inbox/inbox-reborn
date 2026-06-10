@@ -1,23 +1,25 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Inbox in Gmail Options</title>
-</head>
-<link rel="stylesheet" href="style.css">
-<body>
-<div class="content">
-    <div class="setting">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Inbox in Gmail Options</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="content">
+      <div class="setting">
         <div class="setting-title">Dark Mode</div>
         <div class="setting-content">
-            <span class="setting-desc">Use with Gmail’s Dark Theme (enable dark mode in Gmail settings as well)</span>
-            <label class="switch">
-              <input type="checkbox" id="dark-mode-toggle">
-              <span class="slider round"></span>
-            </label>
+          <span class="setting-desc"
+            >Use with Gmail’s Dark Theme (enable dark mode in Gmail settings as well)</span
+          >
+          <label class="switch">
+            <input type="checkbox" id="dark-mode-toggle" />
+            <span class="slider round"></span>
+          </label>
         </div>
-    </div>
-    <div class="setting">
+      </div>
+      <div class="setting">
         <div class="setting-title">Reminders</div>
         <div class="setting-content">
           <span class="setting-desc">Select how emails sent to yourself are displayed</span>
@@ -27,48 +29,48 @@
             <option value="none">None (no reminders)</option>
           </select>
         </div>
-    </div>
-    <div class="setting">
+      </div>
+      <div class="setting">
         <div class="setting-title">Email Bundling</div>
         <div class="setting-content">
-            <span class="setting-desc">Group emails in your inbox by label</span>
-            <label class="switch">
-              <input type="checkbox" id="bundling-toggle">
-              <span class="slider round"></span>
-            </label>
+          <span class="setting-desc">Group emails in your inbox by label</span>
+          <label class="switch">
+            <input type="checkbox" id="bundling-toggle" />
+            <span class="slider round"></span>
+          </label>
         </div>
         <div class="sub-settings">
-            <label>
-                <input type="checkbox" name="bundle-one" id="bundle-one">
-                Show bundle if only one email (Requires refresh when turning off)</small>
-            </label>
-            <label>
-                <input type="checkbox" name="bundle-top" id="bundle-top">
-                Move bundles to top of inbox
-            </label>
+          <label>
+            <input type="checkbox" name="bundle-one" id="bundle-one" />
+            Show bundle if only one email (Requires refresh when turning off)
+          </label>
+          <label>
+            <input type="checkbox" name="bundle-top" id="bundle-top" />
+            Move bundles to top of inbox
+          </label>
         </div>
-    </div>
-    <div class="setting">
+      </div>
+      <div class="setting">
         <div class="setting-title">Avatars</div>
         <div class="setting-content">
-            <span class="setting-desc">Show a colored circle with the sender’s first initial</span>
-            <label class="switch">
-              <input type="checkbox" id="avatar-toggle">
-              <span class="slider round"></span>
-            </label>
+          <span class="setting-desc">Show a colored circle with the sender’s first initial</span>
+          <label class="switch">
+            <input type="checkbox" id="avatar-toggle" />
+            <span class="slider round"></span>
+          </label>
         </div>
-    </div>
-    <div class="setting">
+      </div>
+      <div class="setting">
         <div class="setting-title">Hide Priority Inbox Headings</div>
         <div class="setting-content">
-            <span class="setting-desc">Clean up the inbox UI when using “Priority Inbox” view</span>
-            <label class="switch">
-              <input type="checkbox" id="priority-inbox-toggle">
-              <span class="slider round"></span>
-            </label>
+          <span class="setting-desc">Clean up the inbox UI when using “Priority Inbox” view</span>
+          <label class="switch">
+            <input type="checkbox" id="priority-inbox-toggle" />
+            <span class="slider round"></span>
+          </label>
         </div>
+      </div>
     </div>
-</div>
-<script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

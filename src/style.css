@@ -20,22 +20,22 @@
 :root {
   --inbox-margin-right: 7vw;
   --email-max-width: 1200px;
-  
+
   /* Color palette */
   --color-background: #f2f2f2;
-  --color-surface: #ffffff;
+  --color-surface: #fff;
   --color-text-primary: #202124;
   --color-text-secondary: #616161;
-  --color-divider: #dddddd;
-  --color-shadow: rgba(0, 0, 0, 0.24);
-  
+  --color-divider: #ddd;
+  --color-shadow: rgb(0 0 0 / 24%);
+
   /* Dark mode colors (will be applied with .dark-mode class) */
   --dark-color-background: #141414;
   --dark-color-surface: #252526;
-  --dark-color-text-primary: #ffffff;
+  --dark-color-text-primary: #fff;
   --dark-color-text-secondary: #c7c7c7;
   --dark-color-divider: #3b3b3b;
-  --dark-color-shadow: rgba(0, 0, 0, 0.44);
+  --dark-color-shadow: rgb(0 0 0 / 44%);
 }
 
 /* Let Gmail use its default colorful icons for system labels */
@@ -60,7 +60,9 @@
 
 /* Header bar */
 header {
-  box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
+  box-shadow:
+    0 0 4px rgb(0 0 0 / 14%),
+    0 4px 8px rgb(0 0 0 / 28%);
 }
 
 /* Sidebar: hide the label email counters */
@@ -84,8 +86,9 @@ header {
 }
 
 /* Mail/Chat/Spaces sidebar hover preview */
-.apV.aJu, 
-.aBA.apV.bym { /* .bym applies hover preview styles! */
+.apV.aJu,
+.aBA.apV.bym {
+  /* .bym applies hover preview styles! */
   height: calc(100vh - 64px) !important;
   border-radius: 0 !important;
 }
@@ -104,7 +107,7 @@ header {
 .n3 > .CL > .CK,
 .aAv {
   text-shadow: none;
-  color: #616161 !important
+  color: #616161 !important;
 }
 
 /* Emails */
@@ -116,7 +119,7 @@ header {
 
 /* Set opened email width to same as email list */
 .Bs.nH.iY.bAt {
-  margin: 10px auto 10px auto !important;
+  margin: 10px auto !important;
   max-width: 1180px;
   padding: 0 10px;
 }
@@ -138,6 +141,7 @@ header {
 .D.E.G-atb {
   margin: 0 auto !important;
   width: var(--email-max-width);
+
   /* this percent effectively enforces a 3.5% (7% / 2) padding when */
   max-width: 97%;
 }
@@ -145,7 +149,10 @@ header {
 /* Add box-shadow to open email + match toolbar width */
 .nH.a98.iY {
   margin: 2px 16px 0;
-  box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important
+  box-shadow:
+    0 -1px 0 #e0e0e0,
+    0 0 2px rgb(0 0 0 / 12%),
+    0 2px 4px rgb(0 0 0 / 24%) !important;
 }
 
 .aeH {
@@ -181,7 +188,7 @@ header {
 td.apU.xY {
   display: block;
   position: absolute;
-  right: 0px;
+  right: 0;
 }
 
 /* Display star (pin) on hover */
@@ -306,6 +313,7 @@ td.apU.xY .T-KT.xf::before {
     background-color: #444746 !important; /* Greyish color for light mode */
     background-image: none !important; /* Ensure no conflicting background image */
   }
+
   /* Starred */
   td.apU.xY .T-KT.xl::before {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
@@ -319,50 +327,62 @@ td.apU.xY .T-KT.xf::before {
     background-color: #444746 !important; /* Greyish color for light mode */
     background-image: none !important; /* Ensure no conflicting background image */
   }
+
   /* Starred - Yellow Star */
   td.apU.xY .T-KT.T-KT-Jp::before {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-yellow-24dp-r4-2x.png') !important;
   }
+
   /* Starred - Orange Star */
   td.apU.xY .T-KT.xl::before {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-orange-24dp-r4-2x.png') !important;
   }
+
   /* Starred - Red Star */
   td.apU.xY .T-KT.xn::before {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-red-24dp-r4-2x.png') !important;
   }
+
   /* Starred - Purple Star */
   td.apU.xY .T-KT.xm::before {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-purple-24dp-r4-2x.png') !important;
   }
+
   /* Starred - Blue Star */
   td.apU.xY .T-KT.xj::before {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-blue-24dp-r4-2x.png') !important;
   }
+
   /* Starred - Green Star */
   td.apU.xY .T-KT.xk::before {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-green-24dp-r4-2x.png') !important;
   }
+
   /* Starred - Red Bang */
   td.apU.xY .T-KT.xg::before {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
   }
+
   /* Starred - Orange Guillimet */
   td.apU.xY .T-KT.xe::before {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
   }
+
   /* Starred - Yellow Bang */
   td.apU.xY .T-KT.xh::before {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
   }
+
   /* Starred - Green Check */
   td.apU.xY .T-KT.xd::before {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
   }
+
   /* Starred - Blue Info */
   td.apU.xY .T-KT.xc::before {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
   }
+
   /* Starred - Purple Question */
   td.apU.xY .T-KT.xf::before {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
@@ -371,7 +391,7 @@ td.apU.xY .T-KT.xf::before {
 
 /* Unread email */
 .yO {
-  background: #FFF !important;
+  background: #fff !important;
 }
 
 /* Time */
@@ -384,12 +404,19 @@ td.apU.xY .T-KT.xf::before {
 }
 
 /* Email */
-.zA, .zA:hover {
-  box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
-  -webkit-box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
+.zA,
+.zA:hover {
+  box-shadow:
+    0 -1px 0 #e0e0e0,
+    0 0 2px rgb(0 0 0 / 12%),
+    0 2px 4px rgb(0 0 0 / 24%) !important;
+  -webkit-box-shadow:
+    0 -1px 0 #e0e0e0,
+    0 0 2px rgb(0 0 0 / 12%),
+    0 2px 4px rgb(0 0 0 / 24%) !important;
   z-index: inherit !important;
   padding-right: 24px;
-  background: #FFF !important;
+  background: #fff !important;
 }
 
 /* Inbox Email is Empty show Sun */
@@ -400,7 +427,7 @@ td.apU.xY .T-KT.xf::before {
   padding-top: 30px;
   height: 618px;
   width: 456px;
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
   color: transparent;
   font-size: 14px;
 }
@@ -434,7 +461,8 @@ td.apU.xY .T-KT.xf::before {
 /* Chat + Spaces: Full Screen Views */
 
 /* Spaces */
-.aBA + .bkK, .a3W + .bkK {
+.aBA + .bkK,
+.a3W + .bkK {
   margin-left: 0 !important;
 }
 
@@ -464,18 +492,17 @@ td.apU.xY .T-KT.xf::before {
 
 /* Menu item row, hover */
 .TK .TO:hover {
-  background-color: rgba(0,0,0,.05) !important;
+  background-color: rgb(0 0 0 / 5%) !important;
   cursor: pointer;
 }
 
 /* Menu item row active */
 .TK .TO:active,
-.n6 .ah9.aiu:active
-.CL:active,
+.n6 .ah9.aiu:active .CL:active,
 .TO.nZ,
 .TO.NQ,
 .TO.ol {
-  background-color: rgba(0,0,0,.05) !important;
+  background-color: rgb(0 0 0 / 5%) !important;
 }
 
 /* Left sidebar collapsed */
@@ -495,6 +522,7 @@ td.apU.xY .T-KT.xf::before {
   position: relative;
   box-sizing: border-box;
   cursor: pointer !important;
+
   /* To allow highlight/hover like other rows */
   transition: background 0.12s;
 }
@@ -528,7 +556,7 @@ body.dark-mode .TO.inbox-reborn-done::after {
 /* On hover, look like all other menu rows */
 .TO.inbox-reborn-done:hover,
 .TO.inbox-reborn-done.nZ {
-  background-color: rgba(0,0,0,.05) !important;
+  background-color: rgb(0 0 0 / 5%) !important;
 }
 
 /* Make all children take full height */
@@ -549,7 +577,8 @@ body.dark-mode .TO.inbox-reborn-done::after {
   border: none;
   box-sizing: border-box;
   position: absolute;
-  left: 0; top: 0;
+  left: 0;
+  top: 0;
   z-index: 2;
   cursor: pointer !important;
 }
@@ -580,8 +609,8 @@ body.dark-mode .TO.inbox-reborn-done::after {
 
 /* Compose email old place */
 .z0 {
-  margin: 0px !important;
-  height: 0px !important;
+  margin: 0 !important;
+  height: 0 !important;
 }
 
 /* Compose email boxes wrapper */
@@ -590,6 +619,7 @@ body.dark-mode .TO.inbox-reborn-done::after {
 }
 
 /* Compose email popup */
+
 /* Top bar */
 .nH .Hy .m {
   background: #404040 !important;
@@ -632,8 +662,11 @@ body.dark-mode .TO.inbox-reborn-done::after {
 }
 
 /* .Hn applies :hover color */
-.Hk.Hn, .Hl.Hn, .Hr.Hq, .Ha.Hb {
-  background: rgba(255,255,255,0.5) !important;
+.Hk.Hn,
+.Hl.Hn,
+.Hr.Hq,
+.Ha.Hb {
+  background: rgb(255 255 255 / 50%) !important;
 }
 
 /* Hangout chat box wrapper */
@@ -678,7 +711,7 @@ body.dark-mode .TO.inbox-reborn-done::after {
 }
 
 .wT > .n3 .byl:first-child .aim:first-child .nZ {
-  background-color: rgba(0,0,0,.05) !important;
+  background-color: rgb(0 0 0 / 5%) !important;
 }
 
 /* =============================================================================
@@ -715,7 +748,7 @@ body.dark-mode .uW2Fw-bHo .a7H {
 
 body.dark-mode .uW2Fw-bHo .a7H:focus {
   border-color: #8ab4f8 !important;
-  box-shadow: 0 0 0 2px rgba(138, 180, 248, 0.2) !important;
+  box-shadow: 0 0 0 2px rgb(138 180 248 / 20%) !important;
 }
 
 /* New Label popup placeholder text */
@@ -824,13 +857,11 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
     scrollbar-width: thin !important;
     scrollbar-color: #141414 transparent !important;
   }
-  
+
   body.dark-mode .V3.aam.ada:hover {
     scrollbar-color: #323232 transparent !important;
   }
 }
-
-
 
 .qj {
   width: 24px !important;
@@ -872,7 +903,6 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/star_24dp_F1C411_FILL1_wght400_GRAD0_opsz24.svg') !important;
   }
 }
-
 
 /* Important */
 .aHS-bns .qj {
@@ -952,97 +982,99 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
 
 /* Sent */
 .aHS-bnu .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	-webkit-mask-size: 24px !important;
-	mask-size: 24px !important;
-	background-color: #4C4F4D !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  background-color: #4c4f4d !important;
 }
+
 /* Drafts */
 .aHS-bnq .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	-webkit-mask-size: 24px !important;
-	mask-size: 24px !important;
-	background-color: #4C4F4D !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  background-color: #4c4f4d !important;
 }
 
 /* All Mail */
 .aHS-aHO .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	-webkit-mask-size: 24px !important;
-	mask-size: 24px !important;
-	background-color: #4C4F4D !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  background-color: #4c4f4d !important;
 }
+
 /* Trash */
 .aHS-bnx .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	-webkit-mask-size: 24px !important;
-	mask-size: 24px !important;
-	background-color: #4C4F4D !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  background-color: #4c4f4d !important;
 }
+
 /* Spam */
 .aHS-bnv .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	-webkit-mask-size: 24px !important;
-	mask-size: 24px !important;
-	background-color: #4C4F4D !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  background-color: #4c4f4d !important;
 }
 
 /* Categories */
-[data-tooltip="Categories"] .aEc.aHS-bnr .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	-webkit-mask-size: 24px !important;
-	mask-size: 24px !important;
-	background-color: #4C4F4D !important;
+[data-tooltip='Categories'] .aEc.aHS-bnr .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  background-color: #4c4f4d !important;
 }
 
 /* Social */
-[data-tooltip="Social"] .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	-webkit-mask-size: 24px !important;
-	mask-size: 24px !important;
-	background-color: #4C4F4D !important;
+[data-tooltip='Social'] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  background-color: #4c4f4d !important;
 }
 
 /* Updates */
-[data-tooltip="Updates"] .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	-webkit-mask-size: 24px !important;
-	mask-size: 24px !important;
-	background-color: #4C4F4D !important;
+[data-tooltip='Updates'] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  background-color: #4c4f4d !important;
 }
 
 /* Forums */
-[data-tooltip="Forums"] .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	-webkit-mask-size: 24px !important;
-	mask-size: 24px !important;
-	background-color: #4C4F4D !important;
+[data-tooltip='Forums'] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  background-color: #4c4f4d !important;
 }
 
 /* Promotions */
-[data-tooltip="Promotions"] .qj {
-	-webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-	-webkit-mask-size: 24px !important;
-	mask-size: 24px !important;
-	background-color: #4C4F4D !important;
+[data-tooltip='Promotions'] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  background-color: #4c4f4d !important;
 }
 
 /* Category buttons */
-.CL.Q7::before, .CL.Wj::before {
+.CL.Q7::before,
+.CL.Wj::before {
   opacity: 0.9 !important;
 }
-
-
 
 /* Hide scrollbars globally for all browsers */
 .wT,
@@ -1063,10 +1095,12 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
   .aHS-bnt .qj {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_googblue_24dp.png') !important;
   }
+
   /* Dropdown arrow */
   .aHS-bnt .afM {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/arrow_drop_down_black_20dp.png') !important;
   }
+
   /* Important */
   .aHS-bns .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
@@ -1080,6 +1114,7 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
     background-color: #444746 !important;
     background-image: none !important;
   }
+
   /* Chats */
   .aHS-aHP .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_chat_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
@@ -1093,10 +1128,12 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
     background-color: #444746 !important;
     background-image: none !important;
   }
+
   /* Snoozed */
   .aHS-bu1 .qj {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_upcoming_clr_24dp_r5_2x.png') !important;
   }
+
   /* Sent */
   .aHS-bnu .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -1107,8 +1144,9 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
     mask-repeat: no-repeat !important;
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
-    background-color: #4C4F4D !important;
+    background-color: #4c4f4d !important;
   }
+
   /* Drafts */
   .aHS-bnq .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -1119,8 +1157,9 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
     mask-repeat: no-repeat !important;
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
-    background-color: #4C4F4D !important;
+    background-color: #4c4f4d !important;
   }
+
   /* Scheduled */
   .aHS-nd .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_schedule_send_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
@@ -1134,6 +1173,7 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
     background-color: #444746 !important; /* Greyish color for light mode */
     background-image: none !important; /* Ensure no conflicting background image */
   }
+
   /* All Mail */
   .aHS-aHO .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -1144,8 +1184,9 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
     mask-repeat: no-repeat !important;
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
-    background-color: #4C4F4D !important;
+    background-color: #4c4f4d !important;
   }
+
   /* Trash */
   .aHS-bnx .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -1156,8 +1197,9 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
     mask-repeat: no-repeat !important;
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
-    background-color: #4C4F4D !important;
+    background-color: #4c4f4d !important;
   }
+
   /* Spam */
   .aHS-bnv .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -1168,13 +1210,14 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
     mask-repeat: no-repeat !important;
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
-    background-color: #4C4F4D !important;
+    background-color: #4c4f4d !important;
   }
+
   /* Category */
   .aHS-bnr .qj /*:not(.aEe)*/ {
-    /*background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png') !important;*/
+    /* background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png') !important; */
   }
-  
+
   /* Labels - Firefox */
   .aEe,
   .aEc.aHS-bnr .qj,
@@ -1190,7 +1233,7 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
     mask-position: center !important;
     background-color: #444746 !important;
   }
-  
+
   /* Labels (only) - Firefox */
   .zw .aHS-bnr .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
@@ -1203,8 +1246,9 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
     mask-position: center !important;
     background-color: #444746 !important;
   }
+
   /* Category icons */
-  [data-tooltip="Social"] .qj {
+  [data-tooltip='Social'] .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-position: center !important;
@@ -1213,9 +1257,10 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
     mask-repeat: no-repeat !important;
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
-    background-color: #4C4F4D !important;
+    background-color: #4c4f4d !important;
   }
-  [data-tooltip="Updates"] .qj {
+
+  [data-tooltip='Updates'] .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-position: center !important;
@@ -1224,9 +1269,10 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
     mask-repeat: no-repeat !important;
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
-    background-color: #4C4F4D !important;
+    background-color: #4c4f4d !important;
   }
-  [data-tooltip="Forums"] .qj {
+
+  [data-tooltip='Forums'] .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-position: center !important;
@@ -1235,38 +1281,39 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
     mask-repeat: no-repeat !important;
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
-    background-color: #4C4F4D !important;
+    background-color: #4c4f4d !important;
   }
-  [data-tooltip="Promotions"] .qj {
+
+  [data-tooltip='Promotions'] .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
-    background-color: #4C4F4D !important;
+    background-color: #4c4f4d !important;
   }
-  
+
   /* Categories */
-  [data-tooltip="Categories"] .aEc.aHS-bnr .qj {
+  [data-tooltip='Categories'] .aEc.aHS-bnr .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
-    background-color: #4C4F4D !important;
+    background-color: #4c4f4d !important;
     background-image: none !important;
   }
-  
+
   /* Firefox dark mode for Categories */
-  body.dark-mode [data-tooltip="Categories"] .qj {
-    background-color: #ffffff !important;
+  body.dark-mode [data-tooltip='Categories'] .qj {
+    background-color: #fff !important;
   }
-  
+
   /* Firefox dark mode override for Categories to preserve mask-image */
-  body.dark-mode [data-tooltip="Categories"] .aEc.aHS-bnr .qj {
+  body.dark-mode [data-tooltip='Categories'] .aEc.aHS-bnr .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
-    background-color: #ffffff !important;
+    background-color: #fff !important;
     background-image: none !important;
   }
 }
@@ -1346,10 +1393,10 @@ body.dark-mode .TN.bzz.aHS-bnx::after {
    MAIN MENU, SEARCH BAR AND EMAIL AREA
    ============================================================================= */
 
-/* main top bar including shadow*/
+/* main top bar including shadow */
 .gb_xd.gb_4d.gb_Fd {
   height: 56px;
-  box-shadow: 0px 5px 4px #c6c6c6;
+  box-shadow: 0 5px 4px #c6c6c6;
 }
 
 form.bas {
@@ -1361,9 +1408,9 @@ form.bas > table {
 }
 
 /* search icon */
-button.gb_ff.gb_gf  {
+button.gb_ff.gb_gf {
   margin-top: -3px;
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 /* main search window */
@@ -1378,20 +1425,21 @@ input.gb_3e {
 }
 
 /* Google Apps icon & Google Account icon */
-.gb_w.gb_Xc.gb_f.gb_Af, .gb_Ea.gb_Xc.gb_qg.gb_f.gb_Af {
+.gb_w.gb_Xc.gb_f.gb_Af,
+.gb_Ea.gb_Xc.gb_qg.gb_f.gb_Af {
   margin-top: -7px;
 }
 
 /* search bar */
 .gb_mf.gb_gf {
-  margin-top: 0px;
+  margin-top: 0;
   margin-left: 30px;
   height: 36px;
 }
 
 /* colapsed main menu */
 .no {
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
 }
 
 /* main email / chat / spaces area */
@@ -1409,7 +1457,9 @@ input.gb_3e {
   max-width: var(--email-max-width) !important;
 }
 
-.aKk>tbody, .aAA, .aRz.J-KU {
+.aKk > tbody,
+.aAA,
+.aRz.J-KU {
   justify-content: center !important;
 }
 
@@ -1440,9 +1490,8 @@ input.gb_3e {
 .aKh,
 
 /* Empty inbox tab */
-.aRs
-{
-  background: #F2F2F2 !important;
+.aRs {
+  background: #f2f2f2 !important;
 }
 
 /* Quick Settings panel */
@@ -1459,6 +1508,7 @@ input.gb_3e {
 /* =============================================================================
    GMAIL TOP BAR COLOR OVERRIDES
    ============================================================================= */
+
 /**
  * Gmail Top Bar Color Overrides
  * --------------------------------
@@ -1481,109 +1531,110 @@ input.gb_3e {
 }
 
 /* Inbox */
-.w-asV.bbg.aiw[pageTitle="inbox"] {
+.w-asV.bbg.aiw[pageTitle='inbox'] {
   background-color: #4285f4;
 }
 
 /* Starred */
-.w-asV.bbg.aiw[pageTitle="starred"] {
-  background-color: #fbc02d; 
+.w-asV.bbg.aiw[pageTitle='starred'] {
+  background-color: #fbc02d;
 }
 
 /* Snoozed */
-.w-asV.bbg.aiw[pageTitle="snoozed"] {
+.w-asV.bbg.aiw[pageTitle='snoozed'] {
   background-color: #ef6c00;
 }
 
 /* Sent - teal */
-.w-asV.bbg.aiw[pageTitle="sent"] {
+.w-asV.bbg.aiw[pageTitle='sent'] {
   background-color: #009688;
 }
 
 /* Drafts */
-.w-asV.bbg.aiw[pageTitle="drafts"] {
-  background-color: #8d6e63; 
+.w-asV.bbg.aiw[pageTitle='drafts'] {
+  background-color: #8d6e63;
 }
 
 /* All Mail */
-.w-asV.bbg.aiw[pageTitle="all"] {
+.w-asV.bbg.aiw[pageTitle='all'] {
   background-color: #4285f4;
 }
 
 /* Spam */
-.w-asV.bbg.aiw[pageTitle="spam"] {
+.w-asV.bbg.aiw[pageTitle='spam'] {
   background-color: #d93025;
 }
 
 /* Trash */
-.w-asV.bbg.aiw[pageTitle="trash"] {
+.w-asV.bbg.aiw[pageTitle='trash'] {
   background-color: #5f6368;
 }
 
 /* Social */
-.w-asV.bbg.aiw[pageTitle="social"] {
+.w-asV.bbg.aiw[pageTitle='social'] {
   background-color: #009688;
 }
 
 /* Updates */
-.w-asV.bbg.aiw[pageTitle="updates"] {
+.w-asV.bbg.aiw[pageTitle='updates'] {
   background-color: #ffa600;
 }
 
 /* Forums */
-.w-asV.bbg.aiw[pageTitle="forums"] {
-  background-color: #bc5090; 
+.w-asV.bbg.aiw[pageTitle='forums'] {
+  background-color: #bc5090;
 }
 
 /* Promotions  */
-.w-asV.bbg.aiw[pageTitle="promotions"] {
-  background-color: #8bc34a; 
+.w-asV.bbg.aiw[pageTitle='promotions'] {
+  background-color: #8bc34a;
 }
 
 /* Important */
-.w-asV.bbg.aiw[pageTitle="imp"] {
+.w-asV.bbg.aiw[pageTitle='imp'] {
   background-color: #ff5722;
 }
 
 /* Scheduled */
-.w-asV.bbg.aiw[pageTitle="scheduled"] {
+.w-asV.bbg.aiw[pageTitle='scheduled'] {
   background-color: #33b679;
 }
 
 /* Manage subscriptions */
-.w-asV.bbg.aiw[pageTitle="sub"] {
-  background-color: #00acc1; 
+.w-asV.bbg.aiw[pageTitle='sub'] {
+  background-color: #00acc1;
 }
 
 /* Mange Labels */
-.w-asV.bbg.aiw[pageTitle="labels"] {
-  background-color: #5e87f5; 
+.w-asV.bbg.aiw[pageTitle='labels'] {
+  background-color: #5e87f5;
 }
 
 /* Labels Custom for users */
-.w-asV.bbg.aiw[pageTitle="label"] {
-  background-color: #5e87f5; 
+.w-asV.bbg.aiw[pageTitle='label'] {
+  background-color: #5e87f5;
 }
 
 /* Archive  */
-.w-asV.bbg.aiw[pageTitle="archive"] {
+.w-asV.bbg.aiw[pageTitle='archive'] {
   background-color: #0f9d58;
 }
 
 /* Chat */
-.w-asV.bbg.aiw[pageTitle="chat"],
-.w-asV.bbg.aiw[pageTitle="onboarding"] {
+.w-asV.bbg.aiw[pageTitle='chat'],
+.w-asV.bbg.aiw[pageTitle='onboarding'] {
   background-color: #00ac47;
 }
 
 /* Meet */
-.w-asV.bbg.aiw[pageTitle="calls"] {
+.w-asV.bbg.aiw[pageTitle='calls'] {
   background-color: #db4437;
 }
 
 /* =============================================================================
    CATEGORY & LABEL PAGE TITLES (HEADER BAR)
    ============================================================================= */
+
 /**
  * These rules display the title in the Gmail header based on the
  * `pageTitle` attribute set by handleHashChange() in JavaScript:
@@ -1592,22 +1643,27 @@ input.gb_3e {
  * • `label` — dynamic: content pulled from `data-label-title` which
  *               JS sets to the leaf (last segment) of a custom label.
  */
-.w-asV.bbg.aiw[pageTitle="social"] a[aria-label="Gmail"]::after {
+.w-asV.bbg.aiw[pageTitle='social'] a[aria-label='Gmail']::after {
   content: 'Social';
 }
-.w-asV.bbg.aiw[pageTitle="updates"] a[aria-label="Gmail"]::after {
+
+.w-asV.bbg.aiw[pageTitle='updates'] a[aria-label='Gmail']::after {
   content: 'Updates';
 }
-.w-asV.bbg.aiw[pageTitle="forums"] a[aria-label="Gmail"]::after {
+
+.w-asV.bbg.aiw[pageTitle='forums'] a[aria-label='Gmail']::after {
   content: 'Forums';
 }
-.w-asV.bbg.aiw[pageTitle="promotions"] a[aria-label="Gmail"]::after {
+
+.w-asV.bbg.aiw[pageTitle='promotions'] a[aria-label='Gmail']::after {
   content: 'Promotions';
 }
-.w-asV.bbg.aiw[pageTitle="labels"] a[aria-label="Gmail"]::after {
+
+.w-asV.bbg.aiw[pageTitle='labels'] a[aria-label='Gmail']::after {
   content: 'Labels';
 }
-.w-asV.bbg.aiw[pageTitle="label"] a[aria-label="Gmail"]::after {
+
+.w-asV.bbg.aiw[pageTitle='label'] a[aria-label='Gmail']::after {
   content: attr(data-label-title);
 }
 
@@ -1624,73 +1680,89 @@ input.gb_3e {
 }
 
 /* Gmail icon (old, new) */
-a[aria-label="Gmail"] {
+a[aria-label='Gmail'] {
   width: 120px;
   overflow: hidden;
   text-decoration: none;
 }
-a[aria-label="Gmail"] img {
+
+a[aria-label='Gmail'] img {
   display: none;
 }
 
 /* Fix for padding applied to a[href="#inbox"] */
+
 /* All titles get padding, lines up with sidebar icons */
-a[aria-label="Gmail"][href^="#"] {
+a[aria-label='Gmail'][href^='#'] {
   padding-left: 22px;
 }
 
 /* Gmail text */
-a[aria-label="Gmail"]::after {
+a[aria-label='Gmail']::after {
   content: 'Search';
   font-size: 20px;
-  color: #FFF;
+  color: #fff;
   position: relative;
   top: -2px;
   padding-left: 7px;
 }
 
-a[aria-label="Gmail"][href="#inbox"]::after, a[aria-label="Gmail"][href="#settings"]::after {
+a[aria-label='Gmail'][href='#inbox']::after,
+a[aria-label='Gmail'][href='#settings']::after {
   content: 'Inbox';
 }
-a[aria-label="Gmail"][href="#snoozed"]::after {
+
+a[aria-label='Gmail'][href='#snoozed']::after {
   content: 'Snoozed';
 }
-a[aria-label="Gmail"][href="#archive"]::after {
+
+a[aria-label='Gmail'][href='#archive']::after {
   content: 'Done';
 }
-a[aria-label="Gmail"][href="#starred"]::after {
+
+a[aria-label='Gmail'][href='#starred']::after {
   content: 'Starred';
 }
-a[aria-label="Gmail"][href="#sent"]::after {
+
+a[aria-label='Gmail'][href='#sent']::after {
   content: 'Sent';
 }
-a[aria-label="Gmail"][href="#drafts"]::after {
+
+a[aria-label='Gmail'][href='#drafts']::after {
   content: 'Drafts';
 }
-a[aria-label="Gmail"][href="#imp"]::after {
+
+a[aria-label='Gmail'][href='#imp']::after {
   content: 'Important';
 }
-a[aria-label="Gmail"][href="#chat"]::after,
-a[aria-label="Gmail"][href="#onboarding"]::after,
-a[aria-label="Gmail"][href="#browse"]::after {
+
+a[aria-label='Gmail'][href='#chat']::after,
+a[aria-label='Gmail'][href='#onboarding']::after,
+a[aria-label='Gmail'][href='#browse']::after {
   content: 'Chat';
 }
-a[aria-label="Gmail"][href="#calls"]::after {
+
+a[aria-label='Gmail'][href='#calls']::after {
   content: 'Meet';
 }
-a[aria-label="Gmail"][href="#scheduled"]::after {
+
+a[aria-label='Gmail'][href='#scheduled']::after {
   content: 'Scheduled';
 }
-a[aria-label="Gmail"][href="#all"]::after {
+
+a[aria-label='Gmail'][href='#all']::after {
   content: 'All Mail';
 }
-a[aria-label="Gmail"][href="#spam"]::after {
+
+a[aria-label='Gmail'][href='#spam']::after {
   content: 'Spam';
 }
-a[aria-label="Gmail"][href="#trash"]::after {
+
+a[aria-label='Gmail'][href='#trash']::after {
   content: 'Trash';
 }
-a[aria-label="Gmail"][href="#sub"]::after {
+
+a[aria-label='Gmail'][href='#sub']::after {
   content: 'Subscriptions';
 }
 
@@ -1701,55 +1773,60 @@ a[aria-label="Gmail"][href="#sub"]::after {
 
 /* Top bar icons */
 header svg {
-  color: #FFF !important;
+  color: #fff !important;
   opacity: 1 !important;
 }
 
 /* Top bar Google Chat status selector */
-.lJradf.X72uL { /* bg */
-  background: rgba(255, 255, 255, 0.125) !important;
+.lJradf.X72uL {
+  /* bg */
+  background: rgb(255 255 255 / 12.5%) !important;
 }
 
 .lJradf.X72uL:not(.Dnplmc):hover {
-  background: rgba(60, 64, 67, 0.08) !important;
+  background: rgb(60 64 67 / 8%) !important;
 }
 
-.C2Qm1d.X72uL { /* Text */
-  color: #FFF !important;
+.C2Qm1d.X72uL {
+  /* Text */
+  color: #fff !important;
 }
 
 /* ? icon */
-.t6.zH[aria-expanded="true"]:hover, .t6.zH[aria-expanded="true"] {
-  background-color: rgba(95,99,104,0.24);
+.t6.zH[aria-expanded='true']:hover,
+.t6.zH[aria-expanded='true'] {
+  background-color: rgb(95 99 104 / 24%);
 }
 
 /* settings icon */
-.FH[aria-expanded="true"]:hover {
-  background-color: rgba(95,99,104,0.24);
+.FH[aria-expanded='true']:hover {
+  background-color: rgb(95 99 104 / 24%);
 }
 
 /* gapps shorcut (expanded) icon */
-.gb_B[aria-expanded="true"] .gb_F {
+.gb_B[aria-expanded='true'] .gb_F {
   fill: #fff !important;
 }
 
 /* Search bar (old, new) */
 header form {
-  background: rgba(255, 255, 255, 0.125) !important;
+  background: rgb(255 255 255 / 12.5%) !important;
   max-width: 90% !important;
 }
 
 /* Search bar icon on active input (old, new) */
-.gb_1e.gb_yf.gb_if button svg, .gb_2e.gb_zf.gb_jf button svg {
+.gb_1e.gb_yf.gb_if button svg,
+.gb_2e.gb_zf.gb_jf button svg {
   color: #000 !important;
 }
+
 .gb_if {
   margin-top: -5px;
 }
 
 /* Search bar placeholder (old, new) */
 header form input::placeholder {
-  color: #FFF !important;
+  color: #fff !important;
 }
 
 /* Search bar input */
@@ -1771,13 +1848,17 @@ header form input {
   border-radius: 50%;
   padding: 0;
   overflow: hidden;
-  box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 1px 3px 1px rgba(60,64,67,0.149);
+  box-shadow:
+    0 1px 2px 0 rgb(60 64 67 / 30.2%),
+    0 1px 3px 1px rgb(60 64 67 / 14.9%);
   cursor: pointer;
 }
 
 .add-reminder:hover,
 .floating-compose:hover {
-  box-shadow: 0 1px 3px 0 rgba(60,64,67,0.302), 0 4px 8px 3px rgba(60,64,67,0.149);
+  box-shadow:
+    0 1px 3px 0 rgb(60 64 67 / 30.2%),
+    0 4px 8px 3px rgb(60 64 67 / 14.9%);
 }
 
 /* Add reminder button */
@@ -1822,6 +1903,7 @@ header form input {
   height: 56px;
   width: 56px;
 }
+
 .floating-compose:hover::before {
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
 }
@@ -1834,18 +1916,22 @@ header form input {
 /* But show New chat button + re-style to match */
 .T-I.T-I-KE.L3.aDV {
   position: fixed;
-  left: 0; 
+  left: 0;
   bottom: 20px;
   z-index: 4;
   padding: 0;
   width: 52px;
   height: 52px;
   border-radius: 26px;
-  box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 1px 3px 1px rgba(60,64,67,0.149);
+  box-shadow:
+    0 1px 2px 0 rgb(60 64 67 / 30.2%),
+    0 1px 3px 1px rgb(60 64 67 / 14.9%);
 }
 
 .T-I.T-I-KE.L3.aDV:hover {
-  box-shadow: 0 1px 3px 0 rgba(60,64,67,0.302), 0 4px 8px 3px rgba(60,64,67,0.149);
+  box-shadow:
+    0 1px 3px 0 rgb(60 64 67 / 30.2%),
+    0 4px 8px 3px rgb(60 64 67 / 14.9%);
 }
 
 .aqn.arL.nH.oy8Mbf.apV .T-I.T-I-KE.L3.aDV {
@@ -1853,7 +1939,8 @@ header form input {
 }
 
 /* Archive button (inbox email, opened email) */
-.brq, .ar8,
+.brq,
+.ar8,
 .ar8.T-I-J3.J-J5-Ji {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/archive_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/archive_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -1871,37 +1958,42 @@ header form input {
 }
 
 /* Force archive icon styling - override any conflicting styles */
-.brq::before, .ar8::before,
+.brq::before,
+.ar8::before,
 .ar8.T-I-J3.J-J5-Ji::before {
   display: none !important;
 }
 
-.brq::after, .ar8::after,
+.brq::after,
+.ar8::after,
 .ar8.T-I-J3.J-J5-Ji::after {
   display: none !important;
 }
 
-
-
 /* Snooze button (inbox email, opened email) */
-.brv, .brW {
+.brv,
+.brW {
   background-size: 20px !important;
 }
 
 @-moz-document url-prefix() {
   /* Add reminder button image */
   .add-reminder::before {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_reminders_white_24dp_2x.png') !important
+    background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_reminders_white_24dp_2x.png') !important;
   }
+
   /* Compose email image */
   .floating-compose::before {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
   }
+
   .floating-compose:hover::before {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
   }
+
   /* Archive button (inbox email, opened email) */
-  .brq, .ar8,
+  .brq,
+  .ar8,
   .ar8.T-I-J3.J-J5-Ji {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/archive_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/archive_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -1917,10 +2009,6 @@ header form input {
     outline: none !important;
     box-shadow: none !important;
   }
-  
-
-  
-
 }
 
 /* Action buttons on email row */
@@ -1946,9 +2034,12 @@ header form input {
 /* Opened email */
 .Bs.nH.iY.bAt {
   margin: 10px;
-  box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
+  box-shadow:
+    0 -1px 0 #e0e0e0,
+    0 0 2px rgb(0 0 0 / 12%),
+    0 2px 4px rgb(0 0 0 / 24%) !important;
   width: calc(100% - 62px);
-  background: #FFF;
+  background: #fff;
 }
 
 /* Fix bug that would expand the message area if giant image in message */
@@ -1975,15 +2066,19 @@ header form input {
 
 /* Attachments styling to look more like inbox */
 .brd {
-  margin-left: 0px !important;
+  margin-left: 0 !important;
 }
+
 .brc {
   border-radius: 2px !important;
   background-color: #f7f7f7;
   padding: 0 6px !important;
   color: #212121 !important;
-  box-shadow: 0 0 1px rgba(0,0,0,.11), 0 1px 2px rgba(0,0,0,.22) !important;
+  box-shadow:
+    0 0 1px rgb(0 0 0 / 11%),
+    0 1px 2px rgb(0 0 0 / 22%) !important;
 }
+
 .brc .brg {
   font-size: 13px !important;
 }
@@ -1996,6 +2091,7 @@ header form input {
 .zA .apU.xY {
   margin-right: 2px;
 }
+
 .zA .xW.xY {
   margin-left: -32px;
   margin-right: 10px;
@@ -2011,9 +2107,11 @@ header form input {
 .zA .apU.xY .aXw {
   display: none;
 }
+
 .zA .apU.xY .T-KT-JW {
   display: flex;
 }
+
 .aqw .apU.xY .aXw {
   display: flex;
 }
@@ -2029,7 +2127,7 @@ header form input {
 
 /* Hides pale blue on bottom for side panel */
 .aUx {
-  min-height: calc(100vh - 64px);	
+  min-height: calc(100vh - 64px);
 }
 
 /* Fixes box-shadow getting cutoff by parent */
@@ -2081,6 +2179,7 @@ header form input {
 .zA.btb {
   padding-left: 5px !important; /* Restore original - needed for blue bar positioning */
 }
+
 .zA.btb .PF.xY.PE {
   margin-right: 10px;
 }
@@ -2103,12 +2202,14 @@ header form input {
 /* Email selected with keyboard shortcut - Gmail's default blue selection */
 .zA.x7 {
   /* Let Gmail handle the default blue selection styling */
+
   /* Only adjust positioning to work with our avatar system */
 }
 
 /* Email checked/selected via checkbox - Gmail's default selection */
 .zA.aqw {
   /* Let Gmail handle the default selection styling */
+
   /* Only adjust positioning to work with our avatar system */
 }
 
@@ -2137,11 +2238,11 @@ header form input {
 }
 
 /* Alternative: Target by aria-checked attribute for checked emails */
-.show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked="true"] {
+.show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked='true'] {
   display: inline !important;
 }
 
-.show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked="true"] + .avatar {
+.show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked='true'] + .avatar {
   display: none !important;
 }
 
@@ -2150,7 +2251,7 @@ header form input {
 }
 
 /* hide the drag icon next to checkbox */
-.aqw>td.oZ-x3:before {
+.aqw > td.oZ-x3::before {
   display: none;
 }
 
@@ -2158,24 +2259,28 @@ header form input {
 .zA.aqw .oZ-x3.xY .T-Jo {
   display: inline;
 }
-.aqw .yX.xY div:nth-child(n+3)>img {
+
+.aqw .yX.xY div:nth-child(n + 3) > img {
   display: none;
 }
-.x7 .yX.xY div:nth-child(n+3)>img {
+
+.x7 .yX.xY div:nth-child(n + 3) > img {
   display: none;
 }
+
 .zA.x7 .oZ-x3.xY .T-Jo {
   display: inline;
 }
 
 /* Rearranges the menu at the top and moves it all to the right corner */
+
 /* the bar that the menu items typically rest on */
 .G-atb {
   padding-bottom: 12px !important;
 }
 
 .nH.aqK {
-  padding-top: 0px;
+  padding-top: 0;
 }
 
 .Cq.aqL {
@@ -2190,7 +2295,7 @@ header form input {
 .cL {
   font-weight: normal !important;
   font-size: 13px;
-  margin-left: 0px !important;
+  margin-left: 0 !important;
 }
 
 /* =============================================================================
@@ -2216,14 +2321,17 @@ header form input {
   overflow: visible;
 }
 
-.calendar-attachment .event-title, .calendar-attachment .event-time {
+.calendar-attachment .event-title,
+.calendar-attachment .event-time {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .calendar-attachment .event-title {
   font-weight: normal;
 }
+
 .calendar-attachment .event-time {
   color: #757575;
 }
@@ -2246,6 +2354,7 @@ header form input {
   background-size: 200%;
   margin-right: 16px;
 }
+
 @-moz-document url-prefix() {
   .calendar-image {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/calendar_event_attachment.png') !important;
@@ -2266,8 +2375,9 @@ header form input {
   height: 22px !important;
   border-radius: 2px !important;
 }
+
 /* Hides inline "Inbox" label on emails within bundles + labels */
-.ar:has(.at[title=Inbox]) {
+.ar:has(.at[title='Inbox']) {
   display: none;
 }
 
@@ -2279,7 +2389,7 @@ header form input {
 .avatar {
   border-radius: 50%;
   font-size: 18px;
-  font-family: 'Roboto', sans-serif;
+  font-family: Roboto, sans-serif;
   font-weight: 400;
   position: relative;
   left: -6px; /* Restore original positioning from light theme */
@@ -2308,17 +2418,19 @@ header form input {
 }
 
 .reminder .avatar {
-  background: url('chrome-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png') center/75% no-repeat !important;
+  background: url('chrome-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png')
+    center/75% no-repeat !important;
 }
 
 @-moz-document url-prefix() {
   .reminder .avatar {
-    background: url('moz-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png') center/75% no-repeat !important;
+    background: url('moz-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png')
+      center/75% no-repeat !important;
   }
 }
 
 /* Alignment of calendar icon */
-.zA>.yf {
+.zA > .yf {
   padding-right: 32px !important;
 }
 
@@ -2328,8 +2440,8 @@ header form input {
 }
 
 /* Right side Hangouts */
-div[aria-label="Hangouts"][role="complementary"] {
-  background-color: rgb(242, 242, 242) !important;
+div[aria-label='Hangouts'][role='complementary'] {
+  background-color: rgb(242 242 242) !important;
 }
 
 .nH.bkK.nn + .nH.nn {
@@ -2337,7 +2449,8 @@ div[aria-label="Hangouts"][role="complementary"] {
 }
 
 /* Subject padding in opened email */
-.if > .byY, .iC .byY {
+.if > .byY,
+.iC .byY {
   padding: 20px 4px 8px 20px !important;
 }
 
@@ -2352,7 +2465,7 @@ div[aria-label="Hangouts"][role="complementary"] {
 }
 
 /* Hide the drag icon next to checkbox */
-.aqw > td.oZ-x3:before {
+.aqw > td.oZ-x3::before {
   display: none;
 }
 
@@ -2385,10 +2498,11 @@ div[aria-label="Hangouts"][role="complementary"] {
   display: inline-block;
   width: 28px;
   height: 28px !important;
-  vertical-align:middle;
-  margin-top:-4px;
-  margin-bottom:-4px;
+  vertical-align: middle;
+  margin-top: -4px;
+  margin-bottom: -4px;
 }
+
 .bundle-image img {
   width: 28px;
 }
@@ -2398,14 +2512,17 @@ div[aria-label="Hangouts"][role="complementary"] {
   font-size: 13px;
   margin-right: 32px;
 }
+
 /* allows user-specified custom color labels/bundles */
-.bundle-wrapper .label-link[style="color: rgb(225, 227, 225)"] {
+.bundle-wrapper .label-link[style='color: rgb(225, 227, 225)'] {
   color: #404040 !important;
 }
+
 .bundle-wrapper.contains-unread .label-link,
 .bundle-wrapper .bundle-senders span.strong {
   font-weight: 700;
 }
+
 .bundle-wrapper:not(.contains-unread) .bundle-image img {
   opacity: 0.6;
 }
@@ -2413,6 +2530,7 @@ div[aria-label="Hangouts"][role="complementary"] {
 .bundle-senders {
   color: #202124 !important;
 }
+
 /* Parent of .bundle-senders */
 .label-link + .xW.xY {
   flex-grow: 1;
@@ -2426,28 +2544,34 @@ div[aria-label="Hangouts"][role="complementary"] {
 }
 
 /* Colored bundle titles for Inbox categories */
-.zA.yO[bundleLabel="Updates"] .label-link > span:not(.bundle-count) {
-  color: rgb(255, 104, 57);
+.zA.yO[bundleLabel='Updates'] .label-link > span:not(.bundle-count) {
+  color: rgb(255 104 57);
 }
-.zA.yO[bundleLabel="Promotions"] .label-link > span:not(.bundle-count) {
-  color: rgb(0, 188, 212);
+
+.zA.yO[bundleLabel='Promotions'] .label-link > span:not(.bundle-count) {
+  color: rgb(0 188 212);
 }
-.zA.yO[bundleLabel="Forums"] .label-link > span:not(.bundle-count) {
-  color: rgb(63, 81, 181);
+
+.zA.yO[bundleLabel='Forums'] .label-link > span:not(.bundle-count) {
+  color: rgb(63 81 181);
 }
-.zA.yO[bundleLabel="Social"] .label-link > span:not(.bundle-count) {
-  color: rgb(219, 68, 55);
+
+.zA.yO[bundleLabel='Social'] .label-link > span:not(.bundle-count) {
+  color: rgb(219 68 55);
 }
-.zA.yO[bundleLabel="Travel"] .label-link > span:not(.bundle-count),
-.zA.yO[bundleLabel="Trips"] .label-link > span:not(.bundle-count) {
-  color: rgb(156, 39, 176);
+
+.zA.yO[bundleLabel='Travel'] .label-link > span:not(.bundle-count),
+.zA.yO[bundleLabel='Trips'] .label-link > span:not(.bundle-count) {
+  color: rgb(156 39 176);
 }
-.zA.yO[bundleLabel^="Finance"] .label-link > span:not(.bundle-count) {
-  color: rgb(103, 159, 56);
+
+.zA.yO[bundleLabel^='Finance'] .label-link > span:not(.bundle-count) {
+  color: rgb(103 159 56);
 }
-.zA.yO[bundleLabel="Orders"] .label-link > span:not(.bundle-count),
-.zA.yO[bundleLabel="Purchases"] .label-link > span:not(.bundle-count) {
-  color: rgb(121, 85, 72);
+
+.zA.yO[bundleLabel='Orders'] .label-link > span:not(.bundle-count),
+.zA.yO[bundleLabel='Purchases'] .label-link > span:not(.bundle-count) {
+  color: rgb(121 85 72);
 }
 
 .bundled-email {
@@ -2460,37 +2584,37 @@ div[aria-label="Hangouts"][role="complementary"] {
 }
 
 /* allows user-specified custom color labels/bundles */
-.zA > .xY.bundle-image[style*="background-color: rgb(225, 227, 225)"] {
+.zA > .xY.bundle-image[style*='background-color: rgb(225, 227, 225)'] {
   background-color: #444 !important;
 }
 
-.zA[bundlelabel^="Finance"] > .xY.bundle-image {
-  background-color: rgb(103, 159, 56) !important;
+.zA[bundlelabel^='Finance'] > .xY.bundle-image {
+  background-color: rgb(103 159 56) !important;
 }
 
-.zA[bundlelabel="Forums"] > .xY.bundle-image {
-  background-color: rgb(63, 81, 181) !important;
+.zA[bundlelabel='Forums'] > .xY.bundle-image {
+  background-color: rgb(63 81 181) !important;
 }
 
-.zA[bundlelabel="Orders"] > span.oZ-x3,
-.zA[bundlelabel="Purchases"] > span.oZ-x3 {
-  background-color: rgb(121, 85, 72) !important;
+.zA[bundlelabel='Orders'] > span.oZ-x3,
+.zA[bundlelabel='Purchases'] > span.oZ-x3 {
+  background-color: rgb(121 85 72) !important;
 }
 
-.zA[bundlelabel="Promotions"] > span.oZ-x3 {
-  background-color: rgb(0,188,212) !important;
+.zA[bundlelabel='Promotions'] > span.oZ-x3 {
+  background-color: rgb(0 188 212) !important;
 }
 
-.zA[bundlelabel="Social"] > span.oZ-x3 {
-  background-color: rgb(219, 68, 55) !important;
+.zA[bundlelabel='Social'] > span.oZ-x3 {
+  background-color: rgb(219 68 55) !important;
 }
 
-.zA[bundlelabel="Travel"] > span.oZ-x3 {
-  background-color: rgb(156, 39, 176) !important;
+.zA[bundlelabel='Travel'] > span.oZ-x3 {
+  background-color: rgb(156 39 176) !important;
 }
 
-.zA[bundlelabel="Updates"] > span.oZ-x3 {
-  background-color: rgb(255, 104, 57) !important;
+.zA[bundlelabel='Updates'] > span.oZ-x3 {
+  background-color: rgb(255 104 57) !important;
 }
 
 .hide-important-markers {
@@ -2505,36 +2629,42 @@ body.email-bundling-enabled.bundle-page .nH.ar4.B .yi {
 
 /* Override narrow width class */
 .Zs .zA {
-    -webkit-flex-wrap: nowrap !important;
+  -webkit-flex-wrap: nowrap !important;
   flex-wrap: nowrap !important;
 }
+
 .Zs .zA > .a4W {
   margin-left: unset !important;
 }
+
 .Zs .a4W .xT {
   flex-wrap: unset !important;
 }
+
 .Zs .yi {
   margin-left: 0 !important;
   max-width: unset !important;
 }
+
 .Zs .y2 {
   min-width: unset !important;
   -webkit-flex: 1 !important;
   flex: 1 !important;
 }
+
 .Zs .zA > .xW {
-  -webkit-flex-basis: 1 !important;
-  flex-basis: 1 !important;
   flex-grow: 400 !important;
   flex-basis: 0 !important;
 }
+
 .Zs .y6 {
   order: 1 !important;
 }
+
 .Zs .zA > .yX {
   flex: initial !important;
 }
+
 .Zs .zA > .xY {
   order: 1 !important;
 }
@@ -2559,10 +2689,15 @@ span.XU {
   margin-right: 9px;
 }
 
-.G4, .GR, div[aria-label="Inbox tip"] {
+.G4,
+.GR,
+div[aria-label='Inbox tip'] {
   border: 0 !important;
   border-radius: 0 !important;
-  box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24) !important;
+  box-shadow:
+    0 -1px 0 #e0e0e0,
+    0 0 2px rgb(0 0 0 / 12%),
+    0 2px 4px rgb(0 0 0 / 24%) !important;
 }
 
 /* New compose button */
@@ -2571,27 +2706,29 @@ span.XU {
   bottom: 16px; /* 20px; */
   right: 38px; /* 38px */
   z-index: 1001;
-
   height: 58px !important; /* 56px */
   min-width: 58px !important; /* 56px */
-
   background-color: #d23f31 !important;
   border: 0 !important;
 }
 
-.akV:hover, .akV:focus {
+.akV:hover,
+.akV:focus {
   background-color: #d23f31 !important;
 }
 
-.akV:hover::before, .akV:focus::before {
+.akV:hover::before,
+.akV:focus::before {
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
 }
 
-@media (min-resolution:144dpi),(-webkit-min-device-pixel-ratio:1.5) {
+@media (resolution >= 144dpi), (-webkit-min-device-pixel-ratio: 1.5) {
   .akV::before {
     background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
   }
-  .akV:hover::before, .akV:focus::before {
+
+  .akV:hover::before,
+  .akV:focus::before {
     background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
   }
 }
@@ -2600,14 +2737,19 @@ span.XU {
   .akV::before {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
   }
-  .akV:hover::before, .akV:focus::before {
+
+  .akV:hover::before,
+  .akV:focus::before {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
   }
-  @media (min-resolution:144dpi),(-webkit-min-device-pixel-ratio:1.5) {
+
+  @media (resolution >= 144dpi), (-webkit-min-device-pixel-ratio: 1.5) {
     .akV::before {
       background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
     }
-    .akV:hover::before, .akV:focus::before {
+
+    .akV:hover::before,
+    .akV:focus::before {
       background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
     }
   }
@@ -2632,15 +2774,18 @@ body:not(.dark-mode) .aeF::-webkit-scrollbar {
   background: transparent;
   transition: background 0.2s;
 }
+
 body:not(.dark-mode) .aeF::-webkit-scrollbar-thumb {
   background: transparent;
   border-radius: 8px;
   transition: background 0.2s;
 }
+
 body:not(.dark-mode) .aeF:hover::-webkit-scrollbar-thumb,
 body:not(.dark-mode) .aeF:active::-webkit-scrollbar-thumb {
   background: #a1a1a1;
 }
+
 body:not(.dark-mode) .aeF:not(:hover)::-webkit-scrollbar-thumb {
   background: transparent;
 }
@@ -2651,9 +2796,11 @@ body:not(.dark-mode) .aeF {
   scrollbar-color: transparent transparent;
   transition: scrollbar-color 0.2s;
 }
+
 body:not(.dark-mode) .aeF:hover {
   scrollbar-color: #a1a1a1 transparent;
 }
+
 body:not(.dark-mode) .aeF:not(:hover) {
   scrollbar-color: transparent transparent;
 }
@@ -2699,7 +2846,7 @@ body:not(.dark-mode) .aeF:not(:hover) {
     scrollbar-color: transparent transparent;
     transition: scrollbar-color 0.2s;
   }
-  
+
   .V3.aam.ada:hover {
     scrollbar-color: #a1a1a1 transparent;
   }
@@ -2711,23 +2858,37 @@ body:not(.dark-mode) .aeF:not(:hover) {
 
 body.dark-mode {
   background-color: #141414 !important;
-  color: #ffffff !important;
+  color: #fff !important;
 }
+
 body.dark-mode .zA,
 body.dark-mode .Cp,
 body.dark-mode .Bs.nH.iY.bAt {
   background-color: #2a2a2a !important;
 }
-body.dark-mode input:not([name="to"]):not([name="cc"]):not([name="bcc"]):not([name="subjectbox"]):not([aria-label="To recipients"]):not([aria-label="Subject"]):not([aria-label="Search mail"]):not(.ZH):not([class*="ZH"]):not(.nr):not([class*="nr"]),
-body.dark-mode textarea:not([aria-label="Message Body"]) {
+
+body.dark-mode
+  input:not(
+    [name='to'],
+    [name='cc'],
+    [name='bcc'],
+    [name='subjectbox'],
+    [aria-label='To recipients'],
+    [aria-label='Subject'],
+    [aria-label='Search mail'],
+    .ZH,
+    [class*='ZH'],
+    .nr,
+    [class*='nr']
+  ),
+body.dark-mode textarea:not([aria-label='Message Body']) {
   background-color: #3b3b3b !important;
-  color: #ffffff !important;
+  color: #fff !important;
 }
+
 body.dark-mode a {
   color: #4cc2ff !important;
 }
-
-
 
 body.dark-mode hr {
   border-color: #3b3b3b !important;
@@ -2771,7 +2932,7 @@ body.dark-mode .TO {
 }
 
 /* Exclude compose window from dark mode backgrounds - let Google handle it */
-body.dark-mode .nH.Hd[role="dialog"] {
+body.dark-mode .nH.Hd[role='dialog'] {
   background: initial !important;
   background-color: initial !important;
 }
@@ -2788,11 +2949,11 @@ body.dark-mode .ZZ {
 body.dark-mode .zA,
 body.dark-mode .Bs.nH.iY.bAt {
   background: #232323 !important; /* Dark background for read emails */
-  color: #ffffff !important;
+  color: #fff !important;
 }
 
 body.dark-mode .zA * {
-  color: #ffffff !important;
+  color: #fff !important;
 }
 
 /* Sidebar text colors */
@@ -2806,7 +2967,7 @@ body.dark-mode .aAv {
 }
 
 body.dark-mode .TO.nZ .n0 {
-  color: #ffffff !important;
+  color: #fff !important;
 }
 
 body.dark-mode .TO .n0 {
@@ -2821,6 +2982,7 @@ body.dark-mode .TO.nZ {
 /* Unread email highlight - same positioning as light mode */
 body.dark-mode .zA.zE {
   background-color: #383838 !important;
+
   /* No special padding - match light mode exactly */
 }
 
@@ -2854,19 +3016,19 @@ body.dark-mode .zA.btb .PF.xY.PE {
   margin-right: 10px !important; /* Additional right margin for .btb emails */
 }
 
-
-
 /* Removed duplicate rule - consolidated above */
 
 /* Bundle styling */
 body.dark-mode .brc {
   background-color: #3b3b3b !important;
-  color: #ffffff !important;
-  box-shadow: 0 0 1px rgba(0,0,0,.31), 0 1px 2px rgba(0,0,0,.42) !important;
+  color: #fff !important;
+  box-shadow:
+    0 0 1px rgb(0 0 0 / 31%),
+    0 1px 2px rgb(0 0 0 / 42%) !important;
 }
 
 body.dark-mode .bundle-senders {
-  color: #ffffff !important;
+  color: #fff !important;
 }
 
 body.dark-mode .bundle-wrapper .label-link .bundle-count {
@@ -2902,7 +3064,7 @@ body.dark-mode .D.E.G-atb {
 }
 
 /* Override any inline border styles on main toolbar */
-body.dark-mode .D.E.G-atb[style*="border"] {
+body.dark-mode .D.E.G-atb[style*='border'] {
   border-bottom-color: #141414 !important;
   border-left-color: #141414 !important;
   border-right-color: #141414 !important;
@@ -2922,9 +3084,9 @@ body.dark-mode .nH.aqK * {
 }
 
 /* Override any inline styles on toolbar elements */
-body.dark-mode .D.E.G-atb *[style*="border"],
-body.dark-mode .Cr.aqJ *[style*="border"],
-body.dark-mode .nH.aqK *[style*="border"] {
+body.dark-mode .D.E.G-atb *[style*='border'],
+body.dark-mode .Cr.aqJ *[style*='border'],
+body.dark-mode .nH.aqK *[style*='border'] {
   border-color: #141414 !important;
   border-bottom-color: #141414 !important;
   border-left-color: #141414 !important;
@@ -2955,7 +3117,7 @@ body.dark-mode .Q3 {
 
 body.dark .Hp {
   background-color: #141414 !important;
-  color: #ffffff !important;
+  color: #fff !important;
   border-bottom: 1px solid #141414 !important;
 }
 
@@ -2966,8 +3128,6 @@ body.dark-mode .AO * {
   border-color: #141414 !important;
 }
 
-
-
 /* Toolbar specific elements - only for main email list, not opened email view */
 body.dark-mode .nH.aqK:not(.Cr.aqJ .nH.aqK) {
   background: #141414 !important;
@@ -2976,10 +3136,6 @@ body.dark-mode .nH.aqK:not(.Cr.aqJ .nH.aqK) {
 body.dark-mode .Cq.aqL {
   background: #141414 !important;
 }
-
-
-
-
 
 body.dark-mode .bzn {
   background: #141414 !important;
@@ -3032,7 +3188,7 @@ body.dark-mode .ts {
 
 /* Search bar - match light mode styling but adapted for dark mode */
 body.dark-mode header form {
-  background: rgba(255, 255, 255, 0.08) !important; /* Semi-transparent white, darker than light mode */
+  background: rgb(255 255 255 / 8%) !important; /* Semi-transparent white, darker than light mode */
   max-width: 90% !important;
 }
 
@@ -3042,10 +3198,8 @@ body.dark-mode header form input {
 }
 
 body.dark-mode header form input::placeholder {
-  color: #FFF !important; /* Match light mode exactly */
+  color: #fff !important; /* Match light mode exactly */
 }
-
-
 
 /* Archive button - dark mode styling */
 body.dark-mode .brq,
@@ -3053,8 +3207,6 @@ body.dark-mode .ar8,
 body.dark-mode .ar8.T-I-J3.J-J5-Ji {
   background-color: #e8eaed !important; /* Light gray for better visibility in dark mode */
 }
-
-
 
 /* QUICK SETTINGS PANEL */
 body.dark-mode .IU {
@@ -3081,18 +3233,16 @@ body.dark-mode .IU .Tj {
   color: #8ab4f8 !important;
 }
 
-
-
-body.dark-mode .nH.fY [role="presentation"] a.f0 {
+body.dark-mode .nH.fY [role='presentation'] a.f0 {
   color: #a0a0a0 !important;
   opacity: 1 !important;
 }
 
-body.dark-mode .nH.fY [role="presentation"] a.f0:hover {
+body.dark-mode .nH.fY [role='presentation'] a.f0:hover {
   color: #8ab4f8 !important;
 }
 
-body.dark-mode .nH.fY [role="presentation"] a.f0[aria-selected="true"] {
+body.dark-mode .nH.fY [role='presentation'] a.f0[aria-selected='true'] {
   color: #8ab4f8 !important;
   border-bottom: 2px solid #8ab4f8 !important;
 }
@@ -3134,6 +3284,7 @@ body.dark-mode .ar4.z .TD > .TC {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_zero_inbox_2x_dark.png') !important;
   }
 }
+
 body.dark-mode .ar4,
 body.dark-mode .aBO,
 body.dark-mode .aB6,
@@ -3149,15 +3300,18 @@ body.dark-mode .aKh,
 body.dark-mode .aRs {
   background: #2a2a2a !important;
 }
+
 body.dark-mode .zA,
 body.dark-mode .zA:hover,
 body.dark-mode .Bs.nH.iY.bAt {
   background: #2a2a2a !important;
-  color: #ffffff !important;
+  color: #fff !important;
 }
+
 body.dark-mode .zA * {
-  color: #ffffff !important;
+  color: #fff !important;
 }
+
 body.dark-mode .TO .nU > .n0,
 body.dark-mode .TO.NQ .nU > .n0,
 body.dark-mode .TO.nZ .nU > .n0,
@@ -3166,46 +3320,59 @@ body.dark-mode .n3 > .CL > .CK,
 body.dark-mode .aAv {
   color: #c7c7c7 !important;
 }
+
 body.dark-mode .TO.nZ .n0 {
-  color: #ffffff !important;
+  color: #fff !important;
 }
+
 body.dark-mode .TO .n0 {
   color: #c7c7c7 !important;
 }
+
 body.dark-mode .brc {
   background-color: #3b3b3b !important;
-  color: #ffffff !important;
-  box-shadow: 0 0 1px rgba(0,0,0,.31), 0 1px 2px rgba(0,0,0,.42) !important;
+  color: #fff !important;
+  box-shadow:
+    0 0 1px rgb(0 0 0 / 31%),
+    0 1px 2px rgb(0 0 0 / 42%) !important;
 }
+
 body.dark-mode .bundle-senders {
-  color: #ffffff !important;
+  color: #fff !important;
 }
+
 body.dark-mode .bundle-wrapper .label-link .bundle-count {
   color: #c7c7c7 !important;
 }
+
 body.dark-mode .calendar-attachment .event-time {
   color: #c7c7c7 !important;
 }
+
 body.dark-mode .time {
   color: #c7c7c7 !important;
 }
+
 body.dark-mode .nH.bkK.nn + .nH.nn {
   background-color: #3b3b3b !important;
 }
+
 body.dark-mode .IU {
   background-color: #3b3b3b !important;
 }
+
 body.dark-mode .wT > .n3 .byl:first-child .aim:first-child .nZ {
-  background-color: rgba(255,255,255,.05) !important;
+  background-color: rgb(255 255 255 / 5%) !important;
 }
+
 /* ========================================
    EMAIL VIEWS - DARK MODE STYLING
    ======================================== */
 
 /* Email content area - match Gmail's official dark mode behavior */
 body.dark-mode .nH.a98.iY.aHo {
-  background: #ffffff !important; /* Email content stays white like Gmail */
-  background-color: #ffffff !important;
+  background: #fff !important; /* Email content stays white like Gmail */
+  background-color: #fff !important;
 }
 
 /* Email content text colors - match Gmail's white email content */
@@ -3233,7 +3400,7 @@ body.dark-mode .nH.a98.iY.aHo .T-I {
 
 /* Schedule send menu item - white background */
 body.dark-mode .nH.a98.iY.aHo .J-N.yr {
-  background-color: #ffffff !important;
+  background-color: #fff !important;
   color: #202124 !important; /* Dark text on white background */
 }
 
@@ -3256,12 +3423,12 @@ body.dark-mode .nH.a98.iY.aHo a:hover {
 }
 
 /* Reply/Forward/Send buttons - target reply/forward/send buttons */
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7[aria-label="Reply"],
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7[aria-label="Forward"],
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7[aria-label="Send"],
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7[aria-label="More send options"] {
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7[aria-label='Reply'],
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7[aria-label='Forward'],
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7[aria-label='Send'],
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7[aria-label='More send options'] {
   color: #202124 !important; /* Dark text for light button background */
-  background-color: #ffffff !important;
+  background-color: #fff !important;
   border: 1px solid #202124 !important; /* Black border for reply/forward/send buttons */
   border-width: 1px !important;
   border-style: solid !important;
@@ -3272,7 +3439,7 @@ body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7[aria-label="More send options
 }
 
 /* Remove border from Reply button specifically */
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7.aaq[aria-label="Reply"] {
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7.aaq[aria-label='Reply'] {
   border: none !important;
   border-width: 0 !important;
   border-style: none !important;
@@ -3282,7 +3449,7 @@ body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7.aaq[aria-label="Reply"] {
 
 /* Set white background for older messages button */
 body.dark-mode .nH.a98.iY.aHo .adx {
-  background-color: #ffffff !important;
+  background-color: #fff !important;
   color: #202124 !important; /* Dark text for contrast */
 }
 
@@ -3315,24 +3482,24 @@ body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji.T-I-ax7:hover {
 }
 
 /* Send+ button - blue styling for reply/compose */
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*="Send and archive"],
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*="Send & archive"],
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*="send and archive"],
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*="send & archive"],
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[data-tooltip*="Send and archive"],
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[data-tooltip*="Send & archive"] {
-  color: #ffffff !important; /* White text on blue background */
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*='Send and archive'],
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*='Send & archive'],
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*='send and archive'],
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*='send & archive'],
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[data-tooltip*='Send and archive'],
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[data-tooltip*='Send & archive'] {
+  color: #fff !important; /* White text on blue background */
   background-color: #1a73e8 !important; /* Gmail's blue for Send+ */
   border: 1px solid #1a73e8 !important;
   background-image: none !important;
 }
 
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*="Send and archive"]:hover,
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*="Send & archive"]:hover,
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*="send and archive"]:hover,
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*="send & archive"]:hover,
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[data-tooltip*="Send and archive"]:hover,
-body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[data-tooltip*="send & archive"]:hover {
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*='Send and archive']:hover,
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*='Send & archive']:hover,
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*='send and archive']:hover,
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[aria-label*='send & archive']:hover,
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[data-tooltip*='Send and archive']:hover,
+body.dark-mode .nH.a98.iY.aHo .T-I.J-J5-Ji[data-tooltip*='send & archive']:hover {
   background-color: #1557b0 !important; /* Darker blue on hover */
   border-color: #1557b0 !important;
   background-image: none !important;
@@ -3343,7 +3510,7 @@ body.dark-mode .nH.a98.iY.aHo .ajA.SK {
   background-color: #2a2a2a !important;
   color: #e8eaed !important;
   border: 1px solid #5f6368 !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 30%) !important;
 }
 
 /* Dropdown menu content */
@@ -3421,8 +3588,6 @@ body.dark-mode .nH.a98.iY.aHo .aap {
   box-shadow: none !important;
 }
 
-
-
 body.dark-mode .nH.a98.iY.aHo .T-I:not(.J-J5-Ji):hover {
   background-color: transparent !important;
   border: none !important;
@@ -3432,6 +3597,7 @@ body.dark-mode .nH.a98.iY.aHo .T-I:not(.J-J5-Ji):hover {
   outline: none !important;
   box-shadow: none !important;
 }
+
 /* ========================================
    EMAIL LIST VIEW (when browsing emails)
    ======================================== */
@@ -3439,7 +3605,7 @@ body.dark-mode .nH.a98.iY.aHo .T-I:not(.J-J5-Ji):hover {
 /* Email list container background */
 body.dark-mode .nH.ar4.z {
   background: #141414 !important;
-}   
+}
 
 /* Email list container - overall background */
 body.dark-mode .wT {
@@ -3451,7 +3617,7 @@ body.dark-mode .zA,
 body.dark-mode .zA:hover,
 body.dark-mode .Bs.nH.iY.bAt {
   background: #141414 !important;
-  color: #ffffff !important;
+  color: #fff !important;
 }
 
 /* Email list scrollable area */
@@ -3464,13 +3630,14 @@ body.dark-mode .nH .AO {
   background: #141414 !important;
 }
 
-
 body.dark-mode .bundle-wrapper:not(.contains-unread) .bundle-image img {
   opacity: 0.8;
 }
+
 body.dark-mode .brc .brg {
-  color: #ffffff !important;
+  color: #fff !important;
 }
+
 body.dark-mode .aEe,
 body.dark-mode .aEc.aHS-bnr .qj {
   background-color: transparent !important;
@@ -3479,7 +3646,7 @@ body.dark-mode .aEc.aHS-bnr .qj {
 }
 
 /* Override the above rule for Categories to preserve its mask-image */
-body.dark-mode [data-tooltip="Categories"] .aEc.aHS-bnr .qj {
+body.dark-mode [data-tooltip='Categories'] .aEc.aHS-bnr .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -3494,7 +3661,7 @@ body.dark-mode [data-tooltip="Categories"] .aEc.aHS-bnr .qj {
 
 /* Firefox-specific dark mode override for Categories */
 @-moz-document url-prefix() {
-  body.dark-mode [data-tooltip="Categories"] .aEc.aHS-bnr .qj {
+  body.dark-mode [data-tooltip='Categories'] .aEc.aHS-bnr .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
@@ -3513,44 +3680,61 @@ body.dark-mode .aHS-bnr .qj,
 body.dark-mode .zw .aHS-bnr .qj {
   /* Let Gmail use its default colorful square icons */
 }
-body.dark-mode .G4, body.dark-mode .GR, body.dark-mode div[aria-label="Inbox tip"] {
-  box-shadow: 0 -1px 0 #3b3b3b, 0 0 2px rgba(0,0,0,.32), 0 2px 4px rgba(0,0,0,.44) !important;
+
+body.dark-mode .G4,
+body.dark-mode .GR,
+body.dark-mode div[aria-label='Inbox tip'] {
+  box-shadow:
+    0 -1px 0 #3b3b3b,
+    0 0 2px rgb(0 0 0 / 32%),
+    0 2px 4px rgb(0 0 0 / 44%) !important;
 }
+
 body.dark-mode .D.E.G-atb {
   background: #141414 !important;
 }
+
 body.dark-mode .nH > .ha > .J-J5-Ji,
 body.dark-mode .nH > .nH > .hj > .ade,
 body.dark-mode .iw > .qu > .go {
   display: none !important;
 }
+
 body.dark-mode .aTV {
   border-color: transparent transparent #3b3b3b #3b3b3b !important;
 }
+
 body.dark-mode .nH.aqK {
   background: #141414 !important;
 }
+
 body.dark-mode .no {
   background-color: #141414 !important;
 }
+
 body.dark-mode .aB6,
 body.dark-mode .bn .bl {
   background-color: #2a2a2a !important;
 }
+
 body.dark-mode .aBO {
   background-color: #2a2a2a !important;
 }
+
 body.dark-mode .bzJiD,
 body.dark-mode .vIO7af {
   background: #2a2a2a !important;
 }
+
 body.dark-mode .ar4.z .TD > .TC {
   background-color: #141414 !important;
 }
+
 body.dark-mode .nH.bkK.nn + .nH.nn {
   background-color: #3b3b3b !important;
 }
-body.dark-mode [aria-label="Hangouts"][role="complementary"] {
+
+body.dark-mode [aria-label='Hangouts'][role='complementary'] {
   background-color: #2a2a2a !important;
 }
 
@@ -3603,7 +3787,7 @@ body.dark-mode .Tm.aeJ::-webkit-scrollbar-thumb:hover {
     scrollbar-width: thin !important;
     scrollbar-color: #141414 transparent !important;
   }
-  
+
   body.dark-mode .Tm.aeJ:hover {
     scrollbar-color: #323232 transparent !important;
   }
@@ -3642,11 +3826,11 @@ body.dark-mode .aeF:not(:hover)::-webkit-scrollbar-thumb {
     scrollbar-color: transparent transparent !important;
     transition: scrollbar-color 0.2s !important;
   }
-  
+
   body.dark-mode .aeF:hover {
     scrollbar-color: #323232 transparent !important;
   }
-  
+
   body.dark-mode .aeF:not(:hover) {
     scrollbar-color: transparent transparent !important;
   }
@@ -3719,12 +3903,12 @@ body.dark-mode .nH .AO::-webkit-scrollbar {
     scrollbar-color: transparent transparent !important;
     transition: scrollbar-color 0.2s !important;
   }
-  
+
   body.dark-mode .wT:hover,
   body.dark-mode .nH .AO:hover {
     scrollbar-color: #323232 transparent !important;
   }
-  
+
   body.dark-mode .wT:not(:hover),
   body.dark-mode .nH .AO:not(:hover) {
     scrollbar-color: transparent transparent !important;
@@ -3771,7 +3955,7 @@ body.dark-mode .nH .AO::-webkit-scrollbar {
     scrollbar-width: thin !important;
     scrollbar-color: transparent transparent !important;
   }
-  
+
   .Tm.aeJ:hover {
     scrollbar-color: #a1a1a1 transparent !important;
   }
@@ -3788,6 +3972,7 @@ body.dark-mode .aUx {
 }
 
 /* Email row backgrounds - different colors for read vs unread */
+
 /* Removed duplicate rule - consolidated above */
 
 /* Dark mode email styling - match light mode behavior exactly */
@@ -3808,7 +3993,6 @@ body.dark-mode .zA:hover {
 
 /* Removed duplicate rule - consolidated above */
 
-
 body.dark-mode .zA .apU.xY .T-KT::before,
 body.dark-mode .zA .apU.xY .T-KT.xl::before,
 body.dark-mode .zA .apU.xY .T-KT.T-KT-Jp::before,
@@ -3818,6 +4002,7 @@ body.dark-mode .zA .apU.xY .T-KT.xj::before,
 body.dark-mode .zA .apU.xY .T-KT.xk::before {
   /* Keep star images, do not recolor */
 }
+
 body.dark-mode .zA .apU.xY .T-KT.xg::before,
 body.dark-mode .zA .apU.xY .T-KT.xe::before,
 body.dark-mode .zA .apU.xY .T-KT.xh::before,
@@ -3841,40 +4026,49 @@ body.dark-mode .zA .apU.xY .T-KT.xl::before {
   mask-position: center !important;
   background-image: none !important;
 }
+
 body.dark-mode .brc {
   background-color: #3b3b3b !important;
-  color: #ffffff !important;
+  color: #fff !important;
 }
+
 body.dark-mode .calendar-attachment .event-time {
   color: #c7c7c7 !important;
 }
+
 body.dark-mode .bundle-wrapper .label-link .bundle-count {
   color: #c7c7c7 !important;
 }
-body.dark-mode .bundle-senders {
-  color: #ffffff !important;
-}
 
+body.dark-mode .bundle-senders {
+  color: #fff !important;
+}
 
 body.dark-mode .D.E.G-atb::before {
   box-shadow: none !important;
 }
+
 body.dark-mode header svg {
-  color: #ffffff !important;
+  color: #fff !important;
 }
+
 body.dark-mode header form {
   /* Remove forced background - let Gmail handle it naturally */
 }
+
 body.dark-mode header form input {
   color: white !important; /* Match light mode */
   background-color: transparent !important; /* Let Gmail handle background */
 }
+
 body.dark-mode header form input::placeholder {
-  color: #FFF !important; /* Match light mode exactly */
+  color: #fff !important; /* Match light mode exactly */
 }
+
 body.dark-mode .Yc {
-  color: #ffffff !important;
+  color: #fff !important;
 }
+
 body.dark-mode .aHS-bnr .qj,
 body.dark-mode .aEc.aHS-bnr .qj,
 body.dark-mode .aEe {
@@ -3995,7 +4189,7 @@ body.dark-mode .aHS-aHP .qj {
   background-image: none !important;
 }
 
-body.dark-mode [data-tooltip="Categories"] .qj {
+body.dark-mode [data-tooltip='Categories'] .qj {
   background-color: #9f9f9f !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -4008,7 +4202,7 @@ body.dark-mode [data-tooltip="Categories"] .qj {
   background-image: none !important;
 }
 
-body.dark-mode [data-tooltip="Social"] .qj {
+body.dark-mode [data-tooltip='Social'] .qj {
   background-color: #9f9f9f !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -4021,7 +4215,7 @@ body.dark-mode [data-tooltip="Social"] .qj {
   background-image: none !important;
 }
 
-body.dark-mode [data-tooltip="Updates"] .qj {
+body.dark-mode [data-tooltip='Updates'] .qj {
   background-color: #9f9f9f !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -4034,7 +4228,7 @@ body.dark-mode [data-tooltip="Updates"] .qj {
   background-image: none !important;
 }
 
-body.dark-mode [data-tooltip="Forums"] .qj {
+body.dark-mode [data-tooltip='Forums'] .qj {
   background-color: #9f9f9f !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -4047,7 +4241,7 @@ body.dark-mode [data-tooltip="Forums"] .qj {
   background-image: none !important;
 }
 
-body.dark-mode [data-tooltip="Promotions"] .qj {
+body.dark-mode [data-tooltip='Promotions'] .qj {
   background-color: #9f9f9f !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -4197,7 +4391,7 @@ body.dark-mode [data-tooltip="Promotions"] .qj {
     background-image: none !important;
   }
 
-  body.dark-mode [data-tooltip="Categories"] .qj {
+  body.dark-mode [data-tooltip='Categories'] .qj {
     background-color: #9f9f9f !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -4210,7 +4404,7 @@ body.dark-mode [data-tooltip="Promotions"] .qj {
     background-image: none !important;
   }
 
-  body.dark-mode [data-tooltip="Social"] .qj {
+  body.dark-mode [data-tooltip='Social'] .qj {
     background-color: #9f9f9f !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -4223,7 +4417,7 @@ body.dark-mode [data-tooltip="Promotions"] .qj {
     background-image: none !important;
   }
 
-  body.dark-mode [data-tooltip="Updates"] .qj {
+  body.dark-mode [data-tooltip='Updates'] .qj {
     background-color: #9f9f9f !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -4236,7 +4430,7 @@ body.dark-mode [data-tooltip="Promotions"] .qj {
     background-image: none !important;
   }
 
-  body.dark-mode [data-tooltip="Forums"] .qj {
+  body.dark-mode [data-tooltip='Forums'] .qj {
     background-color: #9f9f9f !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -4249,7 +4443,7 @@ body.dark-mode [data-tooltip="Promotions"] .qj {
     background-image: none !important;
   }
 
-  body.dark-mode [data-tooltip="Promotions"] .qj {
+  body.dark-mode [data-tooltip='Promotions'] .qj {
     background-color: #9f9f9f !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -4262,10 +4456,14 @@ body.dark-mode [data-tooltip="Promotions"] .qj {
     background-image: none !important;
   }
 }
+
 body.dark-mode .wT > .n3 .byl:first-child .aim:first-child .nZ {
-  background-color: rgba(255,255,255,.05) !important;
+  background-color: rgb(255 255 255 / 5%) !important;
 }
-body.dark-mode .aKk>tbody, .body.dark-mode .aAA, .body.dark-mode .aRz.J-KU {
+
+body.dark-mode .aKk > tbody,
+.body.dark-mode .aAA,
+.body.dark-mode .aRz.J-KU {
   background: #2a2a2a !important;
 }
 
@@ -4274,97 +4472,119 @@ body.dark-mode .TO.nZ {
   /* slightly lighter row for active state */
   background-color: #383838 !important;
 }
+
 /* Ensure the label text on the active row stays fully white */
 body.dark-mode .TO.nZ .nU > .n0 {
-  color: #ffffff !important;
+  color: #fff !important;
 }
+
 /* Ensure the icon on the active row is also bright enough */
 body.dark-mode .TO.nZ .qj {
   opacity: 1 !important;
 }
 
-body.dark-mode .G4, body.dark-mode .GR, body.dark-mode div[aria-label="Inbox tip"] {
-  box-shadow: 0 -1px 0 #3b3b3b, 0 0 2px rgba(0,0,0,.32), 0 2px 4px rgba(0,0,0,.44) !important;
+body.dark-mode .G4,
+body.dark-mode .GR,
+body.dark-mode div[aria-label='Inbox tip'] {
+  box-shadow:
+    0 -1px 0 #3b3b3b,
+    0 0 2px rgb(0 0 0 / 32%),
+    0 2px 4px rgb(0 0 0 / 44%) !important;
 }
 
 /* Dark Mode: Header Bar Color Overrides (darker variants) */
 body.dark-mode .w-asV.bbg.aiw {
   background-color: #636360 !important; /* default darker gray */
 }
-body.dark-mode .w-asV.bbg.aiw[pageTitle="inbox"] {
+
+body.dark-mode .w-asV.bbg.aiw[pageTitle='inbox'] {
   background-color: #3060b0 !important; /* darker blue */
 }
-body.dark-mode .w-asV.bbg.aiw[pageTitle="starred"] {
+
+body.dark-mode .w-asV.bbg.aiw[pageTitle='starred'] {
   background-color: #b58b20 !important; /* darker yellow */
 }
-body.dark-mode .w-asV.bbg.aiw[pageTitle="snoozed"] {
+
+body.dark-mode .w-asV.bbg.aiw[pageTitle='snoozed'] {
   background-color: #ad4d00 !important; /* darker orange */
 }
-body.dark-mode .w-asV.bbg.aiw[pageTitle="sent"] {
+
+body.dark-mode .w-asV.bbg.aiw[pageTitle='sent'] {
   background-color: #006d63 !important; /* darker teal */
 }
-body.dark-mode .w-asV.bbg.aiw[pageTitle="drafts"] {
+
+body.dark-mode .w-asV.bbg.aiw[pageTitle='drafts'] {
   background-color: #665047 !important; /* darker brown */
 }
-body.dark-mode .w-asV.bbg.aiw[pageTitle="all"] {
+
+body.dark-mode .w-asV.bbg.aiw[pageTitle='all'] {
   background-color: #3060b0 !important; /* darker blue */
 }
-body.dark-mode .w-asV.bbg.aiw[pageTitle="spam"] {
+
+body.dark-mode .w-asV.bbg.aiw[pageTitle='spam'] {
   background-color: #9c231a !important; /* darker red */
 }
-body.dark-mode .w-asV.bbg.aiw[pageTitle="trash"] {
+
+body.dark-mode .w-asV.bbg.aiw[pageTitle='trash'] {
   background-color: #45474b !important; /* darker gray */
 }
+
 /* Social */
-body.dark-mode .w-asV.bbg.aiw[pageTitle="social"] {
+body.dark-mode .w-asV.bbg.aiw[pageTitle='social'] {
   background-color: #006d63 !important; /* darker teal */
 }
+
 /* Updates */
-body.dark-mode .w-asV.bbg.aiw[pageTitle="updates"] {
+body.dark-mode .w-asV.bbg.aiw[pageTitle='updates'] {
   background-color: #b97800 !important; /* darker gold */
 }
+
 /* Forums */
-body.dark-mode .w-asV.bbg.aiw[pageTitle="forums"] {
+body.dark-mode .w-asV.bbg.aiw[pageTitle='forums'] {
   background-color: #883a68 !important; /* darker purple */
 }
+
 /* Promotions */
-body.dark-mode .w-asV.bbg.aiw[pageTitle="promotions"] {
+body.dark-mode .w-asV.bbg.aiw[pageTitle='promotions'] {
   background-color: #648d36 !important; /* darker green */
 }
+
 /* Important */
-body.dark-mode .w-asV.bbg.aiw[pageTitle="imp"] {
+body.dark-mode .w-asV.bbg.aiw[pageTitle='imp'] {
   background-color: #b83f19 !important; /* darker red-orange */
 }
+
 /* Scheduled */
-body.dark-mode .w-asV.bbg.aiw[pageTitle="scheduled"] {
+body.dark-mode .w-asV.bbg.aiw[pageTitle='scheduled'] {
   background-color: #258458 !important; /* darker green */
 }
+
 /* Subscriptions */
-body.dark-mode .w-asV.bbg.aiw[pageTitle="sub"] {
+body.dark-mode .w-asV.bbg.aiw[pageTitle='sub'] {
   background-color: #007c8c !important; /* darker cyan */
 }
+
 /* Labels */
-body.dark-mode .w-asV.bbg.aiw[pageTitle="labels"],
-body.dark-mode .w-asV.bbg.aiw[pageTitle="label"] {
+body.dark-mode .w-asV.bbg.aiw[pageTitle='labels'],
+body.dark-mode .w-asV.bbg.aiw[pageTitle='label'] {
   background-color: #4462b1 !important; /* darker indigo */
 }
+
 /* Archive */
-body.dark-mode .w-asV.bbg.aiw[pageTitle="archive"] {
+body.dark-mode .w-asV.bbg.aiw[pageTitle='archive'] {
   background-color: #0b7244 !important; /* darker green */
 }
+
 /* Chat & Onboarding */
-body.dark-mode .w-asV.bbg.aiw[pageTitle="chat"],
-body.dark-mode .w-asV.bbg.aiw[pageTitle="onboarding"] {
+body.dark-mode .w-asV.bbg.aiw[pageTitle='chat'],
+body.dark-mode .w-asV.bbg.aiw[pageTitle='onboarding'] {
   background-color: #007c33 !important; /* darker green */
 }
+
 /* Meet */
-body.dark-mode .w-asV.bbg.aiw[pageTitle="calls"] {
+body.dark-mode .w-asV.bbg.aiw[pageTitle='calls'] {
   background-color: #9e3128 !important; /* darker red */
 }
-
-
-
-
 
 /* Make recipient chips more visible */
 body.dark-mode .vR,
@@ -4401,14 +4621,13 @@ body.dark-mode .IU .OG {
 /* Text labels for the options */
 body.dark-mode .IU .a21, /* "Chat and Meet" */
 body.dark-mode .IU .Q2,  /* Radio button labels */
-body.dark-mode .IU .ST   /* Checkbox labels */
-{
+body.dark-mode .IU .ST   /* Checkbox labels */ {
   color: #e0e0e0 !important;
 }
 
 /* The container for each section */
 body.dark-mode fieldset.VM.aiL {
-    background-color: #252526 !important;
+  background-color: #252526 !important;
 }
 
 /* Links like "Customize" and "View All" */
@@ -4421,8 +4640,7 @@ body.dark-mode .IU .Tj {
 body.dark-mode .IU .a2U, /* Chat and Meet icon */
 body.dark-mode .IU .QZ,  /* Density previews */
 body.dark-mode .IU .Vm,  /* Inbox Type previews */
-body.dark-mode .IU .XK   /* Reading Pane previews */
-{
+body.dark-mode .IU .XK   /* Reading Pane previews */ {
   filter: invert(0.85) brightness(1.5) !important;
 }
 
@@ -4442,49 +4660,51 @@ body.dark-mode .IU .Q1:checked + .Vo {
 }
 
 body.dark-mode .IU .Q1:checked + .Vo::after {
-   display: block;
-   content: '';
-   width: 8px;
-   height: 8px;
-   position: relative;
-   top: 2px;
-   left: 2px;
-   border-radius: 50%;
-   background-color: #8ab4f8 !important;
+  display: block;
+  content: '';
+  width: 8px;
+  height: 8px;
+  position: relative;
+  top: 2px;
+  left: 2px;
+  border-radius: 50%;
+  background-color: #8ab4f8 !important;
 }
 
 /* Checkbox Styling */
 body.dark-mode .IU .SS + .ST::before {
-    border-color: #888 !important;
+  border-color: #888 !important;
 }
+
 body.dark-mode .IU .SS:checked + .ST::before {
-    background-color: #8ab4f8 !important;
-    border-color: #8ab4f8 !important;
+  background-color: #8ab4f8 !important;
+  border-color: #8ab4f8 !important;
 }
+
 body.dark-mode .IU .SS:checked + .ST::after {
-    border-bottom: 2px solid #252526 !important;
-    border-right: 2px solid #252526 !important;
+  border-bottom: 2px solid #252526 !important;
+  border-right: 2px solid #252526 !important;
 }
 
 /* Remove the boxes around the radio button options */
 body.dark-mode .IU .QX,
 body.dark-mode .IU .Vn,
 body.dark-mode .IU .XL {
-    border: 1px solid transparent !important;
-    background: transparent !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
 }
 
 /* Also remove border from the preview images by default */
 body.dark-mode .IU .QZ,
 body.dark-mode .IU .Vm,
 body.dark-mode .IU .XK {
-    border: 1px solid transparent !important;
+  border: 1px solid transparent !important;
 }
 
 /* Add a blue border to the selected image to indicate selection */
 body.dark-mode .IU input:checked ~ img {
-    border-radius: 6px !important;
-    border: 2px solid #8ab4f8 !important;
+  border-radius: 6px !important;
+  border: 2px solid #8ab4f8 !important;
 }
 
 /* Ensure the text part of a selected row has no special background or border */
@@ -4498,404 +4718,407 @@ body.dark-mode .IU .Q1:checked + .Vo {
 }
 
 /* --- Final Attempt: Force remove borders from option labels --- */
-body.dark-mode .QX, body.dark-mode .Vn, body.dark-mode .XL {
-    border: 1px solid transparent !important;
+body.dark-mode .QX,
+body.dark-mode .Vn,
+body.dark-mode .XL {
+  border: 1px solid transparent !important;
 }
 
 /* Remove boxes around radio buttons in dark mode */
 body.dark-mode .Vo {
-    border: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 body.dark-mode .Q1:checked + .Vo {
-    border: none !important;
-    background: transparent !important;
+  border: none !important;
+  background: transparent !important;
 }
 
 body.dark-mode .Q1:checked + .Vo::after {
-    content: '';
-    display: block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: #8ab4f8 !important;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  content: '';
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #8ab4f8 !important;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Remove boxes around radio buttons in dark mode for ALL sections */
 body.dark-mode .QX,
 body.dark-mode .Vn,
 body.dark-mode .XL {
-    border: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 body.dark-mode .QX label,
 body.dark-mode .Vn label,
 body.dark-mode .XL label {
-    border: none !important;
-    background: transparent !important;
+  border: none !important;
+  background: transparent !important;
 }
 
 /* Ensure the radio button indicator is clean */
 body.dark-mode .Vo,
 body.dark-mode .Q1 + .Vo {
-    border: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 /* Selected state indicator */
 body.dark-mode .Q1:checked + .Vo::after {
-    content: '';
-    display: block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: #8ab4f8 !important;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  content: '';
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #8ab4f8 !important;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Dark Mode Settings Tabs Styling */
-body.dark-mode .nH.fY [role="presentation"] a.f0 {
-    color: #a0a0a0 !important;  /* Lighter gray for better readability */
-    opacity: 1 !important;  /* Remove opacity reduction */
-    transition: color 0.2s ease;
+body.dark-mode .nH.fY [role='presentation'] a.f0 {
+  color: #a0a0a0 !important; /* Lighter gray for better readability */
+  opacity: 1 !important; /* Remove opacity reduction */
+  transition: color 0.2s ease;
 }
 
-body.dark-mode .nH.fY [role="presentation"] a.f0:hover {
-    color: #8ab4f8 !important;
+body.dark-mode .nH.fY [role='presentation'] a.f0:hover {
+  color: #8ab4f8 !important;
 }
 
-body.dark-mode .nH.fY [role="presentation"] a.f0[aria-selected="true"] {
-    color: #8ab4f8 !important;
-    border-bottom: 2px solid #8ab4f8 !important;
+body.dark-mode .nH.fY [role='presentation'] a.f0[aria-selected='true'] {
+  color: #8ab4f8 !important;
+  border-bottom: 2px solid #8ab4f8 !important;
 }
 
-body.dark-mode .nH.fY [role="presentation"] {
-    background-color: transparent !important;
+body.dark-mode .nH.fY [role='presentation'] {
+  background-color: transparent !important;
 }
 
 /* Dark Mode Theme Selection Dialog Styling */
 body.dark-mode .uW2Fw-bHo {
-    background-color: #252526 !important;
-    color: #e0e0e0 !important;
+  background-color: #252526 !important;
+  color: #e0e0e0 !important;
 }
 
 /* Theme selection dialog header */
 body.dark-mode .uW2Fw-bHo .cER4xe {
-    color: #f1f1f1 !important;
+  color: #f1f1f1 !important;
 }
 
 /* Theme preview containers */
 body.dark-mode .uW2Fw-bHo .a7H {
-    background-color: #141414 !important;
-    border: 1px solid #444 !important;
+  background-color: #141414 !important;
+  border: 1px solid #444 !important;
 }
 
 /* Theme preview labels */
 body.dark-mode .uW2Fw-bHo .a7N {
-    background-color: rgba(45, 45, 48, 0.8) !important;
+  background-color: rgb(45 45 48 / 80%) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .a9J {
-    color: #e0e0e0 !important;
+  color: #e0e0e0 !important;
 }
 
 /* Buttons styling */
 body.dark-mode .uW2Fw-bHo .mUIrbf-I {
-    background-color: #3a3a3a !important;
-    color: #e0e0e0 !important;
-    border: 1px solid #555 !important;
+  background-color: #3a3a3a !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #555 !important;
 }
 
 body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover {
-    background-color: #9f9f9f !important;
+  background-color: #9f9f9f !important;
 }
 
 body.dark-mode .uW2Fw-bHo .eV8l8d {
-    background-color: #8ab4f8 !important;
-    color: #252526 !important;
+  background-color: #8ab4f8 !important;
+  color: #252526 !important;
 }
 
 /* More Images and My Photos buttons */
 body.dark-mode .uW2Fw-bHo .fQ1uhf,
 body.dark-mode .uW2Fw-bHo .PKBsLc button {
-    background-color: #141414 !important;
-    color: #e0e0e0 !important;
-    border: 1px solid #444 !important;
+  background-color: #141414 !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #444 !important;
 }
 
 body.dark-mode .uW2Fw-bHo .fQ1uhf:hover,
 body.dark-mode .uW2Fw-bHo .PKBsLc button:hover {
-    background-color: #3a3a3a !important;
+  background-color: #3a3a3a !important;
 }
 
 /* Dark Mode Theme Selection Dialog Enhanced Styling */
 body.dark-mode .uW2Fw-bHo {
-    background-color: #252526 !important;
-    color: #e0e0e0 !important;
+  background-color: #252526 !important;
+  color: #e0e0e0 !important;
 }
 
 /* Theme selection dialog header */
 body.dark-mode .uW2Fw-bHo .cER4xe {
-    color: #f1f1f1 !important;
+  color: #f1f1f1 !important;
 }
 
 /* Custom theme preview containers */
 body.dark-mode .uW2Fw-bHo .a7H {
-    background-color: #141414 !important;
-    border: 1px solid #444 !important;
-    transition: transform 0.2s ease;
+  background-color: #141414 !important;
+  border: 1px solid #444 !important;
+  transition: transform 0.2s ease;
 }
 
 body.dark-mode .uW2Fw-bHo .a7H:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgb(0 0 0 / 30%);
 }
 
 /* Ensure theme images are fully visible */
 body.dark-mode .uW2Fw-bHo .a7G {
-    opacity: 1 !important;
-    filter: brightness(0.8);
-    transition: filter 0.2s ease;
+  opacity: 1 !important;
+  filter: brightness(0.8);
+  transition: filter 0.2s ease;
 }
 
 body.dark-mode .uW2Fw-bHo .a7G:hover {
-    filter: brightness(1);
+  filter: brightness(1);
 }
 
 /* Theme preview labels */
 body.dark-mode .uW2Fw-bHo .a7N {
-    background-color: rgba(45, 45, 48, 0.8) !important;
+  background-color: rgb(45 45 48 / 80%) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .a9J {
-    color: #e0e0e0 !important;
+  color: #e0e0e0 !important;
 }
 
 /* Buttons styling - More prominent and clear */
 body.dark-mode .uW2Fw-bHo .mUIrbf-I {
-    background-color: #3a3a3a !important;
-    color: #e0e0e0 !important;
-    border: 1px solid #555 !important;
-    transition: background-color 0.2s ease, color 0.2s ease;
+  background-color: #3a3a3a !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #555 !important;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover {
-    background-color: #9f9f9f !important;
-    color: white !important;
+  background-color: #9f9f9f !important;
+  color: white !important;
 }
 
 /* Save button - more prominent */
 body.dark-mode .uW2Fw-bHo .eV8l8d {
-    background-color: #8ab4f8 !important;
-    color: white !important;
-    border: 1px solid #8ab4f8 !important;
-    font-weight: bold;
+  background-color: #8ab4f8 !important;
+  color: white !important;
+  border: 1px solid #8ab4f8 !important;
+  font-weight: bold;
 }
 
 body.dark-mode .uW2Fw-bHo .eV8l8d:hover {
-    background-color: #a0c4f9 !important;
+  background-color: #a0c4f9 !important;
 }
 
 /* More Images and My Photos buttons */
 body.dark-mode .uW2Fw-bHo .fQ1uhf,
 body.dark-mode .uW2Fw-bHo .PKBsLc button {
-    background-color: #141414 !important;
-    color: #e0e0e0 !important;
-    border: 1px solid #444 !important;
-    transition: background-color 0.2s ease;
+  background-color: #141414 !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #444 !important;
+  transition: background-color 0.2s ease;
 }
 
 body.dark-mode .uW2Fw-bHo .fQ1uhf:hover,
 body.dark-mode .uW2Fw-bHo .PKBsLc button:hover {
-    background-color: #3a3a3a !important;
-    color: white !important;
+  background-color: #3a3a3a !important;
+  color: white !important;
 }
 
 /* Aggressive Dark Mode Theme Selection Dialog Styling */
 body.dark-mode .uW2Fw-bHo .a7G {
-    opacity: 1 !important;
-    filter: brightness(1) !important;
-    mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  filter: brightness(1) !important;
+  mix-blend-mode: normal !important;
 }
 
 body.dark-mode .uW2Fw-bHo .a7H {
-    background-color: transparent !important;
-    border: none !important;
+  background-color: transparent !important;
+  border: none !important;
 }
 
 body.dark-mode .uW2Fw-bHo .a7N {
-    background-color: rgba(0,0,0,0.5) !important;
+  background-color: rgb(0 0 0 / 50%) !important;
 }
 
 /* Buttons with high contrast */
 body.dark-mode .uW2Fw-bHo .mUIrbf-I {
-    background-color: #3a3a3a !important;
-    color: #ffffff !important;
-    border: 1px solid #666 !important;
+  background-color: #3a3a3a !important;
+  color: #fff !important;
+  border: 1px solid #666 !important;
 }
 
 body.dark-mode .uW2Fw-bHo .eV8l8d {
-    background-color: #4285f4 !important;
-    color: white !important;
-    border: 1px solid #4285f4 !important;
+  background-color: #4285f4 !important;
+  color: white !important;
+  border: 1px solid #4285f4 !important;
 }
 
 body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover,
 body.dark-mode .uW2Fw-bHo .eV8l8d:hover {
-    opacity: 0.9 !important;
+  opacity: 0.9 !important;
 }
 
 /* Ensure text visibility */
 body.dark-mode .uW2Fw-bHo .a9J,
 body.dark-mode .uW2Fw-bHo .mUIrbf-anl {
-    color: #ffffff !important;
+  color: #fff !important;
 }
 
 /* Extremely Aggressive Dark Mode Theme Selection Dialog Styling */
 body.dark-mode .uW2Fw-bHo .a7G,
 body.dark-mode .uW2Fw-bHo img.a7G,
 body.dark-mode .uW2Fw-bHo .a7H img.a7G {
-    opacity: 1 !important;
-    filter: brightness(1) contrast(1) saturate(1) !important;
-    mix-blend-mode: normal !important;
-    max-width: 100% !important;
-    max-height: 300px !important;
-    object-fit: cover !important;
+  opacity: 1 !important;
+  filter: brightness(1) contrast(1) saturate(1) !important;
+  mix-blend-mode: normal !important;
+  max-width: 100% !important;
+  max-height: 300px !important;
+  object-fit: cover !important;
 }
 
 body.dark-mode .uW2Fw-bHo .a7H,
 body.dark-mode .uW2Fw-bHo .a7Y {
-    background-color: transparent !important;
-    border: 1px solid rgba(255,255,255,0.1) !important;
-    transition: all 0.3s ease !important;
+  background-color: transparent !important;
+  border: 1px solid rgb(255 255 255 / 10%) !important;
+  transition: all 0.3s ease !important;
 }
 
 body.dark-mode .uW2Fw-bHo .a7H:hover,
 body.dark-mode .uW2Fw-bHo .a7Y:hover {
-    transform: scale(1.05) !important;
-    box-shadow: 0 0 10px rgba(255,255,255,0.2) !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 0 10px rgb(255 255 255 / 20%) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .a7N {
-    background-color: rgba(0,0,0,0.5) !important;
-    color: #ffffff !important;
+  background-color: rgb(0 0 0 / 50%) !important;
+  color: #fff !important;
 }
 
 body.dark-mode .uW2Fw-bHo .a9J {
-    color: #ffffff !important;
+  color: #fff !important;
 }
 
 /* Button Styling with Maximum Contrast */
 body.dark-mode .uW2Fw-bHo .mUIrbf-I,
 body.dark-mode .uW2Fw-bHo .PKBsLc button {
-    background-color: #3a3a3a !important;
-    color: #ffffff !important;
-    border: 1px solid #666 !important;
-    transition: all 0.2s ease !important;
+  background-color: #3a3a3a !important;
+  color: #fff !important;
+  border: 1px solid #666 !important;
+  transition: all 0.2s ease !important;
 }
 
 body.dark-mode .uW2Fw-bHo .eV8l8d {
-    background-color: #4285f4 !important;
-    color: white !important;
-    border: 1px solid #4285f4 !important;
-    font-weight: bold !important;
+  background-color: #4285f4 !important;
+  color: white !important;
+  border: 1px solid #4285f4 !important;
+  font-weight: bold !important;
 }
 
 body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover,
 body.dark-mode .uW2Fw-bHo .eV8l8d:hover {
-    opacity: 0.9 !important;
+  opacity: 0.9 !important;
 }
 
 /* Ensure text visibility */
 body.dark-mode .uW2Fw-bHo .mUIrbf-anl,
 body.dark-mode .uW2Fw-bHo .a7C {
-    color: #ffffff !important;
+  color: #fff !important;
 }
 
 /* More Images section */
 body.dark-mode .uW2Fw-bHo .fQ1uhf {
-    background-color: #141414 !important;
-    color: #ffffff !important;
-    border: 1px solid #444 !important;
+  background-color: #141414 !important;
+  color: #fff !important;
+  border: 1px solid #444 !important;
 }
 
 /* Dark Mode Theme Selection Dialog Fix */
 body.dark-mode .uW2Fw-bHo {
-    background-color: #252526 !important;
-    color: #ffffff !important;
+  background-color: #252526 !important;
+  color: #fff !important;
 }
 
 body.dark-mode .uW2Fw-bHo .a7G {
-    opacity: 1 !important;
-    filter: brightness(0.9) !important;
-    transition: filter 0.2s ease !important;
+  opacity: 1 !important;
+  filter: brightness(0.9) !important;
+  transition: filter 0.2s ease !important;
 }
 
 body.dark-mode .uW2Fw-bHo .a7G:hover {
-    filter: brightness(1) !important;
+  filter: brightness(1) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .a7H,
 body.dark-mode .uW2Fw-bHo .a7Y {
-    background-color: transparent !important;
-    border: 1px solid rgba(255,255,255,0.1) !important;
+  background-color: transparent !important;
+  border: 1px solid rgb(255 255 255 / 10%) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .a7N {
-    background-color: rgba(0,0,0,0.5) !important;
+  background-color: rgb(0 0 0 / 50%) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .a9J {
-    color: #ffffff !important;
+  color: #fff !important;
 }
 
 body.dark-mode .uW2Fw-bHo .mUIrbf-I {
-    background-color: #3a3a3a !important;
-    color: #ffffff !important;
-    border: 1px solid #555 !important;
+  background-color: #3a3a3a !important;
+  color: #fff !important;
+  border: 1px solid #555 !important;
 }
 
 body.dark-mode .uW2Fw-bHo .eV8l8d {
-    background-color: #4285f4 !important;
-    color: white !important;
-    border: 1px solid #4285f4 !important;
+  background-color: #4285f4 !important;
+  color: white !important;
+  border: 1px solid #4285f4 !important;
 }
 
 body.dark-mode .uW2Fw-bHo .fQ1uhf {
-    background-color: #141414 !important;
-    color: #ffffff !important;
-    border: 1px solid #444 !important;
+  background-color: #141414 !important;
+  color: #fff !important;
+  border: 1px solid #444 !important;
 }
 
 body.dark-mode .uW2Fw-bHo .cER4xe {
-    color: #ffffff !important;
+  color: #fff !important;
 }
 
 /* Dark Mode Theme Dialog Overlay Fix */
 body.dark-mode .uW2Fw-bHo .a7U,
 body.dark-mode .uW2Fw-bHo .a7R {
-    display: none !important; /* remove dark overlays over thumbnails */
+  display: none !important; /* remove dark overlays over thumbnails */
 }
 
 /* Ensure button labels are bright */
 body.dark-mode .uW2Fw-bHo .mUIrbf-anl {
-    color: #ffffff !important;
+  color: #fff !important;
 }
 
 /* Dark mode: highlight UNREAD email rows */
-
 
 /* =============================
    Dark mode: compose window icon visibility
@@ -4908,8 +5131,8 @@ body.dark-mode .Hl,
 body.dark-mode .Hk,
 body.dark-mode .Hq,
 body.dark-mode .Ha,
-body.dark-mode .e5 .J-Z-I div[class*="aaA"],
-body.dark-mode .e5 .J-Z-I div[class*="aaB"] {
+body.dark-mode .e5 .J-Z-I div[class*='aaA'],
+body.dark-mode .e5 .J-Z-I div[class*='aaB'] {
   filter: brightness(0) invert(1); /* glyphs white, keep transparency */
 }
 
@@ -4929,10 +5152,10 @@ body.dark-mode .aaA,
 body.dark-mode .aaB,
 body.dark-mode .J-J5-Ji .aaA,
 body.dark-mode .J-J5-Ji .aaB,
-body.dark-mode .e5 .J-Z-I div[class*="aaA"],
-body.dark-mode .e5 .J-Z-I div[class*="aaB"] {
-  filter: none !important;               /* stop inverting whole square */
-  background-color: transparent !important;/* and keep transparent */
+body.dark-mode .e5 .J-Z-I div[class*='aaA'],
+body.dark-mode .e5 .J-Z-I div[class*='aaB'] {
+  filter: none !important; /* stop inverting whole square */
+  background-color: transparent !important; /* and keep transparent */
 }
 
 /* Apply inversion only on glyph holder */
@@ -4940,20 +5163,14 @@ body.dark-mode .a3I {
   filter: invert(1) !important;
 }
 
-
-
 /* =============================================================================
    FORCE DARK MODE OVERRIDES - HIGH PRIORITY
    ============================================================================= */
 
-
-
-
-
 /* Force right sidebar to be #141414 */
 body.dark-mode .no,
 body.dark-mode .nH.bkK.nn + .nH.nn,
-body.dark-mode [aria-label="Hangouts"][role="complementary"] {
+body.dark-mode [aria-label='Hangouts'][role='complementary'] {
   background-color: #141414 !important;
   background: #141414 !important;
 }
@@ -4986,7 +5203,7 @@ body.dark-mode .yJ {
 }
 
 /* Force Categories icon to work properly */
-body.dark-mode [data-tooltip="Categories"] .aEc.aHS-bnr .qj {
+body.dark-mode [data-tooltip='Categories'] .aEc.aHS-bnr .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -5001,7 +5218,7 @@ body.dark-mode [data-tooltip="Categories"] .aEc.aHS-bnr .qj {
 
 /* Firefox-specific Categories override */
 @-moz-document url-prefix() {
-  body.dark-mode [data-tooltip="Categories"] .aEc.aHS-bnr .qj {
+  body.dark-mode [data-tooltip='Categories'] .aEc.aHS-bnr .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
@@ -5028,51 +5245,51 @@ body.dark-mode .nH.fY {
 }
 
 /* Make all search form inputs light (Google's default) */
-body.dark-mode .nH.fY input[type="text"],
-body.dark-mode .nH.fY input[type="email"],
-body.dark-mode .nH.fY input[type="search"],
+body.dark-mode .nH.fY input[type='text'],
+body.dark-mode .nH.fY input[type='email'],
+body.dark-mode .nH.fY input[type='search'],
 body.dark-mode .nH.fY textarea,
 body.dark-mode .nH.fY select,
 body.dark-mode .nH.fY .ZH {
-  background-color: #ffffff !important;
-  color: #000000 !important;
+  background-color: #fff !important;
+  color: #000 !important;
 }
 
 /* Search box styling - transparent background for clean integration */
-body.dark-mode input[aria-label="Search mail"] {
+body.dark-mode input[aria-label='Search mail'] {
   background-color: transparent !important; /* Transparent background for clean look */
-  color: #ffffff !important; /* White text for contrast */
+  color: #fff !important; /* White text for contrast */
 }
 
 /* Make search form inputs light (From, To, Subject, etc.) */
 body.dark-mode .ZZ .ZH,
-body.dark-mode .ZZ input[type="text"],
-body.dark-mode .ZZ input[type="email"],
+body.dark-mode .ZZ input[type='text'],
+body.dark-mode .ZZ input[type='email'],
 body.dark-mode .ZZ input.ZH.nr,
-body.dark-mode .ZZ input[class*="ZH"],
+body.dark-mode .ZZ input[class*='ZH'],
 body.dark-mode .ZZ input.ZH.nr.aQa,
 body.dark-mode .ZZ input.ZH.nr.aQf,
 body.dark-mode .ZZ input.ZH.nr.aQd,
 body.dark-mode .ZZ input.ZH.nr.aQb,
 body.dark-mode .ZZ input.ZH.nr.aP9 {
-  background-color: #ffffff !important;
-  background: #ffffff !important;
-  color: #000000 !important;
+  background-color: #fff !important;
+  background: #fff !important;
+  color: #000 !important;
   border-color: #ccc !important;
 }
 
 /* Make search form dropdowns and additional inputs light (Size, Date within, Search scope) */
 body.dark-mode .ZZ select,
-body.dark-mode .ZZ input[type="number"],
-body.dark-mode .ZZ input[type="date"],
-body.dark-mode .ZZ input[type="datetime-local"],
-body.dark-mode .ZZ input.nr[aria-label="Size value"],
-body.dark-mode .ZZ input.nr[aria-label="Date"],
+body.dark-mode .ZZ input[type='number'],
+body.dark-mode .ZZ input[type='date'],
+body.dark-mode .ZZ input[type='datetime-local'],
+body.dark-mode .ZZ input.nr[aria-label='Size value'],
+body.dark-mode .ZZ input.nr[aria-label='Date'],
 body.dark-mode .ZZ input.nr,
-body.dark-mode .ZZ input[class*="nr"] {
-  background-color: #ffffff !important;
-  background: #ffffff !important;
-  color: #000000 !important;
+body.dark-mode .ZZ input[class*='nr'] {
+  background-color: #fff !important;
+  background: #fff !important;
+  color: #000 !important;
   border-color: #ccc !important;
 }
 
@@ -5082,17 +5299,20 @@ body.dark-mode .ZZ input[class*="nr"] {
 
 /* Reminder avatar background - same as light mode */
 body.dark-mode .reminder .avatar {
-  background: url('chrome-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png') center/75% no-repeat !important;
+  background: url('chrome-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png')
+    center/75% no-repeat !important;
 }
 
 /* Firefox-specific reminder avatar override - same as light mode */
 @-moz-document url-prefix() {
   body.dark-mode .reminder .avatar {
-    background: url('moz-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png') center/75% no-repeat !important;
+    background: url('moz-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png')
+      center/75% no-repeat !important;
   }
 }
 
 /* Complete avatar visibility control - identical to light mode */
+
 /* Hides the checkbox when not checked - same as light mode */
 body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo {
   display: none;
@@ -5118,13 +5338,10 @@ body.dark-mode .show-avatar-enabled .zA.aqw .oZ-x3.xY .avatar {
 }
 
 /* Alternative: Target by aria-checked attribute for checked emails - same as light mode */
-body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked="true"] {
+body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked='true'] {
   display: inline !important;
 }
 
-body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked="true"] + .avatar {
+body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked='true'] + .avatar {
   display: none !important;
 }
-
-
-
