@@ -1,0 +1,8 @@
+node_modules/
+dist/
+build/
+docs/
+images/
+icons/
+screenshots/
+package-lock.json

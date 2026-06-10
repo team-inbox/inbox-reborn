@@ -17,30 +17,30 @@ const FILES_TO_INCLUDE = [
   'src',
   '.gitignore',
   'LICENSE',
-  'README.md'
+  'README.md',
 ];
 
 const BUILD_DIR = 'build';
 
-function getDesktopDir() {
-  // Cross-platform way to get desktop path
-  return path.join(os.homedir(), 'Desktop');
+function getOutputDir() {
+  // Defaults to the Desktop; override with BUILD_OUTPUT_DIR (used by CI)
+  return process.env.BUILD_OUTPUT_DIR || path.join(os.homedir(), 'Desktop');
 }
 
-function ensureDesktopDir() {
-  const desktopDir = getDesktopDir();
-  if (!fs.existsSync(desktopDir)) {
-    fs.ensureDirSync(desktopDir);
-    console.log(`Created Desktop directory at: ${desktopDir}`);
+function ensureOutputDir() {
+  const outputDir = getOutputDir();
+  if (!fs.existsSync(outputDir)) {
+    fs.ensureDirSync(outputDir);
+    console.log(`Created output directory at: ${outputDir}`);
   }
 }
 
 async function build(target) {
-  ensureDesktopDir();
+  ensureOutputDir();
 
   const manifestSrc = target === 'chrome' ? 'chrome.json' : 'firefox.json';
   const manifestDest = path.join(BUILD_DIR, 'manifest.json');
-  const zipName = path.join(getDesktopDir(), `inbox-reborn-${target}.zip`);
+  const zipName = path.join(getOutputDir(), `inbox-reborn-${target}.zip`);
 
   // Clean build dir
   await fs.remove(BUILD_DIR);
@@ -61,12 +61,14 @@ async function build(target) {
   const archive = archiver('zip', { zlib: { level: 9 } });
 
   output.on('close', () => {
-    console.log(`${zipName} created on Desktop (${archive.pointer()} total bytes)`);
+    console.log(`${zipName} created (${archive.pointer()} total bytes)`);
     // Optionally: clean up build folder
     fs.removeSync(BUILD_DIR);
   });
 
-  archive.on('error', err => { throw err; });
+  archive.on('error', (err) => {
+    throw err;
+  });
 
   archive.pipe(output);
   archive.directory(BUILD_DIR + '/', false);
@@ -74,11 +76,11 @@ async function build(target) {
 }
 
 async function buildUnpacked(target) {
-  ensureDesktopDir();
+  ensureOutputDir();
 
   const manifestSrc = target === 'chrome' ? 'chrome.json' : 'firefox.json';
-  const desktop = getDesktopDir();
-  const unpackedDir = path.join(desktop, `inbox-reborn-${target}`);
+  const outputDir = getOutputDir();
+  const unpackedDir = path.join(outputDir, `inbox-reborn-${target}`);
 
   // Clean and create the unpacked dir
   await fs.remove(unpackedDir);
