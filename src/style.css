@@ -3337,6 +3337,35 @@ body.dark-mode .G-atb .T-I[data-tooltip^='Back'] div.T-I-J3 {
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_arrow_back_24dp.svg') !important;
 }
 
+/* Back and Move-to buttons carry their glyph in varying markup, so mask the
+   whole button by its label and blank out whatever Gmail renders inside */
+body.dark-mode .G-atb [aria-label^='Back'],
+body.dark-mode .G-atb [data-tooltip^='Back'] {
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_arrow_back_24dp.svg')
+    center / 20px no-repeat !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_arrow_back_24dp.svg') center /
+    20px no-repeat !important;
+  background-color: #e8eaed !important;
+  background-image: none !important;
+}
+
+body.dark-mode .G-atb [aria-label='Move to'],
+body.dark-mode .G-atb [data-tooltip='Move to'] {
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_drive_file_move_24dp.svg')
+    center / 20px no-repeat !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_drive_file_move_24dp.svg')
+    center / 20px no-repeat !important;
+  background-color: #e8eaed !important;
+  background-image: none !important;
+}
+
+body.dark-mode .G-atb [aria-label^='Back'] *,
+body.dark-mode .G-atb [data-tooltip^='Back'] *,
+body.dark-mode .G-atb [aria-label='Move to'] *,
+body.dark-mode .G-atb [data-tooltip='Move to'] * {
+  opacity: 0 !important;
+}
+
 body.dark-mode .G-atb .asa > .asl {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_report_24dp.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_report_24dp.svg') !important;
@@ -3390,7 +3419,8 @@ body.dark-mode .G-atb .T-I .asa svg.T-I-J3 path {
 
 /* Message header: unstarred star and attachment paperclip are light-theme
    dark sprites - invert them to match (a starred star keeps its yellow) */
-body.dark-mode .nH.a98.iY.aHo .T-KT[aria-label='Not starred'] {
+body.dark-mode .nH.a98.iY.aHo [aria-label='Not starred'],
+body.dark-mode .nH.a98.iY.aHo [data-tooltip='Not starred'] {
   filter: invert(0.78) !important;
 }
 
