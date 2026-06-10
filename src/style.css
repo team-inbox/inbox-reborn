@@ -3364,6 +3364,16 @@ body.dark-mode .D.E.G-atb [data-tooltip='Move to'] {
   opacity: 1 !important;
 }
 
+/* After a refresh Gmail parks this toolbar region dimmed by lowering an
+   ancestor's opacity until first interaction; with a constant mask fill the
+   icons just look faded, so force the ancestor chain opaque */
+body.dark-mode .D.E.G-atb div:has([aria-label^='Back']),
+body.dark-mode .D.E.G-atb div:has([data-tooltip^='Back']),
+body.dark-mode .D.E.G-atb div:has([aria-label='Move to']),
+body.dark-mode .D.E.G-atb div:has([data-tooltip='Move to']) {
+  opacity: 1 !important;
+}
+
 body.dark-mode .G-atb [aria-label^='Back'] *,
 body.dark-mode .G-atb [data-tooltip^='Back'] *,
 body.dark-mode .G-atb [aria-label='Move to'] *,
