@@ -3350,6 +3350,7 @@ body.dark-mode .D.E.G-atb [data-tooltip^='Back'] {
     20px no-repeat !important;
   background-color: #e8eaed !important;
   background-image: none !important;
+  opacity: 1 !important;
 }
 
 body.dark-mode .D.E.G-atb [aria-label='Move to'],
@@ -3360,6 +3361,7 @@ body.dark-mode .D.E.G-atb [data-tooltip='Move to'] {
     center / 20px no-repeat !important;
   background-color: #e8eaed !important;
   background-image: none !important;
+  opacity: 1 !important;
 }
 
 body.dark-mode .G-atb [aria-label^='Back'] *,
