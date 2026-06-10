@@ -3408,7 +3408,12 @@ body.dark-mode .nH.a98.iY.aHo .T-KT:not(.T-KT-Jp) {
 }
 
 body.dark-mode .nH.a98.iY.aHo .T-KT:not(.T-KT-Jp) img {
-  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+body.dark-mode .nH.a98.iY.aHo .T-KT:not(.T-KT-Jp)::before,
+body.dark-mode .nH.a98.iY.aHo .T-KT:not(.T-KT-Jp)::after {
+  content: none !important;
 }
 
 body.dark-mode .nH.a98.iY.aHo img[src*='cleardot']:not(.T-KT-JX) {
