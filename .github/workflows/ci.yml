@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Prettier (formatting)
+        run: npm run format:check
+      - name: ESLint (JavaScript)
+        run: npm run lint:js
+      - name: stylelint (CSS)
+        run: npm run lint:css
+      - name: Validate manifests
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('chrome.json', 'utf8'))"
+          node -e "JSON.parse(require('fs').readFileSync('firefox.json', 'utf8'))"
+      - name: Check manifest versions match
+        run: |
+          node -e "
+            const fs = require('fs');
+            const chrome = JSON.parse(fs.readFileSync('chrome.json', 'utf8'));
+            const firefox = JSON.parse(fs.readFileSync('firefox.json', 'utf8'));
+            if (chrome.version !== firefox.version) {
+              console.error('Version mismatch: chrome.json=' + chrome.version + ' firefox.json=' + firefox.version);
+              process.exit(1);
+            }
+            console.log('Manifest versions match: ' + chrome.version);
+          "
+
+  build:
+    name: Build extension
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build Chrome zip
+        run: BUILD_OUTPUT_DIR=dist node build.js chrome zip
+      - name: Build Firefox zip
+        run: BUILD_OUTPUT_DIR=dist node build.js firefox zip
+      - name: Upload extension zips
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-zips
+          path: dist/*.zip
+          if-no-files-found: error

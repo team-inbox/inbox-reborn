@@ -1,5 +1,6 @@
 # Inbox Reborn theme for Gmail™
-#### *Formerly known as Inbox in Gmail*
+
+#### _Formerly known as Inbox in Gmail_
 
 Web extension which modifies Gmail™ to bring back the features and uncluttered design you knew and loved from Google's discontinued Inbox
 
@@ -10,7 +11,6 @@ Web extension which modifies Gmail™ to bring back the features and uncluttered
 ### Chrome & Microsoft Edge Install
 
 https://chrome.google.com/webstore/detail/inbox-reborn-theme-for-gm/bkphmihkdbdgedlaflnkhnmnmibffomf
-
 
 ### Firefox Install
 
@@ -25,7 +25,6 @@ https://addons.mozilla.org/en-GB/firefox/addon/inbox-reborn-theme-gmail/
 - Colored avatars based on the sender's name
 - Calendar events displayed on a small card, with inline responses
 
-
 ## Extension Options
 
 <img src="https://github.com/team-inbox/inbox-reborn/blob/master/screenshots/options.png?raw=true" alt="options popup screenshot" width="400">
@@ -33,19 +32,22 @@ https://addons.mozilla.org/en-GB/firefox/addon/inbox-reborn-theme-gmail/
 Click the extension's icon at the top right of your browser to adjust the behavior of some features:
 
 #### Dark Mode
+
 This option is used to enable dark mode on and off
 
 - Toggle Dark Mode On and then goto Settings/Theme -> Dark
-- Toggle Dark Mode Off and then goto Settings/Theme -> Default 
+- Toggle Dark Mode Off and then goto Settings/Theme -> Default
 
 #### Reminders
+
 This option is used to determine how to treat emails sent to yourself.
 
-- All messages in Inbox are treated as reminders. 
-- Subject (reminder) only are treated as reminders. 
+- All messages in Inbox are treated as reminders.
+- Subject (reminder) only are treated as reminders.
 - None (no reminders) is set to disabled.
 
 #### Email Bundling
+
 This option is used to bundle emails by label in the inbox.
 
 - Toggle On/Off
@@ -53,12 +55,16 @@ This option is used to bundle emails by label in the inbox.
 - Move Bundles to the top of your Inbox
 
 #### Avatars
+
 This option will show a circle with the first letter initial of the sender, to the left of the email in your folder.
-- Toggle  On/Off
+
+- Toggle On/Off
 
 #### Hide Priority Inbox Headings
+
 This option provides a cleEnable/Disableaner inbox UI if the "Priority Inbox" type is enabled via the settings
-- Toggle  On/Off
+
+- Toggle On/Off
 
 ## Recommended Gmail™ Settings
 
@@ -72,17 +78,17 @@ Using these settings will more closely replicate the visual style of Inbox:
 - Settings/General/Personal level indicators -> No indicators
 - Settings/Inbox/Importance markers -> No markers
 
-
 ## Email Bundling Tips
 
 Disable inbox category tabs:
+
 - Settings Dropdown/Configure Inbox -> Leave only Primary ticked -> Save
 
 Allow default category labels (Promotions, Social, Updates, Forums) to be bundled:
+
 - Settings/Labels/Categories/Show in message List -> Click Show for each category
 
 If you'd like a specific label not to be bundled, create a label called 'Unbundled', and nest that label within it.
-
 
 ## Known Issues
 
