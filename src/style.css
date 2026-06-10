@@ -3396,11 +3396,19 @@ body.dark-mode .G-atb .T-I .asa svg.T-I-J3 path {
   fill: #e8eaed !important;
 }
 
-/* Message header: unstarred star and attachment paperclip are light-theme
-   dark sprites - invert them to match (a starred star keeps its yellow) */
-body.dark-mode .nH.a98.iY.aHo [aria-label='Not starred'],
-body.dark-mode .nH.a98.iY.aHo [data-tooltip='Not starred'] {
-  filter: invert(0.78) !important;
+/* Message header star (unstarred) - replace the dark sprite with a Material
+   star mask; the starred state is left alone so it keeps Gmail's yellow */
+body.dark-mode .nH.a98.iY.aHo .T-KT:not(.T-KT-Jp) {
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_star_24dp.svg')
+    center / 20px no-repeat !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_star_24dp.svg') center / 20px
+    no-repeat !important;
+  background-color: #e8eaed !important;
+  background-image: none !important;
+}
+
+body.dark-mode .nH.a98.iY.aHo .T-KT:not(.T-KT-Jp) img {
+  opacity: 0 !important;
 }
 
 body.dark-mode .nH.a98.iY.aHo img[src*='cleardot']:not(.T-KT-JX) {
