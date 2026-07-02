@@ -5,6 +5,24 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## Unreleased
 
+### Gmail mid-2026 DOM churn fixes (`fix/gmail-2026-wiz-churn`)
+
+- Restored all sidebar icons after Gmail replaced its icon divs with inline
+  SVGs: a normalizer re-tags the new markup so every existing icon rule keeps
+  painting (structure-based, resilient to Gmail's hashed class renames)
+- New spark icon for Gmail's AI Inbox row; restored the Purchases sidebar
+  icon on Chrome (its rule was accidentally Firefox-only)
+- Dark mode now also covers Gmail's rebuilt reply pills, message 3-dot
+  button, action menus, and side panel (new markup styled alongside the old)
+- Floating compose/reminder buttons re-anchored to the side panel's stable
+  landmark markup, with width-based open/close detection
+- Header retitling, compose To-field autofill, and the label-color observer
+  re-anchored with stable-selector fallback chains
+- Selector health check: the extension now verifies its Gmail hooks after
+  load and names any broken ones in the console; a standalone DevTools
+  checklist lives in `docs/selector-health-check.js`, and a full selector
+  risk audit in `docs/gmail-selector-audit-2026-07.md`
+
 ### Standalone dark mode & options polish (`feat/dark-mode-and-options-polish`)
 
 - Dark mode no longer depends on Gmail's own dark theme — the extension now themes

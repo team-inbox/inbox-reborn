@@ -886,6 +886,18 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
   content: none !important;
 }
 
+/* Gmail mid-2026: nav rows no longer have an empty .qj div - icons are now
+   inline SVGs inside build-hashed wrappers. normalizeSidebarIcons() in
+   script.js tags the first wrapper with .qj so every icon rule below keeps
+   painting; the native SVG art and duplicate icon variants are hidden here */
+.qj > svg {
+  display: none !important;
+}
+
+.inbox-reborn-hidden {
+  display: none !important;
+}
+
 /* Inbox */
 .aHS-bnt .qj {
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/inbox_googblue_24dp.png') !important;
@@ -1075,6 +1087,32 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
   -webkit-mask-size: 24px !important;
   mask-size: 24px !important;
   background-color: #4c4f4d !important;
+}
+
+/* AI Inbox (Gmail 2026 Gemini row - a bare .TN carrying the tooltip, no .TO
+   wrapper). Spark glyph in Google blue to match the colored top group */
+[data-tooltip='AI Inbox'] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_ai_inbox_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_ai_inbox_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-color: #4285f4 !important;
+  background-image: none !important;
+}
+
+body.dark-mode [data-tooltip='AI Inbox'] .qj {
+  background-color: #8ab4f8 !important;
+}
+
+@-moz-document url-prefix() {
+  [data-tooltip='AI Inbox'] .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_ai_inbox_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_ai_inbox_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  }
 }
 
 /* Category buttons */
@@ -1484,8 +1522,10 @@ input.gb_3e {
 /* left sidebar */
 .nH.oy8Mbf.nn.aeN,
 
-/* right sidebar */
+/* right sidebar (2026-06: Gmail is re-structuring the rail; role anchor is the
+   stable hook, .brC-aT5-aOt-Jw kept as fallback for the old markup) */
 .brC-aT5-aOt-Jw,
+div[role='complementary'][aria-label='Side panel'],
 
 /* Hangout bar */
 .aj5 .J-KU, .aj5.J-KU-Jg,
@@ -2908,6 +2948,7 @@ body.dark-mode .vIO7af,
 body.dark-mode .no,
 body.dark-mode .Tm.aeJ,
 body.dark-mode .brC-aT5-aOt-Jw,
+body.dark-mode div[role='complementary'][aria-label='Side panel'],
 body.dark-mode .aj5 .J-KU,
 body.dark-mode .aj5.J-KU-Jg,
 body.dark-mode .aKh,
@@ -2959,7 +3000,9 @@ body.dark-mode .nH.Hd[role='dialog'] video {
    excluded - the whole dialog is inverted, so light menus come out dark. */
 body.dark-mode [role='menu']:not(.nH.Hd [role='menu']),
 body.dark-mode [role='listbox']:not(.nH.Hd [role='listbox']),
-body.dark-mode .J-M:not(.nH.Hd .J-M) {
+body.dark-mode .J-M:not(.nH.Hd .J-M),
+/* 2026-06: Wiz-rebuilt actions dropdown container (replaces .b7.J-M) */
+body.dark-mode .tB5Jxf-M-S5Cmsd:not(.nH.Hd .tB5Jxf-M-S5Cmsd) {
   background-color: var(--dm-surface-raised) !important;
   border-color: var(--dm-border-muted) !important;
   color: var(--dm-text-secondary) !important;
@@ -3468,14 +3511,21 @@ body.dark-mode .nH.a98.iY.aHo .T-KT:not(.T-KT-Jp)::after {
 }
 
 /* Bottom Reply / Reply all / Forward pills - solid fills so the buttons and
-   their sprite icons stay legible while scrolling over message content */
-body.dark-mode .amn {
+   their sprite icons stay legible while scrolling over message content.
+   2026-06: Gmail is rolling out a Wiz-rebuilt pill bar (.btDi4d with .DILLkc /
+   .jWOS7-JX-I buttons, replacing .amn/.ams/.aaq) - both generations styled */
+body.dark-mode .amn,
+body.dark-mode .btDi4d {
   background-color: var(--dm-surface) !important;
 }
 
 body.dark-mode .amn .ams,
 body.dark-mode .nH.a98.iY.aHo .amn .ams,
-body.dark-mode .nH.a98.iY.aHo .amn .ams * {
+body.dark-mode .nH.a98.iY.aHo .amn .ams *,
+body.dark-mode .btDi4d .DILLkc,
+body.dark-mode .btDi4d .DILLkc *,
+body.dark-mode .btDi4d .jWOS7-JX-I,
+body.dark-mode .btDi4d .jWOS7-JX-I * {
   background-color: #e8eaed !important;
   color: #202124 !important;
   border-color: var(--dm-border-muted) !important;
@@ -3571,6 +3621,7 @@ body.dark-mode .vIO7af,
 body.dark-mode .no,
 body.dark-mode .Tm.aeJ,
 body.dark-mode .brC-aT5-aOt-Jw,
+body.dark-mode div[role='complementary'][aria-label='Side panel'],
 body.dark-mode .aj5 .J-KU,
 body.dark-mode .aj5.J-KU-Jg,
 body.dark-mode .aKh,
@@ -3853,12 +3904,17 @@ body.dark-mode .nH.a98.iY.aHo .og {
   box-shadow: none !important;
 }
 
-/* Remove borders from table cells and specific button classes */
+/* Remove borders from table cells and specific button classes
+   (2026-06: .Wsq5Cf is the Wiz replacement for the .aap 3-dot button,
+   .DILLkc/.jWOS7-JX-I the replacements for the .aaq/.ams reply pills) */
 body.dark-mode .nH.a98.iY.aHo .gH.acX.bAm,
 body.dark-mode .nH.a98.iY.aHo .T-I-Js-IF,
 body.dark-mode .nH.a98.iY.aHo .T-I-Js-Gs,
 body.dark-mode .nH.a98.iY.aHo .aaq,
-body.dark-mode .nH.a98.iY.aHo .aap {
+body.dark-mode .nH.a98.iY.aHo .aap,
+body.dark-mode .nH.a98.iY.aHo .Wsq5Cf,
+body.dark-mode .btDi4d .DILLkc,
+body.dark-mode .btDi4d .jWOS7-JX-I {
   border: none !important;
   border-width: 0 !important;
   border-style: none !important;
@@ -5660,6 +5716,23 @@ body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked='true'] + .
   -webkit-mask-position: center !important;
   mask-position: center !important;
   background-color: #444746 !important;
+  background-image: none !important;
+}
+
+/* Light-mode mask for Purchases - this rule existed only in the Firefox
+   block below; the Chrome twin was missing, so Chrome always showed Gmail's
+   native icon */
+[data-tooltip='Purchases'] .qj,
+[data-tooltip='Purchased'] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-color: #4c4f4d !important;
   background-image: none !important;
 }
 

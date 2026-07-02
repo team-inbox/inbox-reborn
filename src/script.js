@@ -177,7 +177,11 @@ const select = {
   menuRefer: () => document.querySelector('.wT .byl>.TK'),
 
   // Header elements
-  titleNode: () => document.querySelectorAll('a[aria-label="Gmail"]')[1],
+  // The header logo link, not the skip-link twin. Anchor on the banner
+  // landmark first; the positional [1] index only as a legacy fallback.
+  titleNode: () =>
+    document.querySelector('header[role="banner"] a[aria-label="Gmail"]') ||
+    document.querySelectorAll('a[aria-label="Gmail"]')[1],
   headerElement: () => document.querySelector('.w-asV.bbg.aiw'),
 
   // Compose elements
@@ -334,7 +338,26 @@ const waitForElement = (selector, callback, tries = 100) => {
     callback(element);
   } else if (tries > 0) {
     setTimeout(() => waitForElement(selector, callback, tries - 1), 100);
+  } else {
+    console.warn(
+      `[Inbox Reborn] Gave up waiting for "${selector}" - Gmail may have changed this element. The feature depending on it is disabled.`,
+    );
   }
+};
+
+/**
+ * Returns the first element matched by a list of selectors, tried in order.
+ * Use for Gmail hooks with fallback chains: preferred/stable selector first,
+ * older build-specific selectors after.
+ * @param {...string} selectors - CSS selectors in priority order
+ * @returns {Element|null} First match, or null if none match
+ */
+const queryFirst = (...selectors) => {
+  for (const sel of selectors) {
+    const el = document.querySelector(sel);
+    if (el) return el;
+  }
+  return null;
 };
 
 /**
@@ -467,7 +490,7 @@ const checkEmailUnbundledLabel = (labels) =>
  * @param {Element} emailEl - The email DOM element
  * @returns {boolean} True if the email is read
  */
-const getReadStatus = (emailEl) => emailEl.className.indexOf('zE') < 0;
+const getReadStatus = (emailEl) => !emailEl.classList.contains('zE');
 
 // =============================================================================
 // DATE HANDLING FUNCTIONS
@@ -1401,12 +1424,63 @@ const setupMenuNodes = () => {
   });
 };
 
+/* Gmail (mid-2026) removed the empty .qj div the stylesheet paints sidebar
+   icons into; nav rows now carry inline SVG icons inside build-hashed
+   wrappers. Only rows the stylesheet actually replaces are listed here, so
+   any unknown row keeps Gmail's native icon instead of going blank. */
+const SIDEBAR_ICON_ROWS = [
+  // system rows by aHS marker (these classes survived the change)
+  '.TN.aHS-bnt', // Inbox
+  '.TN.aHS-bnw', // Starred
+  '.TN.aHS-bns', // Important
+  '.TN.aHS-aHP', // Chats
+  '.TN.aHS-bu1', // Snoozed
+  '.TN.aHS-nd', // Scheduled
+  '.TN.aHS-bnr', // user labels
+  '.TN.aHS-bnu', // Sent
+  '.TN.aHS-bnq', // Drafts
+  '.TN.aHS-aHO', // All Mail
+  '.TN.aHS-bnx', // Trash
+  '.TN.aHS-bnv', // Spam
+  // category rows by tooltip (their aHS marker is build-hashed)
+  '.TO[data-tooltip="Social"] .TN',
+  '.TO[data-tooltip="Updates"] .TN',
+  '.TO[data-tooltip="Forums"] .TN',
+  '.TO[data-tooltip="Promotions"] .TN',
+  '.TO[data-tooltip="Categories"] .TN',
+  '.TO[data-tooltip="Purchases"] .TN',
+  '.TO[data-tooltip="Purchased"] .TN',
+  // AI Inbox (2026 Gemini row): a bare .TN carrying the tooltip itself
+  '.TN[data-tooltip="AI Inbox"]',
+].join(', ');
+
+/**
+ * Restores the .qj icon contract on Gmail's new sidebar markup: tags the
+ * first SVG icon wrapper in each covered row with .qj (so the existing
+ * .qj icon rules keep painting) and hides duplicate icon variants. No-op
+ * on the old markup, where rows already contain a .qj div.
+ */
+const normalizeSidebarIcons = () => {
+  document.querySelectorAll(SIDEBAR_ICON_ROWS).forEach((row) => {
+    if (row.querySelector('.qj')) return;
+    const iconWraps = [...row.children].filter(
+      (el) => el.firstElementChild && el.firstElementChild.tagName.toLowerCase() === 'svg',
+    );
+    if (!iconWraps.length) return;
+    iconWraps[0].classList.add('qj');
+    iconWraps.slice(1).forEach((el) => el.classList.add('inbox-reborn-hidden'));
+  });
+};
+
 /**
  * Inserts a "Done" menu item in the sidebar
  */
 const insertDoneMenuItem = () => {
   // Prevent duplicate Done menu item
   if (document.querySelector('.TO.inbox-reborn-done')) return;
+
+  // Normalize first so the cloned row carries a .qj for the icon swap below
+  normalizeSidebarIcons();
 
   const snoozedTO = document.querySelector('.aHS-bu1')?.closest('.TO');
   if (!snoozedTO) return;
@@ -1600,8 +1674,9 @@ const fixLabelColors = () => {
  * Sets up an observer to watch for label color changes
  */
 const watchLabelColorChanges = () => {
-  const LABEL_CONTAINER_SELECTOR = '.aAw.FgKVne ~ .yJ';
-  const labelBaseNode = document.querySelector(LABEL_CONTAINER_SELECTOR);
+  // .FgKVne is Wiz build-hashed; fall back to the label list anchored on the
+  // stable .aeN nav container if it rotates
+  const labelBaseNode = queryFirst('.aAw.FgKVne ~ .yJ', '.aeN .yJ');
 
   if (!labelBaseNode) return;
 
@@ -1643,17 +1718,21 @@ const addReminderButton = () => {
     const composeButton = select.composeButton();
     composeButton?.click();
 
-    // Wait for compose window to open
-    waitForElement('input[peoplekit-id="BbVjBd"]', (to) => {
-      const title = select.messageSubjectBox();
-      const body = select.messageBody();
-      const from = select.messageFrom();
+    // Wait for compose window to open. The peoplekit-id is build-hashed and
+    // rotates with Gmail releases - the aria/name hooks are the stable ones.
+    waitForElement(
+      'input[peoplekit-id="BbVjBd"], input[aria-label="To recipients"], textarea[name="to"]',
+      (to) => {
+        const title = select.messageSubjectBox();
+        const body = select.messageBody();
+        const from = select.messageFrom();
 
-      if (from) from.value = myEmail;
-      if (to) to.value = myEmail;
-      if (title) title.value = 'Reminder';
-      if (body) body.focus();
-    });
+        if (from) from.value = myEmail;
+        if (to) to.value = myEmail;
+        if (title) title.value = 'Reminder';
+        if (body) body.focus();
+      },
+    );
   });
 
   document.body.appendChild(addReminder);
@@ -1681,15 +1760,36 @@ const moveFloatersRight = () => {
   if (composeButton) composeButton.classList.remove('moved');
 };
 
+/* Gmail is actively restructuring the right side panel (mid-2026); every hook
+   here is a fallback chain: stable landmark/role anchors first, the pre-2026
+   build-hashed classes second. Open/closed state is derived from measured
+   width instead of the .br3 class, which only exists on the old markup. */
+const SIDE_PANEL_SELECTORS = [
+  'div[role="complementary"][aria-label="Side panel"]',
+  'div[aria-label="Side panel"]',
+];
+const ADDONS_FRAME_SELECTORS = ['.buW', 'div.aUx'];
+
+// The collapsed rail is ~56px; an open panel is ~300px+. The add-ons content
+// frame (.buW) is 0 when closed, so one threshold covers both anchors.
+const isSidePanelOpen = (el) => el.getBoundingClientRect().width > 100;
+
 /**
  * Handles side panel interactions
  */
 const sidePanelHandler = () => {
-  const sidePanel = document.querySelector('div[aria-label="Side panel"]');
+  const sidePanel = queryFirst(...SIDE_PANEL_SELECTORS);
   if (!sidePanel) return;
 
-  const sidePanelBtns = sidePanel.querySelectorAll('.bse-bvF-I.aT5-aOt-I:not(#qJTzr)'); // ignore the + btn
-  const addOnsFrame = document.querySelector('.buW');
+  // Calendar/Keep/Tasks buttons; exclude the "+" get-add-ons button. Old
+  // markup exposes them via build-hashed classes, new markup via roles.
+  let sidePanelBtns = sidePanel.querySelectorAll('.bse-bvF-I.aT5-aOt-I:not(#qJTzr)');
+  if (!sidePanelBtns.length) {
+    sidePanelBtns = sidePanel.querySelectorAll(
+      '[role="tab"]:not([aria-label^="Get "]), [role="button"]:not([aria-label^="Get "])',
+    );
+  }
+  const addOnsFrame = queryFirst(...ADDONS_FRAME_SELECTORS);
 
   // Add click handlers to side panel buttons
   for (let b = 0; b < sidePanelBtns.length; b++) {
@@ -1701,7 +1801,7 @@ const sidePanelHandler = () => {
 
   // Check if add-on panel is open at page load
   if (addOnsFrame) {
-    if (!addOnsFrame.classList.contains('br3')) {
+    if (isSidePanelOpen(addOnsFrame)) {
       moveFloatersLeft();
     } else {
       moveFloatersRight();
@@ -1714,16 +1814,16 @@ const sidePanelHandler = () => {
  * Sets up an observer for side panel size changes
  */
 const sidePanelMutationHandler = () => {
-  waitForElement('.buW', () => {
-    const addOnsPanel = document.querySelector('.buW');
+  waitForElement(ADDONS_FRAME_SELECTORS.join(', '), () => {
+    const addOnsPanel = queryFirst(...ADDONS_FRAME_SELECTORS);
     if (!addOnsPanel) return;
 
     const panelResized = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        if (entry.contentRect.width === 0) {
-          moveFloatersRight();
-        } else {
+        if (entry.contentRect.width > 100) {
           moveFloatersLeft();
+        } else {
+          moveFloatersRight();
         }
       }
     });
@@ -1874,6 +1974,85 @@ if (document.head) {
 }
 
 // =============================================================================
+// SELECTOR HEALTH CHECK
+// =============================================================================
+
+/* Every entry is a Gmail hook a feature depends on. When Gmail ships a DOM
+   change, the failing hooks are named in the console instead of features
+   silently disappearing. `onlyIf` gates checks that only apply in a given
+   state (e.g. a non-empty inbox). Checks needing an open conversation or
+   compose window live in docs/selector-health-check.js instead. */
+const HEALTH_CHECKS = [
+  { feature: 'thread list scoping (bundling, reminders, avatars)', selector: '.oy8Mbf[role=main]' },
+  { feature: 'thread rows inside scoped main pane', selector: '.oy8Mbf .zA', onlyIf: 'tr.zA' },
+  {
+    feature: 'bundling inbox gate (also 0 on non-English UI)',
+    selector: '.nZ[data-tooltip=Inbox]',
+  },
+  { feature: 'sidebar menu container (Done item, menu reorder)', selector: '.wT .byl' },
+  { feature: 'Snoozed nav row (Done item is cloned from it)', selector: '.aHS-bu1' },
+  { feature: 'sidebar icon wrappers (replaced icons)', selector: '.TO .qj' },
+  { feature: 'header title carrier (header colors/titles)', selector: '.w-asV.bbg.aiw' },
+  {
+    feature: 'header Gmail link (retitling)',
+    selector: 'header[role="banner"] a[aria-label="Gmail"], a[aria-label="Gmail"]',
+  },
+  {
+    feature: 'account button (user email discovery, reminders)',
+    selector: 'a[aria-label^="Google Account:"]',
+  },
+  {
+    feature: 'compose button (floating compose, add reminder)',
+    selector: '.Yh.akV, .T-I.T-I-KE.L3, [gh="cm"]',
+  },
+  { feature: 'label list region (label color fixes)', selector: '.aAw.FgKVne ~ .yJ, .aeN .yJ' },
+  {
+    feature: 'side panel (floating button repositioning)',
+    selector: 'div[role="complementary"][aria-label="Side panel"], div[aria-label="Side panel"]',
+  },
+];
+
+/**
+ * Verifies the Gmail hooks the extension depends on and reports failures to
+ * the console. Runs automatically after load; call manually from the DevTools
+ * console (with the extension's context selected) via inboxRebornHealthCheck()
+ */
+const runSelectorHealthCheck = () => {
+  // Gmail not loaded (login page, standalone compose, etc.) - nothing to check
+  if (!document.querySelector('div[role="main"]')) return;
+
+  const failures = HEALTH_CHECKS.filter(
+    (check) =>
+      (!check.onlyIf || document.querySelector(check.onlyIf)) &&
+      !document.querySelector(check.selector),
+  );
+
+  for (const check of failures) {
+    console.warn(
+      `[Inbox Reborn] Selector health: "${check.selector}" matches nothing - ${check.feature} is likely broken. Gmail probably changed its DOM.`,
+    );
+  }
+
+  const gmailLinkCount = document.querySelectorAll('a[aria-label="Gmail"]').length;
+  if (gmailLinkCount !== 2) {
+    console.warn(
+      `[Inbox Reborn] Selector health: expected 2 a[aria-label="Gmail"] links, found ${gmailLinkCount} - header retitling may target the wrong element.`,
+    );
+  }
+
+  if (failures.length === 0 && gmailLinkCount === 2) {
+    console.info(`[Inbox Reborn] Selector health: all ${HEALTH_CHECKS.length} checks passed.`);
+  } else {
+    console.info(
+      `[Inbox Reborn] Selector health: ${failures.length}/${HEALTH_CHECKS.length} checks failed. Full checklist incl. compose/reading-pane hooks: docs/selector-health-check.js in the repo.`,
+    );
+  }
+
+  return failures;
+};
+window.inboxRebornHealthCheck = runSelectorHealthCheck;
+
+// =============================================================================
 // EVENT LISTENERS
 // =============================================================================
 
@@ -1889,15 +2068,29 @@ document.addEventListener('DOMContentLoaded', function () {
   waitForElement('a[aria-label="Gmail"]', handleHashChange);
   waitForElement('a[aria-label="Gmail"]', addFloatingComposeButton);
 
-  // Set up label color observer
-  waitForElement('.aAw.FgKVne ~ .yJ', watchLabelColorChanges);
+  // Set up label color observer (.FgKVne is Wiz build-hashed; .aeN .yJ is the
+  // same label region anchored on the stable nav container)
+  waitForElement('.aAw.FgKVne ~ .yJ, .aeN .yJ', watchLabelColorChanges);
 
   // Set up periodic email updates
   setInterval(updateReminders, 250);
 
-  // Set up side panel handler
+  // Keep sidebar icons painted on Gmail's new SVG markup (sidebar rerenders
+  // when labels expand/collapse, so this must re-run; no-op when normalized)
+  setInterval(normalizeSidebarIcons, 500);
+
+  // Set up side panel handler - wait for any recognizable side-panel button
+  // (old build-hashed markup or the new role-based markup)
   waitForElement(
-    'div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I[aria-label^="Get "]',
+    [
+      'div[aria-label="Side panel"] .bse-bvF-I.aT5-aOt-I[aria-label^="Get "]',
+      'div[role="complementary"][aria-label="Side panel"] [role="tab"]',
+      'div[role="complementary"][aria-label="Side panel"] [role="button"]',
+    ].join(', '),
     sidePanelHandler,
   );
+
+  // Report selector health once Gmail has settled, so a Gmail DOM change
+  // shows up as a console warning instead of a silently missing feature
+  setTimeout(runSelectorHealthCheck, 15000);
 });
