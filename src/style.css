@@ -2261,36 +2261,50 @@ header form input {
 }
 
 /* Hides the checkbox when not checked */
+
+/* Avatar/checkbox swap is done with visibility on a fixed footprint, NOT
+   a display swap. The checkbox (~20px) is narrower than the avatar (32px),
+   so display-swapping reflowed the whole row on hover; with another
+   extension's row wrappers in play (Hippo Video via InboxSDK, issue #112)
+   that reflow oscillates - hover, shift, pointer exits the icon, unhover,
+   shift back - and the hover-action icons "stutter and shake". Overlaying
+   the checkbox absolutely means row geometry never changes on hover. */
+.show-avatar-enabled .zA .oZ-x3.xY {
+  position: relative;
+}
+
 .show-avatar-enabled .zA .oZ-x3.xY .T-Jo {
-  display: none;
+  position: absolute !important;
+
+  /* left 13px puts the overlaid checkbox at the same cell-relative x (14px)
+     the old in-flow checkbox occupied, so hover doesn't appear to move it */
+  top: 50%;
+  left: 13px;
+  transform: translateY(-50%);
+  visibility: hidden;
 }
 
 /* Show checkbox when hovering over email row with avatar */
 .show-avatar-enabled .zA:hover:not(.aqw) .oZ-x3.xY .T-Jo {
-  display: inline !important;
+  visibility: visible !important;
 }
 
-/* Hide avatar when hovering to show checkbox (but not when checked) */
+/* Hide avatar when hovering to show checkbox (but not when checked) -
+   visibility keeps its 32px box in flow so nothing moves */
 .show-avatar-enabled .zA:hover:not(.aqw) .oZ-x3.xY .avatar {
-  display: none !important;
+  visibility: hidden !important;
 }
 
-/* When email is checked (selected), keep checkbox visible and avatar hidden */
-.show-avatar-enabled .zA.aqw .oZ-x3.xY .T-Jo {
-  display: inline !important;
-}
-
-.show-avatar-enabled .zA.aqw .oZ-x3.xY .avatar {
-  display: none !important;
-}
-
-/* Alternative: Target by aria-checked attribute for checked emails */
+/* When email is checked (selected), keep checkbox visible and avatar
+   hidden - same visibility treatment, aria-checked as the fallback hook */
+.show-avatar-enabled .zA.aqw .oZ-x3.xY .T-Jo,
 .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked='true'] {
-  display: inline !important;
+  visibility: visible !important;
 }
 
+.show-avatar-enabled .zA.aqw .oZ-x3.xY .avatar,
 .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked='true'] + .avatar {
-  display: none !important;
+  visibility: hidden !important;
 }
 
 .zA .oZ-jc.T-Jo.J-J5-Ji {
@@ -5882,40 +5896,9 @@ body.dark-mode .reminder .avatar {
   }
 }
 
-/* Complete avatar visibility control - identical to light mode */
-
-/* Hides the checkbox when not checked - same as light mode */
-body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo {
-  display: none;
-}
-
-/* Show checkbox when hovering over email row with avatar - same as light mode */
-body.dark-mode .show-avatar-enabled .zA:hover:not(.aqw) .oZ-x3.xY .T-Jo {
-  display: inline !important;
-}
-
-/* Hide avatar when hovering to show checkbox (but not when checked) - same as light mode */
-body.dark-mode .show-avatar-enabled .zA:hover:not(.aqw) .oZ-x3.xY .avatar {
-  display: none !important;
-}
-
-/* When email is checked (selected), keep checkbox visible and avatar hidden - same as light mode */
-body.dark-mode .show-avatar-enabled .zA.aqw .oZ-x3.xY .T-Jo {
-  display: inline !important;
-}
-
-body.dark-mode .show-avatar-enabled .zA.aqw .oZ-x3.xY .avatar {
-  display: none !important;
-}
-
-/* Alternative: Target by aria-checked attribute for checked emails - same as light mode */
-body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked='true'] {
-  display: inline !important;
-}
-
-body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked='true'] + .avatar {
-  display: none !important;
-}
+/* Avatar/checkbox hover swap: the theme-neutral visibility rules in the
+   avatar section apply in dark mode too (issue #112 - display swaps here
+   reflowed rows on hover and fought other extensions' row wrappers). */
 
 /* The initial-avatar palette was tuned for white rows; on dark rows the
    saturated fills (yellow, pink, green) glow. Mute them - the hue stays

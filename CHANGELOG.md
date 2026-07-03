@@ -3,7 +3,23 @@
 All notable changes to the Inbox Reborn theme for Gmail™, grouped by release era.
 PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inbox-reborn/pulls).
 
-## Unreleased
+## 2.2.0 — July 2026
+
+### Dark mode live-testing polish (`fix/gmail-2026-wiz-churn`)
+
+- Thread list contrast pass: row separators no longer glow (the light-mode
+  card edge leaked into dark mode), and row text moved off pure white onto
+  a gray ladder that keeps read/unread hierarchy visible
+- Compose color-picker headings, the add-reaction button, and the
+  formatting-toolbar dropdown arrows are now legible in dark mode
+- Avatar circles are muted on dark rows (30% saturation, 80% brightness)
+  and the three loudest palette fills were softened in both themes
+- Avatar/checkbox hover swap no longer reflows the row: the checkbox
+  overlays the avatar slot and the two trade visibility, hardening rows
+  against hover stutter when other Gmail extensions are installed (#112)
+- Six dark-mode defects from the DOM-dump audit: reply pills, the
+  emoji-react button, the band under the thread list, the compose titlebar,
+  the header search field, and Quick Settings selection borders
 
 ### Gmail mid-2026 DOM churn fixes (`fix/gmail-2026-wiz-churn`)
 
