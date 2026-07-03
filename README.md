@@ -4,7 +4,7 @@
 
 Web extension which modifies Gmail™ to bring back the features and uncluttered design you knew and loved from Google's discontinued Inbox.
 
-![inbox screenshot](https://github.com/team-inbox/inbox-reborn/blob/master/screenshots/light_dark.gif)
+<!-- TODO: add refreshed light/dark screenshots for 2.2.0 (screenshots/) -->
 
 ## Install
 
