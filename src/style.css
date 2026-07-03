@@ -2960,6 +2960,17 @@ body.dark-mode .aRs {
   background: var(--dm-surface) !important;
 }
 
+/* Side-panel rail button pills (hover/active highlight behind the
+   Calendar / Keep / Tasks icons): Gmail fills them #fff / #f1f3f4 /
+   #e8eaed, which reads as a floating white box against the dark rail */
+body.dark-mode .aT5-aOt-I-JX-atM {
+  background-color: transparent !important;
+}
+
+body.dark-mode :is(.aT5-aOt-I-JW, .aT5-aOt-I-JO, .aT5-aOt-I-KO, .aT5-aOt-I-Kq) .aT5-aOt-I-JX-atM {
+  background-color: var(--dm-hover) !important;
+}
+
 /* Gmail's yellow notice/alert bar stays parchment-colored in dark mode */
 body.dark-mode .vh {
   background-color: var(--dm-surface-raised) !important;
@@ -2969,6 +2980,7 @@ body.dark-mode .vh {
 /* Main menu - use the correct dark background */
 body.dark-mode .ar4,
 body.dark-mode .nH.aqk.aql.bkL,
+body.dark-mode .bkK > .nH,
 body.dark-mode .aeN,
 body.dark-mode .WR,
 body.dark-mode .baA,
@@ -2996,6 +3008,24 @@ body.dark-mode .nH.Hd[role='dialog'] {
 body.dark-mode .nH.Hd[role='dialog'] img,
 body.dark-mode .nH.Hd[role='dialog'] video {
   filter: invert(1) hue-rotate(180deg);
+}
+
+/* Gmail's mid-2026 compose relayout made the Send/formatting action row
+   position:fixed, placed by JS against the viewport. The invert filter
+   above makes the dialog the containing block for fixed descendants, so
+   those viewport coordinates land the row outside the window and the whole
+   send row vanishes (light mode has no filter and is unaffected). Opt out
+   of the quirk entirely: pin the row absolutely to its .aDg anchor at the
+   dialog bottom. No state class (.ahe appears/disappears as the To field
+   gains and loses focus) and no JS-written viewport coordinate can move it
+   off-dialog. Scoped to the popup dialog; inline replies keep their
+   in-flow row. */
+body.dark-mode .nH.Hd[role='dialog'] .aDg > .aDj {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: auto !important;
 }
 
 /* The light-mode compose redesign paints the titlebar #404040 with white
@@ -3044,12 +3074,26 @@ body.dark-mode .J-N:not(.nH.Hd .J-N) {
   color: var(--dm-text-secondary) !important;
 }
 
-/* Menu item inner text (e.g. label names in the "Label as" menu) keeps
-   Gmail's light-theme dark color unless forced to inherit */
+/* Menu item inner text (e.g. label names in the "Label as" menu, font
+   names in the compose font picker) keeps Gmail's light-theme dark color
+   unless forced to inherit. [role='option'] and .J-N cover the font/size
+   listboxes the formatting toolbar opens. */
 body.dark-mode [role='menuitem']:not(.nH.Hd [role='menuitem']) *,
 body.dark-mode [role='menuitemcheckbox']:not(.nH.Hd [role='menuitemcheckbox']) *,
-body.dark-mode [role='menuitemradio']:not(.nH.Hd [role='menuitemradio']) * {
+body.dark-mode [role='menuitemradio']:not(.nH.Hd [role='menuitemradio']) *,
+body.dark-mode [role='option']:not(.nH.Hd [role='option']) *,
+body.dark-mode .J-N:not(.nH.Hd .J-N) * {
   color: inherit !important;
+}
+
+/* Palette section headings in the compose text-color picker - real 2026
+   markup (from Joey's live DOM): <td class="aAi">Background color</td>.
+   They sit outside any menu item, so the inherit rule above never reaches
+   them and they keep Gmail's light-theme #222 - invisible on the dark
+   menu surface. td-qualified to avoid other .aAi uses outside menus. */
+body.dark-mode .J-M td.aAi:not(.nH.Hd td.aAi),
+body.dark-mode [role='menu'] td.aAi:not(.nH.Hd td.aAi) {
+  color: var(--dm-text-secondary) !important;
 }
 
 /* Hovered / keyboard-highlighted menu items */
@@ -3113,11 +3157,11 @@ body.dark-mode .gssb_c td {
 body.dark-mode .zA,
 body.dark-mode .Bs.nH.iY.bAt {
   background: var(--dm-surface) !important; /* Dark background for read emails */
-  color: #fff !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 body.dark-mode .zA * {
-  color: #fff !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 /* Sidebar text colors */
@@ -3567,15 +3611,95 @@ body.dark-mode .btDi4d .jWOS7-JX-I {
   border-color: var(--dm-border-muted) !important;
 }
 
-body.dark-mode .nH.a98.iY.aHo img[src*='cleardot']:not(.T-KT-JX) {
+/* The add-reaction glyph itself: an empty <div class="jWOS7-JX-ano"> whose
+   smiley comes from a Gmail sprite (background-image), dark gray - invisible
+   on the dark chip, and the child rule above additionally slabs it with the
+   chip fill. Undo the fill (the filter would invert it into a light square)
+   and invert just the sprite to read light. Placed after that rule to win
+   the equal-specificity tie. */
+body.dark-mode .amn .jWOS7-JX-ano,
+body.dark-mode .btDi4d .jWOS7-JX-ano {
+  background-color: transparent !important;
+  filter: invert(0.78) !important;
+}
+
+/* Dropdown disclosure arrows on the formatting-toolbar split buttons
+   (text color, alignment, ...): Gmail draws them as a grey PNG sprite
+   (small-grey-disclosure-arrow-down.png) at opacity .8 - invisible on the
+   dark toolbar. Popup compose excluded: the dialog invert filter already
+   lightens it there (a second invert would flip it dark again). */
+body.dark-mode .J-Z-M-I-JG:not(.nH.Hd .J-Z-M-I-JG) {
+  filter: invert(0.78) !important;
+  opacity: 1 !important;
+}
+
+/* Gmail's mid-2026 floating Send/formatting row: in the inline reply it is
+   a fixed overlay strip outside the conversation containers, so no scoped
+   dark rule reaches it and it stays stock white. The popup compose variant
+   is excluded - it lives inside the inverted dialog, where Gmail's light
+   fill already renders dark (and a dark fill would invert back to light). */
+body.dark-mode .aDj:not(.nH.Hd .aDj),
+body.dark-mode .btC:not(.nH.Hd .btC) {
+  background-color: var(--dm-surface) !important;
+  color: #e8eaed !important;
+}
+
+/* The floating variant nests white padded wrappers between .aDj and .btC
+   (visible as light slivers at both ends of the strip) - flatten them */
+body.dark-mode .aDj:not(.nH.Hd .aDj) .aDh,
+body.dark-mode .aDj:not(.nH.Hd .aDj) .IZ,
+body.dark-mode .aDj:not(.nH.Hd .aDj) .aDh > *,
+body.dark-mode .aDj:not(.nH.Hd .aDj) .IZ > tbody > tr:not(.btC) {
+  background-color: transparent !important;
+}
+
+/* Gmail's white filler strip at the bottom of the floating bar
+   (.aC3 { background:#fff; margin:0 -3px } + a JS-set height) overhangs
+   3px past both ends of the dark row - the "white tabs". Popup compose
+   excluded: there the invert filter needs it light. */
+body.dark-mode .aC3:not(.nH.Hd .aC3) {
+  background: var(--dm-surface) !important;
+  border-color: var(--dm-surface) !important;
+}
+
+/* The floating bar's white backing plate: Gmail's `.HM .ahe:after` is a
+   z-index:-1 white slab that deliberately overhangs 8px on each side of
+   the bar (left:-8px; padding:0 8px). The dark row covers the middle;
+   the overhangs read as white tabs at both ends. Same popup exclusion. */
+body.dark-mode .HM .ahe:not(.nH.Hd *)::after {
+  background: var(--dm-surface) !important;
+}
+
+/* When Gmail disables the emoji-react button ("can't react to a group")
+   its glyph doesn't survive the dark theming and it reads as a bare gray
+   box after the Forward pill - drop it rather than theme an inert stub */
+body.dark-mode .amn .jWOS7-JX-I:disabled,
+body.dark-mode .amn .jWOS7-JX-I[aria-disabled='true'],
+body.dark-mode .btDi4d .jWOS7-JX-I:disabled,
+body.dark-mode .btDi4d .jWOS7-JX-I[aria-disabled='true'] {
+  display: none !important;
+}
+
+/* .T-I-atl exclusion: glyphs on the blue Send/Send-and-archive pills use
+   Gmail's white sprite already - inverting them leaves a dark blob */
+body.dark-mode .nH.a98.iY.aHo img[src*='cleardot']:not(.T-KT-JX, .T-I-atl img) {
   filter: invert(0.78) !important;
 }
 
 /* Newer / Older chevrons in the conversation toolbar are cleardot sprites
    outside the reading-pane scope above - without this they render
-   dark-on-dark */
-body.dark-mode .G-atb img[src*='cleardot']:not(.T-KT-JX) {
+   dark-on-dark. The background-color must stay transparent at higher
+   specificity than the .D.E.G-atb * surface dump, or the invert flips the
+   forced dark fill into a light square that swallows the glyph. */
+body.dark-mode .G-atb img[src*='cleardot']:not(.T-KT-JX, .T-I-atl img),
+body.dark-mode .D.E.G-atb img[src*='cleardot']:not(.T-KT-JX, .T-I-atl img) {
+  background-color: transparent !important;
   filter: invert(0.78) !important;
+}
+
+/* Dim the disabled (aria-disabled) pagination arrow like Gmail does */
+body.dark-mode .G-atb [aria-disabled='true'] img[src*='cleardot'] {
+  opacity: 0.35 !important;
 }
 
 /* QUICK SETTINGS PANEL */
@@ -3676,11 +3800,11 @@ body.dark-mode .zA,
 body.dark-mode .zA:hover,
 body.dark-mode .Bs.nH.iY.bAt {
   background: var(--dm-surface) !important;
-  color: #fff !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 body.dark-mode .zA * {
-  color: #fff !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 body.dark-mode .TO .nU > .n0,
@@ -3995,7 +4119,7 @@ body.dark-mode .zA,
 body.dark-mode .zA:hover,
 body.dark-mode .Bs.nH.iY.bAt {
   background: var(--dm-bg) !important;
-  color: #fff !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 /* Email list scrollable area */
@@ -4365,6 +4489,32 @@ body.dark-mode .zA.zE {
 /* Hover state - same as light mode */
 body.dark-mode .zA:hover {
   background: var(--dm-surface) !important; /* Slightly lighter on hover */
+}
+
+/* The light-mode row cards draw their separator inside the box-shadow
+   stack (0 -1px 0 #e0e0e0, see the .zA card rule near the top of this
+   file). Dark mode replaced the backgrounds but inherited that shadow, so
+   every row kept a glowing 1px light gridline. Same stack, dark edge. */
+body.dark-mode .zA,
+body.dark-mode .zA:hover {
+  box-shadow:
+    0 -1px 0 var(--dm-hover),
+    0 0 2px rgb(0 0 0 / 12%),
+    0 2px 4px rgb(0 0 0 / 24%) !important;
+}
+
+/* Text hierarchy on dark rows - the old blanket #fff on every span was
+   glaring and flattened read/unread. Snippets and read-row dates recede;
+   unread sender/subject/date lead, but never reach #fff. */
+body.dark-mode .zA .y2,
+body.dark-mode .zA .xW span {
+  color: var(--dm-text-muted) !important;
+}
+
+body.dark-mode .zA.zE .yW *,
+body.dark-mode .zA.zE .bog,
+body.dark-mode .zA.zE .xW span {
+  color: #e8eaed !important;
 }
 
 body.dark-mode .zA .apU.xY .T-KT::before,
@@ -5566,6 +5716,26 @@ body.dark-mode .a3I {
   filter: invert(1) !important;
 }
 
+/* Inline-reply send row (2026 floating .btC variant): the toolbar glyphs
+   are gm3 PNG sprites with a baked dark color on what is now a dark row.
+   Invert them here only - inside the popup dialog the whole-dialog invert
+   already lightens them, and the blue Send buttons keep their own glyphs
+   (.aPa/.G-asx are excluded by scoping to the icon carriers). Wins over
+   the filter:none reset above via the extra .btC/:not() specificity. */
+body.dark-mode .btC:not(.nH.Hd .btC) :is(.aaA, .aaB, .dv, .Y1, .og) {
+  background-color: transparent !important;
+  filter: invert(0.78) !important;
+}
+
+/* Same treatment for the inline-reply formatting toolbar (.J-Z, opened via
+   the Aa toggle): bold/italic/size/color/list glyphs are the same dark
+   sprite family on the now-dark bar. hue-rotate keeps the text-color
+   indicator strip its true hue under the invert. */
+body.dark-mode .J-Z:not(.nH.Hd *) :is(.aaA, .aaB) {
+  background-color: transparent !important;
+  filter: invert(0.78) hue-rotate(180deg) !important;
+}
+
 /* =============================================================================
    FORCE DARK MODE OVERRIDES - HIGH PRIORITY
    ============================================================================= */
@@ -5745,6 +5915,15 @@ body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked='true'] {
 
 body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked='true'] + .avatar {
   display: none !important;
+}
+
+/* The initial-avatar palette was tuned for white rows; on dark rows the
+   saturated fills (yellow, pink, green) glow. Mute them - the hue stays
+   recognizable, the letter dims with it onto the gray ladder. Values
+   picked by Joey on the palette board (2026-07-02). BIMI logo avatars and
+   the reminder icon keep their true colors. */
+body.dark-mode .avatar:not(.web-avatar, .reminder .avatar) {
+  filter: saturate(0.3) brightness(0.8);
 }
 
 /* =============================================================================

@@ -75,9 +75,9 @@ const MONTHS = [
 const NAME_COLORS = [
   '1bbc9b',
   '16a086',
-  'f1c40f',
-  'f39c11',
-  '2dcc70',
+  'c9a227' /* was f1c40f - highlighter yellow, glaring on dark rows */,
+  'cf861d' /* was f39c11 - same, one step less orange than H */,
+  '2f9e5b' /* was 2dcc70 - neon green, glaring on dark rows */,
   '27ae61',
   'd93939',
   'd25400',
