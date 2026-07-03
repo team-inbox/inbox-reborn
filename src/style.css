@@ -2921,14 +2921,18 @@ body.dark-mode
     .ZH,
     [class*='ZH'],
     .nr,
-    [class*='nr']
+    [class*='nr'],
+    header *,
+    .nH.Hd *
   ),
-body.dark-mode textarea:not([aria-label='Message Body']) {
+body.dark-mode textarea:not([aria-label='Message Body'], .nH.Hd *) {
   background-color: var(--dm-hover) !important;
   color: #fff !important;
 }
 
-body.dark-mode a {
+/* Compose dialog links excluded: the dialog is invert-filtered, so Gmail's
+   default dark-blue links already come out light there */
+body.dark-mode a:not(.nH.Hd a) {
   color: var(--dm-accent) !important;
 }
 
@@ -2964,6 +2968,7 @@ body.dark-mode .vh {
 
 /* Main menu - use the correct dark background */
 body.dark-mode .ar4,
+body.dark-mode .nH.aqk.aql.bkL,
 body.dark-mode .aeN,
 body.dark-mode .WR,
 body.dark-mode .baA,
@@ -2991,6 +2996,22 @@ body.dark-mode .nH.Hd[role='dialog'] {
 body.dark-mode .nH.Hd[role='dialog'] img,
 body.dark-mode .nH.Hd[role='dialog'] video {
   filter: invert(1) hue-rotate(180deg);
+}
+
+/* The light-mode compose redesign paints the titlebar #404040 with white
+   text/icons; under the dialog invert filter that renders as a washed-out
+   light bar. Pre-invert the intent: light bar + dark text/icons in the DOM
+   come out as a dark bar with light text/icons after the filter. */
+body.dark-mode .nH .Hy .m {
+  background: #f6f8fc !important;
+}
+
+body.dark-mode .nH.Hd .Hp {
+  color: #1f1f1f !important;
+}
+
+body.dark-mode .nH.Hd :is(.Hk, .Hl, .Hq, .Hm .aUG, .Ha) {
+  background: #202124 !important;
 }
 
 /* =============================================================================
@@ -3527,17 +3548,33 @@ body.dark-mode .btDi4d {
 
 body.dark-mode .amn .ams,
 body.dark-mode .nH.a98.iY.aHo .amn .ams,
-body.dark-mode .nH.a98.iY.aHo .amn .ams *,
+body.dark-mode .nH.a98.iY.aHo .amn .ams * {
+  background-color: var(--dm-hover) !important;
+  color: #e8eaed !important;
+  border-color: var(--dm-border-muted) !important;
+}
+
+/* Wiz icon buttons in / next to the pill bar (emoji react, more actions).
+   Gmail parks the emoji button inside the legacy .amn bar with a light
+   disabled fill (#e8eaed) that matched the forced icon color - clear it so
+   the icon is visible on a dark chip. */
+body.dark-mode .amn .jWOS7-JX-I,
+body.dark-mode .amn .jWOS7-JX-I *,
 body.dark-mode .btDi4d .DILLkc,
-body.dark-mode .btDi4d .DILLkc *,
-body.dark-mode .btDi4d .jWOS7-JX-I,
-body.dark-mode .btDi4d .jWOS7-JX-I * {
-  background-color: #e8eaed !important;
-  color: #202124 !important;
+body.dark-mode .btDi4d .jWOS7-JX-I {
+  background-color: var(--dm-hover) !important;
+  color: #e8eaed !important;
   border-color: var(--dm-border-muted) !important;
 }
 
 body.dark-mode .nH.a98.iY.aHo img[src*='cleardot']:not(.T-KT-JX) {
+  filter: invert(0.78) !important;
+}
+
+/* Newer / Older chevrons in the conversation toolbar are cleardot sprites
+   outside the reading-pane scope above - without this they render
+   dark-on-dark */
+body.dark-mode .G-atb img[src*='cleardot']:not(.T-KT-JX) {
   filter: invert(0.78) !important;
 }
 
@@ -4947,19 +4984,23 @@ body.dark-mode .w-asV.bbg.aiw[pageTitle='calls'] {
 }
 
 /* Make recipient chips more visible */
-body.dark-mode .vR,
-body.dark-mode .vN {
+
+/* Compose-dialog descendants excluded from the three rules below: the
+   dialog is invert-filtered, so dark fills / light accents set in the DOM
+   would render light / murky after the flip */
+body.dark-mode .vR:not(.nH.Hd .vR),
+body.dark-mode .vN:not(.nH.Hd .vN) {
   background-color: #3c3c3c !important;
   color: white !important;
 }
 
 /* Make "Draft saved" text visible */
-body.dark-mode .aYF {
+body.dark-mode .aYF:not(.nH.Hd .aYF) {
   color: var(--dm-accent) !important;
 }
 
 /* Make toolbar dividers visible */
-body.dark-mode .oc {
+body.dark-mode .oc:not(.nH.Hd .oc) {
   border-color: var(--dm-selected) !important;
 }
 
@@ -5001,7 +5042,9 @@ body.dark-mode .IU .a2U, /* Chat and Meet icon */
 body.dark-mode .IU .QZ,  /* Density previews */
 body.dark-mode .IU .Vm,  /* Inbox Type previews */
 body.dark-mode .IU .XK   /* Reading Pane previews */ {
-  filter: invert(0.85) brightness(1.5) !important;
+  /* hue-rotate keeps the blue selection border blue - a bare invert turned
+     it orange */
+  filter: invert(0.85) hue-rotate(180deg) brightness(1.15) !important;
 }
 
 /* Do not invert theme previews */
