@@ -886,6 +886,18 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
   content: none !important;
 }
 
+/* Gmail mid-2026: nav rows no longer have an empty .qj div - icons are now
+   inline SVGs inside build-hashed wrappers. normalizeSidebarIcons() in
+   script.js tags the first wrapper with .qj so every icon rule below keeps
+   painting; the native SVG art and duplicate icon variants are hidden here */
+.qj > svg {
+  display: none !important;
+}
+
+.inbox-reborn-hidden {
+  display: none !important;
+}
+
 /* Inbox */
 .aHS-bnt .qj {
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/inbox_googblue_24dp.png') !important;
@@ -1075,6 +1087,32 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
   -webkit-mask-size: 24px !important;
   mask-size: 24px !important;
   background-color: #4c4f4d !important;
+}
+
+/* AI Inbox (Gmail 2026 Gemini row - a bare .TN carrying the tooltip, no .TO
+   wrapper). Spark glyph in Google blue to match the colored top group */
+[data-tooltip='AI Inbox'] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_ai_inbox_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_ai_inbox_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-color: #4285f4 !important;
+  background-image: none !important;
+}
+
+body.dark-mode [data-tooltip='AI Inbox'] .qj {
+  background-color: #8ab4f8 !important;
+}
+
+@-moz-document url-prefix() {
+  [data-tooltip='AI Inbox'] .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_ai_inbox_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_ai_inbox_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  }
 }
 
 /* Category buttons */
@@ -1484,8 +1522,10 @@ input.gb_3e {
 /* left sidebar */
 .nH.oy8Mbf.nn.aeN,
 
-/* right sidebar */
+/* right sidebar (2026-06: Gmail is re-structuring the rail; role anchor is the
+   stable hook, .brC-aT5-aOt-Jw kept as fallback for the old markup) */
 .brC-aT5-aOt-Jw,
+div[role='complementary'][aria-label='Side panel'],
 
 /* Hangout bar */
 .aj5 .J-KU, .aj5.J-KU-Jg,
@@ -2881,14 +2921,18 @@ body.dark-mode
     .ZH,
     [class*='ZH'],
     .nr,
-    [class*='nr']
+    [class*='nr'],
+    header *,
+    .nH.Hd *
   ),
-body.dark-mode textarea:not([aria-label='Message Body']) {
+body.dark-mode textarea:not([aria-label='Message Body'], .nH.Hd *) {
   background-color: var(--dm-hover) !important;
   color: #fff !important;
 }
 
-body.dark-mode a {
+/* Compose dialog links excluded: the dialog is invert-filtered, so Gmail's
+   default dark-blue links already come out light there */
+body.dark-mode a:not(.nH.Hd a) {
   color: var(--dm-accent) !important;
 }
 
@@ -2908,6 +2952,7 @@ body.dark-mode .vIO7af,
 body.dark-mode .no,
 body.dark-mode .Tm.aeJ,
 body.dark-mode .brC-aT5-aOt-Jw,
+body.dark-mode div[role='complementary'][aria-label='Side panel'],
 body.dark-mode .aj5 .J-KU,
 body.dark-mode .aj5.J-KU-Jg,
 body.dark-mode .aKh,
@@ -2915,8 +2960,27 @@ body.dark-mode .aRs {
   background: var(--dm-surface) !important;
 }
 
+/* Side-panel rail button pills (hover/active highlight behind the
+   Calendar / Keep / Tasks icons): Gmail fills them #fff / #f1f3f4 /
+   #e8eaed, which reads as a floating white box against the dark rail */
+body.dark-mode .aT5-aOt-I-JX-atM {
+  background-color: transparent !important;
+}
+
+body.dark-mode :is(.aT5-aOt-I-JW, .aT5-aOt-I-JO, .aT5-aOt-I-KO, .aT5-aOt-I-Kq) .aT5-aOt-I-JX-atM {
+  background-color: var(--dm-hover) !important;
+}
+
+/* Gmail's yellow notice/alert bar stays parchment-colored in dark mode */
+body.dark-mode .vh {
+  background-color: var(--dm-surface-raised) !important;
+  color: var(--dm-text-secondary) !important;
+}
+
 /* Main menu - use the correct dark background */
 body.dark-mode .ar4,
+body.dark-mode .nH.aqk.aql.bkL,
+body.dark-mode .bkK > .nH,
 body.dark-mode .aeN,
 body.dark-mode .WR,
 body.dark-mode .baA,
@@ -2946,6 +3010,40 @@ body.dark-mode .nH.Hd[role='dialog'] video {
   filter: invert(1) hue-rotate(180deg);
 }
 
+/* Gmail's mid-2026 compose relayout made the Send/formatting action row
+   position:fixed, placed by JS against the viewport. The invert filter
+   above makes the dialog the containing block for fixed descendants, so
+   those viewport coordinates land the row outside the window and the whole
+   send row vanishes (light mode has no filter and is unaffected). Opt out
+   of the quirk entirely: pin the row absolutely to its .aDg anchor at the
+   dialog bottom. No state class (.ahe appears/disappears as the To field
+   gains and loses focus) and no JS-written viewport coordinate can move it
+   off-dialog. Scoped to the popup dialog; inline replies keep their
+   in-flow row. */
+body.dark-mode .nH.Hd[role='dialog'] .aDg > .aDj {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: auto !important;
+}
+
+/* The light-mode compose redesign paints the titlebar #404040 with white
+   text/icons; under the dialog invert filter that renders as a washed-out
+   light bar. Pre-invert the intent: light bar + dark text/icons in the DOM
+   come out as a dark bar with light text/icons after the filter. */
+body.dark-mode .nH .Hy .m {
+  background: #f6f8fc !important;
+}
+
+body.dark-mode .nH.Hd .Hp {
+  color: #1f1f1f !important;
+}
+
+body.dark-mode .nH.Hd :is(.Hk, .Hl, .Hq, .Hm .aUG, .Ha) {
+  background: #202124 !important;
+}
+
 /* =============================================================================
    STANDALONE DARK MODE FOUNDATION
    Dark mode no longer relies on Gmail's own dark theme being enabled. These
@@ -2959,7 +3057,9 @@ body.dark-mode .nH.Hd[role='dialog'] video {
    excluded - the whole dialog is inverted, so light menus come out dark. */
 body.dark-mode [role='menu']:not(.nH.Hd [role='menu']),
 body.dark-mode [role='listbox']:not(.nH.Hd [role='listbox']),
-body.dark-mode .J-M:not(.nH.Hd .J-M) {
+body.dark-mode .J-M:not(.nH.Hd .J-M),
+/* 2026-06: Wiz-rebuilt actions dropdown container (replaces .b7.J-M) */
+body.dark-mode .tB5Jxf-M-S5Cmsd:not(.nH.Hd .tB5Jxf-M-S5Cmsd) {
   background-color: var(--dm-surface-raised) !important;
   border-color: var(--dm-border-muted) !important;
   color: var(--dm-text-secondary) !important;
@@ -2974,12 +3074,26 @@ body.dark-mode .J-N:not(.nH.Hd .J-N) {
   color: var(--dm-text-secondary) !important;
 }
 
-/* Menu item inner text (e.g. label names in the "Label as" menu) keeps
-   Gmail's light-theme dark color unless forced to inherit */
+/* Menu item inner text (e.g. label names in the "Label as" menu, font
+   names in the compose font picker) keeps Gmail's light-theme dark color
+   unless forced to inherit. [role='option'] and .J-N cover the font/size
+   listboxes the formatting toolbar opens. */
 body.dark-mode [role='menuitem']:not(.nH.Hd [role='menuitem']) *,
 body.dark-mode [role='menuitemcheckbox']:not(.nH.Hd [role='menuitemcheckbox']) *,
-body.dark-mode [role='menuitemradio']:not(.nH.Hd [role='menuitemradio']) * {
+body.dark-mode [role='menuitemradio']:not(.nH.Hd [role='menuitemradio']) *,
+body.dark-mode [role='option']:not(.nH.Hd [role='option']) *,
+body.dark-mode .J-N:not(.nH.Hd .J-N) * {
   color: inherit !important;
+}
+
+/* Palette section headings in the compose text-color picker - real 2026
+   markup (from Joey's live DOM): <td class="aAi">Background color</td>.
+   They sit outside any menu item, so the inherit rule above never reaches
+   them and they keep Gmail's light-theme #222 - invisible on the dark
+   menu surface. td-qualified to avoid other .aAi uses outside menus. */
+body.dark-mode .J-M td.aAi:not(.nH.Hd td.aAi),
+body.dark-mode [role='menu'] td.aAi:not(.nH.Hd td.aAi) {
+  color: var(--dm-text-secondary) !important;
 }
 
 /* Hovered / keyboard-highlighted menu items */
@@ -3043,11 +3157,11 @@ body.dark-mode .gssb_c td {
 body.dark-mode .zA,
 body.dark-mode .Bs.nH.iY.bAt {
   background: var(--dm-surface) !important; /* Dark background for read emails */
-  color: #fff !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 body.dark-mode .zA * {
-  color: #fff !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 /* Sidebar text colors */
@@ -3468,21 +3582,124 @@ body.dark-mode .nH.a98.iY.aHo .T-KT:not(.T-KT-Jp)::after {
 }
 
 /* Bottom Reply / Reply all / Forward pills - solid fills so the buttons and
-   their sprite icons stay legible while scrolling over message content */
-body.dark-mode .amn {
+   their sprite icons stay legible while scrolling over message content.
+   2026-06: Gmail is rolling out a Wiz-rebuilt pill bar (.btDi4d with .DILLkc /
+   .jWOS7-JX-I buttons, replacing .amn/.ams/.aaq) - both generations styled */
+body.dark-mode .amn,
+body.dark-mode .btDi4d {
   background-color: var(--dm-surface) !important;
 }
 
 body.dark-mode .amn .ams,
 body.dark-mode .nH.a98.iY.aHo .amn .ams,
 body.dark-mode .nH.a98.iY.aHo .amn .ams * {
-  background-color: #e8eaed !important;
-  color: #202124 !important;
+  background-color: var(--dm-hover) !important;
+  color: #e8eaed !important;
   border-color: var(--dm-border-muted) !important;
 }
 
-body.dark-mode .nH.a98.iY.aHo img[src*='cleardot']:not(.T-KT-JX) {
+/* Wiz icon buttons in / next to the pill bar (emoji react, more actions).
+   Gmail parks the emoji button inside the legacy .amn bar with a light
+   disabled fill (#e8eaed) that matched the forced icon color - clear it so
+   the icon is visible on a dark chip. */
+body.dark-mode .amn .jWOS7-JX-I,
+body.dark-mode .amn .jWOS7-JX-I *,
+body.dark-mode .btDi4d .DILLkc,
+body.dark-mode .btDi4d .jWOS7-JX-I {
+  background-color: var(--dm-hover) !important;
+  color: #e8eaed !important;
+  border-color: var(--dm-border-muted) !important;
+}
+
+/* The add-reaction glyph itself: an empty <div class="jWOS7-JX-ano"> whose
+   smiley comes from a Gmail sprite (background-image), dark gray - invisible
+   on the dark chip, and the child rule above additionally slabs it with the
+   chip fill. Undo the fill (the filter would invert it into a light square)
+   and invert just the sprite to read light. Placed after that rule to win
+   the equal-specificity tie. */
+body.dark-mode .amn .jWOS7-JX-ano,
+body.dark-mode .btDi4d .jWOS7-JX-ano {
+  background-color: transparent !important;
   filter: invert(0.78) !important;
+}
+
+/* Dropdown disclosure arrows on the formatting-toolbar split buttons
+   (text color, alignment, ...): Gmail draws them as a grey PNG sprite
+   (small-grey-disclosure-arrow-down.png) at opacity .8 - invisible on the
+   dark toolbar. Popup compose excluded: the dialog invert filter already
+   lightens it there (a second invert would flip it dark again). */
+body.dark-mode .J-Z-M-I-JG:not(.nH.Hd .J-Z-M-I-JG) {
+  filter: invert(0.78) !important;
+  opacity: 1 !important;
+}
+
+/* Gmail's mid-2026 floating Send/formatting row: in the inline reply it is
+   a fixed overlay strip outside the conversation containers, so no scoped
+   dark rule reaches it and it stays stock white. The popup compose variant
+   is excluded - it lives inside the inverted dialog, where Gmail's light
+   fill already renders dark (and a dark fill would invert back to light). */
+body.dark-mode .aDj:not(.nH.Hd .aDj),
+body.dark-mode .btC:not(.nH.Hd .btC) {
+  background-color: var(--dm-surface) !important;
+  color: #e8eaed !important;
+}
+
+/* The floating variant nests white padded wrappers between .aDj and .btC
+   (visible as light slivers at both ends of the strip) - flatten them */
+body.dark-mode .aDj:not(.nH.Hd .aDj) .aDh,
+body.dark-mode .aDj:not(.nH.Hd .aDj) .IZ,
+body.dark-mode .aDj:not(.nH.Hd .aDj) .aDh > *,
+body.dark-mode .aDj:not(.nH.Hd .aDj) .IZ > tbody > tr:not(.btC) {
+  background-color: transparent !important;
+}
+
+/* Gmail's white filler strip at the bottom of the floating bar
+   (.aC3 { background:#fff; margin:0 -3px } + a JS-set height) overhangs
+   3px past both ends of the dark row - the "white tabs". Popup compose
+   excluded: there the invert filter needs it light. */
+body.dark-mode .aC3:not(.nH.Hd .aC3) {
+  background: var(--dm-surface) !important;
+  border-color: var(--dm-surface) !important;
+}
+
+/* The floating bar's white backing plate: Gmail's `.HM .ahe:after` is a
+   z-index:-1 white slab that deliberately overhangs 8px on each side of
+   the bar (left:-8px; padding:0 8px). The dark row covers the middle;
+   the overhangs read as white tabs at both ends. Same popup exclusion. */
+body.dark-mode .HM .ahe:not(.nH.Hd *)::after {
+  background: var(--dm-surface) !important;
+}
+
+/* When Gmail disables the emoji-react button ("can't react to a group")
+   its glyph doesn't survive the dark theming and it reads as a bare gray
+   box after the Forward pill - drop it rather than theme an inert stub */
+body.dark-mode .amn .jWOS7-JX-I:disabled,
+body.dark-mode .amn .jWOS7-JX-I[aria-disabled='true'],
+body.dark-mode .btDi4d .jWOS7-JX-I:disabled,
+body.dark-mode .btDi4d .jWOS7-JX-I[aria-disabled='true'] {
+  display: none !important;
+}
+
+/* .T-I-atl exclusion: glyphs on the blue Send/Send-and-archive pills use
+   Gmail's white sprite already - inverting them leaves a dark blob */
+body.dark-mode .nH.a98.iY.aHo img[src*='cleardot']:not(.T-KT-JX, .T-I-atl img) {
+  filter: invert(0.78) !important;
+}
+
+/* Newer / Older chevrons in the conversation toolbar are cleardot sprites
+   outside the reading-pane scope above - without this they render
+   dark-on-dark. The background-color must stay transparent at higher
+   specificity than the .D.E.G-atb * surface dump, or the invert flips the
+   forced dark fill into a light square that swallows the glyph. */
+body.dark-mode .G-atb img[src*='cleardot']:not(.T-KT-JX, .T-I-atl img),
+body.dark-mode .D.E.G-atb img[src*='cleardot']:not(.T-KT-JX, .T-I-atl img) {
+  background-color: transparent !important;
+  filter: invert(0.78) !important;
+}
+
+/* Dim the disabled (aria-disabled) pagination arrow like Gmail does */
+body.dark-mode .G-atb [aria-disabled='true'] img[src*='cleardot'] {
+  opacity: 0.35 !important;
 }
 
 /* QUICK SETTINGS PANEL */
@@ -3571,6 +3788,7 @@ body.dark-mode .vIO7af,
 body.dark-mode .no,
 body.dark-mode .Tm.aeJ,
 body.dark-mode .brC-aT5-aOt-Jw,
+body.dark-mode div[role='complementary'][aria-label='Side panel'],
 body.dark-mode .aj5 .J-KU,
 body.dark-mode .aj5.J-KU-Jg,
 body.dark-mode .aKh,
@@ -3582,11 +3800,11 @@ body.dark-mode .zA,
 body.dark-mode .zA:hover,
 body.dark-mode .Bs.nH.iY.bAt {
   background: var(--dm-surface) !important;
-  color: #fff !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 body.dark-mode .zA * {
-  color: #fff !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 body.dark-mode .TO .nU > .n0,
@@ -3853,12 +4071,17 @@ body.dark-mode .nH.a98.iY.aHo .og {
   box-shadow: none !important;
 }
 
-/* Remove borders from table cells and specific button classes */
+/* Remove borders from table cells and specific button classes
+   (2026-06: .Wsq5Cf is the Wiz replacement for the .aap 3-dot button,
+   .DILLkc/.jWOS7-JX-I the replacements for the .aaq/.ams reply pills) */
 body.dark-mode .nH.a98.iY.aHo .gH.acX.bAm,
 body.dark-mode .nH.a98.iY.aHo .T-I-Js-IF,
 body.dark-mode .nH.a98.iY.aHo .T-I-Js-Gs,
 body.dark-mode .nH.a98.iY.aHo .aaq,
-body.dark-mode .nH.a98.iY.aHo .aap {
+body.dark-mode .nH.a98.iY.aHo .aap,
+body.dark-mode .nH.a98.iY.aHo .Wsq5Cf,
+body.dark-mode .btDi4d .DILLkc,
+body.dark-mode .btDi4d .jWOS7-JX-I {
   border: none !important;
   border-width: 0 !important;
   border-style: none !important;
@@ -3896,7 +4119,7 @@ body.dark-mode .zA,
 body.dark-mode .zA:hover,
 body.dark-mode .Bs.nH.iY.bAt {
   background: var(--dm-bg) !important;
-  color: #fff !important;
+  color: var(--dm-text-secondary) !important;
 }
 
 /* Email list scrollable area */
@@ -4266,6 +4489,32 @@ body.dark-mode .zA.zE {
 /* Hover state - same as light mode */
 body.dark-mode .zA:hover {
   background: var(--dm-surface) !important; /* Slightly lighter on hover */
+}
+
+/* The light-mode row cards draw their separator inside the box-shadow
+   stack (0 -1px 0 #e0e0e0, see the .zA card rule near the top of this
+   file). Dark mode replaced the backgrounds but inherited that shadow, so
+   every row kept a glowing 1px light gridline. Same stack, dark edge. */
+body.dark-mode .zA,
+body.dark-mode .zA:hover {
+  box-shadow:
+    0 -1px 0 var(--dm-hover),
+    0 0 2px rgb(0 0 0 / 12%),
+    0 2px 4px rgb(0 0 0 / 24%) !important;
+}
+
+/* Text hierarchy on dark rows - the old blanket #fff on every span was
+   glaring and flattened read/unread. Snippets and read-row dates recede;
+   unread sender/subject/date lead, but never reach #fff. */
+body.dark-mode .zA .y2,
+body.dark-mode .zA .xW span {
+  color: var(--dm-text-muted) !important;
+}
+
+body.dark-mode .zA.zE .yW *,
+body.dark-mode .zA.zE .bog,
+body.dark-mode .zA.zE .xW span {
+  color: #e8eaed !important;
 }
 
 body.dark-mode .zA .apU.xY .T-KT::before,
@@ -4885,19 +5134,23 @@ body.dark-mode .w-asV.bbg.aiw[pageTitle='calls'] {
 }
 
 /* Make recipient chips more visible */
-body.dark-mode .vR,
-body.dark-mode .vN {
+
+/* Compose-dialog descendants excluded from the three rules below: the
+   dialog is invert-filtered, so dark fills / light accents set in the DOM
+   would render light / murky after the flip */
+body.dark-mode .vR:not(.nH.Hd .vR),
+body.dark-mode .vN:not(.nH.Hd .vN) {
   background-color: #3c3c3c !important;
   color: white !important;
 }
 
 /* Make "Draft saved" text visible */
-body.dark-mode .aYF {
+body.dark-mode .aYF:not(.nH.Hd .aYF) {
   color: var(--dm-accent) !important;
 }
 
 /* Make toolbar dividers visible */
-body.dark-mode .oc {
+body.dark-mode .oc:not(.nH.Hd .oc) {
   border-color: var(--dm-selected) !important;
 }
 
@@ -4939,7 +5192,9 @@ body.dark-mode .IU .a2U, /* Chat and Meet icon */
 body.dark-mode .IU .QZ,  /* Density previews */
 body.dark-mode .IU .Vm,  /* Inbox Type previews */
 body.dark-mode .IU .XK   /* Reading Pane previews */ {
-  filter: invert(0.85) brightness(1.5) !important;
+  /* hue-rotate keeps the blue selection border blue - a bare invert turned
+     it orange */
+  filter: invert(0.85) hue-rotate(180deg) brightness(1.15) !important;
 }
 
 /* Do not invert theme previews */
@@ -5461,6 +5716,26 @@ body.dark-mode .a3I {
   filter: invert(1) !important;
 }
 
+/* Inline-reply send row (2026 floating .btC variant): the toolbar glyphs
+   are gm3 PNG sprites with a baked dark color on what is now a dark row.
+   Invert them here only - inside the popup dialog the whole-dialog invert
+   already lightens them, and the blue Send buttons keep their own glyphs
+   (.aPa/.G-asx are excluded by scoping to the icon carriers). Wins over
+   the filter:none reset above via the extra .btC/:not() specificity. */
+body.dark-mode .btC:not(.nH.Hd .btC) :is(.aaA, .aaB, .dv, .Y1, .og) {
+  background-color: transparent !important;
+  filter: invert(0.78) !important;
+}
+
+/* Same treatment for the inline-reply formatting toolbar (.J-Z, opened via
+   the Aa toggle): bold/italic/size/color/list glyphs are the same dark
+   sprite family on the now-dark bar. hue-rotate keeps the text-color
+   indicator strip its true hue under the invert. */
+body.dark-mode .J-Z:not(.nH.Hd *) :is(.aaA, .aaB) {
+  background-color: transparent !important;
+  filter: invert(0.78) hue-rotate(180deg) !important;
+}
+
 /* =============================================================================
    FORCE DARK MODE OVERRIDES - HIGH PRIORITY
    ============================================================================= */
@@ -5642,6 +5917,15 @@ body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked='true'] + .
   display: none !important;
 }
 
+/* The initial-avatar palette was tuned for white rows; on dark rows the
+   saturated fills (yellow, pink, green) glow. Mute them - the hue stays
+   recognizable, the letter dims with it onto the gray ladder. Values
+   picked by Joey on the palette board (2026-07-02). BIMI logo avatars and
+   the reminder icon keep their true colors. */
+body.dark-mode .avatar:not(.web-avatar, .reminder .avatar) {
+  filter: saturate(0.3) brightness(0.8);
+}
+
 /* =============================================================================
    PURCHASES SIDEBAR ICON (LIGHT + DARK)
    The bundled colored cart used as a mask so it renders monochrome like the
@@ -5660,6 +5944,23 @@ body.dark-mode .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked='true'] + .
   -webkit-mask-position: center !important;
   mask-position: center !important;
   background-color: #444746 !important;
+  background-image: none !important;
+}
+
+/* Light-mode mask for Purchases - this rule existed only in the Firefox
+   block below; the Chrome twin was missing, so Chrome always showed Gmail's
+   native icon */
+[data-tooltip='Purchases'] .qj,
+[data-tooltip='Purchased'] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-color: #4c4f4d !important;
   background-image: none !important;
 }
 
@@ -5882,4 +6183,220 @@ body.dark-mode .D.E.G-atb .amJ {
 body.dark-mode .D.E.G-atb .apH {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_splitscreen_24dp.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_splitscreen_24dp.svg') !important;
+}
+
+/* =============================================================================
+   GM3 (MATERIAL 3) TOKEN SYSTEM - DARK MODE
+   Gmail's 2026 "Wiz" components (context menus, More menus, pickers, chips)
+   read their colors from --gm3-sys-color-* custom properties with hardcoded
+   LIGHT fallbacks - on Joey's account no element defines the tokens at all.
+   Defining them dark here themes every current and future GM3 component in
+   one place, with no dependence on Gmail's hashed class names.
+   Values: OWA-palette neutrals (matching --dm-*) + Google's official dark
+   accent ladders so on-color contrast pairs stay correct.
+   ============================================================================= */
+body.dark-mode {
+  --gm3-sys-color-background: #1f1f1f;
+  --gm3-sys-color-background-rgb: 31, 31, 31;
+  --gm3-sys-color-error: #f2b8b5;
+  --gm3-sys-color-error-container: #8c1d18;
+  --gm3-sys-color-error-container-rgb: 140, 29, 24;
+  --gm3-sys-color-error-rgb: 242, 184, 181;
+  --gm3-sys-color-inverse-on-surface: #303030;
+  --gm3-sys-color-inverse-on-surface-rgb: 48, 48, 48;
+  --gm3-sys-color-inverse-primary: #0b57d0;
+  --gm3-sys-color-inverse-primary-rgb: 11, 87, 208;
+  --gm3-sys-color-inverse-surface: #e3e3e3;
+  --gm3-sys-color-inverse-surface-rgb: 227, 227, 227;
+  --gm3-sys-color-on-background: #e3e3e3;
+  --gm3-sys-color-on-background-rgb: 227, 227, 227;
+  --gm3-sys-color-on-error: #601410;
+  --gm3-sys-color-on-error-container: #f9dedc;
+  --gm3-sys-color-on-error-container-rgb: 249, 222, 220;
+  --gm3-sys-color-on-error-rgb: 96, 20, 16;
+  --gm3-sys-color-on-primary: #062e6f;
+  --gm3-sys-color-on-primary-container: #d3e3fd;
+  --gm3-sys-color-on-primary-container-rgb: 211, 227, 253;
+  --gm3-sys-color-on-primary-fixed: #041e49;
+  --gm3-sys-color-on-primary-fixed-rgb: 4, 30, 73;
+  --gm3-sys-color-on-primary-fixed-variant: #0842a0;
+  --gm3-sys-color-on-primary-fixed-variant-rgb: 8, 66, 160;
+  --gm3-sys-color-on-primary-rgb: 6, 46, 111;
+  --gm3-sys-color-on-secondary: #035;
+  --gm3-sys-color-on-secondary-container: #c2e7ff;
+  --gm3-sys-color-on-secondary-container-rgb: 194, 231, 255;
+  --gm3-sys-color-on-secondary-fixed: #001d35;
+  --gm3-sys-color-on-secondary-fixed-rgb: 0, 29, 53;
+  --gm3-sys-color-on-secondary-fixed-variant: #004a77;
+  --gm3-sys-color-on-secondary-fixed-variant-rgb: 0, 74, 119;
+  --gm3-sys-color-on-secondary-rgb: 0, 51, 85;
+  --gm3-sys-color-on-surface: #e3e3e3;
+  --gm3-sys-color-on-surface-rgb: 227, 227, 227;
+  --gm3-sys-color-on-surface-variant: #c4c7c5;
+  --gm3-sys-color-on-surface-variant-rgb: 196, 199, 197;
+  --gm3-sys-color-on-tertiary: #0a3818;
+  --gm3-sys-color-on-tertiary-container: #c4eed0;
+  --gm3-sys-color-on-tertiary-container-rgb: 196, 238, 208;
+  --gm3-sys-color-on-tertiary-fixed: #072711;
+  --gm3-sys-color-on-tertiary-fixed-rgb: 7, 39, 17;
+  --gm3-sys-color-on-tertiary-fixed-variant: #0f5223;
+  --gm3-sys-color-on-tertiary-fixed-variant-rgb: 15, 82, 35;
+  --gm3-sys-color-on-tertiary-rgb: 10, 56, 24;
+  --gm3-sys-color-outline: #8e918f;
+  --gm3-sys-color-outline-rgb: 142, 145, 143;
+  --gm3-sys-color-outline-variant: #525252;
+  --gm3-sys-color-outline-variant-rgb: 82, 82, 82;
+  --gm3-sys-color-primary: #a8c7fa;
+  --gm3-sys-color-primary-container: #0842a0;
+  --gm3-sys-color-primary-container-rgb: 8, 66, 160;
+  --gm3-sys-color-primary-fixed: #d3e3fd;
+  --gm3-sys-color-primary-fixed-dim: #a8c7fa;
+  --gm3-sys-color-primary-fixed-dim-rgb: 168, 199, 250;
+  --gm3-sys-color-primary-fixed-rgb: 211, 227, 253;
+  --gm3-sys-color-primary-rgb: 168, 199, 250;
+  --gm3-sys-color-scrim: #000;
+  --gm3-sys-color-scrim-rgb: 0, 0, 0;
+  --gm3-sys-color-secondary: #7fcfff;
+  --gm3-sys-color-secondary-container: #004a77;
+  --gm3-sys-color-secondary-container-rgb: 0, 74, 119;
+  --gm3-sys-color-secondary-fixed: #c2e7ff;
+  --gm3-sys-color-secondary-fixed-dim: #7fcfff;
+  --gm3-sys-color-secondary-fixed-dim-rgb: 127, 207, 255;
+  --gm3-sys-color-secondary-fixed-rgb: 194, 231, 255;
+  --gm3-sys-color-secondary-rgb: 127, 207, 255;
+  --gm3-sys-color-shadow: #000;
+  --gm3-sys-color-shadow-rgb: 0, 0, 0;
+  --gm3-sys-color-surface: #292929;
+  --gm3-sys-color-surface-bright: #3d3d3d;
+  --gm3-sys-color-surface-bright-rgb: 61, 61, 61;
+  --gm3-sys-color-surface-container: #333;
+  --gm3-sys-color-surface-container-high: #3d3d3d;
+  --gm3-sys-color-surface-container-high-rgb: 61, 61, 61;
+  --gm3-sys-color-surface-container-highest: #4a4a4a;
+  --gm3-sys-color-surface-container-highest-rgb: 74, 74, 74;
+  --gm3-sys-color-surface-container-low: #292929;
+  --gm3-sys-color-surface-container-low-rgb: 41, 41, 41;
+  --gm3-sys-color-surface-container-lowest: #1f1f1f;
+  --gm3-sys-color-surface-container-lowest-rgb: 31, 31, 31;
+  --gm3-sys-color-surface-container-rgb: 51, 51, 51;
+  --gm3-sys-color-surface-dim: #1f1f1f;
+  --gm3-sys-color-surface-dim-rgb: 31, 31, 31;
+  --gm3-sys-color-surface-rgb: 41, 41, 41;
+  --gm3-sys-color-surface-tint: #a8c7fa;
+  --gm3-sys-color-surface-tint-rgb: 168, 199, 250;
+  --gm3-sys-color-surface-variant: #3d3d3d;
+  --gm3-sys-color-surface-variant-rgb: 61, 61, 61;
+  --gm3-sys-color-tertiary: #6dd58c;
+  --gm3-sys-color-tertiary-container: #0f5223;
+  --gm3-sys-color-tertiary-container-rgb: 15, 82, 35;
+  --gm3-sys-color-tertiary-fixed: #c4eed0;
+  --gm3-sys-color-tertiary-fixed-dim: #6dd58c;
+  --gm3-sys-color-tertiary-fixed-dim-rgb: 109, 213, 140;
+  --gm3-sys-color-tertiary-fixed-rgb: 196, 238, 208;
+  --gm3-sys-color-tertiary-rgb: 109, 213, 140;
+}
+
+/* The compose dialog is dark-themed via an invert filter, so GM3 components
+   inside it must keep their LIGHT values - the filter turns them dark.
+   Custom-property proximity (closer element wins) makes this override the
+   body-level dark definitions above. */
+body.dark-mode .nH.Hd[role='dialog'] {
+  --gm3-sys-color-background: #fff;
+  --gm3-sys-color-background-rgb: 255, 255, 255;
+  --gm3-sys-color-error: #b3261e;
+  --gm3-sys-color-error-container: #f9dedc;
+  --gm3-sys-color-error-container-rgb: 249, 222, 220;
+  --gm3-sys-color-error-rgb: 179, 38, 30;
+  --gm3-sys-color-inverse-on-surface: #f2f2f2;
+  --gm3-sys-color-inverse-on-surface-rgb: 242, 242, 242;
+  --gm3-sys-color-inverse-primary: #a8c7fa;
+  --gm3-sys-color-inverse-primary-rgb: 168, 199, 250;
+  --gm3-sys-color-inverse-surface: #303030;
+  --gm3-sys-color-inverse-surface-rgb: 48, 48, 48;
+  --gm3-sys-color-on-background: #1f1f1f;
+  --gm3-sys-color-on-background-rgb: 31, 31, 31;
+  --gm3-sys-color-on-error: #fff;
+  --gm3-sys-color-on-error-container: #410e0b;
+  --gm3-sys-color-on-error-container-rgb: 65, 14, 11;
+  --gm3-sys-color-on-error-rgb: 255, 255, 255;
+  --gm3-sys-color-on-primary: #fff;
+  --gm3-sys-color-on-primary-container: #041e49;
+  --gm3-sys-color-on-primary-container-rgb: 4, 30, 73;
+  --gm3-sys-color-on-primary-fixed: #041e49;
+  --gm3-sys-color-on-primary-fixed-rgb: 4, 30, 73;
+  --gm3-sys-color-on-primary-fixed-variant: #0842a0;
+  --gm3-sys-color-on-primary-fixed-variant-rgb: 8, 66, 160;
+  --gm3-sys-color-on-primary-rgb: 255, 255, 255;
+  --gm3-sys-color-on-secondary: #fff;
+  --gm3-sys-color-on-secondary-container: #001d35;
+  --gm3-sys-color-on-secondary-container-rgb: 0, 29, 53;
+  --gm3-sys-color-on-secondary-fixed: #001d35;
+  --gm3-sys-color-on-secondary-fixed-rgb: 0, 29, 53;
+  --gm3-sys-color-on-secondary-fixed-variant: #004a77;
+  --gm3-sys-color-on-secondary-fixed-variant-rgb: 0, 74, 119;
+  --gm3-sys-color-on-secondary-rgb: 255, 255, 255;
+  --gm3-sys-color-on-surface: #1f1f1f;
+  --gm3-sys-color-on-surface-rgb: 31, 31, 31;
+  --gm3-sys-color-on-surface-variant: #444746;
+  --gm3-sys-color-on-surface-variant-rgb: 68, 71, 70;
+  --gm3-sys-color-on-tertiary: #fff;
+  --gm3-sys-color-on-tertiary-container: #072711;
+  --gm3-sys-color-on-tertiary-container-rgb: 7, 39, 17;
+  --gm3-sys-color-on-tertiary-fixed: #072711;
+  --gm3-sys-color-on-tertiary-fixed-rgb: 7, 39, 17;
+  --gm3-sys-color-on-tertiary-fixed-variant: #0f5223;
+  --gm3-sys-color-on-tertiary-fixed-variant-rgb: 15, 82, 35;
+  --gm3-sys-color-on-tertiary-rgb: 255, 255, 255;
+  --gm3-sys-color-outline: #747775;
+  --gm3-sys-color-outline-rgb: 116, 119, 117;
+  --gm3-sys-color-outline-variant: #c4c7c5;
+  --gm3-sys-color-outline-variant-rgb: 196, 199, 197;
+  --gm3-sys-color-primary: #0b57d0;
+  --gm3-sys-color-primary-container: #d3e3fd;
+  --gm3-sys-color-primary-container-rgb: 211, 227, 253;
+  --gm3-sys-color-primary-fixed: #d3e3fd;
+  --gm3-sys-color-primary-fixed-dim: #a8c7fa;
+  --gm3-sys-color-primary-fixed-dim-rgb: 168, 199, 250;
+  --gm3-sys-color-primary-fixed-rgb: 211, 227, 253;
+  --gm3-sys-color-primary-rgb: 11, 87, 208;
+  --gm3-sys-color-scrim: #000;
+  --gm3-sys-color-scrim-rgb: 0, 0, 0;
+  --gm3-sys-color-secondary: #00639b;
+  --gm3-sys-color-secondary-container: #c2e7ff;
+  --gm3-sys-color-secondary-container-rgb: 194, 231, 255;
+  --gm3-sys-color-secondary-fixed: #c2e7ff;
+  --gm3-sys-color-secondary-fixed-dim: #7fcfff;
+  --gm3-sys-color-secondary-fixed-dim-rgb: 127, 207, 255;
+  --gm3-sys-color-secondary-fixed-rgb: 194, 231, 255;
+  --gm3-sys-color-secondary-rgb: 0, 99, 155;
+  --gm3-sys-color-shadow: #000;
+  --gm3-sys-color-shadow-rgb: 0, 0, 0;
+  --gm3-sys-color-surface: #fff;
+  --gm3-sys-color-surface-bright: #fff;
+  --gm3-sys-color-surface-bright-rgb: 255, 255, 255;
+  --gm3-sys-color-surface-container: #f0f4f9;
+  --gm3-sys-color-surface-container-high: #e9eef6;
+  --gm3-sys-color-surface-container-high-rgb: 233, 238, 246;
+  --gm3-sys-color-surface-container-highest: #dde3ea;
+  --gm3-sys-color-surface-container-highest-rgb: 221, 227, 234;
+  --gm3-sys-color-surface-container-low: #f8fafd;
+  --gm3-sys-color-surface-container-low-rgb: 248, 250, 253;
+  --gm3-sys-color-surface-container-lowest: #fff;
+  --gm3-sys-color-surface-container-lowest-rgb: 255, 255, 255;
+  --gm3-sys-color-surface-container-rgb: 240, 244, 249;
+  --gm3-sys-color-surface-dim: #d3dbe5;
+  --gm3-sys-color-surface-dim-rgb: 211, 219, 229;
+  --gm3-sys-color-surface-rgb: 255, 255, 255;
+  --gm3-sys-color-surface-tint: #6991d6;
+  --gm3-sys-color-surface-tint-rgb: 105, 145, 214;
+  --gm3-sys-color-surface-variant: #e1e3e1;
+  --gm3-sys-color-surface-variant-rgb: 225, 227, 225;
+  --gm3-sys-color-tertiary: #146c2e;
+  --gm3-sys-color-tertiary-container: #c4eed0;
+  --gm3-sys-color-tertiary-container-rgb: 196, 238, 208;
+  --gm3-sys-color-tertiary-fixed: #c4eed0;
+  --gm3-sys-color-tertiary-fixed-dim: #6dd58c;
+  --gm3-sys-color-tertiary-fixed-dim-rgb: 109, 213, 140;
+  --gm3-sys-color-tertiary-fixed-rgb: 196, 238, 208;
+  --gm3-sys-color-tertiary-rgb: 20, 108, 46;
 }
