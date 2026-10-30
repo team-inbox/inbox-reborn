@@ -138,6 +138,7 @@ const CSS_CLASSES = {
 const DATE_LABELS = {
   TODAY: 'Today',
   YESTERDAY: 'Yesterday',
+  THIS_WEEK: 'This week',
   THIS_MONTH: 'This month',
   LAST_YEAR: 'Last year',
 };
@@ -523,12 +524,19 @@ const buildDateLabel = (date) => {
 
   const now = new Date();
 
+  // Count whole calendar days between local midnights, so Yesterday and This
+  // week work across month and year boundaries (and DST shifts)
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const day = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const daysAgo = Math.round((today - day) / 86400000);
+
+  if (daysAgo === 0) return DATE_LABELS.TODAY;
+  if (daysAgo === 1) return DATE_LABELS.YESTERDAY;
+  // Weeks start on Sunday: getDay() is the number of days since then
+  if (daysAgo > 1 && daysAgo <= now.getDay()) return DATE_LABELS.THIS_WEEK;
+
   if (now.getFullYear() === date.getFullYear()) {
-    if (now.getMonth() === date.getMonth()) {
-      if (now.getDate() === date.getDate()) return DATE_LABELS.TODAY;
-      if (now.getDate() - 1 === date.getDate()) return DATE_LABELS.YESTERDAY;
-      return DATE_LABELS.THIS_MONTH;
-    }
+    if (now.getMonth() === date.getMonth()) return DATE_LABELS.THIS_MONTH;
     return MONTHS[date.getMonth()];
   }
 
@@ -1012,6 +1020,7 @@ const getEmails = () => {
 
   const currentTab = tabs.length && select.currentTab();
   let prevTimeStamp = null;
+  let prevList = null;
   labelStats = {};
 
   // Add or remove bundle page class based on current view
@@ -1022,6 +1031,16 @@ const getEmails = () => {
   // Process emails from last to first (bottom to top in UI)
   for (let i = emails.length - 1; i >= 0; i--) {
     const email = emails[i];
+
+    // Gmail keeps other views' lists (a label you opened, the pre-refresh
+    // inbox) hidden in the DOM, and select.emails() returns them all. Compare
+    // dates only within one list - otherwise the visible inbox is measured
+    // against a newer email in a hidden list and every row reads as snoozed
+    if (email.parentElement !== prevList) {
+      prevList = email.parentElement;
+      prevTimeStamp = null;
+    }
+
     const info = {
       emailEl: email,
 
@@ -1180,6 +1199,7 @@ const updateReminders = () => {
   // Get user email and UI state
   const myEmail = getMyEmailAddress();
   let lastLabel = null;
+  let lastList = null;
   const isInInboxFlag = isInInbox();
   const hasImportantMarkers = checkImportantMarkers();
   const tabs = getTabs();
@@ -1303,7 +1323,12 @@ const updateReminders = () => {
       addEventAttachment(emailEl);
     }
 
-    // Handle date labels
+    // Handle date labels - each list gets its own run of labels
+    if (emailEl.parentElement !== lastList) {
+      lastList = emailEl.parentElement;
+      lastLabel = null;
+    }
+
     let label = emailInfo.dateLabel;
 
     // Special handling for snoozed emails
@@ -1316,6 +1341,10 @@ const updateReminders = () => {
     if (label !== lastLabel) {
       addDateLabel(emailEl, label);
       lastLabel = label;
+    } else if (emailEl.previousSibling?.className === 'time-row') {
+      // A label left over from an earlier pass (rows shifted after a Gmail
+      // refresh) that no longer starts a new date group
+      emailEl.previousSibling.remove();
     }
 
     // Handle email bundling
