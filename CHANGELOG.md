@@ -3,6 +3,43 @@
 All notable changes to the Inbox Reborn theme for Gmail™, grouped by release era.
 PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inbox-reborn/pulls).
 
+## 2.3.0 — October 2026
+
+### Thread list (`fix/dark-mode-polish-2026-10`)
+
+- New "This week" date group between Yesterday and This month (weeks start
+  on Sunday; the group is skipped when it would be empty)
+- Yesterday now works across month and year boundaries - on the 1st,
+  yesterday's mail no longer lands under last month's name (or "Last year"
+  on January 1st)
+- Date groups no longer collapse into a single list after a Gmail refresh:
+  Gmail keeps other views' lists hidden in the DOM, and dates were being
+  compared across them, so the visible inbox read as snoozed and fell under
+  one label. Each list is now grouped on its own, and stale group headers
+  left behind by shifted rows are removed
+- Starred pins take the color of the star picked in Settings > Stars (all
+  six stars and six badges, colors sampled from the Settings icons), in both
+  themes; replaces the six per-color pin PNGs
+- User-assigned label colors now show on sidebar label icons in both themes
+
+### Dark mode polish (`fix/dark-mode-polish-2026-10`)
+
+- HTML emails render through an invert filter instead of having their
+  backgrounds and borders stripped, so buttons, borders, and dividers survive
+  (photos are re-inverted to their true colors)
+- Settings: the title/tab header is dark and full width, native buttons
+  (Save Changes, Cancel, Export, Create new label, ...) are themed, and the
+  outlined Workspace button and span links regain their accent color
+- Icons brightened: menu checkboxes, search and snooze glyphs; the
+  per-message More menu; Reply/Forward pills; compose titlebar buttons;
+  Newer/Older chevrons (including disabled ones); the side panel "+" and
+  hide arrow; the sidebar More chevron, Labels "+", and nested-label arrows;
+  and the row checkbox shown when hovering an avatar
+- AI Inbox icon sized, aligned, and colored to match the other sidebar icons
+- Reading pane dividers and top edge toned down; attachment filename strip
+  and dog-ear fixed; "View messages" / "delete forever" links in the
+  deleted-messages notice use the link color; pager counter legible
+
 ## 2.2.0 — July 2026
 
 ### Dark mode live-testing polish (`fix/gmail-2026-wiz-churn`)
