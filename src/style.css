@@ -232,77 +232,68 @@ td.apU.xY .T-KT.xl::before {
   background-image: none !important; /* Ensure no conflicting background image */
 }
 
-/* Starred - Yellow Star */
-td.apU.xY .T-KT.T-KT-Jp::before {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-yellow-24dp-r4-2x.png') !important;
-  background-size: 24px !important;
-  opacity: 1;
+/* Starred pins take the color of the star type chosen in Settings > Stars
+   (Gmail cycles through the "In use" stars on each click). Colors are sampled
+   from the star icons on the Settings page itself, so a pin matches the star
+   the user picked; the badge stars (bang, guillemet, check, info, question)
+   use their badge's fill. Painted through the keep-icon mask above, so the
+   pin shape is identical in every color and in both themes */
+.T-KT:is(.N6cuDc, .T-KT-Jp) {
+  --pin-color: #f4b400; /* yellow-star */
 }
 
-/* Starred - Orange Star */
-td.apU.xY .T-KT.xl::before {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-orange-24dp-r4-2x.png') !important;
-  background-size: 24px !important;
+.T-KT.xl {
+  --pin-color: #f57c00; /* orange-star */
 }
 
-/* Starred - Red Star */
-td.apU.xY .T-KT.xn::before {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-red-24dp-r4-2x.png') !important;
-  background-size: 24px !important;
+.T-KT.xn {
+  --pin-color: #db4437; /* red-star */
 }
 
-/* Starred - Purple Star */
-td.apU.xY .T-KT.xm::before {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-purple-24dp-r4-2x.png') !important;
-  background-size: 24px !important;
+.T-KT.xm {
+  --pin-color: #9c27b0; /* purple-star */
 }
 
-/* Starred - Blue Star */
-td.apU.xY .T-KT.xj::before {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-blue-24dp-r4-2x.png') !important;
-  background-size: 24px !important;
+.T-KT.xj {
+  --pin-color: #0b57d0; /* blue-star */
 }
 
-/* Starred - Green Star */
-td.apU.xY .T-KT.xk::before {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic-mark-pinned-green-24dp-r4-2x.png') !important;
-  background-size: 24px !important;
+.T-KT.xk {
+  --pin-color: #0f9d58; /* green-star */
 }
 
-/* Starred - Red Bang */
-td.apU.xY .T-KT.xg::before {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-  background-size: 1px !important;
+.T-KT.xg {
+  --pin-color: #fb8f91; /* red-bang */
 }
 
-/* Starred - Orange Guillimet */
-td.apU.xY .T-KT.xe::before {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-  background-size: 1px !important;
+.T-KT.xe {
+  --pin-color: #fda365; /* orange-guillemet */
 }
 
-/* Starred - Yellow Bang */
-td.apU.xY .T-KT.xh::before {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-  background-size: 1px !important;
+.T-KT.xh {
+  --pin-color: #fcea3f; /* yellow-bang */
 }
 
-/* Starred - Green Check */
-td.apU.xY .T-KT.xd::before {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-  background-size: 1px !important;
+.T-KT.xd {
+  --pin-color: #32df34; /* green-check */
 }
 
-/* Starred - Blue Info */
-td.apU.xY .T-KT.xc::before {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-  background-size: 1px !important;
+.T-KT.xc {
+  --pin-color: #5fb0fd; /* blue-info */
 }
 
-/* Starred - Purple Question */
-td.apU.xY .T-KT.xf::before {
-  background-image: url('chrome-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-  background-size: 1px !important;
+.T-KT.xf {
+  --pin-color: #d67eff; /* purple-question */
+}
+
+/* body + td outweigh the dark-mode grey pin rule further down */
+body
+  .zA
+  td.apU.xY
+  .T-KT:is(.N6cuDc, .T-KT-Jp, .xl, .xn, .xm, .xj, .xk, .xg, .xe, .xh, .xd, .xc, .xf)::before {
+  background-color: var(--pin-color) !important;
+  background-image: none !important;
+  opacity: 1 !important;
 }
 
 /* Firefox-specific image paths */
@@ -333,66 +324,6 @@ td.apU.xY .T-KT.xf::before {
     mask-position: center !important;
     background-color: #444746 !important; /* Greyish color for light mode */
     background-image: none !important; /* Ensure no conflicting background image */
-  }
-
-  /* Starred - Yellow Star */
-  td.apU.xY .T-KT.T-KT-Jp::before {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-yellow-24dp-r4-2x.png') !important;
-  }
-
-  /* Starred - Orange Star */
-  td.apU.xY .T-KT.xl::before {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-orange-24dp-r4-2x.png') !important;
-  }
-
-  /* Starred - Red Star */
-  td.apU.xY .T-KT.xn::before {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-red-24dp-r4-2x.png') !important;
-  }
-
-  /* Starred - Purple Star */
-  td.apU.xY .T-KT.xm::before {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-purple-24dp-r4-2x.png') !important;
-  }
-
-  /* Starred - Blue Star */
-  td.apU.xY .T-KT.xj::before {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-blue-24dp-r4-2x.png') !important;
-  }
-
-  /* Starred - Green Star */
-  td.apU.xY .T-KT.xk::before {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic-mark-pinned-green-24dp-r4-2x.png') !important;
-  }
-
-  /* Starred - Red Bang */
-  td.apU.xY .T-KT.xg::before {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-  }
-
-  /* Starred - Orange Guillimet */
-  td.apU.xY .T-KT.xe::before {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-  }
-
-  /* Starred - Yellow Bang */
-  td.apU.xY .T-KT.xh::before {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-  }
-
-  /* Starred - Green Check */
-  td.apU.xY .T-KT.xd::before {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-  }
-
-  /* Starred - Blue Info */
-  td.apU.xY .T-KT.xc::before {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
-  }
-
-  /* Starred - Purple Question */
-  td.apU.xY .T-KT.xf::before {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/cleardot.gif') !important;
   }
 }
 
@@ -668,6 +599,15 @@ body.dark-mode .TO.inbox-reborn-done::after {
   background: white !important;
 }
 
+/* The 2026 Wiz titlebar buttons are 24px but the masks are 16px glyphs -
+   without this the mask tiles and each button shows clipped extra copies */
+:is(.Hk, .Hl, .Hq, .Hm .aUG, .Ha) {
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
 /* .Hn applies :hover color */
 .Hk.Hn,
 .Hl.Hn,
@@ -894,6 +834,17 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
   display: none !important;
 }
 
+/* User-colored labels: Gmail still renders the label's chosen color as an
+   inline fill on its hidden svg. Show that svg scaled up behind the .qj
+   label mask so the mask shape is painted in the user's color instead of the
+   flat grey background */
+.aHS-bnr .qj > svg[style*='fill'] {
+  display: block !important;
+  width: 24px !important;
+  height: 24px !important;
+  transform: scale(3);
+}
+
 .inbox-reborn-hidden {
   display: none !important;
 }
@@ -1106,6 +1057,30 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
 
 body.dark-mode [data-tooltip='AI Inbox'] .qj {
   background-color: #8ab4f8 !important;
+}
+
+/* Late-2026 markup: the row is now a .CL whose glyph is an inline 20px svg
+   filled #444746 (no .qj), so the mask above never applies - it rendered as
+   a small dim gray icon, indented 10px past the other rows. Color it the
+   same blue, size it like its neighbors, and pull icon + label onto the
+   24px / 72px columns the .TO rows use. */
+[data-tooltip='AI Inbox'].CL {
+  padding-left: 16px !important;
+}
+
+[data-tooltip='AI Inbox'].CL svg {
+  width: 24px !important;
+  height: 24px !important;
+  margin-right: 24px !important;
+  fill: #4285f4 !important;
+}
+
+[data-tooltip='AI Inbox'].CL svg * {
+  fill: inherit !important;
+}
+
+body.dark-mode [data-tooltip='AI Inbox'].CL svg {
+  fill: #8ab4f8 !important;
 }
 
 @-moz-document url-prefix() {
@@ -2944,13 +2919,13 @@ body.dark-mode textarea:not([aria-label='Message Body'], .nH.Hd *) {
   color: #fff !important;
 }
 
-/* Compose dialog links excluded: the dialog is invert-filtered, so Gmail's
-   default dark-blue links already come out light there */
-body.dark-mode a:not(.nH.Hd a) {
+/* Compose dialog and message bodies excluded: both are invert-filtered, so
+   Gmail's default dark-blue links already come out light there */
+body.dark-mode a:not(.nH.Hd a, .a3s a) {
   color: var(--dm-accent) !important;
 }
 
-body.dark-mode hr {
+body.dark-mode hr:not(:where(.a3s hr)) {
   border-color: var(--dm-hover) !important;
 }
 
@@ -2983,6 +2958,18 @@ body.dark-mode .aT5-aOt-I-JX-atM {
 
 body.dark-mode :is(.aT5-aOt-I-JW, .aT5-aOt-I-JO, .aT5-aOt-I-KO, .aT5-aOt-I-Kq) .aT5-aOt-I-JX-atM {
   background-color: var(--dm-hover) !important;
+}
+
+/* Side-panel rail glyphs that stay black on the dark rail: the Get Add-ons
+   "+" (a dark sprite - the Calendar/Keep/Tasks/Contacts buttons share its
+   classes but carry data-guest-app-id, which keeps their colors intact)
+   and the hide/show side panel chevron (an svg filled #1f1f1f) */
+body.dark-mode .bse-bvF-I:not([data-guest-app-id]) .aT5-aOt-I-JX-Jw {
+  filter: invert(0.91) !important;
+}
+
+body.dark-mode .brC-dA-I svg {
+  fill: #e8eaed !important;
 }
 
 /* Gmail's yellow notice/alert bar stays parchment-colored in dark mode */
@@ -3054,8 +3041,12 @@ body.dark-mode .nH.Hd .Hp {
   color: #1f1f1f !important;
 }
 
+/* filter: none - the generic icon rule further down whitens these glyphs
+   with brightness(0) invert(1), which the dialog invert then turns back to
+   near-black on the dark titlebar */
 body.dark-mode .nH.Hd :is(.Hk, .Hl, .Hq, .Hm .aUG, .Ha) {
   background: #202124 !important;
+  filter: none !important;
 }
 
 /* =============================================================================
@@ -3124,8 +3115,24 @@ body.dark-mode [role='option']:hover:not(.nH.Hd [role='option']) {
    that cannot be recolored - invert them to read on the dark menu */
 body.dark-mode .J-M .J-N-JX:not(.nH.Hd .J-N-JX),
 body.dark-mode .J-M .J-N-J5:not(.nH.Hd .J-N-J5),
-body.dark-mode [role='menu'] .J-N-JX:not(.nH.Hd .J-N-JX) {
+body.dark-mode [role='menu'] .J-N-JX:not(.nH.Hd .J-N-JX),
+body.dark-mode .J-M .J-LC-Jo:not(.nH.Hd .J-LC-Jo) /* Label as checkboxes */,
+body.dark-mode .J-M .J-M-JJ .A0 /* Label as / Move to search glyph */,
+body.dark-mode .J-M .bsJ /* Snooze "Pick date & time" calendar */ {
   filter: invert(0.82) !important;
+  opacity: 1 !important;
+}
+
+/* Menu headings ("Snooze until...") keep Gmail's #5f6368 */
+body.dark-mode .J-M .J-awr:not(.nH.Hd .J-awr) {
+  color: var(--dm-text-muted) !important;
+}
+
+/* Per-message More menu (the ⋮ in a message header) is a Wiz menu whose
+   item icons are dark nv700 sprites in an .aqdrmf-Kf-Abojl slot. Flatten and
+   invert them to the same grey as the classic menu icons above */
+body.dark-mode .aqdrmf-Kf-Abojl > * {
+  filter: brightness(0) invert(0.82) !important;
   opacity: 1 !important;
 }
 
@@ -3176,6 +3183,21 @@ body.dark-mode .Bs.nH.iY.bAt {
 
 body.dark-mode .zA * {
   color: var(--dm-text-secondary) !important;
+}
+
+/* Sidebar glyphs Gmail leaves light-theme dark: the More/Less chevron
+   (either an svg filled #444746 or, depending on the render, a .G-asx
+   expand_more sprite), the Labels "+" and nested-label expand/collapse arrows
+   (dark sprites). Bring them up to the sidebar text color */
+body.dark-mode .ah9 svg.JuAUee {
+  fill: var(--dm-text-secondary) !important;
+}
+
+body.dark-mode .ah9 .G-asx,
+body.dark-mode .aAu.arN,
+body.dark-mode .TH:is(.aii, .aih) {
+  filter: brightness(0) invert(0.84) !important;
+  opacity: 1 !important;
 }
 
 /* Sidebar text colors */
@@ -3348,11 +3370,33 @@ body.dark .Hp {
   border-bottom: 1px solid #141414 !important;
 }
 
-/* Fix email viewer borders that were causing toolbar issues */
-body.dark-mode .AO * {
+/* Fix email viewer borders that were causing toolbar issues.
+   Message bodies (.a3s) are exempt - they are invert-filtered as a whole and
+   need the sender's own backgrounds, borders and text colors intact. The
+   attachment dog-ear (.aSJ) gets its file-type color from an inline
+   border-color. :where() keeps the exemptions at zero specificity. */
+body.dark-mode .AO *:not(:where(.a3s *)) {
   background-color: transparent !important;
   color: #e0e0e0 !important;
+}
+
+body.dark-mode .AO *:not(:where(.a3s *, .aSJ)) {
   border-color: var(--dm-bg) !important;
+}
+
+/* ...but inside the reading pane that frame color reads as hard black lines
+   on the lighter --dm-surface (message dividers, the "N deleted messages"
+   box). Same specificity as the rule above, so only it is overridden. */
+body.dark-mode .AO :where(.nH.a98.iY.aHo) *:not(:where(.a3s *, .aSJ)) {
+  border-color: var(--dm-hover) !important;
+}
+
+/* Attachment card filename strip - Gmail paints it #f5f5f5; the transparent
+   reset above leaves the light filename text sitting on the thumbnail,
+   unreadable over document previews */
+body.dark-mode .AO .aZo .aYy {
+  background-color: var(--dm-surface-raised) !important;
+  border-top-color: var(--dm-border) !important;
 }
 
 /* Toolbar specific elements - only for main email list, not opened email view */
@@ -3418,7 +3462,9 @@ body.dark-mode .ts {
 body.dark-mode .Dj,
 body.dark-mode .Dj *,
 body.dark-mode .ar5,
-body.dark-mode .amH {
+body.dark-mode .amH,
+body.dark-mode .h0 .adl,
+body.dark-mode .h0 .adl * /* "2 of 20" in the conversation toolbar */ {
   color: var(--dm-text-secondary) !important;
 }
 
@@ -3612,6 +3658,13 @@ body.dark-mode .nH.a98.iY.aHo .amn .ams * {
   border-color: var(--dm-border-muted) !important;
 }
 
+/* The reply/forward arrows are ::before sprites in a dark gray that
+   vanishes on the dark pill */
+body.dark-mode .amn .ams::before {
+  filter: invert(0.78);
+  opacity: 1;
+}
+
 /* Wiz icon buttons in / next to the pill bar (emoji react, more actions).
    Gmail parks the emoji button inside the legacy .amn bar with a light
    disabled fill (#e8eaed) that matched the forced icon color - clear it so
@@ -3704,16 +3757,22 @@ body.dark-mode .nH.a98.iY.aHo img[src*='cleardot']:not(.T-KT-JX, .T-I-atl img) {
    outside the reading-pane scope above - without this they render
    dark-on-dark. The background-color must stay transparent at higher
    specificity than the .D.E.G-atb * surface dump, or the invert flips the
-   forced dark fill into a light square that swallows the glyph. */
+   forced dark fill into a light square that swallows the glyph. The sprite
+   is mid-gray, so a plain invert leaves it dimmer than the neighboring
+   toolbar icons - flatten it to black first, then invert to their tone. */
 body.dark-mode .G-atb img[src*='cleardot']:not(.T-KT-JX, .T-I-atl img),
 body.dark-mode .D.E.G-atb img[src*='cleardot']:not(.T-KT-JX, .T-I-atl img) {
   background-color: transparent !important;
-  filter: invert(0.78) !important;
+  filter: brightness(0) invert(0.91) !important;
 }
 
-/* Dim the disabled (aria-disabled) pagination arrow like Gmail does */
-body.dark-mode .G-atb [aria-disabled='true'] img[src*='cleardot'] {
-  opacity: 0.35 !important;
+/* Keep disabled (aria-disabled) pagination arrows at full brightness so they
+   match the neighbouring toolbar icons - Gmail's dimming made them look faded
+   on the dark toolbar. The list-view chevrons (.amI/.amJ) need the extra
+   specificity to beat their mask-icon rules further down. */
+body.dark-mode .G-atb [aria-disabled='true'] img[src*='cleardot'],
+body.dark-mode .D.E.G-atb [aria-disabled='true'] :is(.amI, .amJ) {
+  opacity: 1 !important;
 }
 
 /* QUICK SETTINGS PANEL */
@@ -3878,15 +3937,30 @@ body.dark-mode .wT > .n3 .byl:first-child .aim:first-child .nZ {
    EMAIL VIEWS - DARK MODE STYLING
    ======================================== */
 
-/* Email content area - dark reading pane (emails with their own inline
-   backgrounds, e.g. HTML newsletters, keep them) */
+/* Email content area - dark reading pane */
 body.dark-mode .nH.a98.iY.aHo {
   background: var(--dm-surface) !important;
   background-color: var(--dm-surface) !important;
 }
 
-/* Email content text colors - light text on dark surface */
-body.dark-mode .nH.a98.iY.aHo * {
+/* The light card shadow's #e0e0e0 top edge draws a bright line under the
+   toolbar - same stack as the dark .G4/.GR cards */
+body.dark-mode .nH.a98.iY {
+  box-shadow:
+    0 -1px 0 var(--dm-hover),
+    0 0 2px rgb(0 0 0 / 32%),
+    0 2px 4px rgb(0 0 0 / 44%) !important;
+}
+
+/* "View messages" / "delete forever" in the deleted-messages notice are
+   span[role=link], so the anchor color rules miss them */
+body.dark-mode .nH.a98.iY.aHo .iS .iT {
+  color: var(--dm-accent) !important;
+}
+
+/* Email chrome text colors - light text on dark surface. Message bodies are
+   exempt; see the .a3s invert below. */
+body.dark-mode .nH.a98.iY.aHo *:not(:where(.a3s *)) {
   color: #e8eaed !important;
 }
 
@@ -3918,18 +3992,30 @@ body.dark-mode .nH.a98.iY.aHo .T-I:hover {
   color: #fff !important; /* Brighter on hover */
 }
 
-/* Email body content - light default text (inline email styles still win
-   inside messages that bring their own colors) */
+/* Message bodies: invert the rendered email instead of overriding its
+   colors, same as the compose dialog. Stripping backgrounds and forcing
+   text/border colors broke every HTML email (outlined buttons lost their
+   fill and color, card borders went black, white logos floated on dark).
+   Inverting keeps the sender's design intact: white -> the --dm-surface
+   gray (invert 0.84), and the default black text set here -> the
+   --dm-text-secondary gray. */
 body.dark-mode .nH.a98.iY.aHo .a3s {
-  color: #e8eaed !important;
+  color: #000 !important;
+  filter: invert(0.84) hue-rotate(180deg);
 }
 
-/* Links in email */
-body.dark-mode .nH.a98.iY.aHo a {
+/* Flip images and video back to their true colors */
+body.dark-mode .nH.a98.iY.aHo .a3s :is(img, video) {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Links in the message chrome (sender, Unsubscribe, etc.) - links inside the
+   body keep the sender's colors and come out light through the invert */
+body.dark-mode .nH.a98.iY.aHo a:not(:where(.a3s a)) {
   color: var(--dm-accent) !important;
 }
 
-body.dark-mode .nH.a98.iY.aHo a:hover {
+body.dark-mode .nH.a98.iY.aHo a:not(:where(.a3s a)):hover {
   color: #62abf5 !important; /* Lighter blue on hover */
 }
 
@@ -5374,6 +5460,59 @@ body.dark-mode .nH.fY [role='presentation'] {
   background-color: transparent !important;
 }
 
+/* Settings header (title + tabs): its toolbar is .qZ.G-atb rather than the
+   inbox's .D.E.G-atb, so nothing covers the light .aeH strip, and the h2
+   keeps Gmail's #202124. The page body (.AO) is --dm-bg, so match it, and
+   paint the .ar4 gutter right of the narrower .aeH the same */
+body.dark-mode .aeH,
+body.dark-mode .ar4:has(> div > .aeH .dt) {
+  background: var(--dm-bg) !important;
+}
+
+body.dark-mode .aeH .dt {
+  color: #e8eaed !important;
+}
+
+/* Settings outlined buttons ("Manage Workspace smart feature settings") lose
+   their outline to the .AO border wildcard, and span[role=link] actions
+   ("Click here to enable desktop notifications") read as plain text */
+body.dark-mode .nH.r4 .AeBiU-I-ql-Uw {
+  border-color: var(--dm-border-muted) !important;
+}
+
+body.dark-mode .nH.r4 .AeBiU-I-ql-Uw,
+body.dark-mode .nH.r4 .AeBiU-I-ql-Uw *,
+body.dark-mode .nH.r4 [role='link'] {
+  color: var(--dm-accent) !important;
+}
+
+/* Settings native buttons (Save Changes, Cancel, Export, Create new label,
+   Add a forwarding address): the .AO wildcard turns their UA outset border
+   --dm-bg, leaving square grey slabs with a near-invisible edge */
+body.dark-mode
+  .nH.r4
+  :is(button, input[type='button'], input[type='submit']):not(:where([class*='AeBiU'])) {
+  background: var(--dm-surface-raised) !important;
+  border: 1px solid var(--dm-border-muted) !important;
+  border-radius: 4px !important;
+  color: #e8eaed !important;
+  padding: 3px 10px !important;
+}
+
+body.dark-mode
+  .nH.r4
+  :is(button, input[type='button'], input[type='submit']):not(:where([class*='AeBiU'])):hover:not(
+    :disabled
+  ) {
+  background: var(--dm-hover) !important;
+}
+
+body.dark-mode
+  .nH.r4
+  :is(button, input[type='button'], input[type='submit']):not(:where([class*='AeBiU'])):disabled {
+  opacity: 0.5;
+}
+
 /* Dark Mode Theme Selection Dialog Styling */
 body.dark-mode .uW2Fw-bHo {
   background-color: var(--dm-surface) !important;
@@ -6079,6 +6218,14 @@ body.dark-mode .D.E.G-atb .G-tF .T-Jo[aria-checked='mixed'] {
 
 body.dark-mode .D.E.G-atb .G-tF .T-Jo .T-Jo-auh {
   background: none !important;
+}
+
+/* Row checkboxes (shown when hovering an avatar, and on selected rows) are
+   the same dark nv700 sprites. The checked sprite's tick is a transparent
+   cutout, so flattening and inverting keeps both states legible */
+body.dark-mode .zA .oZ-x3 .T-Jo {
+  filter: brightness(0) invert(0.91) !important;
+  opacity: 1 !important;
 }
 
 body.dark-mode .D.E.G-atb .G-asx {
