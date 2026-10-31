@@ -6,10 +6,6 @@
 
 Web extension which modifies Gmail™ to bring back the features and uncluttered design you knew and loved from Google's discontinued Inbox.
 
-![inbox in light mode](https://github.com/team-inbox/inbox-reborn/blob/master/screenshots/light.png?raw=true)
-
-![inbox in dark mode](https://github.com/team-inbox/inbox-reborn/blob/master/screenshots/dark.png?raw=true)
-
 ## Install
 
 - **Chrome & Microsoft Edge:** [Chrome Web Store](https://chrome.google.com/webstore/detail/inbox-reborn-theme-for-gm/bkphmihkdbdgedlaflnkhnmnmibffomf)
