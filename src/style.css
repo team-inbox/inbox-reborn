@@ -488,10 +488,12 @@ body.dark-mode.inbox-list .sweep-button:hover {
   background-color: rgb(0 0 0 / 5%) !important;
 }
 
-/* Left sidebar collapsed */
-.aeN.bhZ {
-  transform: translateX(-80px) !important;
-  transition: transform 0.2s ease;
+/* Left sidebar collapsed: Gmail already narrows it to an icon column, so it
+   isn't shifted - a translateX here pushed the icons off-screen, leaving only
+   the dividers. Shorten those to the icon column until hover expands it. */
+.bhZ:not(.bym) .TO.inbox-reborn-done::after,
+.bhZ:not(.bym) .TN.bzz.aHS-bnx::after {
+  width: 40px;
 }
 
 /* --- DONE MENU ROW --- */
