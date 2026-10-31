@@ -488,10 +488,18 @@ body.dark-mode.inbox-list .sweep-button:hover {
   background-color: rgb(0 0 0 / 5%) !important;
 }
 
-/* Left sidebar collapsed */
+/* Left sidebar collapsed: slide it fully out of view, like Inbox's drawer.
+   Hovering the left edge still brings it back as an overlay. */
 .aeN.bhZ {
   transform: translateX(-80px) !important;
   transition: transform 0.2s ease;
+}
+
+/* The Done and Trash dividers are fixed-width, so they'd stay visible after
+   the slide - hide them with the rest of the menu */
+.bhZ .TO.inbox-reborn-done::after,
+.bhZ .TN.bzz.aHS-bnx::after {
+  display: none;
 }
 
 /* --- DONE MENU ROW --- */
