@@ -3,6 +3,66 @@
 All notable changes to the Inbox Reborn theme for Gmail™, grouped by release era.
 PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inbox-reborn/pulls).
 
+## 2.4.2 — October 2026
+
+- The top bar title read "Inbox" on Spam, Trash, Sent, Drafts and the other
+  built-in pages. Gmail added a hidden copy of its logo link to the header,
+  and the extension was renaming the hidden one; it now renames the one you see.
+- The top bar on Social, Updates, Forums and Promotions now takes the same
+  color as that category's icon in the left menu (a darker shade in dark
+  mode). Purchases, which showed a gray bar titled "Inbox", gets its own
+  brown bar and title.
+- In dark mode, the Manage subscriptions, Manage labels and Create new label
+  icons in the left menu were faint dark-gray glyphs; they now use the same
+  light gray as Sent, Drafts and the rest of the menu.
+- In dark mode, the New label dialog's name field and the new-message Insert
+  link boxes showed a gray bar inside their outline; they're now single clean
+  fields, and the Insert link popup no longer sits on a square box behind its
+  rounded card.
+- In dark mode, the Quick settings panel's "Theme" heading was nearly
+  invisible, and its section dividers and "See all settings" outline were
+  glaring white; all now match the rest of the dark palette. Its unselected
+  radio buttons, close (X) and help (?) icons were black on the dark panel and
+  are now light gray, the Conversation view checkbox is a clean blue box
+  instead of a washed-out one, its scrollbar is a visible gray instead of
+  near-black, and the selected option's label no longer sits out of line.
+- In dark mode, the Google apps menu (the 9-dot "Your favorites" grid) opened
+  bright white. It's a Google-hosted frame the stylesheet can't reach, so the
+  extension now asks Google for its own dark version of it.
+- In dark mode, the advanced search panel (the sliders button in the search
+  bar) had bright white fields, dim labels, near-invisible checkboxes and black
+  icons. The fields are now dark underlined inputs like Gmail's, labels,
+  checkboxes and icons are readable, and the date picker it opens is dark too.
+- In dark mode, the search box's suggestion list had near-black icons (recent
+  searches, emails, attachment paperclips, "All search results") and bright
+  white separator lines. The icons are now light and the lines muted, and a
+  selected filter chip's tick is a light blue instead of near-invisible dark
+  blue.
+- In dark mode, the new-message formatting dropdowns (text alignment and the
+  overflow formatting menu) showed faint, washed-out icons, and the font and
+  text size menus' check mark was black; both are now light and readable.
+- In dark mode, more of the new-message toolbar's popups now read properly:
+  the emoji picker's top section is dark instead of white, the Drive and
+  Insert photo pickers dim Gmail behind them instead of washing it out (the
+  pickers themselves stay light, since they're Google's own pages), the
+  confidential mode dialog's headings, options, date and help icon are
+  readable, and the signature and ⋮ menus no longer show a black check mark
+  or bright divider lines.
+- In dark mode, replying in a conversation looked off: the More options
+  (⋮) dots, the Send button's arrow, the reply-type arrow and the pop-out
+  icon were dark and faint, and pressed buttons (Help me write, an open ⋮
+  menu) showed a pale white-blue patch. The icons are now light and pressed
+  buttons get a dark blue tint.
+- In dark mode, the submenu arrows beside "Move to" and "Label as" in an
+  email's right-click menu were black; they're now light like the menu icons.
+- In dark mode, empty folders (e.g. Drafts) showed Gmail's "You don't have
+  any saved drafts…" text over the moon picture; it's hidden again, as in
+  light mode.
+- In dark mode, the trash-can marker on each row in Trash was black; it's
+  now light gray.
+- In dark mode, the icon beside Scheduled's "Messages in Scheduled will be
+  sent at their scheduled time." notice was black; it's now light gray.
+
 ## 2.4.1 — October 2026
 
 - Collapsing the left menu (☰) left two stray divider lines behind; the menu now
