@@ -130,6 +130,53 @@ const CSS_CLASSES = {
   WEB_AVATAR: 'web-avatar',
   STYLE_NODE_ID_PREFIX: 'hide-email-',
   PRIORITY_INBOX_OPTION: 'priority-inbox-enabled',
+  HIDE_AI_INBOX_OPTION: 'hide-ai-inbox',
+  PINNED_VIEW: 'pinned-view',
+  INBOX_LIST: 'inbox-list',
+};
+
+/**
+ * Icon for the date-group sweep button - Inbox's check mark trailed by three
+ * stepped dashes
+ */
+const SWEEP_ICON_PATHS = ['M2.4 12.9l3.7 3.1 9.2-8.6', 'M17.6 10h3.6M14.4 13.1h3.6M11 16.2h3.6'];
+
+/**
+ * Builds the sweep icon with DOM calls rather than innerHTML, which
+ * addons.mozilla.org review flags
+ * @returns {SVGElement} The icon
+ */
+const createSweepIcon = () => {
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(SVG_NS, 'svg');
+  Object.entries({
+    viewBox: '0 0 24 24',
+    width: '24',
+    height: '24',
+    fill: 'none',
+    stroke: 'currentColor',
+    'stroke-width': '2',
+    'stroke-linecap': 'round',
+    'stroke-linejoin': 'round',
+  }).forEach(([name, value]) => svg.setAttribute(name, value));
+
+  SWEEP_ICON_PATHS.forEach((d) => {
+    const path = document.createElementNS(SVG_NS, 'path');
+    path.setAttribute('d', d);
+    svg.appendChild(path);
+  });
+  return svg;
+};
+
+/**
+ * Inbox's "Pinned" filter: starred inbox mail plus reminders, keyed by the
+ * Reminders option so it matches what the thread list treats as a reminder
+ * (from me to me, and by default a subject containing "reminder")
+ */
+const PINNED_SEARCHES = {
+  none: 'in:inbox is:starred',
+  all: 'in:inbox (is:starred OR (from:me to:me))',
+  'containing-word': 'in:inbox (is:starred OR (from:me to:me subject:reminder))',
 };
 
 /**
@@ -168,6 +215,8 @@ const select = {
   importanceMarkers: () => document.querySelector('td.WA.xY'),
   emails: () => document.querySelectorAll('.oy8Mbf .zA'),
   currentTab: () => document.querySelector('.aAy[aria-selected="true"]'),
+  // Gmail keeps toolbars for other views in the DOM too; callers pick the visible one
+  archiveButtons: () => document.querySelectorAll('.G-atb [act="7"]'),
 
   // Menu elements
   menu: () => document.body.querySelector('.J-Ke.n4.ah9'),
@@ -184,6 +233,10 @@ const select = {
     document.querySelector('header[role="banner"] a[aria-label="Gmail"]') ||
     document.querySelectorAll('a[aria-label="Gmail"]')[1],
   headerElement: () => document.querySelector('.w-asV.bbg.aiw'),
+  // Help / Settings / Gemini group on the right of the header
+  headerActions: () =>
+    document.querySelector('header[role="banner"] .bGJ') ||
+    document.querySelector('header[role="banner"] .zo')?.parentElement,
 
   // Compose elements
   messageBody: () => document.querySelector('div[aria-label="Message Body"]'),
@@ -202,7 +255,9 @@ const select = {
   emailLabelEls: (email) => email.querySelectorAll('.at'),
   emailAllLabels: (email) => email.querySelectorAll('.ar.as'),
   emailSnoozed: (email) => email.querySelector('.by1.cL'),
-  emailStarred: (email) => email.querySelector('.T-KT.T-KT-Jp'),
+  // Unstarred stars carry .aXw; starred ones dropped .T-KT-Jp in Gmail's 2026 markup
+  emailStarred: (email) => email.querySelector('.T-KT:not(.aXw)'),
+  emailCheckbox: (email) => email.querySelector('[role=checkbox]'),
   emailAvatarWrapper: (email) => email.querySelector('.oZ-x3'),
   emailMiscPart1: (email) => email.querySelectorAll('.y2'),
   emailMiscPart2: (email) => email.querySelectorAll('.yP,.zF'),
@@ -223,6 +278,12 @@ const select = {
 let labelStats = {};
 const hiddenEmailIds = [];
 let options = {};
+
+/* Resolves once the first options arrive - work that depends on a setting
+   (e.g. whether Gravatar is on) waits on this instead of reading the empty
+   defaults during startup */
+let markOptionsLoaded;
+const optionsLoaded = new Promise((resolve) => (markOptionsLoaded = resolve));
 const menuNodes = {};
 
 // =============================================================================
@@ -302,20 +363,24 @@ const getMainDomain = (domain) => {
 /**
  * Tests if an image URL is valid
  * @param {string} url - URL to test
- * @returns {Promise<string|null>} URL if valid, null if failed
+ * @param {number} minWidth - Reject images narrower than this (placeholder
+ *   icons load fine but are tiny)
+ * @param {number} timeoutMs - Give up after this long
+ * @returns {Promise<string|null|undefined>} URL if valid, null if it failed,
+ *   undefined if it timed out (unknown - not worth remembering as missing)
  */
-const testImageUrl = (url) => {
+const testImageUrl = (url, minWidth = 0, timeoutMs = 2000) => {
   return new Promise((resolve) => {
     const img = new Image();
     const timeout = setTimeout(() => {
       img.onload = null;
       img.onerror = null;
-      resolve(null);
-    }, 2000);
+      resolve(undefined);
+    }, timeoutMs);
 
     img.onload = () => {
       clearTimeout(timeout);
-      resolve(url);
+      resolve(img.naturalWidth >= minWidth ? url : null);
     };
 
     img.onerror = () => {
@@ -331,9 +396,10 @@ const testImageUrl = (url) => {
  * Waits for an element to appear in the DOM and calls a callback when found
  * @param {string} selector - CSS selector for the element to wait for
  * @param {Function} callback - Function to call when element is found
- * @param {number} tries - Number of attempts before giving up (default: 100)
+ * @param {number} tries - Number of attempts, 100ms apart, before giving up
+ *   (default: 300 - Gmail can take well over 10s to draw on a slow load)
  */
-const waitForElement = (selector, callback, tries = 100) => {
+const waitForElement = (selector, callback, tries = 300) => {
   const element = document.querySelector(selector);
   if (element) {
     callback(element);
@@ -344,6 +410,17 @@ const waitForElement = (selector, callback, tries = 100) => {
       `[Inbox Reborn] Gave up waiting for "${selector}" - Gmail may have changed this element. The feature depending on it is disabled.`,
     );
   }
+};
+
+/**
+ * Clicks a Gmail control the way a user would - Gmail's buttons and
+ * checkboxes act on mousedown/mouseup, not just click
+ * @param {Element} el - The element to click
+ */
+const simulateClick = (el) => {
+  ['mousedown', 'mouseup', 'click'].forEach((type) =>
+    el.dispatchEvent(new MouseEvent(type, { bubbles: true, cancelable: true, view: window })),
+  );
 };
 
 /**
@@ -397,6 +474,10 @@ const fixLabel = (label) => encodeURIComponent(label.replace(/[/\\& ]/g, '-'));
 const isReminder = (email, myEmailAddress) => {
   // If user doesn't want reminders treated special, return false
   if (options.reminderTreatment === 'none') return false;
+
+  // Already identified - Gmail resets a reused row's classes when you come
+  // back to a view, but keeps its contents, including the subject we removed
+  if (email.dataset.reminder) return true;
 
   const nameNodes = select.emailParticipants(email);
   let allNamesMe = nameNodes.length > 0;
@@ -464,13 +545,43 @@ const checkEmailClass = (emailEl, klass) => emailEl.classList.contains(klass);
  * Checks if the current view is the inbox
  * @returns {boolean} True if current view is inbox
  */
-const isInInbox = () => select.inbox() !== null;
+const isInInbox = () => isInboxHash();
+
+/**
+ * Checks whether a hash is an inbox list (Inbox, its category tabs, and
+ * their pages). The URL changes before Gmail redraws, unlike the sidebar's
+ * selected row, which lags behind and once let bundles form in Sent.
+ * @param {string} hash - URL hash (default: the current one)
+ * @returns {boolean} True for an inbox list
+ */
+const isInboxHash = (hash = window.location.hash) => /^#(inbox|category\/\w+)(\/p\d+)?$/.test(hash);
 
 /**
  * Checks if the current view is a bundle
  * @returns {boolean} True if current view is a bundle
  */
 const isInBundle = () => document.location.hash.match(/#search\/in%3Ainbox\+label%3A/g) !== null;
+
+/**
+ * Checks if the current view is the Pinned filter
+ * @returns {boolean} True if showing pinned inbox mail
+ */
+const isPinnedView = () =>
+  Object.values(PINNED_SEARCHES).map(toSearchHash).includes(window.location.hash);
+
+/**
+ * Builds a Gmail search URL hash, in the form Gmail itself keeps in the URL
+ * @param {string} query - The search query
+ * @returns {string} The hash, e.g. #search/in%3Ainbox+is%3Astarred
+ */
+const toSearchHash = (query) => '#search/' + encodeURIComponent(query).replace(/%20/g, '+');
+
+/**
+ * Gets the Pinned view's hash for the current Reminders option
+ * @returns {string} The Pinned search hash
+ */
+const getPinnedHash = () =>
+  toSearchHash(PINNED_SEARCHES[options.reminderTreatment] || PINNED_SEARCHES['containing-word']);
 
 /**
  * Checks if importance markers are present in the UI
@@ -553,7 +664,7 @@ const buildDateLabel = (date) => {
 const addDateLabel = (email, label) => {
   // Remove existing date label if it's different
   if (email.previousSibling && email.previousSibling.className === 'time-row') {
-    if (email.previousSibling.innerText === label) return;
+    if (email.previousSibling.querySelector('.time')?.innerText === label) return;
     email.previousSibling.remove();
   }
 
@@ -565,8 +676,67 @@ const addDateLabel = (email, label) => {
   time.className = 'time';
   time.innerText = label;
 
-  timeRow.appendChild(time);
+  // Inbox's sweep button - archives everything in the group that isn't pinned
+  const sweep = document.createElement('div');
+  sweep.className = 'sweep-button';
+  sweep.setAttribute('role', 'button');
+  sweep.title = 'Mark all as done (pinned emails stay)';
+  sweep.appendChild(createSweepIcon());
+  sweep.addEventListener('click', (e) => {
+    e.stopPropagation();
+    sweepDateGroup(timeRow);
+  });
+
+  timeRow.append(time, sweep);
   email.parentElement.insertBefore(timeRow, email);
+};
+
+/**
+ * Archives every email in a date group except pinned (starred) ones, like
+ * Inbox's sweep. Selects the rows and presses Gmail's own Archive button, so
+ * Gmail's "Undo" toast still works. A bundle in the group sweeps the bundled
+ * emails behind it.
+ * @param {Element} timeRow - The date label row that starts the group
+ */
+const sweepDateGroup = (timeRow) => {
+  const list = timeRow.parentElement;
+  const toSweep = new Set();
+
+  for (let row = timeRow.nextElementSibling; row; row = row.nextElementSibling) {
+    if (row.classList.contains('time-row')) break;
+    if (!row.classList.contains('zA')) continue;
+
+    if (row.classList.contains(CSS_CLASSES.BUNDLE_WRAPPER)) {
+      const bundleLabel = row.getAttribute('bundleLabel');
+      list.querySelectorAll(`.zA.${CSS_CLASSES.BUNDLED_EMAIL}`).forEach((email) => {
+        if (getLabels(email).includes(bundleLabel)) toSweep.add(email);
+      });
+    } else if (!row.classList.contains(CSS_CLASSES.BUNDLED_EMAIL)) {
+      // Bundled rows are hidden; they go with their bundle, wherever it sits
+      toSweep.add(row);
+    }
+  }
+
+  const emails = [...toSweep].filter((email) => !isStarred(email) && select.emailCheckbox(email));
+  if (!emails.length) return;
+
+  // Start from an empty selection so only this group gets archived
+  list.querySelectorAll('.zA.x7').forEach((email) => {
+    const checkbox = select.emailCheckbox(email);
+    if (checkbox) simulateClick(checkbox);
+  });
+
+  emails.forEach((email) => simulateClick(select.emailCheckbox(email)));
+
+  // Gmail only shows Archive once something is selected
+  const archiveButton = Array.from(select.archiveButtons()).find(
+    (el) => el.getClientRects().length,
+  );
+  if (archiveButton) {
+    simulateClick(archiveButton);
+  } else {
+    emails.forEach((email) => simulateClick(select.emailCheckbox(email)));
+  }
 };
 
 /**
@@ -601,6 +771,35 @@ const isEmptyDateLabel = (row) => {
 // =============================================================================
 // BUNDLE MANAGEMENT FUNCTIONS
 // =============================================================================
+
+/**
+ * Rules out rows that can't be inbox mail, for the moment after a view
+ * switch when the URL already says inbox but Gmail still shows the old list
+ * @param {Element} emailEl - The email row
+ * @param {string[]} labels - The row's label chips
+ * @returns {boolean} False for rows from other views
+ */
+const canBeInboxRow = (emailEl, labels) =>
+  // Gmail only shows an "Inbox" chip outside the inbox
+  !labels.includes('Inbox') &&
+  // Sent and Drafts rows lead with bare "To:"/"Draft" text, inbox rows with a sender
+  emailEl.querySelector('.yW')?.firstChild?.nodeType !== Node.TEXT_NODE;
+
+/**
+ * Removes bundles from the visible list when it isn't the inbox - built in
+ * the moment a view switch left the next view's rows on screen. The inbox's
+ * own list is hidden by then and keeps its bundles.
+ */
+const removeStrayBundles = () => {
+  document.querySelectorAll(`.${CSS_CLASSES.BUNDLE_WRAPPER}`).forEach((wrapper) => {
+    if (!wrapper.getClientRects().length) return;
+    wrapper.parentElement.querySelectorAll(`.${CSS_CLASSES.BUNDLED_EMAIL}`).forEach((email) => {
+      email.classList.remove(CSS_CLASSES.BUNDLED_EMAIL);
+      removeStyleNodeWithEmailId(email.id);
+    });
+    wrapper.remove();
+  });
+};
 
 /**
  * Gets all currently bundled labels
@@ -932,6 +1131,7 @@ const reloadOptions = () => {
   // arrive, so toggles take effect without waiting an extra polling cycle
   chrome.runtime.sendMessage({ method: 'getOptions' }, function (ops) {
     options = ops;
+    markOptionsLoaded();
 
     // Apply avatar options
     if (options.showAvatar === 'enabled') {
@@ -951,6 +1151,9 @@ const reloadOptions = () => {
     } else {
       removeClassFromBody(CSS_CLASSES.PRIORITY_INBOX_OPTION);
     }
+
+    // Hide Gmail's AI Inbox menu row
+    toggleBodyClass(CSS_CLASSES.HIDE_AI_INBOX_OPTION, options.hideAiInbox === 'enabled');
 
     // Apply email bundling options
     if (options.emailBundling === 'enabled') {
@@ -1207,6 +1410,9 @@ const updateReminders = () => {
   // Clean up date labels
   cleanupDateLabels();
 
+  // Bundles belong to the inbox only
+  if (!isInInboxFlag) removeStrayBundles();
+
   // Get current bundle state
   const emailBundles = getBundledLabels();
 
@@ -1241,6 +1447,7 @@ const updateReminders = () => {
 
       // Mark as processed
       addClassToEmail(emailEl, CSS_CLASSES.REMINDER_EMAIL);
+      emailEl.dataset.reminder = 'true';
     }
     // Process avatars for non-reminders
     else if (
@@ -1292,24 +1499,19 @@ const updateReminders = () => {
         avatarElement.innerText = firstLetter;
         targetElement.appendChild(avatarElement);
 
-        // Try to fetch BIMI brand logo asynchronously
-        const email = firstParticipant.getAttribute('email');
+        // Swap the letter for a picture once one is found (see resolveAvatar)
+        const email = firstParticipant.getAttribute('email')?.toLowerCase();
         if (email) {
-          const domain = extractDomain(email);
-
-          if (domain) {
-            // Try to fetch brand logo (BIMI)
-            fetchBrandLogo(domain)
-              .then((brandLogoUrl) => {
-                if (brandLogoUrl) {
-                  // Replace letter avatar with brand logo
-                  replaceAvatarWithWeb(targetElement, brandLogoUrl, name);
-                }
-              })
-              .catch(() => {
-                // Silently handle errors
-              });
-          }
+          targetElement.dataset.avatarEmail = email;
+          resolveAvatar(email)
+            .then((avatar) => {
+              // A photo learned while this lookup ran has already been put in
+              if (!avatar || (avatar.source !== 'photo' && contactPhotos.has(email))) return;
+              replaceAvatarWithWeb(targetElement, avatar, name);
+            })
+            .catch(() => {
+              // Silently handle errors
+            });
         }
       }
 
@@ -1383,6 +1585,7 @@ const updateReminders = () => {
       // Bundle eligible emails
       if (
         isInInboxFlag &&
+        canBeInboxRow(emailEl, emailInfo.labels) &&
         !emailInfo.isStarred &&
         labels.length &&
         !emailInfo.isUnbundled &&
@@ -1631,8 +1834,16 @@ const reorderMenuItems = () => {
 const handleHashChange = () => {
   let hash = window.location.hash;
 
+  addPinnedToggle();
+  updatePinnedToggle();
+
+  // Sweep buttons only make sense where Archive removes mail from the list
+  toggleBodyClass(CSS_CLASSES.INBOX_LIST, isInboxHash(hash) || isInBundle());
+
   if (isInBundle()) {
     hash = '#inbox';
+  } else if (isPinnedView()) {
+    hash = '#pinned';
   } else {
     // Map Gmail category hashes to clean pageTitle values
     if (hash.startsWith('#category/social')) hash = '#social';
@@ -1681,7 +1892,51 @@ const handleHashChange = () => {
   if (!titleNode || !headerElement) return;
 
   headerElement.setAttribute('pageTitle', hash.replace('#', ''));
-  titleNode.href = hash;
+  // #pinned is ours, not a Gmail route - the title links back to the inbox
+  titleNode.href = hash === '#pinned' ? '#inbox' : hash;
+};
+
+/**
+ * Adds Inbox's "Pinned" switch to the header - on shows only pinned
+ * (starred) inbox mail and reminders, off goes back to the inbox
+ */
+const addPinnedToggle = () => {
+  if (document.querySelector('.pinned-toggle')) return;
+  const headerActions = select.headerActions();
+  if (!headerActions) return;
+
+  const toggle = document.createElement('div');
+  toggle.className = 'pinned-toggle';
+  toggle.setAttribute('role', 'switch');
+  toggle.setAttribute('tabindex', '0');
+  toggle.title = 'Show pinned emails only';
+
+  const thumb = document.createElement('span');
+  thumb.className = 'pinned-toggle-thumb';
+  toggle.appendChild(thumb);
+
+  const flip = () => (window.location.hash = isPinnedView() ? '#inbox' : getPinnedHash());
+  toggle.addEventListener('click', flip);
+  toggle.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    // Keep Gmail's own keyboard shortcuts from also seeing the key
+    e.preventDefault();
+    e.stopPropagation();
+    flip();
+  });
+
+  headerActions.prepend(toggle);
+  updatePinnedToggle();
+};
+
+/**
+ * Syncs the Pinned switch and body class with the current view, so the
+ * switch is right however the view was reached (sidebar, back button, ...)
+ */
+const updatePinnedToggle = () => {
+  const pinned = isPinnedView();
+  toggleBodyClass(CSS_CLASSES.PINNED_VIEW, pinned);
+  document.querySelector('.pinned-toggle')?.setAttribute('aria-checked', String(pinned));
 };
 
 /**
@@ -1736,6 +1991,34 @@ const addFloatingComposeButton = () => {
 };
 
 /**
+ * Opens a new compose window and pre-fills it
+ * @param {Object} fields - Values to fill in
+ * @param {string} [fields.from] - From address
+ * @param {string} [fields.to] - Recipient address
+ * @param {string} [fields.subject] - Subject line; without one the subject
+ *   gets focus, with one the body does
+ */
+const openCompose = ({ from, to, subject } = {}) => {
+  select.composeButton()?.click();
+
+  // Wait for compose window to open. The peoplekit-id is build-hashed and
+  // rotates with Gmail releases - the aria/name hooks are the stable ones.
+  waitForElement(
+    'input[peoplekit-id="BbVjBd"], input[aria-label="To recipients"], textarea[name="to"]',
+    (toField) => {
+      const title = select.messageSubjectBox();
+      const body = select.messageBody();
+      const fromField = select.messageFrom();
+
+      if (from && fromField) fromField.value = from;
+      if (to) toField.value = to;
+      if (subject && title) title.value = subject;
+      (subject ? body : title)?.focus();
+    },
+  );
+};
+
+/**
  * Adds a reminder button to the UI
  */
 const addReminderButton = () => {
@@ -1744,27 +2027,238 @@ const addReminderButton = () => {
 
   addReminder.addEventListener('click', function () {
     const myEmail = getMyEmailAddress();
-    const composeButton = select.composeButton();
-    composeButton?.click();
-
-    // Wait for compose window to open. The peoplekit-id is build-hashed and
-    // rotates with Gmail releases - the aria/name hooks are the stable ones.
-    waitForElement(
-      'input[peoplekit-id="BbVjBd"], input[aria-label="To recipients"], textarea[name="to"]',
-      (to) => {
-        const title = select.messageSubjectBox();
-        const body = select.messageBody();
-        const from = select.messageFrom();
-
-        if (from) from.value = myEmail;
-        if (to) to.value = myEmail;
-        if (title) title.value = 'Reminder';
-        if (body) body.focus();
-      },
-    );
+    openCompose({ from: myEmail, to: myEmail, subject: 'Reminder' });
   });
 
   document.body.appendChild(addReminder);
+};
+
+// =============================================================================
+// RECENT CONTACTS (SPEED DIAL)
+// =============================================================================
+
+/* Inbox's speed dial: hovering the compose button shows the last people you
+   wrote to above the reminder button. Gmail exposes no recent-recipients
+   list, so the extension keeps its own in local storage - recorded at Send,
+   and re-synced from the Sent list whenever that list is on screen. */
+const RECENT_CONTACTS_KEY = 'recentContacts';
+const MAX_RECENT_CONTACTS = 3;
+
+/**
+ * Merges recipients into the stored recent contacts, newest first
+ * @param {Object[]} recipients - {email, name, photo} objects, newest first
+ * @param {boolean} replace - Treat recipients as the complete new order
+ *   (from the Sent list) instead of adding them in front of the stored ones
+ */
+const rememberRecentContacts = (recipients, replace = false) => {
+  rememberContactPhotos(recipients.map(({ email, photo }) => [email, photo]));
+
+  const myEmail = getMyEmailAddress()?.toLowerCase();
+  const fresh = recipients.filter(({ email }) => email && email.toLowerCase() !== myEmail);
+  if (!fresh.length) return;
+
+  chrome.storage.local.get(RECENT_CONTACTS_KEY, (result) => {
+    const stored = result[RECENT_CONTACTS_KEY] || [];
+    const merged = [];
+
+    for (const contact of replace ? fresh : [...fresh, ...stored]) {
+      const email = contact.email.toLowerCase();
+      if (merged.some((c) => c.email === email)) continue;
+      // Keep a photo or name learned earlier (Sent rows carry neither photo)
+      const known = stored.find((c) => c.email === email);
+      merged.push({
+        email,
+        name: contact.name || known?.name || email,
+        photo: contact.photo || known?.photo || '',
+      });
+      if (merged.length === MAX_RECENT_CONTACTS) break;
+    }
+
+    if (JSON.stringify(merged) !== JSON.stringify(stored)) {
+      chrome.storage.local.set({ [RECENT_CONTACTS_KEY]: merged });
+    }
+  });
+};
+
+/**
+ * Reads the recipients of a compose window (new message or inline reply)
+ * @param {Element} compose - The compose root
+ * @returns {Object[]} {email, name, photo} for each recipient chip
+ */
+/* A recipient chip in the To/Cc/Bcc fields: the address is in
+   data-hovercard-id, the display name in data-name */
+const RECIPIENT_CHIP = '[role=option][data-hovercard-id*="@"]';
+
+const getComposeRecipients = (compose) =>
+  Array.from(compose.querySelectorAll(RECIPIENT_CHIP)).map((chip) => {
+    const photo = chip.querySelector('img')?.src || '';
+    return {
+      email: chip.getAttribute('data-hovercard-id'),
+      name: chip.getAttribute('data-name') || chip.innerText.split('\n')[0].trim(),
+      photo: photo.startsWith('https://') ? photo : '',
+    };
+  });
+
+/**
+ * Finds the compose window an element belongs to
+ * @param {Element} el - An element inside a compose window
+ * @returns {Element|null} The nearest ancestor holding a recipient chip -
+ *   not just any listbox: the toolbar's font picker is one too, and stopping
+ *   there found no recipients
+ */
+const findComposeRoot = (el) => {
+  for (let node = el; node && node !== document.body; node = node.parentElement) {
+    if (node.querySelector(RECIPIENT_CHIP)) return node;
+  }
+  return null;
+};
+
+/**
+ * Records recipients whenever a message is sent - by the Send button or
+ * Cmd/Ctrl+Enter. Capture phase, so the compose is read before Gmail closes it.
+ */
+const watchSentMessages = () => {
+  const record = (el) => {
+    const compose = findComposeRoot(el);
+    if (compose) rememberRecentContacts(getComposeRecipients(compose));
+  };
+
+  document.addEventListener(
+    'mousedown',
+    (e) => {
+      const sendButton = e.target.closest?.('.T-I.aoO');
+      if (sendButton) record(sendButton);
+    },
+    true,
+  );
+
+  document.addEventListener(
+    'keydown',
+    (e) => {
+      if (e.key !== 'Enter' || !(e.metaKey || e.ctrlKey)) return;
+      if (e.target.isContentEditable || e.target.matches?.('input, textarea')) record(e.target);
+    },
+    true,
+  );
+};
+
+let sentListSynced = false;
+
+/**
+ * Re-syncs recent contacts from the Sent list's top rows (most recent
+ * first), so a fresh install starts with the right people. Runs once per
+ * visit to Sent, as soon as its rows are on screen.
+ */
+const syncRecentContactsFromSent = () => {
+  if (window.location.hash !== '#sent') {
+    sentListSynced = false;
+    return;
+  }
+  if (sentListSynced) return;
+
+  // Sent rows lead their participant column with a bare "To: " text node
+  // (inbox rows start with a span) - this keeps the inbox rows still on
+  // screen right after the hash changes from being read as recipients
+  const rows = Array.from(select.emails()).filter(
+    (row) =>
+      row.getClientRects().length &&
+      row.querySelector('.yW')?.firstChild?.nodeType === Node.TEXT_NODE,
+  );
+  if (!rows.length) return;
+  sentListSynced = true;
+  const recipients = rows.flatMap((row) =>
+    Array.from(select.emailParticipants(row)).map((span) => ({
+      email: span.getAttribute('email'),
+      name: span.getAttribute('name'),
+    })),
+  );
+
+  rememberRecentContacts(recipients, true);
+};
+
+/**
+ * Builds one avatar button of the speed dial
+ * @param {Object} contact - {email, name, photo}
+ * @returns {Element} The avatar button
+ */
+const buildRecentContact = (contact) => {
+  const button = document.createElement('div');
+  button.className = 'recent-contact';
+  button.setAttribute('role', 'button');
+  // Shown instantly by CSS beside the avatar (a title tooltip waits ~1s)
+  const label =
+    contact.name === contact.email ? contact.email : `${contact.name}\n${contact.email}`;
+  button.dataset.label = label;
+  button.setAttribute('aria-label', label.replace('\n', ', '));
+
+  const showPicture = ({ url, source }) => {
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = '';
+    img.dataset.source = source;
+    button.replaceChildren(img);
+    button.style.backgroundColor = '';
+  };
+
+  if (contact.photo) {
+    showPicture({ url: contact.photo, source: 'photo' });
+  } else {
+    // Same letter + color scheme as the thread list avatars, until the same
+    // picture lookup the list uses finds something better
+    const letter = (contact.name || contact.email)[0].toUpperCase();
+    const code = letter.charCodeAt(0);
+    button.textContent = letter;
+    button.style.backgroundColor =
+      code >= 65 && code <= 90 ? '#' + NAME_COLORS[code - 65] : '#616161';
+    // Picture lookups follow the Avatars option, like the thread list
+    optionsLoaded
+      .then(() => options.showAvatar === 'enabled' && resolveAvatar(contact.email))
+      .then((avatar) => avatar && showPicture(avatar))
+      .catch(() => {
+        // Keep the letter
+      });
+  }
+
+  button.addEventListener('click', () => openCompose({ to: contact.email }));
+  return button;
+};
+
+/**
+ * Adds the recent-contacts speed dial, shown while the pointer is over the
+ * compose button, the reminder button, or the contacts themselves
+ */
+const addRecentContacts = () => {
+  if (document.querySelector('.recent-contacts')) return;
+
+  const container = document.createElement('div');
+  container.className = 'recent-contacts';
+  document.body.appendChild(container);
+
+  const render = (contacts = []) => container.replaceChildren(...contacts.map(buildRecentContact));
+
+  chrome.storage.local.get(RECENT_CONTACTS_KEY, (result) => render(result[RECENT_CONTACTS_KEY]));
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'local' && changes[RECENT_CONTACTS_KEY]) {
+      render(changes[RECENT_CONTACTS_KEY].newValue);
+    }
+  });
+
+  // A short grace period lets the pointer cross the gaps between buttons
+  let closeTimer;
+  const open = () => {
+    clearTimeout(closeTimer);
+    addClassToBody('speed-dial-open');
+  };
+  const close = () => {
+    closeTimer = setTimeout(() => removeClassFromBody('speed-dial-open'), 300);
+  };
+
+  [container, document.querySelector('.floating-compose'), document.querySelector('.add-reminder')]
+    .filter(Boolean)
+    .forEach((el) => {
+      el.addEventListener('mouseenter', open);
+      el.addEventListener('mouseleave', close);
+    });
 };
 
 /**
@@ -1773,9 +2267,11 @@ const addReminderButton = () => {
 const moveFloatersLeft = () => {
   const reminderButton = document.querySelector('.add-reminder');
   const composeButton = document.querySelector('.floating-compose');
+  const recentContacts = document.querySelector('.recent-contacts');
 
   if (reminderButton) reminderButton.classList.add('moved');
   if (composeButton) composeButton.classList.add('moved');
+  if (recentContacts) recentContacts.classList.add('moved');
 };
 
 /**
@@ -1784,9 +2280,11 @@ const moveFloatersLeft = () => {
 const moveFloatersRight = () => {
   const reminderButton = document.querySelector('.add-reminder');
   const composeButton = document.querySelector('.floating-compose');
+  const recentContacts = document.querySelector('.recent-contacts');
 
   if (reminderButton) reminderButton.classList.remove('moved');
   if (composeButton) composeButton.classList.remove('moved');
+  if (recentContacts) recentContacts.classList.remove('moved');
 };
 
 /* Gmail is actively restructuring the right side panel (mid-2026); every hook
@@ -1939,15 +2437,16 @@ const fetchBrandLogo = async (domain) => {
 };
 
 /**
- * Creates a web avatar element for BIMI logos
- * @param {string} logoUrl - URL of the logo image
+ * Creates a web avatar element (photo, brand logo, or site icon)
+ * @param {Object} avatar - {url, source} from resolveAvatar
  * @param {string} name - Name for alt text
  * @returns {Element} Avatar element
  */
-const createWebAvatar = (logoUrl, name) => {
+const createWebAvatar = ({ url, source }, name) => {
   const avatarElement = document.createElement('img');
   avatarElement.className = `${CSS_CLASSES.AVATAR} ${CSS_CLASSES.WEB_AVATAR}`;
-  avatarElement.src = logoUrl;
+  avatarElement.dataset.source = source;
+  avatarElement.src = url;
   avatarElement.alt = name;
   avatarElement.title = name;
   avatarElement.style.objectFit = 'cover';
@@ -1955,21 +2454,349 @@ const createWebAvatar = (logoUrl, name) => {
 };
 
 /**
- * Replaces a letter avatar with a web avatar
+ * Replaces a letter (or earlier web) avatar with a web avatar
  * @param {Element} targetElement - The avatar wrapper element
- * @param {string} logoUrl - URL of the web avatar
+ * @param {Object} avatar - {url, source} from resolveAvatar
  * @param {string} name - Name for alt text
  */
-const replaceAvatarWithWeb = (targetElement, logoUrl, name) => {
-  // Remove existing letter avatar
+const replaceAvatarWithWeb = (targetElement, avatar, name) => {
+  // Remove existing avatar
   const existingAvatar = targetElement.querySelector(`.${CSS_CLASSES.AVATAR}`);
   if (existingAvatar) {
     existingAvatar.remove();
   }
 
   // Create and add web avatar
-  const webAvatar = createWebAvatar(logoUrl, name);
+  const webAvatar = createWebAvatar(avatar, name);
   targetElement.appendChild(webAvatar);
+};
+
+// =============================================================================
+// AVATAR PICTURES
+// =============================================================================
+
+/* Each sender gets the first picture found, in this order:
+   1. a profile photo Gmail has already shown (open conversations, compose
+      chips) - stored locally, nothing extra leaves the browser
+   2. the brand's BIMI logo
+   3. Gravatar, when the user opts in (sends a hash of the address)
+   4. the company site's icon, for non-webmail domains
+   and keep the colored letter otherwise. */
+
+/**
+ * Webmail providers - addresses here belong to people, so no company logo
+ * or site icon applies
+ */
+const PERSONAL_EMAIL_DOMAINS = new Set([
+  'gmail.com',
+  'googlemail.com',
+  'yahoo.com',
+  'ymail.com',
+  'outlook.com',
+  'hotmail.com',
+  'live.com',
+  'msn.com',
+  'icloud.com',
+  'me.com',
+  'mac.com',
+  'aol.com',
+  'proton.me',
+  'protonmail.com',
+  'gmx.com',
+  'gmx.net',
+  'mail.com',
+  'zoho.com',
+  'yandex.com',
+  'fastmail.com',
+  'hey.com',
+  'comcast.net',
+  'att.net',
+  'verizon.net',
+]);
+
+const CONTACT_PHOTOS_KEY = 'contactPhotos';
+const MAX_CONTACT_PHOTOS = 2000;
+
+/** email -> profile photo URL, mirrored from local storage */
+const contactPhotos = new Map();
+
+/** email -> Promise of {url, source} or null, so each sender is looked up once */
+const avatarLookups = new Map();
+
+/* Lookup results are remembered across page loads, so a reload paints
+   pictures straight away instead of repeating every network check */
+const AVATAR_CACHE_KEY = 'avatarCache';
+const MAX_CACHED_AVATARS = 2000;
+const AVATAR_FOUND_TTL = 14 * 24 * 60 * 60 * 1000;
+const AVATAR_MISSING_TTL = 3 * 24 * 60 * 60 * 1000;
+
+/** email -> {url, source, at} (url null when nothing was found) */
+const cachedAvatars = new Map();
+const pendingAvatarCacheWrites = new Map();
+let avatarCacheFlushTimer;
+
+/* Few senders at a time - a full inbox firing every lookup at once queues
+   in the browser long enough for checks to time out */
+const MAX_PARALLEL_AVATAR_LOOKUPS = 6;
+const IMAGE_CHECK_TIMEOUT_MS = 6000;
+let activeAvatarLookups = 0;
+const queuedAvatarLookups = [];
+
+/**
+ * Checks for a real Google profile photo - Gmail's generated letter
+ * circles live under /cm/ and are skipped
+ * @param {string} url - Image URL
+ * @returns {boolean} True for a profile photo
+ */
+const isProfilePhotoUrl = (url) => /^https:\/\/lh\d\.googleusercontent\.com\/a-?\//.test(url || '');
+
+/**
+ * Stores profile photos for later avatars, newest last (oldest are dropped
+ * past MAX_CONTACT_PHOTOS)
+ * @param {Array<[string, string]>} entries - [email, photo URL] pairs
+ */
+const rememberContactPhotos = (entries) => {
+  const fresh = entries
+    .map(([email, url]) => [email?.toLowerCase(), url])
+    .filter(([email, url]) => email && isProfilePhotoUrl(url) && contactPhotos.get(email) !== url);
+  if (!fresh.length) return;
+
+  fresh.forEach(([email, url]) => contactPhotos.set(email, url));
+  chrome.storage.local.get(CONTACT_PHOTOS_KEY, (result) => {
+    const stored = result[CONTACT_PHOTOS_KEY] || {};
+    fresh.forEach(([email, url]) => {
+      delete stored[email]; // re-insert so it counts as newest
+      stored[email] = url;
+    });
+    const emails = Object.keys(stored);
+    emails.slice(0, Math.max(0, emails.length - MAX_CONTACT_PHOTOS)).forEach((email) => {
+      delete stored[email];
+    });
+    chrome.storage.local.set({ [CONTACT_PHOTOS_KEY]: stored });
+  });
+};
+
+/**
+ * Syncs sender pictures in open conversations - Gmail tags each one with
+ * the sender's address in data-hovercard-id. Real profile photos are saved
+ * for the list avatars; Gmail's generated letter circles (/cm/) are swapped
+ * for the picture the list shows, when there is one.
+ */
+const syncConversationAvatars = () => {
+  const senderImages = Array.from(document.querySelectorAll('img.ajn[data-hovercard-id]'));
+  rememberContactPhotos(
+    senderImages.map((img) => [img.getAttribute('data-hovercard-id'), img.src]),
+  );
+
+  if (options.showAvatar !== 'enabled') return;
+  senderImages
+    .filter((img) => img.src.includes('googleusercontent.com/cm/') && !img.dataset.avatarSource)
+    .forEach((img) => {
+      img.dataset.avatarSource = 'pending';
+      resolveAvatar(img.getAttribute('data-hovercard-id').toLowerCase()).then((avatar) => {
+        if (!avatar) return;
+        img.src = avatar.url;
+        img.dataset.avatarSource = avatar.source;
+      });
+    });
+};
+
+/**
+ * Loads stored photos, and upgrades on-screen avatars whenever a photo is
+ * learned (in this tab or another)
+ */
+const watchContactPhotos = () => {
+  avatarStoresLoaded = new Promise((resolve) =>
+    chrome.storage.local.get([CONTACT_PHOTOS_KEY, AVATAR_CACHE_KEY], (result) => {
+      Object.entries(result[CONTACT_PHOTOS_KEY] || {}).forEach(([email, url]) =>
+        contactPhotos.set(email, url),
+      );
+      Object.entries(result[AVATAR_CACHE_KEY] || {}).forEach(([email, entry]) =>
+        cachedAvatars.set(email, entry),
+      );
+      resolve();
+    }),
+  );
+
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area !== 'local' || !changes[CONTACT_PHOTOS_KEY]) return;
+    const oldPhotos = changes[CONTACT_PHOTOS_KEY].oldValue || {};
+    Object.entries(changes[CONTACT_PHOTOS_KEY].newValue || {}).forEach(([email, url]) => {
+      contactPhotos.set(email, url);
+      if (oldPhotos[email] === url) return;
+
+      avatarLookups.delete(email);
+      document.querySelectorAll(`[data-avatar-email="${CSS.escape(email)}"]`).forEach((wrapper) => {
+        const name =
+          wrapper.closest('.zA')?.querySelector('.yW [name]')?.getAttribute('name') || '';
+        replaceAvatarWithWeb(wrapper, { url, source: 'photo' }, name);
+      });
+    });
+  });
+};
+
+/**
+ * SHA-256 hex digest, as Gravatar expects
+ * @param {string} text - Text to hash
+ * @returns {Promise<string>} Hex digest
+ */
+const sha256Hex = async (text) => {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, '0')).join('');
+};
+
+/**
+ * Looks up a Gravatar - d=404 makes addresses without one fail to load
+ * @param {string} email - Lowercased address
+ * @returns {Promise<string|null>} Image URL or null
+ */
+const fetchGravatar = async (email) =>
+  testImageUrl(
+    `https://gravatar.com/avatar/${await sha256Hex(email.trim())}?s=80&d=404`,
+    0,
+    IMAGE_CHECK_TIMEOUT_MS,
+  );
+
+/**
+ * Looks up a site's icon. Unknown sites get a 16px placeholder, which the
+ * 32px minimum rejects along with icons too small to fill an avatar.
+ * @param {string} domain - Site domain
+ * @returns {Promise<string|null>} Icon URL or null
+ */
+const fetchSiteIcon = (domain) =>
+  testImageUrl(
+    `https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${domain}&size=64`,
+    32,
+    IMAGE_CHECK_TIMEOUT_MS,
+  );
+
+/** Resolves once saved photos and cached lookups are loaded from storage */
+let avatarStoresLoaded = Promise.resolve();
+
+/**
+ * Runs a lookup once a slot is free (at most MAX_PARALLEL_AVATAR_LOOKUPS)
+ * @param {Function} task - Returns a promise
+ * @returns {Promise} The task's result
+ */
+const runAvatarLookup = (task) =>
+  new Promise((resolve, reject) => {
+    const run = () => {
+      activeAvatarLookups++;
+      task()
+        .then(resolve, reject)
+        .finally(() => {
+          activeAvatarLookups--;
+          queuedAvatarLookups.shift()?.();
+        });
+    };
+    if (activeAvatarLookups < MAX_PARALLEL_AVATAR_LOOKUPS) run();
+    else queuedAvatarLookups.push(run);
+  });
+
+/**
+ * Remembers a lookup result; writes are batched into one storage update
+ * @param {string} email - Lowercased address
+ * @param {Object|null} avatar - {url, source} or null for nothing found
+ * @param {boolean} withGravatar - Whether Gravatar was part of the check
+ */
+const cacheAvatar = (email, avatar, withGravatar) => {
+  const entry = {
+    url: avatar?.url || null,
+    source: avatar?.source || null,
+    withGravatar,
+    at: Date.now(),
+  };
+  cachedAvatars.set(email, entry);
+  pendingAvatarCacheWrites.set(email, entry);
+
+  clearTimeout(avatarCacheFlushTimer);
+  avatarCacheFlushTimer = setTimeout(() => {
+    const writes = new Map(pendingAvatarCacheWrites);
+    pendingAvatarCacheWrites.clear();
+    chrome.storage.local.get(AVATAR_CACHE_KEY, (result) => {
+      const stored = result[AVATAR_CACHE_KEY] || {};
+      writes.forEach((value, key) => {
+        delete stored[key]; // re-insert so it counts as newest
+        stored[key] = value;
+      });
+      const keys = Object.keys(stored);
+      keys.slice(0, Math.max(0, keys.length - MAX_CACHED_AVATARS)).forEach((key) => {
+        delete stored[key];
+      });
+      chrome.storage.local.set({ [AVATAR_CACHE_KEY]: stored });
+    });
+  }, 1000);
+};
+
+/**
+ * Returns a remembered lookup result that is still fresh
+ * @param {string} email - Lowercased address
+ * @returns {Object|null|undefined} {url, source}, null for "nothing found",
+ *   or undefined when it has to be looked up
+ */
+const getCachedAvatar = (email) => {
+  const entry = cachedAvatars.get(email);
+  if (!entry) return undefined;
+  // A remembered Gravatar only counts while the option is on
+  if (entry.source === 'gravatar' && options.gravatar !== 'enabled') return undefined;
+  // "Nothing found" was decided without Gravatar - recheck once it is on
+  if (!entry.url && options.gravatar === 'enabled' && !entry.withGravatar) return undefined;
+  const ttl = entry.url ? AVATAR_FOUND_TTL : AVATAR_MISSING_TTL;
+  if (Date.now() - entry.at > ttl) return undefined;
+  return entry.url ? { url: entry.url, source: entry.source } : null;
+};
+
+/**
+ * Checks every network source for a sender at once and picks the best hit
+ * in priority order (see the order above)
+ * @param {string} email - Lowercased address
+ * @returns {Promise<Object|null>} {url, source} or null for the letter avatar
+ */
+const lookupAvatarOnline = async (email) => {
+  const domain = extractDomain(email);
+  const isCompany =
+    domain && !PERSONAL_EMAIL_DOMAINS.has(domain) && !SKIP_DOMAINS.has(getMainDomain(domain));
+  const withGravatar = options.gravatar === 'enabled';
+
+  const [logo, gravatar, icon] = await Promise.all([
+    isCompany ? fetchBrandLogo(domain) : null,
+    withGravatar ? fetchGravatar(email) : null,
+    isCompany ? fetchSiteIcon(getMainDomain(domain)) : null,
+  ]);
+
+  const avatar =
+    (logo && { url: logo, source: 'logo' }) ||
+    (gravatar && { url: gravatar, source: 'gravatar' }) ||
+    (icon && { url: icon, source: 'icon' }) ||
+    null;
+
+  // A timed-out check proves nothing, so only remember definite answers
+  const timedOut = gravatar === undefined || icon === undefined;
+  if (avatar || !timedOut) cacheAvatar(email, avatar, withGravatar);
+  return avatar;
+};
+
+/**
+ * Finds the picture for a sender: a saved photo, then a remembered result,
+ * then the network (queued). Waits for storage and options first - the
+ * speed dial asks before either has loaded. One lookup per sender per page
+ * load.
+ * @param {string} email - Lowercased address
+ * @returns {Promise<Object|null>} {url, source} or null
+ */
+const resolveAvatar = (email) => {
+  if (!avatarLookups.has(email)) {
+    avatarLookups.set(
+      email,
+      Promise.all([avatarStoresLoaded, optionsLoaded]).then(() => {
+        if (contactPhotos.has(email)) return { url: contactPhotos.get(email), source: 'photo' };
+        const cached = getCachedAvatar(email);
+        if (cached !== undefined) return cached;
+        return runAvatarLookup(() => lookupAvatarOnline(email));
+      }),
+    );
+  }
+  return avatarLookups.get(email);
 };
 
 /**
@@ -2095,7 +2922,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Initialize header and compose button
   waitForElement('a[aria-label="Gmail"]', handleHashChange);
-  waitForElement('a[aria-label="Gmail"]', addFloatingComposeButton);
+  waitForElement('header[role="banner"] .bGJ, header[role="banner"] .zo', addPinnedToggle);
+  waitForElement('a[aria-label="Gmail"]', () => {
+    addFloatingComposeButton();
+    addRecentContacts();
+  });
+  watchSentMessages();
 
   // Set up label color observer (.FgKVne is Wiz build-hashed; .aeN .yJ is the
   // same label region anchored on the stable nav container)
@@ -2103,6 +2935,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Set up periodic email updates
   setInterval(updateReminders, 250);
+  setInterval(syncRecentContactsFromSent, 1000);
+
+  // Learn sender photos from open conversations for the inbox avatars, and
+  // give open conversations the inbox avatars in place of letter circles
+  watchContactPhotos();
+  setInterval(syncConversationAvatars, 1000);
 
   // Keep sidebar icons painted on Gmail's new SVG markup (sidebar rerenders
   // when labels expand/collapse, so this must re-run; no-op when normalized)

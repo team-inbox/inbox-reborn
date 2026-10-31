@@ -3,6 +3,59 @@
 All notable changes to the Inbox Reborn theme for Gmail™, grouped by release era.
 PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inbox-reborn/pulls).
 
+## 2.4.0 — October 2026
+
+### Inbox features (`feat/inbox-features-2.4.0`)
+
+- **Sweep** — a ✓ button on each date heading marks the whole group done
+  (archives it), leaving pinned emails in place. It presses Gmail's own
+  Archive, so Gmail's Undo brings everything back; a bundle in the group is
+  swept with it
+- **Pinned switch** in the header, after Inbox's pin toggle — shows pinned
+  (starred) inbox mail plus reminders (following the Reminders option), with
+  a "Pinned" title; it tracks the view however you get there
+- **Speed dial** — hovering the compose button fans out your three most
+  recent recipients above the reminder button, newest nearest compose; a
+  label with name and address shows instantly on hover, and a click starts
+  an email to them. Contacts are learned at Send and from the Sent list
+  (open Sent once on a fresh install), and stay in local storage
+- **Sender pictures** on avatars — in the thread list, open conversations
+  (replacing Gmail's letter circles) and the speed dial. First found wins:
+  a Google profile photo Gmail has already shown, the brand's BIMI logo,
+  Gravatar (new opt-in option), then the company site's icon. Results are
+  remembered across reloads and lookups are queued, so pictures appear
+  immediately after the first load
+- **Hide AI Inbox** option removes Gmail's AI Inbox row from the menu
+- Inbox-style menu: Starred removed from the top group (Inbox, Snoozed,
+  Done), Purchases / Social / Updates / Forums / Promotions in their Inbox
+  colors, Roboto 14px text with a bold selected row, Material grey icons,
+  and the menu offset below the header like Inbox's
+
+### Fixes
+
+- Toolbar: Gmail's new inline-SVG mark-as-unread icon and the remove-label
+  icon are light in dark mode; compose title bar minimize / full screen /
+  close no longer draw two overlapping glyphs in light mode
+- Unstarred pin matches the other row actions in dark mode; the "View Pull
+  Request" style quick-action arrow is a blue glyph instead of a black sprite
+- Starred detection updated for Gmail's markup (starred rows lost
+  `.T-KT-Jp`), so starred mail stays out of bundles again
+- Bundles could form in Sent (and other views) while switching views; the
+  inbox is now detected from the URL, foreign rows are never bundled, and
+  stray bundles are removed
+- Reminders kept their icon after leaving and revisiting a view
+- Sidebar icons no longer show Gmail's sprite through the mask as a second
+  tone; the open-conversation toolbar strip matches the page background
+- Slow Gmail loads no longer disable features (waits up to 30s)
+- Site-icon avatars fill the circle with their edge trimmed, so baked-in
+  rings and soft edges don't show as a halo
+
+### Tooling (`chore/ci-checks`, #117)
+
+- CI runs Mozilla's addons-linter on the Firefox package, unit tests for the
+  date headings, a version check across all four version files, and a
+  missing-image check; `npm run verify` runs the same locally
+
 ## 2.3.0 — October 2026
 
 ### Thread list (`fix/dark-mode-polish-2026-10`)
