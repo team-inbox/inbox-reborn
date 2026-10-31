@@ -1,6 +1,6 @@
 {
   "name": "inbox-reborn",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "private": true,
   "description": "Build and quality tooling for the Inbox Reborn theme for Gmail extension",
   "scripts": {
