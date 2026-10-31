@@ -5,9 +5,8 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## 2.4.1 — October 2026
 
-- Collapsed left menu (Gmail's icon-only mode) showed only two divider lines: its
-  icons were shifted off-screen. The icons now show, and the dividers shrink to
-  match until the menu expands on hover.
+- Collapsing the left menu (☰) left two stray divider lines behind; the menu now
+  disappears completely, like Inbox's drawer.
 
 ## 2.4.0 — October 2026
 
