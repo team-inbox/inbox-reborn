@@ -44,6 +44,8 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
   inbox is now detected from the URL, foreign rows are never bundled, and
   stray bundles are removed
 - Reminders kept their icon after leaving and revisiting a view
+- Dark mode: unread rows get their own divider line, so a run of unread mail
+  no longer merges into one block
 - Sidebar icons no longer show Gmail's sprite through the mask as a second
   tone; the open-conversation toolbar strip matches the page background
 - Slow Gmail loads no longer disable features (waits up to 30s)

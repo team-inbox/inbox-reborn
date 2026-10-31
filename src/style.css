@@ -4894,6 +4894,17 @@ body.dark-mode .zA:hover {
     0 2px 4px rgb(0 0 0 / 24%) !important;
 }
 
+/* Unread rows are filled with --dm-hover, the same color as that separator,
+   so a run of unread mail merged into one block - give them a line one step
+   lighter than their fill, the same contrast read rows get */
+body.dark-mode .zA.zE,
+body.dark-mode .zA.zE:hover {
+  box-shadow:
+    0 -1px 0 var(--dm-border),
+    0 0 2px rgb(0 0 0 / 12%),
+    0 2px 4px rgb(0 0 0 / 24%) !important;
+}
+
 /* Text hierarchy on dark rows - the old blanket #fff on every span was
    glaring and flattened read/unread. Snippets and read-row dates recede;
    unread sender/subject/date lead, but never reach #fff. */
