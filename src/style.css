@@ -341,6 +341,51 @@ body
   padding-left: 20px;
 }
 
+/* Date group header - label on the left, sweep button on the right */
+.time-row {
+  display: flex;
+  align-items: flex-end;
+}
+
+.time-row[hidden] {
+  display: none;
+}
+
+.time-row .time {
+  flex: 1;
+}
+
+/* Sweep (archive the group) - only in lists where Archive applies */
+.sweep-button {
+  display: none;
+}
+
+body.inbox-list .sweep-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 0 18px 2px 0; /* centers the icon on the label text (.time pads 13px above, 10px below) */
+  border-radius: 50%;
+  color: #5f6368;
+  cursor: pointer;
+}
+
+body.inbox-list .sweep-button:hover {
+  background: rgb(32 33 36 / 6%);
+  color: #202124;
+}
+
+body.dark-mode.inbox-list .sweep-button {
+  color: var(--dm-text-muted);
+}
+
+body.dark-mode.inbox-list .sweep-button:hover {
+  background: var(--dm-hover);
+  color: #e8eaed;
+}
+
 /* Email */
 .zA,
 .zA:hover {
@@ -608,6 +653,13 @@ body.dark-mode .TO.inbox-reborn-done::after {
   mask-position: center;
 }
 
+/* The Wiz buttons also carry Gmail's own dark inline SVG glyphs, which the
+   mask above clips into a garbled second icon - only the white mask glyph
+   should show */
+.nH.Hd :is(.Hk, .Hl, .Hq, .Hm .aUG, .Ha) svg {
+  visibility: hidden !important;
+}
+
 /* .Hn applies :hover color */
 .Hk.Hn,
 .Hl.Hn,
@@ -630,7 +682,7 @@ body.dark-mode .TO.inbox-reborn-done::after {
 }
 
 .wT {
-  margin-top: -20px;
+  margin-top: -8px; /* Inbox's menu starts 12px below the header, not flush with it */
   max-width: unset;
   min-width: unset;
   width: 224px;
@@ -859,6 +911,12 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/arrow_drop_down_black_20dp.png') !important;
 }
 
+/* Starred row hidden - Inbox's top group was just Inbox, Snoozed, Done;
+   pinned mail stays reachable in the thread list and via is:starred */
+.aim:has(.aHS-bnw) {
+  display: none !important;
+}
+
 /* Starred - Unified approach for both light and dark modes */
 .aHS-bnw .qj {
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/star_24dp_F1C411_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -1038,6 +1096,23 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
   -webkit-mask-size: 24px !important;
   mask-size: 24px !important;
   background-color: #4c4f4d !important;
+}
+
+/* "Hide AI Inbox" option - the row sits between two menu groups that pad
+   8px below and above it, so drop that padding once it is gone. (Pulling
+   the next group up instead overlapped the Inbox highlight in dark mode,
+   where the groups have an opaque background.) */
+body.hide-ai-inbox [data-tooltip='AI Inbox'],
+body.hide-ai-inbox .aim:has([data-tooltip='AI Inbox']) {
+  display: none !important;
+}
+
+body.hide-ai-inbox .byl:has(+ .CL[data-tooltip='AI Inbox']) > .TK {
+  padding-bottom: 0 !important;
+}
+
+body.hide-ai-inbox .CL[data-tooltip='AI Inbox'] + .byl > .TK {
+  padding-top: 0 !important;
 }
 
 /* AI Inbox (Gmail 2026 Gemini row - a bare .TN carrying the tooltip, no .TO
@@ -1552,8 +1627,9 @@ div[role='complementary'][aria-label='Side panel'],
   background-color: #898984;
 }
 
-/* Inbox */
-.w-asV.bbg.aiw[pageTitle='inbox'] {
+/* Inbox (Pinned is the inbox filtered, so it keeps the inbox blue) */
+.w-asV.bbg.aiw[pageTitle='inbox'],
+.w-asV.bbg.aiw[pageTitle='pinned'] {
   background-color: #4285f4;
 }
 
@@ -1687,6 +1763,76 @@ div[role='complementary'][aria-label='Side panel'],
 
 .w-asV.bbg.aiw[pageTitle='label'] a[aria-label='Gmail']::after {
   content: attr(data-label-title);
+}
+
+.w-asV.bbg.aiw[pageTitle='pinned'] a[aria-label='Gmail']::after {
+  content: 'Pinned';
+}
+
+/* Pinned switch in the header (Inbox's pinned filter) - a pin-badged thumb
+   on a short track; checked state follows the view, not the click */
+.pinned-toggle {
+  position: relative;
+  flex: none;
+  align-self: center;
+  width: 36px;
+  height: 14px;
+  margin: 0 8px; /* + header gap + help button padding = 24px to the ? glyph, same as icon to icon */
+  border-radius: 7px;
+  background: rgb(0 0 0 / 26%);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.pinned-toggle[aria-checked='true'] {
+  background: rgb(255 255 255 / 50%);
+}
+
+.pinned-toggle:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 5px;
+}
+
+.pinned-toggle-thumb {
+  position: absolute;
+  top: -3px;
+  left: -2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 40%);
+  transition: transform 0.2s;
+}
+
+.pinned-toggle[aria-checked='true'] .pinned-toggle-thumb {
+  transform: translateX(20px);
+}
+
+.pinned-toggle-thumb::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg')
+    center / 14px no-repeat;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg')
+    center / 14px no-repeat;
+  background-color: #4285f4;
+}
+
+@-moz-document url-prefix() {
+  .pinned-toggle-thumb::before {
+    -webkit-mask: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg')
+      center / 14px no-repeat;
+    mask: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg')
+      center / 14px no-repeat;
+  }
+}
+
+/* Pinned view is a search under the hood - drop Gmail's search filter chips
+   (From, Any time, Has attachment, ...) that Inbox's filter never had */
+body.pinned-view .Im {
+  display: none !important;
 }
 
 /* Fix background color for vertical split layout */
@@ -1926,8 +2072,104 @@ header form input {
   width: 56px;
 }
 
-.floating-compose:hover::before {
+.floating-compose:hover::before,
+body.speed-dial-open .floating-compose::before {
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
+}
+
+/* Speed dial - recent contacts stacked above the reminder button, shown
+   while the pointer is anywhere on the compose stack (JS toggles
+   body.speed-dial-open). Same 40px circles and 14px rhythm as the stack. */
+.recent-contacts {
+  position: fixed;
+  right: 48px;
+  bottom: 144px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column-reverse; /* newest nearest compose - the shortest reach */
+  gap: 14px;
+  pointer-events: none;
+}
+
+body.speed-dial-open .recent-contacts {
+  pointer-events: auto;
+}
+
+.recent-contact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  border-radius: 50%;
+  color: #fff;
+  font:
+    500 18px Roboto,
+    sans-serif;
+  cursor: pointer;
+  user-select: none;
+  box-shadow:
+    0 1px 2px 0 rgb(60 64 67 / 30.2%),
+    0 1px 3px 1px rgb(60 64 67 / 14.9%);
+  opacity: 0;
+  transform: translateY(12px) scale(0.6);
+  transition:
+    opacity 0.15s,
+    transform 0.15s;
+}
+
+.recent-contact img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Name + address label to the left, shown the moment the avatar is hovered
+   (Inbox's speed-dial labels; the native title tooltip lags about a second) */
+.recent-contact::after {
+  content: attr(data-label);
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: rgb(32 33 36 / 90%);
+  color: #fff;
+  font:
+    400 13px/18px Roboto,
+    sans-serif;
+  text-align: right;
+  white-space: pre;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s;
+}
+
+.recent-contact:hover::after {
+  opacity: 1;
+}
+
+body.speed-dial-open .recent-contact {
+  opacity: 1;
+  transform: none;
+}
+
+/* Fan out bottom-up, nearest the reminder button first */
+body.speed-dial-open .recent-contact:nth-child(2) {
+  transition-delay: 0.04s;
+}
+
+body.speed-dial-open .recent-contact:nth-child(3) {
+  transition-delay: 0.08s;
+}
+
+.recent-contact:hover {
+  box-shadow:
+    0 1px 3px 0 rgb(60 64 67 / 30.2%),
+    0 4px 8px 3px rgb(60 64 67 / 14.9%);
 }
 
 /* Hide old compose button */
@@ -2009,7 +2251,8 @@ header form input {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
   }
 
-  .floating-compose:hover::before {
+  .floating-compose:hover::before,
+  body.speed-dial-open .floating-compose::before {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
   }
 
@@ -2436,7 +2679,21 @@ header form input {
   line-height: 32px;
 }
 
-/* Web avatar (BIMI logos) */
+/* Web avatar (photos, brand logos, site icons) - in the list, on
+   conversation senders, and in the speed dial. Site icons fill the circle
+   like photos and letter avatars, with no backing. Their outer edge is
+   trimmed - enlarge 12% and clip back to the same circle - because that is
+   where icons keep soft edges, padding, or a baked-in ring (GitHub's), which
+   a plain round crop shows as a ragged halo, worst in dark mode. */
+img.ajn[data-avatar-source='icon'],
+.avatar.web-avatar[data-source='icon'],
+.recent-contact img[data-source='icon'] {
+  object-fit: cover !important;
+  background: none !important;
+  transform: scale(1.12);
+  clip-path: circle(44.6%); /* 50% / 1.12 - the visible circle keeps its size */
+}
+
 .avatar.web-avatar {
   color: transparent;
   background: none;
@@ -2700,7 +2957,8 @@ body.email-bundling-enabled.bundle-page .nH.ar4.B .yi {
   order: 1 !important;
 }
 
-.add-reminder.moved {
+.add-reminder.moved,
+.recent-contacts.moved {
   right: 388px;
 }
 
@@ -2789,6 +3047,7 @@ div[aria-label='Inbox tip'] {
 /* Hide Compose and Reminder buttons from Gmail's Print view */
 @media print {
   .add-reminder,
+  .recent-contacts,
   .floating-compose,
   .akV {
     display: none;
@@ -3527,6 +3786,29 @@ body.dark-mode .bqY .bqX.brv {
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_schedule_24dp.svg') !important;
 }
 
+/* Quick-action chip arrow (e.g. "View Pull Request" on GitHub mail) - a black
+   sprite; swap in a Material arrow_outward mask in the reminder-button blue */
+body.dark-mode .zA img.aJ4 {
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_arrow_outward_24dp.svg')
+    center / 14px no-repeat !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_arrow_outward_24dp.svg')
+    center / 14px no-repeat !important;
+  background: #4285f4 !important;
+  width: 14px !important;
+  height: 14px !important;
+  margin-left: 4px !important;
+  vertical-align: -2px !important;
+}
+
+@-moz-document url-prefix() {
+  body.dark-mode .zA img.aJ4 {
+    -webkit-mask: url('moz-extension://__MSG_@@extension_id__/images/toolbar_arrow_outward_24dp.svg')
+      center / 14px no-repeat !important;
+    mask: url('moz-extension://__MSG_@@extension_id__/images/toolbar_arrow_outward_24dp.svg')
+      center / 14px no-repeat !important;
+  }
+}
+
 /* Toolbar glyphs - Gmail's light-theme sprites are dark glyphs with no mask
    to recolor, so replace them with Google Material Symbols masks filled with
    the same light gray as the archive button. Covered: back, report spam,
@@ -3615,10 +3897,20 @@ body.dark-mode .G-atb .asa > .asf {
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_refresh_24dp.svg') !important;
 }
 
-/* Toolbar icons drawn as inline SVG (e.g. Mark as unread) */
-body.dark-mode .G-atb .T-I .asa svg.T-I-J3,
-body.dark-mode .G-atb .T-I .asa svg.T-I-J3 path {
+/* Toolbar icons drawn as inline SVG (e.g. Mark as unread) - Gmail now wraps
+   the svg in a span, so match any svg in the icon slot */
+body.dark-mode .G-atb .T-I .asa svg,
+body.dark-mode .G-atb .T-I .asa svg path {
   fill: #e8eaed !important;
+}
+
+/* Remove label (shown inside a label view) - dark sprite; the list-toolbar
+   catch-all paints its background, which the filter would turn white */
+body.dark-mode .G-atb .asa > .bAD {
+  filter: brightness(0) invert(0.91);
+  opacity: 1 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
 }
 
 /* Message header star (unstarred) - replace the dark sprite with a Material
@@ -3852,7 +4144,6 @@ body.dark-mode .ar4.z .TD > .TC {
   }
 }
 
-body.dark-mode .ar4,
 body.dark-mode .aBO,
 body.dark-mode .aB6,
 body.dark-mode .bn .bl,
@@ -4639,7 +4930,10 @@ body.dark-mode .zA .apU.xY .T-KT.xf::before {
 /* Dark mode star icons - use SVG with mask-image approach */
 body.dark-mode .zA .apU.xY .T-KT::before,
 body.dark-mode .zA .apU.xY .T-KT.xl::before {
-  background-color: #c6c6c5 !important;
+  /* Same fill as the other row hover actions; the light-mode 0.7 opacity
+     would dim it (starred pins get their --pin-color rule instead) */
+  background-color: #e8eaed !important;
+  opacity: 1 !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
   -webkit-mask-size: 20px !important;
@@ -4984,7 +5278,8 @@ body.dark-mode [aria-label='Create new label'] .n0 {
   /* Firefox dark mode star icons - email list */
   body.dark-mode .zA .apU.xY .T-KT::before,
   body.dark-mode .zA .apU.xY .T-KT.xl::before {
-    background-color: #c6c6c5 !important;
+    background-color: #e8eaed !important;
+    opacity: 1 !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
     -webkit-mask-size: 20px !important;
@@ -5144,7 +5439,8 @@ body.dark-mode .w-asV.bbg.aiw {
   background-color: #636360 !important; /* default darker gray */
 }
 
-body.dark-mode .w-asV.bbg.aiw[pageTitle='inbox'] {
+body.dark-mode .w-asV.bbg.aiw[pageTitle='inbox'],
+body.dark-mode .w-asV.bbg.aiw[pageTitle='pinned'] {
   background-color: #3060b0 !important; /* darker blue */
 }
 
@@ -6529,4 +6825,88 @@ body.dark-mode .nH.Hd[role='dialog'] {
   --gm3-sys-color-tertiary-fixed-dim-rgb: 109, 213, 140;
   --gm3-sys-color-tertiary-fixed-rgb: 196, 238, 208;
   --gm3-sys-color-tertiary-rgb: 20, 108, 46;
+}
+
+/* =============================================================================
+   CATEGORY SIDEBAR COLORS (LIGHT + DARK)
+   Inbox's category palette - the same colors the bundles use (see
+   getCategoryColor in script.js). Clearing background-image drops Gmail's
+   gray nv700 sprite, which otherwise paints through the mask as a second
+   tone. Brown and indigo step up to their 300 shades on the dark sidebar.
+   Kept at the end of the file so it wins over the monochrome icon rules.
+   ============================================================================= */
+[data-tooltip='Social'] .qj,
+body.dark-mode [data-tooltip='Social'] .qj {
+  background-color: #db4437 !important;
+  background-image: none !important;
+}
+
+[data-tooltip='Updates'] .qj,
+body.dark-mode [data-tooltip='Updates'] .qj {
+  background-color: #ff6839 !important;
+  background-image: none !important;
+}
+
+[data-tooltip='Forums'] .qj {
+  background-color: #3f51b5 !important;
+  background-image: none !important;
+}
+
+[data-tooltip='Promotions'] .qj,
+body.dark-mode [data-tooltip='Promotions'] .qj {
+  background-color: #00bcd4 !important;
+  background-image: none !important;
+}
+
+[data-tooltip='Purchases'] .qj,
+[data-tooltip='Purchased'] .qj {
+  background-color: #795548 !important;
+  background-image: none !important;
+}
+
+body.dark-mode [data-tooltip='Forums'] .qj {
+  background-color: #7986cb !important;
+  background-image: none !important;
+}
+
+body.dark-mode [data-tooltip='Purchases'] .qj,
+body.dark-mode [data-tooltip='Purchased'] .qj {
+  background-color: #a1887f !important;
+  background-image: none !important;
+}
+
+/* =============================================================================
+   SIDEBAR TYPE + ICON GRAY (Inbox's look)
+   Inbox set its menu in Roboto 14px with near-black text, bolded the
+   selected row, and drew its gray icons in Material Grey 700. Font and bold
+   apply in both themes; the colors are light-mode only (dark mode keeps its
+   own palette).
+   ============================================================================= */
+.wT :is(.TO .n0, .n3 > .CL > .CK) {
+  font-family: Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+  font-size: 14px !important;
+}
+
+.wT .TO.nZ .n0 {
+  font-weight: 700 !important;
+}
+
+body:not(.dark-mode) .wT :is(.TO .n0, .n3 > .CL > .CK) {
+  color: #212121 !important;
+}
+
+/* Sent, Drafts, All Mail, Spam, Trash, labels, Scheduled, Important, Chats.
+   Gmail's own dark nv700 sprite is still set as their background-image and
+   paints through the mask as a second, darker tone - clear it in both themes */
+.wT
+  :is(.aHS-bnu, .aHS-bnq, .aHS-aHO, .aHS-bnv, .aHS-bnx, .aHS-bnr, .aHS-nd, .aHS-bns, .aHS-aHP)
+  .qj {
+  background-image: none !important;
+}
+
+body:not(.dark-mode)
+  .wT
+  :is(.aHS-bnu, .aHS-bnq, .aHS-aHO, .aHS-bnv, .aHS-bnx, .aHS-bnr, .aHS-nd, .aHS-bns, .aHS-aHP)
+  .qj {
+  background-color: #616161 !important;
 }
