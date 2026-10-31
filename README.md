@@ -16,11 +16,19 @@ Web extension which modifies Gmail™ to bring back the features and uncluttered
 ## Features
 
 - Built-in dark mode — works with any Gmail theme setting
-- Emails grouped by date (Today, Yesterday, This month, …)
+- Emails grouped by date (Today, Yesterday, This week, This month, …)
+- **Sweep** — the ✓ button on each date heading marks the whole group done (archives it),
+  leaving pinned emails in place. Gmail's _Undo_ brings them back.
+- **Pinned switch** in the header — shows only your pinned (starred) inbox mail and
+  reminders, like Inbox's pin toggle
+- **Speed dial** — hover the red compose button to see your three most recent contacts and
+  write to them in one click (see [Speed dial](#speed-dial) below)
 - Email bundling by label, with Inbox's classic colored bundle icons
-- Clean interface returning to the simplicity of Inbox
+- Clean interface returning to the simplicity of Inbox — Inbox, Snoozed and Done at the
+  top of the menu, colored category icons, bold selected row
 - Emails sent to yourself displayed as reminders
-- Colored avatars based on the sender's name (with BIMI brand logos where available)
+- Avatars with real pictures where available — photos Gmail has shown you, brand logos,
+  company site icons, and optionally Gravatar — or a colored initial
 - Calendar events displayed on a small card, with inline responses
 
 ## Extension Options
@@ -35,8 +43,10 @@ Changes apply immediately — the page refreshes itself when needed.
 | **Dark Mode**                    | Toggles the extension's built-in dark theme. No need to change Gmail's own theme setting. Applies instantly, no refresh.                 |
 | **Reminders**                    | How emails sent to yourself are treated: every self-sent email, only those with the subject "Reminder", or none.                         |
 | **Email Bundling**               | Groups inbox emails by label (see [Email Bundling](#email-bundling) below). Sub-options: bundle even single emails; move bundles to top. |
-| **Avatars**                      | Shows a colored circle with the sender's first initial next to each email.                                                               |
+| **Avatars**                      | Shows each sender's avatar next to their email — a picture when one is found, otherwise a colored circle with their first initial.       |
+| **Gravatar Photos**              | Also looks up sender pictures on Gravatar. Off by default — it shares a hashed copy of each sender's address with Gravatar.              |
 | **Hide Priority Inbox Headings** | Cleans up the section headings when Gmail's "Priority Inbox" type is enabled.                                                            |
+| **Hide AI Inbox**                | Removes Gmail's AI Inbox row from the left menu.                                                                                         |
 
 ## Recommended Gmail™ Settings
 
@@ -109,17 +119,41 @@ matching Inbox icon.
 - **A Gmail category won't bundle?** Categories like Purchases only exist server-side;
   use the label + filter recipe above.
 
+## Speed Dial
+
+Hover the red compose button and your three most recent contacts fan out above the reminder
+button. Hover one to see their name and address; click to start an email to them.
+
+**Getting started:** the speed dial learns your contacts from your sent mail, so on a fresh
+install it starts empty. To fill it, either:
+
+- click **Sent** in the left menu once (the extension reads your most recent recipients from
+  that list), or
+- send an email — every send moves its recipients to the top.
+
+From then on it keeps itself up to date. Contacts are stored by the browser, so each browser
+(e.g. Chrome and Firefox) learns them separately — repeat the step above in each one.
+
 ## Known Issues
 
 - This extension works best in English because it relies on specific date formats.
 
 ## Privacy
 
-- No external network requests.
-- No analytics platforms.
+- No analytics platforms, and no servers of our own — nothing is collected about you.
+- Your recent contacts and saved sender pictures stay in your browser's extension storage.
 - The code is open source, ready for you to audit.
 
-In other words, you are not being tracked, and your data is not leaving the page to be processed or stored anywhere else. This extension just sits as a layer on top of Gmail™, modifying the style and behavior of the page.
+The only network requests are for **sender pictures**:
+
+- **Brand logos** — a DNS lookup of the sender's domain (via Google, Cloudflare, or DNSPod
+  DNS-over-HTTPS) for its published BIMI logo.
+- **Company site icons** — loaded from Google's icon service using the sender's domain.
+- **Gravatar** — only if you turn on _Gravatar Photos_; sends a hashed copy of the sender's
+  address to Gravatar.
+
+Turning **Avatars** off in the options stops all of them. Beyond that, this extension just sits
+as a layer on top of Gmail™, modifying the style and behavior of the page.
 
 ## Build and Test Locally
 
