@@ -179,11 +179,14 @@ npm run build                    # store-ready zips for both browsers
   "Load Temporary Add-on", and select the `manifest.json` inside
   `inbox-reborn-firefox` on your Desktop.
 
-### Lint
+### Lint and test
 
 ```sh
-npm run lint       # ESLint + Stylelint + Prettier check
-npm run format     # auto-format
+npm run lint          # ESLint + Stylelint + Prettier + version and image checks
+npm test              # unit tests (date grouping)
+npm run lint:firefox  # Mozilla's addons-linter on the Firefox package
+npm run verify        # all of the above - what CI runs on every pull request
+npm run format        # auto-format
 ```
 
 ---
