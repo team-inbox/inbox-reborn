@@ -2,6 +2,8 @@
 
 #### _Formerly known as Inbox in Gmail_
 
+![Inbox Reborn: Google Inbox, back in Gmail](https://github.com/team-inbox/inbox-reborn/blob/master/screenshots/marquee.png?raw=true)
+
 Web extension which modifies Gmail™ to bring back the features and uncluttered design you knew and loved from Google's discontinued Inbox.
 
 ![inbox in light mode](https://github.com/team-inbox/inbox-reborn/blob/master/screenshots/light.png?raw=true)
@@ -154,6 +156,8 @@ The only network requests are for **sender pictures**:
 
 Turning **Avatars** off in the options stops all of them. Beyond that, this extension just sits
 as a layer on top of Gmail™, modifying the style and behavior of the page.
+
+Full details are in the [Privacy Policy](PRIVACY.md).
 
 ## Build and Test Locally
 
