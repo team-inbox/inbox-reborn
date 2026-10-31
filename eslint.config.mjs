@@ -25,7 +25,7 @@ export default [
     },
   },
   {
-    files: ['build.js'],
+    files: ['build.js', 'scripts/**/*.js', 'test/**/*.js'],
     languageOptions: {
       ecmaVersion: 2023,
       sourceType: 'commonjs',
