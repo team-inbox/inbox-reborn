@@ -15,7 +15,7 @@
     "lint:firefox": "node scripts/lint-firefox.js",
     "check:versions": "node scripts/check-versions.js",
     "check:assets": "node scripts/check-assets.js",
-    "test": "node --test test/",
+    "test": "node --test \"test/*.test.js\"",
     "verify": "npm run lint && npm test && npm run lint:firefox",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
