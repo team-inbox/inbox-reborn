@@ -3,6 +3,11 @@
 All notable changes to the Inbox Reborn theme for Gmail™, grouped by release era.
 PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inbox-reborn/pulls).
 
+## 2.4.1 — October 2026
+
+- Collapsing the left menu (☰) left two stray divider lines behind; the menu now
+  disappears completely, like Inbox's drawer.
+
 ## 2.4.0 — October 2026
 
 ### Inbox features (`feat/inbox-features-2.4.0`)
