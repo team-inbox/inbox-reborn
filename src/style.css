@@ -1676,24 +1676,32 @@ div[role='complementary'][aria-label='Side panel'],
   background-color: #5f6368;
 }
 
+/* Categories match their sidebar icon colors (CATEGORY SIDEBAR COLORS at the
+   end of this file); the dark-mode block darkens each one like the rest */
+
 /* Social */
 .w-asV.bbg.aiw[pageTitle='social'] {
-  background-color: #009688;
+  background-color: #db4437;
 }
 
 /* Updates */
 .w-asV.bbg.aiw[pageTitle='updates'] {
-  background-color: #ffa600;
+  background-color: #ff6839;
 }
 
 /* Forums */
 .w-asV.bbg.aiw[pageTitle='forums'] {
-  background-color: #bc5090;
+  background-color: #3f51b5;
 }
 
 /* Promotions  */
 .w-asV.bbg.aiw[pageTitle='promotions'] {
-  background-color: #8bc34a;
+  background-color: #00bcd4;
+}
+
+/* Purchases */
+.w-asV.bbg.aiw[pageTitle='purchases'] {
+  background-color: #795548;
 }
 
 /* Important */
@@ -1745,7 +1753,7 @@ div[role='complementary'][aria-label='Side panel'],
  * These rules display the title in the Gmail header based on the
  * `pageTitle` attribute set by handleHashChange() in JavaScript:
  *
- * • `social`, `updates`, `forums`, `promotions`, `labels` — use fixed names
+ * • `social`, `updates`, `forums`, `promotions`, `purchases`, `labels` — use fixed names
  * • `label` — dynamic: content pulled from `data-label-title` which
  *               JS sets to the leaf (last segment) of a custom label.
  */
@@ -1763,6 +1771,10 @@ div[role='complementary'][aria-label='Side panel'],
 
 .w-asV.bbg.aiw[pageTitle='promotions'] a[aria-label='Gmail']::after {
   content: 'Promotions';
+}
+
+.w-asV.bbg.aiw[pageTitle='purchases'] a[aria-label='Gmail']::after {
+  content: 'Purchases';
 }
 
 .w-asV.bbg.aiw[pageTitle='labels'] a[aria-label='Gmail']::after {
@@ -3186,6 +3198,15 @@ body.dark-mode textarea:not([aria-label='Message Body'], .nH.Hd *) {
   color: #fff !important;
 }
 
+/* Material 3 outlined text fields (New label name, compose Insert link
+   Text / link boxes, ...): the wrapper draws the outline around a bare
+   input, so the fill above showed as a gray bar inside the outline. Let the
+   input show its surface. Needs the two wrapper classes to outrank the
+   rule above, which would otherwise tie on specificity. */
+body.dark-mode .qdOxv-K0-avf-ql-axC .qdOxv-K0-avf input.qdOxv-K0-wGMbrd {
+  background-color: transparent !important;
+}
+
 /* Compose dialog and message bodies excluded: both are invert-filtered, so
    Gmail's default dark-blue links already come out light there */
 body.dark-mode a:not(.nH.Hd a, .a3s a) {
@@ -3194,6 +3215,19 @@ body.dark-mode a:not(.nH.Hd a, .a3s a) {
 
 body.dark-mode hr:not(:where(.a3s hr)) {
   border-color: var(--dm-hover) !important;
+}
+
+/* Folder notice above the list (e.g. Scheduled's "Messages in Scheduled will
+   be sent at their scheduled time.") - its icon is Gmail's black PNG, so
+   lighten it to sit with the notice's light-gray text */
+body.dark-mode .ya .BM {
+  filter: invert(0.85) !important;
+}
+
+/* "In Trash" marker on each row of Trash (and of search results that
+   include trashed mail) - Gmail's black delete PNG */
+body.dark-mode .zA .aqM img.aqN {
+  filter: invert(0.85) !important;
 }
 
 /* MAIN INTERFACE DARK MODE */
@@ -3385,7 +3419,9 @@ body.dark-mode .J-M .J-N-J5:not(.nH.Hd .J-N-J5),
 body.dark-mode [role='menu'] .J-N-JX:not(.nH.Hd .J-N-JX),
 body.dark-mode .J-M .J-LC-Jo:not(.nH.Hd .J-LC-Jo) /* Label as checkboxes */,
 body.dark-mode .J-M .J-M-JJ .A0 /* Label as / Move to search glyph */,
-body.dark-mode .J-M .bsJ /* Snooze "Pick date & time" calendar */ {
+body.dark-mode .J-M .bsJ /* Snooze "Pick date & time" calendar */,
+body.dark-mode .J-M .J-Ph-hFsbo:not(.nH.Hd .J-Ph-hFsbo) /* Move to / Label as submenu arrow */,
+body.dark-mode .J-M .J-Ks-KO .J-N-Jo:not(.nH.Hd .J-N-Jo) /* Font / text size menu tick on the current choice */ {
   filter: invert(0.82) !important;
   opacity: 1 !important;
 }
@@ -3403,8 +3439,9 @@ body.dark-mode .aqdrmf-Kf-Abojl > * {
   opacity: 1 !important;
 }
 
-/* Menu separators */
-body.dark-mode .J-Kh {
+/* Menu separators - not inside the compose dialog, whose invert filter
+   would turn this dark line bright white (e.g. the signature menu) */
+body.dark-mode .J-Kh:not(.nH.Hd .J-Kh) {
   border-color: var(--dm-hover) !important;
   background-color: var(--dm-hover) !important;
 }
@@ -3415,6 +3452,13 @@ body.dark-mode [role='dialog']:not(.nH.Hd),
 body.dark-mode [role='alertdialog'] {
   background-color: var(--dm-surface) !important;
   color: var(--dm-text-secondary) !important;
+}
+
+/* Compose Insert link popup: the [role=dialog] here is only a transparent
+   positioning wrapper around Gmail's own rounded card, so filling it drew a
+   square box behind the card */
+body.dark-mode div.Lf.a5s[role='dialog'] {
+  background-color: transparent !important;
 }
 
 body.dark-mode [role='alertdialog'] .Kj-JD-K7-K0,
@@ -3439,6 +3483,33 @@ body.dark-mode .gssb_c .gssb_e,
 body.dark-mode .gssb_c td {
   background-color: var(--dm-surface-raised) !important;
   color: var(--dm-text-secondary) !important;
+}
+
+/* Suggestion icons (recent-search clock, email envelope, attachment
+   paperclip, the "All search results" magnifier) are dark sprites/SVGs -
+   flip them light */
+body.dark-mode .gssb_c :is(.asor, .gsoi, .asor_o) {
+  filter: invert(1) !important;
+  opacity: 0.7 !important;
+}
+
+/* Section separators were light gray lines; the top row a 1px white strip */
+body.dark-mode .gssb_c td.gssb_e {
+  border-top-color: var(--dm-border) !important;
+}
+
+body.dark-mode .gssb_c .gssb_l {
+  background-color: var(--dm-border) !important;
+}
+
+body.dark-mode .gssb_c tr.RZftce {
+  background-color: transparent !important;
+}
+
+/* Selected filter chip's tick is a dark-blue (p900) PNG - flip it to a
+   light blue */
+body.dark-mode .ap6.ap7 {
+  filter: invert(1) hue-rotate(180deg) !important;
 }
 
 /* Email row styling - base state only */
@@ -4100,6 +4171,64 @@ body.dark-mode .IU .Tj {
   color: var(--dm-accent) !important;
 }
 
+/* The "Theme" heading is a bare div, not an .OG like the other section
+   headings, so it kept Gmail's light-mode #444746 - near-invisible here */
+body.dark-mode .IU .QW.Q5 > div:first-child {
+  color: #f1f1f1 !important;
+}
+
+/* Section dividers: Gmail's light #e5e5e5 top border glared against the
+   dark sections (with a near-black bottom border doubling it). One muted
+   line instead. */
+body.dark-mode .IU .Q3 {
+  border-top-color: var(--dm-border) !important;
+  border-bottom-color: transparent !important;
+}
+
+/* "See all settings" outline is a light inset shadow - tone it down */
+body.dark-mode .IU button.Tj {
+  box-shadow: inset 0 0 0 1px var(--dm-border-muted) !important;
+}
+
+/* Panel scrollbar: Gmail's .aiL scrollbar uses a black-alpha thumb meant
+   for a white pane, which went near-black here. Thin gray thumb instead. */
+body.dark-mode .IU fieldset.VM.aiL::-webkit-scrollbar {
+  width: 8px !important;
+  background: transparent !important;
+}
+
+body.dark-mode .IU fieldset.VM.aiL::-webkit-scrollbar-track {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+body.dark-mode .IU fieldset.VM.aiL::-webkit-scrollbar-thumb {
+  min-height: 40px;
+  background-color: var(--dm-border-muted) !important;
+  border: none !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+}
+
+body.dark-mode .IU fieldset.VM.aiL::-webkit-scrollbar-thumb:hover {
+  background-color: var(--dm-text-muted) !important;
+}
+
+@-moz-document url-prefix() {
+  body.dark-mode .IU fieldset.VM.aiL {
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--dm-border-muted) transparent !important;
+  }
+}
+
+/* Google apps launcher and other ogs.google.com widgets: script.js reloads
+   them once in Google's own dark mode, and flags the frame until that dark
+   load lands - keep the light first load out of sight meanwhile */
+body.dark-mode iframe[data-inbox-reborn-dark-pending] {
+  visibility: hidden !important;
+}
+
 body.dark-mode .nH.fY [role='presentation'] a.f0 {
   color: #a0a0a0 !important;
   opacity: 1 !important;
@@ -4627,8 +4756,12 @@ body.dark-mode .vIO7af {
   background: var(--dm-surface) !important;
 }
 
+/* Empty-folder message ("You don't have any saved drafts." ...) is hidden
+   in light mode; a broader dark-mode !important text color brought it back
+   as light text over the sun image here - hide it again */
 body.dark-mode .ar4.z .TD > .TC {
   background-color: var(--dm-bg) !important;
+  color: transparent !important;
 }
 
 body.dark-mode .nH.bkK.nn + .nH.nn {
@@ -5493,22 +5626,27 @@ body.dark-mode .w-asV.bbg.aiw[pageTitle='trash'] {
 
 /* Social */
 body.dark-mode .w-asV.bbg.aiw[pageTitle='social'] {
-  background-color: #006d63 !important; /* darker teal */
+  background-color: #9e3128 !important; /* darker red */
 }
 
 /* Updates */
 body.dark-mode .w-asV.bbg.aiw[pageTitle='updates'] {
-  background-color: #b97800 !important; /* darker gold */
+  background-color: #b84b29 !important; /* darker orange */
 }
 
 /* Forums */
 body.dark-mode .w-asV.bbg.aiw[pageTitle='forums'] {
-  background-color: #883a68 !important; /* darker purple */
+  background-color: #2d3a82 !important; /* darker indigo */
 }
 
 /* Promotions */
 body.dark-mode .w-asV.bbg.aiw[pageTitle='promotions'] {
-  background-color: #648d36 !important; /* darker green */
+  background-color: #008799 !important; /* darker cyan */
+}
+
+/* Purchases */
+body.dark-mode .w-asV.bbg.aiw[pageTitle='purchases'] {
+  background-color: #573d34 !important; /* darker brown */
 }
 
 /* Important */
@@ -5627,31 +5765,69 @@ body.dark-mode .IU .Q1:checked + .Vo {
   border-color: var(--dm-accent) !important;
 }
 
-body.dark-mode .IU .Q1:checked + .Vo::after {
-  display: block;
-  content: '';
-  width: 8px;
-  height: 8px;
-  position: relative;
-  top: 2px;
-  left: 2px;
-  border-radius: 50%;
-  background-color: var(--dm-accent-surface) !important;
+/* The ring itself is a ::before painted with Gmail's black (unchecked) or
+   blue (checked) radio PNG - the unchecked one vanished on the dark panel.
+   Draw both rings in CSS: muted gray when off, accent ring + center dot
+   when on. The dot used to be a separate 8px ::after, which sat in the flow
+   and pushed the selected option's label 8px right of the others. */
+body.dark-mode .IU .Q1 + .Vo::before {
+  background-image: none !important;
+  border: 2px solid var(--dm-text-muted) !important;
+  border-radius: 50% !important;
+  box-sizing: border-box !important;
+  width: 20px !important;
+  height: 20px !important;
 }
 
-/* Checkbox Styling */
+body.dark-mode .IU .Q1:checked + .Vo::before {
+  border-color: var(--dm-accent) !important;
+  background: radial-gradient(circle, var(--dm-accent) 0 4px, transparent 4.5px) !important;
+}
+
+body.dark-mode .IU .Q1:checked + .Vo::after {
+  display: none !important;
+}
+
+/* Close (X) is Gmail's black close icon PNG - flip it light */
+body.dark-mode .IU .OB {
+  filter: invert(1) !important;
+}
+
+/* Checkbox ("Conversation view"): the box is a ::before painted with Gmail's
+   blue check_box PNG, which muddied over a light-blue fill; ::after is the
+   40px hover ripple, not a tick. Mask the Material outline/checked glyphs
+   onto the ::before (muted gray off, accent on, like the radios) and leave
+   the ripple alone. */
 body.dark-mode .IU .SS + .ST::before {
-  border-color: #888 !important;
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_check_box_outline_blank_24dp.svg')
+    center / 24px no-repeat !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_check_box_outline_blank_24dp.svg')
+    center / 24px no-repeat !important;
+  background: var(--dm-text-muted) !important;
+  border: none !important;
 }
 
 body.dark-mode .IU .SS:checked + .ST::before {
-  background-color: var(--dm-accent-surface) !important;
-  border-color: var(--dm-accent) !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_check_box_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_check_box_24dp.svg') !important;
+  background: var(--dm-accent) !important;
 }
 
-body.dark-mode .IU .SS:checked + .ST::after {
-  border-bottom: 2px solid var(--dm-surface) !important;
-  border-right: 2px solid var(--dm-surface) !important;
+@-moz-document url-prefix() {
+  body.dark-mode .IU .SS + .ST::before {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_check_box_outline_blank_24dp.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_check_box_outline_blank_24dp.svg') !important;
+  }
+
+  body.dark-mode .IU .SS:checked + .ST::before {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_check_box_24dp.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_check_box_24dp.svg') !important;
+  }
+}
+
+/* Help (?) next to the checkbox is Gmail's black help_outline PNG */
+body.dark-mode .IU .SV {
+  filter: invert(1) !important;
 }
 
 /* Remove the boxes around the radio button options */
@@ -6184,6 +6360,48 @@ body.dark-mode .a3I {
   filter: invert(1) !important;
 }
 
+/* Compose formatting dropdowns (align left/center/right, the overflow
+   formatting menu) open as a .J-M menu on <body>, outside the compose
+   window - so the filter:none reset above left their dark nv700 glyphs
+   faint on the dark menu. Lighten them there. */
+body.dark-mode .J-M .J-Z-I .aaA.aaB:not(.nH.Hd *) {
+  filter: invert(0.85) !important;
+}
+
+/* Compose emoji picker: its grid is already dark, but the container behind
+   the search box and category tabs stayed white, so their dark-theme
+   light glyphs nearly vanished */
+body.dark-mode .aM7 {
+  background-color: var(--dm-surface-raised) !important;
+}
+
+/* Backdrop behind the Drive / Insert photo pickers was a light blue-gray
+   wash (#e9eef6 at 50%) over Gmail - dim it instead. The pickers
+   themselves are Google-hosted frames left light, like the side panels:
+   inverting them would turn file thumbnails and photos into negatives. */
+body.dark-mode .Kj-JD-Jh {
+  background-color: #000 !important;
+}
+
+/* Confidential mode dialog: section headings were Gmail's dark blue
+   (#01579b), the passcode option labels near-black, the expiry date
+   #5f6368, and the help (?) a black PNG */
+body.dark-mode .uW2Fw-bHo .byh {
+  color: var(--dm-accent) !important;
+}
+
+body.dark-mode .uW2Fw-bHo .aFe {
+  color: var(--dm-text-muted) !important;
+}
+
+body.dark-mode .uW2Fw-bHo label.P9QEBf {
+  color: var(--dm-text-secondary) !important;
+}
+
+body.dark-mode .uW2Fw-bHo .byd {
+  filter: invert(1) !important;
+}
+
 /* Inline-reply send row (2026 floating .btC variant): the toolbar glyphs
    are gm3 PNG sprites with a baked dark color on what is now a dark row.
    Invert them here only - inside the popup dialog the whole-dialog invert
@@ -6193,6 +6411,29 @@ body.dark-mode .a3I {
 body.dark-mode .btC:not(.nH.Hd .btC) :is(.aaA, .aaB, .dv, .Y1, .og) {
   background-color: transparent !important;
   filter: invert(0.78) !important;
+}
+
+/* More of the inline-reply row's dark glyphs: the More options (⋮) dots,
+   the gray Send button's dropdown arrow (.hG - the blue Send keeps its own
+   white arrow), the reply-type arrow (an ::after on .Un), and the pop-out
+   icon in the reply header */
+body.dark-mode .btC:not(.nH.Hd .btC) :is(.J-JN-M-I-JG, .hG .G-asx),
+body.dark-mode .aoD:not(.nH.Hd .aoD) .Sz {
+  filter: invert(0.78) !important;
+  opacity: 1 !important;
+}
+
+body.dark-mode .IG:not(.nH.Hd .IG) .Un::after {
+  filter: invert(0.78) !important;
+}
+
+/* Pressed/active toolbar buttons (Help me write, an open ⋮ menu, active
+   bold/italic) highlight with a light-mode #d3e3fd ::before - a pale square
+   under a now-light glyph. Use a dark accent tint instead. (The compose
+   dialog's invert filter already darkens it there.) */
+body.dark-mode .J-Z-I-Jp:not(.nH.Hd *)::before,
+body.dark-mode .btC:not(.nH.Hd .btC) .T-I-JO::before {
+  background-color: rgb(71 158 245 / 25%) !important;
 }
 
 /* Same treatment for the inline-reply formatting toolbar (.J-Z, opened via
@@ -6300,7 +6541,12 @@ body.dark-mode input[aria-label='Search mail'] {
   color: #fff !important; /* White text for contrast */
 }
 
-/* Make search form inputs light (From, To, Subject, etc.) */
+/* Advanced search panel (search bar's options/sliders button). Its fields
+   used to be forced white with black text - white bars on the dark panel.
+   Gmail draws each field as an underline (an inset box-shadow), so keep
+   that look: see-through field, light text, muted underline, accent
+   underline while typing. The selectors stay this heavy on purpose - they
+   have to outrank the global dark-mode input rule. */
 body.dark-mode .ZZ .ZH,
 body.dark-mode .ZZ input[type='text'],
 body.dark-mode .ZZ input[type='email'],
@@ -6310,14 +6556,7 @@ body.dark-mode .ZZ input.ZH.nr.aQa,
 body.dark-mode .ZZ input.ZH.nr.aQf,
 body.dark-mode .ZZ input.ZH.nr.aQd,
 body.dark-mode .ZZ input.ZH.nr.aQb,
-body.dark-mode .ZZ input.ZH.nr.aP9 {
-  background-color: #fff !important;
-  background: #fff !important;
-  color: #000 !important;
-  border-color: #ccc !important;
-}
-
-/* Make search form dropdowns and additional inputs light (Size, Date within, Search scope) */
+body.dark-mode .ZZ input.ZH.nr.aP9,
 body.dark-mode .ZZ select,
 body.dark-mode .ZZ input[type='number'],
 body.dark-mode .ZZ input[type='date'],
@@ -6326,10 +6565,104 @@ body.dark-mode .ZZ input.nr[aria-label='Size value'],
 body.dark-mode .ZZ input.nr[aria-label='Date'],
 body.dark-mode .ZZ input.nr,
 body.dark-mode .ZZ input[class*='nr'] {
-  background-color: #fff !important;
-  background: #fff !important;
-  color: #000 !important;
-  border-color: #ccc !important;
+  background: transparent !important;
+  color: #e8eaed !important;
+  border-color: transparent !important;
+  box-shadow: inset 0 -1px 0 var(--dm-border-muted) !important;
+}
+
+body.dark-mode .ZZ input.ZH.nr.aQa:focus,
+body.dark-mode .ZZ input.ZH.nr.aQf:focus,
+body.dark-mode .ZZ input.ZH.nr.aQd:focus,
+body.dark-mode .ZZ input.ZH.nr.aQb:focus,
+body.dark-mode .ZZ input.ZH.nr.aP9:focus,
+body.dark-mode .ZZ input.nr.nr:focus {
+  box-shadow: inset 0 -2px 0 var(--dm-accent) !important;
+}
+
+/* Field labels (From, To, ... Search) kept Gmail's #5f6368 */
+body.dark-mode .ZZ .ZG {
+  color: var(--dm-text-muted) !important;
+}
+
+/* Dropdown arrows and the date field's calendar are black PNGs */
+body.dark-mode .ZZ .J-JN-M-I-JG,
+body.dark-mode .ZZ .bs5::after {
+  filter: invert(0.85) !important;
+}
+
+/* "Has attachment" / "Don't include chats": the box is a ::before painted
+   with Gmail's black check_box PNG at 71% - near-invisible here. Same
+   treatment as the Quick settings checkbox: muted outline off, accent on. */
+body.dark-mode .ZZ .bs1 + .bs3::before {
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_check_box_outline_blank_24dp.svg')
+    center / 24px no-repeat !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_check_box_outline_blank_24dp.svg')
+    center / 24px no-repeat !important;
+  background: var(--dm-text-muted) !important;
+  opacity: 1 !important;
+}
+
+body.dark-mode .ZZ .bs1:checked + .bs3::before {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_check_box_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_check_box_24dp.svg') !important;
+  background: var(--dm-accent) !important;
+}
+
+@-moz-document url-prefix() {
+  body.dark-mode .ZZ .bs1 + .bs3::before {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_check_box_outline_blank_24dp.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_check_box_outline_blank_24dp.svg') !important;
+  }
+
+  body.dark-mode .ZZ .bs1:checked + .bs3::before {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_check_box_24dp.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_check_box_24dp.svg') !important;
+  }
+}
+
+/* Gmail's date picker (advanced search date field; same widget wherever
+   Gmail pops a month grid) - all white in light-mode colors */
+body.dark-mode .J-JB-KA {
+  background-color: var(--dm-surface-raised) !important;
+  border-color: var(--dm-border) !important;
+  color: #e8eaed !important;
+}
+
+body.dark-mode .J-JB-KA :is(.J-JB-KA-JS, .J-JB-KA-LG, .J-JB-KA-Jk) {
+  background-color: transparent !important;
+}
+
+body.dark-mode .J-JB-KA :is(.J-JB-KA-Kl, .J-JB-KA-JB, .J-JB-KA-Jk) {
+  color: #e8eaed !important;
+}
+
+body.dark-mode .J-JB-KA .J-JB-KA-LG {
+  color: var(--dm-text-muted) !important;
+}
+
+/* Days from the neighboring months */
+body.dark-mode .J-JB-KA .J-JB-KA-JB.J-JB-KA-Ku-Kk {
+  color: rgb(232 234 237 / 38%) !important;
+}
+
+/* Today keeps its ring, in the dark-mode accent */
+body.dark-mode .J-JB-KA .J-JB-KA-JB.J-JB-KA-K8 {
+  color: var(--dm-accent) !important;
+}
+
+body.dark-mode .J-JB-KA .J-JB-KA-K8::before {
+  border-color: var(--dm-accent) !important;
+}
+
+body.dark-mode .J-JB-KA .J-JB-KA-JB:hover {
+  background-color: var(--dm-hover) !important;
+}
+
+/* Month arrows are black chevron PNGs (their « » text is transparent) */
+body.dark-mode .J-JB-KA :is(.J-JB-KA-bsP, .J-JB-KA-bsO) {
+  filter: invert(0.85) !important;
+  color: transparent !important;
 }
 
 /* ========================================
@@ -6466,8 +6799,61 @@ body.dark-mode [aria-label='Create new label'] .qj {
   background-color: var(--dm-text-muted) !important;
 }
 
+/* Late-2026 markup: the row is a .CL with no .qj; its glyph is a ::before
+   painted with Gmail's dark nv700 PNG, which all but vanished on the dark
+   sidebar. Mask the same Material glyphs onto the ::before instead. */
+[data-tooltip='Manage subscriptions'].CL::before {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_subscriptions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_subscriptions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+}
+
+[data-tooltip='Manage labels'].CL::before {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_settings_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_settings_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+}
+
+[data-tooltip='Create new label'].CL::before {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+}
+
+[data-tooltip='Manage subscriptions'].CL::before,
+[data-tooltip='Manage labels'].CL::before,
+[data-tooltip='Create new label'].CL::before {
+  -webkit-mask-size: 20px !important;
+  mask-size: 20px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-color: #4c4f4d !important;
+  background-image: none !important;
+  opacity: 1 !important;
+}
+
+body.dark-mode [data-tooltip='Manage subscriptions'].CL::before,
+body.dark-mode [data-tooltip='Manage labels'].CL::before,
+body.dark-mode [data-tooltip='Create new label'].CL::before {
+  background-color: var(--dm-text-muted) !important;
+}
+
 /* Firefox extension-URL variants */
 @-moz-document url-prefix() {
+  [data-tooltip='Manage subscriptions'].CL::before {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_subscriptions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_subscriptions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  }
+
+  [data-tooltip='Manage labels'].CL::before {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_settings_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_settings_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  }
+
+  [data-tooltip='Create new label'].CL::before {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  }
+
   [data-tooltip='Manage subscriptions'] .qj,
   [aria-label='Manage subscriptions'] .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_subscriptions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
