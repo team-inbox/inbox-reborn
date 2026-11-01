@@ -93,10 +93,11 @@ Bundles are built from the **labels on your inbox emails**, the way Inbox built 
   **Unbundled** lists the labels whose emails show one by one. **Drag a label from
   Unbundled up into Bundled in the inbox** to bundle it, and back down to stop. The
   label's mail goes with it: dragged down, its inbox mail is archived and the extension
-  remembers exactly which conversations went; dragged up, those come back to the inbox
-  (where the bundle forms) and nothing else does - the rest of its archive is never
-  touched. Gmail does the moving through its own list, a page at a time, and its Undo
-  works as usual. The categories drag too: pull Promotions (or any of the seven) down to Unbundled and its
+  remembers exactly which conversations went; dragged up, you're asked first, then those
+  come back to the inbox (where the bundle forms). If nothing was archived by a drag,
+  you're shown the label's archived mail instead and asked before all of it moves in.
+  Cancel keeps the label bundled and its bundle fills as new mail arrives. Gmail does the moving through its
+  own list, a page at a time, and its Undo works as usual. The categories drag too: pull Promotions (or any of the seven) down to Unbundled and its
   bundle leaves the inbox, its emails showing as ordinary rows; drag it back up and the
   bundle returns. A category's mail moves the same way: dragging Finance down archives its
   inbox mail, dragging it back up brings back just that mail. A move stops after 5,000
