@@ -5,6 +5,14 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## Unreleased
 
+- An online manual, with screenshots, at https://team-inbox.github.io/inbox-reborn/
+  (source in `website/`, built with Docusaurus and published by GitHub Pages on every
+  push to master). The settings popup's footer links to it.
+- Each email sits in one bundle, as in Inbox. A conversation that Gmail chipped
+  with both Updates and Forums (it sorts every message on its own) used to show
+  up in both bundles and be counted twice; now a label of your own wins over the
+  categories, and between categories Inbox's order decides, so it bundles under
+  Updates only.
 - The left menu's labels are split the way Inbox split them: **Bundled in
   the inbox** (Travel, Purchases, Finance, Social, Updates, Forums,
   Promotions, then every label that bundles) and **Unbundled**. Drag a label

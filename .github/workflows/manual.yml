@@ -1,0 +1,57 @@
+name: Manual
+
+# The online manual (website/) on GitHub Pages:
+# https://team-inbox.github.io/inbox-reborn/
+# Pull requests only build it; pushes to master build and publish it.
+
+on:
+  pull_request:
+    paths: ['website/**', '.github/workflows/manual.yml']
+  push:
+    branches: [master]
+    paths: ['website/**', '.github/workflows/manual.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manual-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build manual
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: website
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - name: Upload the site
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: website/build
+
+  deploy:
+    name: Publish to GitHub Pages
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

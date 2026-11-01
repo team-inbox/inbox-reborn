@@ -1,0 +1,72 @@
+/* Inbox's blue as the accent, on Docusaurus's classic theme */
+
+:root {
+  --ifm-color-primary: #1a73e8;
+  --ifm-color-primary-dark: #1667d3;
+  --ifm-color-primary-darker: #1561c7;
+  --ifm-color-primary-darkest: #1150a4;
+  --ifm-color-primary-light: #2f82ec;
+  --ifm-color-primary-lighter: #3b89ed;
+  --ifm-color-primary-lightest: #61a0f0;
+  --ifm-code-font-size: 95%;
+  --ifm-font-family-base: 'Roboto', -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --docusaurus-highlighted-code-line-bg: rgb(0 0 0 / 10%);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #8ab4f8;
+  --ifm-color-primary-dark: #6ba2f6;
+  --ifm-color-primary-darker: #5c99f5;
+  --ifm-color-primary-darkest: #2d7df3;
+  --ifm-color-primary-light: #a9c6fa;
+  --ifm-color-primary-lighter: #b8cffb;
+  --ifm-color-primary-lightest: #e6eefd;
+  --docusaurus-highlighted-code-line-bg: rgb(0 0 0 / 30%);
+}
+
+/* Screenshots: a thin frame, a little room, never wider than the text */
+.markdown img {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 12%);
+  display: block;
+  margin: 1rem 0 1.5rem;
+  max-width: 100%;
+}
+
+/* A narrower screenshot (left menu, dialog, popup) sits at its natural size */
+.markdown img.narrow {
+  max-width: 360px;
+}
+
+.markdown img.medium {
+  max-width: 560px;
+}
+
+/* Two screenshots side by side, stacking on phones */
+.pair {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.pair > * {
+  flex: 1 1 260px;
+  margin: 0;
+}
+
+.pair img {
+  margin: 0 0 0.25rem;
+}
+
+.pair figcaption {
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+/* A key in the text, like Esc or Enter */
+kbd {
+  font-size: 0.85em;
+}
