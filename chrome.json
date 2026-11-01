@@ -25,6 +25,12 @@
       "css": ["src/style.css"],
       "js": ["src/script.js"],
       "run_at": "document_start"
+    },
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["src/gmail-categories.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
     }
   ],
   "web_accessible_resources": [

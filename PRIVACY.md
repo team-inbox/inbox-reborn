@@ -14,6 +14,19 @@ recipients of emails you send. That's how it groups mail by date, builds bundles
 reminders and avatars, and fills the speed dial. This information is processed in your browser
 and is not sent to us.
 
+With **Bundle Purchases**, **Bundle Travel** or **Bundle Finance** turned on, the extension also
+asks Gmail itself which inbox emails are in those categories, using the same searches Gmail's
+Purchases, Travel and Finance pages run. These requests go only to Gmail
+(`mail.google.com`), from your browser, with your existing Gmail session. The extension keeps
+the email ids that come back in memory while Gmail is open, and saves the shape of Gmail's list
+request (its display settings, without your search words) in Gmail's own site storage so the
+bundles appear right away next time.
+
+To fill the speed dial, the extension likewise asks Gmail for your newest sent conversations
+(the same search as Gmail's Sent page) once each time Gmail loads, and keeps the names and
+addresses of your three most recent contacts in extension storage, as described below. This
+request also goes only to Gmail.
+
 ## What is stored on your device
 
 The extension keeps a small amount of data in your browser's extension storage
@@ -35,12 +48,12 @@ all of it.
 The only network requests the extension makes are to find **sender pictures**, and only while
 **Avatars** is turned on in the options:
 
-| Service                                     | What is sent                                             | Why                                                                                         |
-| ------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| Google, Cloudflare or DNSPod DNS-over-HTTPS | The sender's domain (e.g. `example.com`)                 | To look up the domain's published BIMI logo                                                 |
-| The sender's logo host                      | A request for the logo address found in that BIMI record | To display the brand logo                                                                   |
-| Google's site icon service (`gstatic.com`)  | The sender's domain                                      | To display the company's site icon                                                          |
-| Gravatar                                    | A SHA-256 hash of the sender's email address             | To display their Gravatar photo — **off by default**; only with _Gravatar Photos_ turned on |
+| Service                                     | What is sent                                             | Why                                                                                                                                           |
+| ------------------------------------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Google, Cloudflare or DNSPod DNS-over-HTTPS | The sender's domain (e.g. `example.com`)                 | To look up the domain's published BIMI logo                                                                                                   |
+| The sender's logo host                      | A request for the logo address found in that BIMI record | To display the brand logo                                                                                                                     |
+| Google's site icon service (`gstatic.com`)  | The sender's domain                                      | To display the company's site icon                                                                                                            |
+| Gravatar                                    | A SHA-256 hash of the sender's email address             | To display their Gravatar photo — **off by default**; only with _Gravatar Photos_ on, which turning _Stock Inbox_ on in the options also does |
 
 These requests come from your browser, so as with any web request the service also sees your
 IP address and browser user agent. Each service's own privacy policy applies to what it receives.

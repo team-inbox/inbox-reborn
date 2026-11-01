@@ -8,6 +8,20 @@
   <body>
     <div class="content">
       <div class="setting">
+        <div class="setting-title">Stock Inbox</div>
+        <div class="setting-content">
+          <span class="setting-desc"
+            >Inbox’s own settings: bundles (Purchases, Travel and Finance too), avatars, no dates in
+            the list, Inbox’s left menu. Changing one of them turns this off. Turning this on also
+            turns on Gravatar Photos.</span
+          >
+          <label class="switch">
+            <input type="checkbox" id="stock-inbox-toggle" />
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+      <div class="setting">
         <div class="setting-title">Dark Mode</div>
         <div class="setting-content">
           <span class="setting-desc">Built-in dark theme — works with any Gmail theme setting</span>
@@ -45,6 +59,18 @@
           <label>
             <input type="checkbox" name="bundle-today" id="bundle-today" />
             Show bundles in Today
+          </label>
+          <label>
+            <input type="checkbox" name="bundle-purchases" id="bundle-purchases" />
+            Bundle Purchases
+          </label>
+          <label>
+            <input type="checkbox" name="bundle-travel" id="bundle-travel" />
+            Bundle Travel
+          </label>
+          <label>
+            <input type="checkbox" name="bundle-finance" id="bundle-finance" />
+            Bundle Finance
           </label>
         </div>
       </div>

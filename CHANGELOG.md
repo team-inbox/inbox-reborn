@@ -5,6 +5,17 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## Unreleased
 
+- A new Stock Inbox switch, on for new installs, sets everything to Inbox's
+  own behavior at once: bundles (Purchases, Travel and Finance included),
+  avatars, no dates in the list and Inbox's left menu. Turning it on also
+  turns on Gravatar photos; new installs start with Gravatar off. Changing one of those
+  settings turns it off; existing installs keep their settings.
+- Purchases, Travel and Finance bundles show as soon as Gmail loads, even
+  before Gmail has loaded another list - no need to open those pages first.
+- The compose speed dial fills itself from your newest sent mail each time
+  Gmail loads - no need to open Sent first, in any browser.
+- Opening Sent or a label page no longer empties the Purchases, Travel and
+  Finance bundles until Gmail loads the inbox again.
 - Hovering an email shows Inbox's actions in Inbox's order: Pin, Snooze,
   Trash, Done, and a new ⋮ that opens the same menu as right-clicking the
   email. Mark as read / unread moved into that menu. Closing the Snooze
@@ -21,6 +32,11 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 - A new Hide setting removes the date and time from emails in the list, as
   Inbox did - the date groups carry it. Subjects and snippets run on to
   where bundle senders end. Open emails still show their date and time.
+- Purchases, Travel and Finance bundles are back: turn them on under Email
+  Bundling. Gmail has no chip for these, so the extension runs Gmail's own
+  Purchases, Travel and Finance searches for your inbox and bundles what they
+  find, like those pages in the left menu list. An email Gmail files under
+  both Updates and Finance goes to the Finance bundle only.
 - Hovering a bundle shows a sweep, which marks the whole bundle done
   (pinned emails stay), and a ⋮ menu with Gmail's actions - Delete, Mark
   as read, Snooze, Move to, Labels and the rest - for every email in it.
