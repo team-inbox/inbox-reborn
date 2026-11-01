@@ -2455,6 +2455,27 @@ body:not(.dark-mode) .G-atb .asa > .ar8 {
   display: none !important;
 }
 
+/* Delete button (toolbar - opened email, selected emails): Inbox's solid
+   trash can, as on the left menu and the hover actions, in place of Gmail's
+   outline can. Dark mode fills it light ("Toolbar glyphs") */
+.G-atb .asa > .ar9 {
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg')
+    center / 20px no-repeat !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') center / 20px
+    no-repeat !important;
+  background-color: #444746 !important;
+  background-image: none !important;
+}
+
+@-moz-document url-prefix() {
+  .G-atb .asa > .ar9 {
+    -webkit-mask: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg')
+      center / 20px no-repeat !important;
+    mask: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') center / 20px
+      no-repeat !important;
+  }
+}
+
 /* Snooze button (inbox email, opened email) */
 .brv,
 .brW {
@@ -4381,8 +4402,15 @@ body.dark-mode .G-atb .asa > .asl {
 }
 
 body.dark-mode .G-atb .asa > .ar9 {
-  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_delete_24dp.svg') !important;
-  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_delete_24dp.svg') !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
+}
+
+@-moz-document url-prefix() {
+  body.dark-mode .G-atb .asa > .ar9 {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
+  }
 }
 
 body.dark-mode .G-atb .asa > .bAO {

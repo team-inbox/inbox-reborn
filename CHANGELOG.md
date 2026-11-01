@@ -5,6 +5,17 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## Unreleased
 
+- The settings popup is redesigned: Stock Inbox up front as the recommended
+  choice, then Dark mode, Reminders and Gravatar photos; everything else sits
+  under Customize (Bundles, Email list, Left menu), which opens by itself when
+  Stock Inbox is off. Settings read as what they show ("Dates on emails",
+  "Show in the left menu") instead of six "Hide" switches, Reminders is a
+  three-way choice, Gravatar waits for Avatars, and the popup no longer
+  flashes light before dark mode applies. Existing settings carry over.
+- A new dark-mode empty-inbox moon, drawn to match Google's sun: a two-tone
+  gray crescent with a thin light outline, stars, and the sun's cloud and
+  long shadow, at the sun's exact size (the old one was taller than its
+  frame and got clipped).
 - A new Stock Inbox switch, on for new installs, sets everything to Inbox's
   own behavior at once: bundles (Purchases, Travel and Finance included),
   avatars, no dates in the list and Inbox's left menu. Turning it on also
@@ -22,8 +33,9 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
   picker by clicking elsewhere no longer leaves that email's actions (and a
   pressed Snooze) showing - Gmail never cleared them.
 - Trash uses Inbox's solid trash can: in the left menu, on hover, on the
-  "In Trash" marker beside each email in Trash, and on Discard draft in the
-  compose window and in replies.
+  toolbar's Delete (an open email, or selected emails), on the "In Trash"
+  marker beside each email in Trash, and on Discard draft in the compose
+  window and in replies.
 - Hovering the compose button shows "Compose", and the reminder button
   "Reminder", like the speed-dial contacts' names.
 - The reminder button stays hidden until you hover the compose button,

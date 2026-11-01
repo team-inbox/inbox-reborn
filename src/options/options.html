@@ -1,149 +1,244 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Inbox in Gmail Options</title>
+    <title>Inbox Reborn settings</title>
     <link rel="stylesheet" href="style.css" />
+    <!-- Applies dark mode before the first paint (MV3 allows no inline script) -->
+    <script src="theme.js"></script>
   </head>
   <body>
-    <div class="content">
-      <div class="setting">
-        <div class="setting-title">Stock Inbox</div>
-        <div class="setting-content">
-          <span class="setting-desc"
-            >Inbox’s own settings: bundles (Purchases, Travel and Finance too), avatars, no dates in
-            the list, Inbox’s left menu. Changing one of them turns this off. Turning this on also
-            turns on Gravatar Photos.</span
+    <header class="app-header">
+      <img class="app-logo" src="../../icons/icon48.png" alt="" width="32" height="32" />
+      <div class="app-title">
+        <h1>Inbox Reborn</h1>
+        <p>Google Inbox, back in Gmail</p>
+      </div>
+      <span id="save-status" class="save-status" aria-live="polite"></span>
+    </header>
+
+    <main>
+      <!-- Stock Inbox: the one switch most people need -->
+      <section class="card hero" aria-labelledby="stock-title">
+        <label class="row" for="stock-inbox-toggle">
+          <span class="hero-art" aria-hidden="true">
+            <img class="light-only" src="../../images/ic_zero_inbox_2x.png" alt="" />
+            <img class="dark-only" src="../../images/ic_zero_inbox_2x_dark.png" alt="" />
+          </span>
+          <span class="row-text">
+            <span class="row-title" id="stock-title"
+              >Stock Inbox <span class="chip">Recommended</span></span
+            >
+            <span class="row-desc" id="stock-desc"
+              >Bundles, avatars, a clean list and Inbox’s left menu, all set the way Inbox had them.
+              Also turns on Gravatar photos.</span
+            >
+            <span class="row-status" id="stock-status"></span>
+          </span>
+          <input
+            type="checkbox"
+            role="switch"
+            class="switch"
+            id="stock-inbox-toggle"
+            aria-describedby="stock-desc stock-status"
+          />
+        </label>
+      </section>
+
+      <section class="card" aria-label="General">
+        <label class="row" for="dark-mode-toggle">
+          <span class="row-text">
+            <span class="row-title">Dark mode</span>
+            <span class="row-desc" id="dark-desc"
+              >A built-in dark theme. Works with any Gmail theme.</span
+            >
+          </span>
+          <input
+            type="checkbox"
+            role="switch"
+            class="switch"
+            id="dark-mode-toggle"
+            aria-describedby="dark-desc"
+          />
+        </label>
+
+        <fieldset class="row row-stacked" aria-describedby="reminders-desc">
+          <legend class="row-title">Reminders</legend>
+          <span class="row-desc" id="reminders-desc"
+            >Which emails you send yourself show as reminders.</span
           >
-          <label class="switch">
-            <input type="checkbox" id="stock-inbox-toggle" />
-            <span class="slider round"></span>
-          </label>
-        </div>
-      </div>
-      <div class="setting">
-        <div class="setting-title">Dark Mode</div>
-        <div class="setting-content">
-          <span class="setting-desc">Built-in dark theme — works with any Gmail theme setting</span>
-          <label class="switch">
-            <input type="checkbox" id="dark-mode-toggle" />
-            <span class="slider round"></span>
-          </label>
-        </div>
-      </div>
-      <div class="setting">
-        <div class="setting-title">Reminders</div>
-        <div class="setting-content">
-          <span class="setting-desc">Select how emails sent to yourself are displayed</span>
-          <select id="reminder-select" name="reminder-treatment">
-            <option value="all">All messages</option>
-            <option value="containing-word">Subject (reminder) only</option>
-            <option value="none">None (no reminders)</option>
-          </select>
-        </div>
-      </div>
-      <div class="setting">
-        <div class="setting-title">Email Bundling</div>
-        <div class="setting-content">
-          <span class="setting-desc">Group emails in your inbox by label</span>
-          <label class="switch">
-            <input type="checkbox" id="bundling-toggle" />
-            <span class="slider round"></span>
-          </label>
-        </div>
+          <div class="segmented">
+            <input type="radio" name="reminder-treatment" id="reminders-all" value="all" />
+            <label for="reminders-all">All</label>
+            <input
+              type="radio"
+              name="reminder-treatment"
+              id="reminders-word"
+              value="containing-word"
+            />
+            <label for="reminders-word">“Reminder” only</label>
+            <input type="radio" name="reminder-treatment" id="reminders-none" value="none" />
+            <label for="reminders-none">Off</label>
+          </div>
+        </fieldset>
+
+        <label class="row" for="gravatar-toggle">
+          <span class="row-text">
+            <span class="row-title">Gravatar photos</span>
+            <span class="row-desc" id="gravatar-desc"
+              >More sender pictures. Sends Gravatar a hashed copy of each sender’s address.</span
+            >
+            <span class="row-hint" id="gravatar-hint">Needs Avatars, under Customize.</span>
+          </span>
+          <input
+            type="checkbox"
+            role="switch"
+            class="switch"
+            id="gravatar-toggle"
+            aria-describedby="gravatar-desc gravatar-hint"
+          />
+        </label>
+      </section>
+
+      <!-- Fine-tuning. Opens by itself when Stock Inbox is off. -->
+      <details class="card customize" id="customize">
+        <summary>
+          <span class="summary-title">Customize</span>
+          <span class="summary-status" id="customize-status"></span>
+          <span class="chevron" aria-hidden="true"></span>
+        </summary>
+
+        <h2>Bundles</h2>
+        <label class="row" for="bundling-toggle">
+          <span class="row-text">
+            <span class="row-title">Bundle emails</span>
+            <span class="row-desc" id="bundling-desc"
+              >Group your inbox by label, like Inbox did.</span
+            >
+          </span>
+          <input
+            type="checkbox"
+            role="switch"
+            class="switch"
+            id="bundling-toggle"
+            aria-describedby="bundling-desc"
+          />
+        </label>
         <div class="sub-settings">
-          <label>
+          <fieldset class="pills">
+            <legend>Also bundle what Gmail sorts as</legend>
+            <label class="pill">
+              <input type="checkbox" name="bundle-purchases" id="bundle-purchases" />
+              <img src="../../images/ic_purchases_24px_clr_r3_2x.png" alt="" />
+              Purchases
+            </label>
+            <label class="pill">
+              <input type="checkbox" name="bundle-travel" id="bundle-travel" />
+              <img src="../../images/ic_travel_clr_24dp_r1_2x.png" alt="" />
+              Travel
+            </label>
+            <label class="pill">
+              <input type="checkbox" name="bundle-finance" id="bundle-finance" />
+              <img src="../../images/ic_finance_24px_clr_r3_2x.png" alt="" />
+              Finance
+            </label>
+          </fieldset>
+          <label class="check">
             <input type="checkbox" name="bundle-one" id="bundle-one" />
-            Show bundle if only one email
+            Bundle single emails
           </label>
-          <label>
+          <label class="check">
             <input type="checkbox" name="bundle-today" id="bundle-today" />
-            Show bundles in Today
-          </label>
-          <label>
-            <input type="checkbox" name="bundle-purchases" id="bundle-purchases" />
-            Bundle Purchases
-          </label>
-          <label>
-            <input type="checkbox" name="bundle-travel" id="bundle-travel" />
-            Bundle Travel
-          </label>
-          <label>
-            <input type="checkbox" name="bundle-finance" id="bundle-finance" />
-            Bundle Finance
+            Show bundles in Today, not in their own date group
           </label>
         </div>
-      </div>
-      <div class="setting">
-        <div class="setting-title">Avatars</div>
-        <div class="setting-content">
-          <span class="setting-desc">Show a colored circle with the sender’s first initial</span>
-          <label class="switch">
-            <input type="checkbox" id="avatar-toggle" />
-            <span class="slider round"></span>
+
+        <h2>Email list</h2>
+        <label class="row" for="avatar-toggle">
+          <span class="row-text">
+            <span class="row-title">Avatars</span>
+            <span class="row-desc" id="avatar-desc"
+              >Sender pictures, or a colored initial when there’s none.</span
+            >
+          </span>
+          <input
+            type="checkbox"
+            role="switch"
+            class="switch"
+            id="avatar-toggle"
+            aria-describedby="avatar-desc"
+          />
+        </label>
+        <label class="row" for="hide-date-time-toggle">
+          <span class="row-text">
+            <span class="row-title">Dates on emails</span>
+            <span class="row-desc" id="date-desc"
+              >The date and time on each email. Inbox left them to the date headings.</span
+            >
+          </span>
+          <input
+            type="checkbox"
+            role="switch"
+            class="switch"
+            id="hide-date-time-toggle"
+            data-invert
+            aria-describedby="date-desc"
+          />
+        </label>
+        <label class="row" for="priority-inbox-toggle">
+          <span class="row-text">
+            <span class="row-title">Priority Inbox headings</span>
+            <span class="row-desc" id="priority-desc"
+              >Gmail’s section headings, when your inbox type is Priority Inbox.</span
+            >
+          </span>
+          <input
+            type="checkbox"
+            role="switch"
+            class="switch"
+            id="priority-inbox-toggle"
+            data-invert
+            aria-describedby="priority-desc"
+          />
+        </label>
+
+        <h2>Left menu</h2>
+        <fieldset class="menu-grid">
+          <legend>Show in the left menu</legend>
+          <label class="check">
+            <input type="checkbox" id="hide-ai-inbox-toggle" data-invert />
+            AI Inbox
           </label>
-        </div>
-      </div>
-      <div class="setting">
-        <div class="setting-title">Gravatar Photos</div>
-        <div class="setting-content">
-          <span class="setting-desc"
-            >Look up sender photos on Gravatar (shares a hashed email address with Gravatar)</span
-          >
-          <label class="switch">
-            <input type="checkbox" id="gravatar-toggle" />
-            <span class="slider round"></span>
+          <label class="check">
+            <input type="checkbox" id="hide-all-mail-toggle" data-invert />
+            All Mail
           </label>
-        </div>
-      </div>
-      <div class="setting">
-        <div class="setting-title">Hide</div>
-        <div class="setting-content">
-          <span class="setting-desc"
-            >Hide Priority Inbox headings when using the “Priority Inbox” view</span
-          >
-          <label class="switch">
-            <input type="checkbox" id="priority-inbox-toggle" />
-            <span class="slider round"></span>
+          <label class="check">
+            <input type="checkbox" id="hide-travel-toggle" data-invert />
+            Travel
           </label>
-        </div>
-        <div class="setting-content">
-          <span class="setting-desc">Hide the date and time on emails in the list, like Inbox</span>
-          <label class="switch">
-            <input type="checkbox" id="hide-date-time-toggle" />
-            <span class="slider round"></span>
+          <label class="check">
+            <input type="checkbox" id="hide-finance-toggle" data-invert />
+            Finance
           </label>
-        </div>
-        <div class="setting-content">
-          <span class="setting-desc">Hide AI Inbox from the left menu</span>
-          <label class="switch">
-            <input type="checkbox" id="hide-ai-inbox-toggle" />
-            <span class="slider round"></span>
-          </label>
-        </div>
-        <div class="setting-content">
-          <span class="setting-desc">Hide All Mail from the left menu</span>
-          <label class="switch">
-            <input type="checkbox" id="hide-all-mail-toggle" />
-            <span class="slider round"></span>
-          </label>
-        </div>
-        <div class="setting-content">
-          <span class="setting-desc">Hide Travel from the left menu</span>
-          <label class="switch">
-            <input type="checkbox" id="hide-travel-toggle" />
-            <span class="slider round"></span>
-          </label>
-        </div>
-        <div class="setting-content">
-          <span class="setting-desc">Hide Finance from the left menu</span>
-          <label class="switch">
-            <input type="checkbox" id="hide-finance-toggle" />
-            <span class="slider round"></span>
-          </label>
-        </div>
-      </div>
-    </div>
+        </fieldset>
+      </details>
+    </main>
+
+    <footer class="app-footer">
+      <span id="version"></span>
+      <a
+        href="https://github.com/team-inbox/inbox-reborn/blob/master/PRIVACY.md"
+        target="_blank"
+        rel="noopener"
+        >Privacy</a
+      >
+      <a href="https://github.com/team-inbox/inbox-reborn/issues" target="_blank" rel="noopener"
+        >Report a problem</a
+      >
+      <a href="https://github.com/team-inbox/inbox-reborn" target="_blank" rel="noopener">GitHub</a>
+    </footer>
+
     <script src="script.js"></script>
   </body>
 </html>

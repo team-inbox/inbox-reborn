@@ -1,147 +1,499 @@
-.setting-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+/* Inbox Reborn settings - the toolbar popup and the options page.
+   Colors are tokens; .dark-mode (on <html>, set by theme.js and script.js)
+   swaps them. Only local assets - no web fonts. */
+
+:root {
+  --bg: #f1f3f4;
+  --surface: #fff;
+  --text: #202124;
+  --text-2: #5f6368;
+  --divider: #e0e0e0;
+  --accent: #4285f4; /* Inbox blue: switches, the hero stripe */
+  --link: #1a73e8;
+  --track-off: #80868b;
+  --header-bg: #4285f4;
+  --header-text: #fff;
+  --chip-bg: #e8f0fe;
+  --chip-text: #1967d2;
+  --shadow: 0 1px 2px rgb(60 64 67 / 20%);
+
+  color-scheme: light;
 }
 
-.setting-content select {
-  min-width: 200px;
+:root.dark-mode {
+  --bg: #1f1f1f;
+  --surface: #2a2a2a;
+  --text: #e8eaed;
+  --text-2: #b0b3b8;
+  --divider: #3c4043;
+  --accent: #8ab4f8;
+  --link: #8ab4f8;
+  --track-off: #9aa0a6;
+  --header-bg: #2a2a2a;
+  --header-text: #e8eaed;
+  --chip-bg: #394457;
+  --chip-text: #d2e3fc;
+  --shadow: none;
+
+  color-scheme: dark;
 }
 
-.setting-desc {
-  flex: 1;
-  margin-right: 12px;
-}
-
-body {
-  font-family: Roboto, system-ui, sans-serif;
-  font-size: 13px;
-  margin: 0;
-}
-
-.content {
-  background-color: white;
-  padding: 0 20px;
-  width: 550px;
-  max-width: 100%;
+* {
   box-sizing: border-box;
 }
 
-.label {
-  display: inline-block;
-  width: 90%;
-  vertical-align: top;
-  padding-top: 0.2em;
-  padding-left: 2px;
+body {
+  width: 420px;
+  max-width: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font:
+    13px/1.4 Roboto,
+    system-ui,
+    sans-serif;
 }
 
-.setting {
-  padding: 12px 20px;
-  border-bottom: 1px solid rgb(224 224 224);
-  margin: 0 -10px 0 -20px;
-}
+/* ---------------------------------------------------------------- header */
 
-.setting:nth-last-child(1) {
-  border-bottom: none;
-  padding-bottom: 30px;
-}
-
-.setting-title {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.setting-content {
-  color: #616161;
-}
-
-/* Settings that group several toggles (Hide Icons) */
-.setting-content + .setting-content {
-  margin-top: 8px;
-}
-
-body.dark-mode {
-  background-color: #303030;
-  color: #fafafa;
-}
-
-body.dark-mode .content {
-  background-color: #424242;
-}
-
-body.dark-mode .setting {
-  border-color: #555;
-}
-
-body.dark-mode .setting-content {
-  color: #ccc;
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 30px;
-  height: 17px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
+.app-header {
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 8px 16px;
+  background: var(--header-bg);
+  color: var(--header-text);
 }
 
-.slider::before {
-  position: absolute;
-  content: '';
-  height: 13px;
-  width: 13px;
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
+.app-title h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
-input:checked + .slider {
-  background-color: #4285f4;
+.app-title p {
+  margin: 0;
+  font-size: 12px;
 }
 
-input:focus + .slider {
-  box-shadow: 0 0 1px #4285f4;
+.save-status {
+  margin-left: auto;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 
-input:checked + .slider::before {
-  -webkit-transform: translateX(13px);
-  -ms-transform: translateX(13px);
-  transform: translateX(13px);
+.save-status.visible {
+  opacity: 1;
 }
 
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
+/* ----------------------------------------------------------------- cards */
 
-.slider.round::before {
-  border-radius: 50%;
-}
-
-.sub-settings {
-  margin-left: 40px;
-  margin-top: 8px;
+main {
   display: flex;
   flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+}
+
+.card {
+  background: var(--surface);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 4px 16px;
+}
+
+:root.dark-mode .card {
+  border: 1px solid var(--divider);
+}
+
+:root.dark-mode .hero {
+  border-left: 4px solid var(--accent);
+}
+
+.hero {
+  border-left: 4px solid var(--accent);
+  padding-left: 12px;
+}
+
+.hero .row {
+  gap: 16px;
+}
+
+/* Inbox's zero-inbox sun (moon in dark mode) on a round badge. Both
+   pictures share one layout (456x618, artwork at 78-418 x 158-495), so one
+   size and offset centers either; clip-path trims the faint sky clouds
+   around the artwork, which would show as patches on the badge */
+.hero-art {
+  position: relative;
+  flex: none;
+  align-self: start;
+  width: 52px;
+  height: 52px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: #e8f0fe; /* a sky, like Inbox's zero-inbox sun */
+  overflow: hidden;
+}
+
+:root.dark-mode .hero-art {
+  background: #1c2b3a;
+}
+
+.hero-art img {
+  position: absolute;
+  top: -11px;
+  left: -2px;
+  width: 51px;
+  height: auto;
+  clip-path: inset(25.5% 8% 19.5% 17%);
+}
+
+.dark-only,
+:root.dark-mode .light-only {
+  display: none;
+}
+
+:root.dark-mode .dark-only {
+  display: block;
+}
+
+.chip {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 8px;
+  border-radius: 10px;
+  background: var(--chip-bg);
+  color: var(--chip-text);
+  font-size: 11px;
+  font-weight: 500;
+  vertical-align: 1px;
+}
+
+/* ------------------------------------------------------------------ rows */
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.row + .row,
+.card > .row + fieldset,
+.card > fieldset + .row {
+  border-top: 1px solid var(--divider);
+}
+
+.row-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.row-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.row-desc,
+.row-status,
+.row-hint {
+  color: var(--text-2);
+  font-size: 12px;
+}
+
+.row-status {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.row-hint {
+  display: none;
+}
+
+.is-disabled {
+  cursor: default;
+}
+
+.is-disabled .row-title,
+.is-disabled .row-desc,
+.is-disabled .switch,
+.sub-settings.is-disabled {
+  opacity: 0.45;
+}
+
+.is-disabled .row-hint {
+  display: block;
+}
+
+/* A fieldset row (Reminders): title, description, then the control */
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.row-stacked {
+  display: block;
+  cursor: default;
+}
+
+.row-stacked legend {
+  float: left; /* lets the legend sit inside the padding like a heading */
+  width: 100%;
+  padding: 0;
+}
+
+.row-stacked .row-desc {
+  display: block;
+  clear: both;
+  margin-bottom: 8px;
+}
+
+/* ---------------------------------------------------------------- switch */
+
+.switch {
+  appearance: none;
+  position: relative;
+  flex: none;
+  width: 36px;
+  height: 20px;
+  margin: 0;
+  border-radius: 10px;
+  background: var(--track-off);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.switch::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 30%);
+  transition: transform 0.15s;
+}
+
+.switch:checked {
+  background: var(--accent);
+}
+
+.switch:checked::before {
+  transform: translateX(16px);
+}
+
+:root.dark-mode .switch:checked::before {
+  background: #202124;
+}
+
+.switch:disabled {
+  cursor: default;
+}
+
+:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
+}
+
+input[type='checkbox']:not(.switch) {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+/* -------------------------------------------- segmented control (radios) */
+
+.segmented {
+  display: flex;
+  border: 1px solid var(--divider);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.segmented input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.segmented label {
+  flex: 1;
+  padding: 6px 4px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-2);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.segmented label + input + label {
+  border-left: 1px solid var(--divider);
+}
+
+.segmented input:checked + label {
+  background: var(--chip-bg);
+  color: var(--chip-text);
+  font-weight: 500;
+}
+
+.segmented input:focus-visible + label {
+  outline: 2px solid var(--link);
+  outline-offset: -2px;
+}
+
+/* ------------------------------------------------- Customize (disclosure) */
+
+.customize {
+  padding-bottom: 8px;
+}
+
+.customize summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  list-style: none;
+  cursor: pointer;
+}
+
+.customize summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.summary-status {
+  margin-left: auto;
+  color: var(--text-2);
+  font-size: 12px;
+}
+
+.chevron {
+  width: 8px;
+  height: 8px;
+  margin: 0 4px 3px;
+  border-right: 2px solid var(--text-2);
+  border-bottom: 2px solid var(--text-2);
+  transform: rotate(45deg);
+  transition: transform 0.15s;
+}
+
+.customize[open] .chevron {
+  margin-bottom: -3px;
+  transform: rotate(-135deg);
+}
+
+.customize summary + h2 {
+  margin-top: 0;
+}
+
+.customize h2 {
+  margin: 12px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--divider);
+  color: var(--text-2);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Bundle options, under Bundle emails */
+.sub-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 0 8px;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pills legend,
+.menu-grid legend {
+  margin-bottom: 8px;
+  padding: 0;
+  color: var(--text-2);
+  font-size: 12px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
   gap: 6px;
-  font-size: 0.9em;
+  padding: 4px 10px 4px 8px;
+  border: 1px solid var(--divider);
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.pill img {
+  width: 18px;
+  height: 18px;
+}
+
+.pill:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--chip-bg);
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 8px 0 4px;
+}
+
+.menu-grid legend {
+  grid-column: 1 / -1;
+  float: left;
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------- footer */
+
+.app-footer {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 12px 14px;
+  color: var(--text-2);
+  font-size: 11px;
+}
+
+.app-footer a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+.app-footer a:hover {
+  text-decoration: underline;
 }

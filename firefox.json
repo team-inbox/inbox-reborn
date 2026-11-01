@@ -25,7 +25,7 @@
   "options_ui": {
     "page": "src/options/options.html",
     "open_in_tab": false,
-    "browser_style": true
+    "browser_style": false
   },
   "options_page": "src/options/options.html",
   "background": {
