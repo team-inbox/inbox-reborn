@@ -9,9 +9,6 @@
  * - Custom sidebar navigation
  * - Floating action buttons
  * - Header color customization
- * 
- * Version: 2.0.0
- * Last Updated: 2025
  */
 
 /* =============================================================================
@@ -20,14 +17,6 @@
 :root {
   --inbox-margin-right: 7vw;
   --email-max-width: 1200px;
-
-  /* Color palette */
-  --color-background: #f2f2f2;
-  --color-surface: #fff;
-  --color-text-primary: #202124;
-  --color-text-secondary: #616161;
-  --color-divider: #ddd;
-  --color-shadow: rgb(0 0 0 / 24%);
 
   /* Dark mode palette (applied with .dark-mode class) — OWA/Fluent-inspired
      neutral grays instead of near-black, with Outlook's communication blue */
@@ -335,9 +324,7 @@ body
 /* Time */
 .time {
   color: #666;
-  font-size: 14px;
   padding-bottom: 10px;
-  padding-top: 20px;
   padding-left: 20px;
 }
 
@@ -512,19 +499,14 @@ body.dark-mode.inbox-list .sweep-button:hover {
   align-items: center;
   border-radius: 2px !important;
   background: none !important;
-  position: relative;
   box-sizing: border-box;
   cursor: pointer !important;
-
-  /* To allow highlight/hover like other rows */
-  transition: background 0.12s;
+  transition: background 0.12s; /* highlight/hover like other rows */
+  position: relative; /* for the divider below */
+  margin-bottom: 27px; /* the gap after the divider, matching Categories */
 }
 
-/* Add divider under Done menu row */
-.TO.inbox-reborn-done {
-  position: relative;
-}
-
+/* Divider under the Done row */
 .TO.inbox-reborn-done::after {
   content: '';
   display: block;
@@ -539,11 +521,6 @@ body.dark-mode.inbox-list .sweep-button:hover {
 /* Dark mode: Done divider */
 body.dark-mode .TO.inbox-reborn-done::after {
   background: var(--dm-border-muted) !important; /* Match trash divider dark mode color */
-}
-
-/* Add vertical spacing after Done divider to match Categories gap */
-.TO.inbox-reborn-done {
-  margin-bottom: 27px; /* Adjust as needed for visual match */
 }
 
 /* On hover, look like all other menu rows */
@@ -774,23 +751,14 @@ body.dark-mode .a8Y {
    NEW LABEL POPUP STYLING
    ============================================================================= */
 
-/* New Label popup - improve text readability in dark mode */
-body.dark-mode .uW2Fw-bHo {
-  background-color: var(--dm-surface) !important;
-  color: #e8eaed !important;
-}
-
 /* New Label popup title */
 body.dark-mode .uW2Fw-bHo .cER4xe {
-  color: #e8eaed !important;
   font-weight: 500 !important;
 }
 
 /* New Label popup input fields */
 body.dark-mode .uW2Fw-bHo .a7H {
-  background-color: var(--dm-hover) !important;
   color: #e8eaed !important;
-  border: 1px solid var(--dm-border-muted) !important;
 }
 
 body.dark-mode .uW2Fw-bHo .a7H:focus {
@@ -809,35 +777,6 @@ body.dark-mode .uW2Fw-bHo .a9J {
   color: #e8eaed !important;
 }
 
-/* New Label popup buttons */
-body.dark-mode .uW2Fw-bHo .mUIrbf-I {
-  background-color: var(--dm-hover) !important;
-  color: #e8eaed !important;
-  border: 1px solid var(--dm-border-muted) !important;
-}
-
-body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover {
-  background-color: var(--dm-selected) !important;
-}
-
-/* New Label popup primary button (Create) */
-body.dark-mode .uW2Fw-bHo .eV8l8d {
-  background-color: var(--dm-accent-surface) !important;
-  color: #202124 !important;
-  border: none !important;
-}
-
-body.dark-mode .uW2Fw-bHo .eV8l8d:hover {
-  background-color: #aecbfa !important;
-}
-
-/* New Label popup secondary button (Cancel) */
-body.dark-mode .uW2Fw-bHo .fQ1uhf {
-  background-color: transparent !important;
-  color: var(--dm-accent) !important;
-  border: 1px solid var(--dm-border-muted) !important;
-}
-
 body.dark-mode .uW2Fw-bHo .fQ1uhf:hover {
   background-color: var(--dm-hover) !important;
   border-color: var(--dm-accent) !important;
@@ -851,11 +790,6 @@ body.dark-mode .uW2Fw-bHo .a7G {
 
 body.dark-mode .uW2Fw-bHo .a7G:hover {
   background-color: var(--dm-selected) !important;
-}
-
-/* New Label popup dropdown arrow */
-body.dark-mode .uW2Fw-bHo .mUIrbf-anl {
-  color: #9aa0a6 !important;
 }
 
 /* New Label popup font styling for labels */
@@ -1134,7 +1068,6 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
   mask-size: 24px !important;
-  background-color: #4c4f4d !important;
 }
 
 /* Promotions */
@@ -1463,11 +1396,6 @@ body.dark-mode [data-tooltip='AI Inbox'].CL svg {
     background-color: #4c4f4d !important;
   }
 
-  /* Category */
-  .aHS-bnr .qj /*:not(.aEe)*/ {
-    /* background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_custom-cluster_24px_g60_r3_2x.png') !important; */
-  }
-
   /* Labels - Firefox */
   .aEe,
   .aEc.aHS-bnr .qj,
@@ -1549,21 +1477,6 @@ body.dark-mode [data-tooltip='AI Inbox'].CL svg {
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
     background-color: #4c4f4d !important;
-    background-image: none !important;
-  }
-
-  /* Firefox dark mode for Categories */
-  body.dark-mode [data-tooltip='Categories'] .qj {
-    background-color: #fff !important;
-  }
-
-  /* Firefox dark mode override for Categories to preserve mask-image */
-  body.dark-mode [data-tooltip='Categories'] .aEc.aHS-bnr .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    -webkit-mask-size: 24px !important;
-    mask-size: 24px !important;
-    background-color: #fff !important;
     background-image: none !important;
   }
 }
@@ -2794,20 +2707,6 @@ body.hide-date-time .zA > .yf {
    EMAIL SELECTION STYLING - LIGHT MODE (Gmail Default)
    ======================================== */
 
-/* Email selected with keyboard shortcut - Gmail's default blue selection */
-.zA.x7 {
-  /* Let Gmail handle the default blue selection styling */
-
-  /* Only adjust positioning to work with our avatar system */
-}
-
-/* Email checked/selected via checkbox - Gmail's default selection */
-.zA.aqw {
-  /* Let Gmail handle the default selection styling */
-
-  /* Only adjust positioning to work with our avatar system */
-}
-
 /* Hides the checkbox when not checked */
 
 /* Avatar/checkbox swap is done with visibility on a fixed footprint, NOT
@@ -2853,15 +2752,6 @@ body.hide-date-time .zA > .yf {
 .show-avatar-enabled .zA.aqw .oZ-x3.xY .avatar,
 .show-avatar-enabled .zA .oZ-x3.xY .T-Jo[aria-checked='true'] + .avatar {
   visibility: hidden !important;
-}
-
-.zA .oZ-jc.T-Jo.J-J5-Ji {
-  margin-left: -4px;
-}
-
-/* hide the drag icon next to checkbox */
-.aqw > td.oZ-x3::before {
-  display: none;
 }
 
 /* Unhides the checkbox when checked */
@@ -3493,13 +3383,11 @@ div[aria-label='Inbox tip'] {
 body:not(.dark-mode) .aeF::-webkit-scrollbar {
   width: 10px;
   background: transparent;
-  transition: background 0.2s;
 }
 
 body:not(.dark-mode) .aeF::-webkit-scrollbar-thumb {
   background: transparent;
   border-radius: 8px;
-  transition: background 0.2s;
 }
 
 body:not(.dark-mode) .aeF:hover::-webkit-scrollbar-thumb,
@@ -3515,7 +3403,6 @@ body:not(.dark-mode) .aeF:not(:hover)::-webkit-scrollbar-thumb {
 body:not(.dark-mode) .aeF {
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
-  transition: scrollbar-color 0.2s;
 }
 
 body:not(.dark-mode) .aeF:hover {
@@ -3534,7 +3421,6 @@ body:not(.dark-mode) .aeF:not(:hover) {
 .V3.aam.ada::-webkit-scrollbar {
   width: 8px;
   background: transparent;
-  transition: background 0.2s;
 }
 
 .V3.aam.ada::-webkit-scrollbar-track {
@@ -3549,7 +3435,6 @@ body:not(.dark-mode) .aeF:not(:hover) {
   background: transparent;
   border-radius: 4px;
   border: none;
-  transition: background 0.2s;
 }
 
 .V3.aam.ada:hover::-webkit-scrollbar-thumb {
@@ -3565,7 +3450,6 @@ body:not(.dark-mode) .aeF:not(:hover) {
   .V3.aam.ada {
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
-    transition: scrollbar-color 0.2s;
   }
 
   .V3.aam.ada:hover {
@@ -3688,24 +3572,6 @@ body.dark-mode .btC:not(.nH.Hd .btC) .og.T-I-J3 {
 }
 
 /* MAIN INTERFACE DARK MODE */
-
-/* Email list and sidebar backgrounds - removed conflicting rule */
-
-body.dark-mode .aBO,
-body.dark-mode .aB6,
-body.dark-mode .bn .bl,
-body.dark-mode .bzJiD,
-body.dark-mode .vIO7af,
-body.dark-mode .no,
-body.dark-mode .Tm.aeJ,
-body.dark-mode .brC-aT5-aOt-Jw,
-body.dark-mode div[role='complementary'][aria-label='Side panel'],
-body.dark-mode .aj5 .J-KU,
-body.dark-mode .aj5.J-KU-Jg,
-body.dark-mode .aKh,
-body.dark-mode .aRs {
-  background: var(--dm-surface) !important;
-}
 
 /* Side-panel rail button pills (hover/active highlight behind the
    Calendar / Keep / Tasks icons): Gmail fills them #fff / #f1f3f4 /
@@ -3992,10 +3858,6 @@ body.dark-mode .Bs.nH.iY.bAt {
   color: var(--dm-text-secondary) !important;
 }
 
-body.dark-mode .zA * {
-  color: var(--dm-text-secondary) !important;
-}
-
 /* Sidebar glyphs Gmail leaves light-theme dark: the More/Less chevron
    (either an svg filled #444746 or, depending on the render, a .G-asx
    expand_more sprite), the Labels "+" and nested-label expand/collapse arrows
@@ -4011,29 +3873,6 @@ body.dark-mode .TH:is(.aii, .aih) {
   opacity: 1 !important;
 }
 
-/* Sidebar text colors */
-body.dark-mode .TO .nU > .n0,
-body.dark-mode .TO.NQ .nU > .n0,
-body.dark-mode .TO.nZ .nU > .n0,
-body.dark-mode .ah9 > .CJ,
-body.dark-mode .n3 > .CL > .CK,
-body.dark-mode .aAv {
-  color: var(--dm-text-secondary) !important;
-}
-
-body.dark-mode .TO.nZ .n0 {
-  color: #fff !important;
-}
-
-body.dark-mode .TO .n0 {
-  color: var(--dm-text-secondary) !important;
-}
-
-/* Active sidebar item */
-body.dark-mode .TO.nZ {
-  background-color: var(--dm-hover) !important;
-}
-
 /* Unread email highlight - same positioning as light mode */
 body.dark-mode .zA.zE {
   background-color: var(--dm-hover) !important;
@@ -4044,16 +3883,6 @@ body.dark-mode .zA.zE {
 /* ========================================
    EMAIL SELECTION STYLING - DARK MODE (Identical to Light Mode)
    ======================================== */
-
-/* Email selected with keyboard shortcut - same as light mode */
-body.dark-mode .zA.x7 {
-  /* Let Gmail handle the default blue selection styling - same as light mode */
-}
-
-/* Email checked/selected via checkbox - same as light mode */
-body.dark-mode .zA.aqw {
-  /* Let Gmail handle the default blue selection styling - same as light mode */
-}
 
 /* Selection indicator positioning - same as light mode */
 body.dark-mode .PF.xY.PE {
@@ -4071,15 +3900,6 @@ body.dark-mode .zA.btb .PF.xY.PE {
   margin-right: 10px !important; /* Additional right margin for .btb emails */
 }
 
-/* Bundle styling */
-body.dark-mode .brc {
-  background-color: var(--dm-hover) !important;
-  color: #fff !important;
-  box-shadow:
-    0 0 1px rgb(0 0 0 / 31%),
-    0 1px 2px rgb(0 0 0 / 42%) !important;
-}
-
 /* Bundle icons - in dark mode use the same light fill as the Material
    toolbar icons, overriding whatever per-label color the JS painted */
 body.dark-mode .bundle-wrapper > .bundle-image {
@@ -4093,52 +3913,16 @@ body.dark-mode .bundle-wrapper[bundlekind='custom'] > .bundle-image {
   opacity: 0.57;
 }
 
-body.dark-mode .bundle-senders {
-  color: #fff !important;
-}
-
-body.dark-mode .bundle-wrapper .label-link .bundle-count {
-  color: var(--dm-text-secondary) !important;
-}
-
 body.dark-mode .bundle-wrapper:not(.contains-unread) .bundle-image img {
   filter: brightness(0.8);
-}
-
-/* Calendar attachments */
-body.dark-mode .calendar-attachment .event-time {
-  color: var(--dm-text-secondary) !important;
-}
-
-/* Time stamps */
-body.dark-mode .time {
-  color: var(--dm-text-secondary) !important;
 }
 
 /* ========================================
    MAIN INBOX - DARK MODE TOOLBAR FIXES
    ======================================== */
 
-/* Main toolbar container - force dark background and borders */
-body.dark-mode .D.E.G-atb {
-  background: var(--dm-bg) !important;
-  border-bottom-color: var(--dm-bg) !important;
-  border-left-color: var(--dm-bg) !important;
-  border-right-color: var(--dm-bg) !important;
-  border-top-color: var(--dm-bg) !important;
-  border-color: var(--dm-bg) !important;
-}
-
-/* Override any inline border styles on main toolbar */
-body.dark-mode .D.E.G-atb[style*='border'] {
-  border-bottom-color: var(--dm-bg) !important;
-  border-left-color: var(--dm-bg) !important;
-  border-right-color: var(--dm-bg) !important;
-  border-top-color: var(--dm-bg) !important;
-  border-color: var(--dm-bg) !important;
-}
-
-/* Force all toolbar elements to have dark borders */
+/* Every toolbar element gets dark borders (!important also beats Gmail's
+   inline border styles, so no [style*='border'] variants are needed) */
 body.dark-mode .D.E.G-atb *,
 body.dark-mode .Cr.aqJ *,
 body.dark-mode .nH.aqK * {
@@ -4149,18 +3933,7 @@ body.dark-mode .nH.aqK * {
   border-top-color: var(--dm-bg) !important;
 }
 
-/* Override any inline styles on toolbar elements */
-body.dark-mode .D.E.G-atb *[style*='border'],
-body.dark-mode .Cr.aqJ *[style*='border'],
-body.dark-mode .nH.aqK *[style*='border'] {
-  border-color: var(--dm-bg) !important;
-  border-bottom-color: var(--dm-bg) !important;
-  border-left-color: var(--dm-bg) !important;
-  border-right-color: var(--dm-bg) !important;
-  border-top-color: var(--dm-bg) !important;
-}
-
-/* Nuclear option: Force all #444 colors to #141414 in toolbar area */
+/* The toolbar and the list header above it: dark background and borders */
 body.dark-mode .D.E.G-atb,
 body.dark-mode .D.E.G-atb *,
 body.dark-mode .nH.aqK:not(.Cr.aqJ .nH.aqK),
@@ -4289,15 +4062,6 @@ body.dark-mode .h0 .adl * /* "2 of 20" in the conversation toolbar */ {
 body.dark-mode header form {
   background: rgb(255 255 255 / 8%) !important; /* Semi-transparent white, darker than light mode */
   max-width: 90% !important;
-}
-
-body.dark-mode header form input {
-  color: white !important; /* Match light mode */
-  background-color: transparent !important; /* Let Gmail handle background */
-}
-
-body.dark-mode header form input::placeholder {
-  color: #fff !important; /* Match light mode exactly */
 }
 
 /* Archive button - dark mode styling */
@@ -4677,31 +4441,6 @@ body.dark-mode .D.E.G-atb [aria-disabled='true'] :is(.amI, .amJ) {
   opacity: 1 !important;
 }
 
-/* QUICK SETTINGS PANEL */
-body.dark-mode .IU {
-  background-color: var(--dm-bg) !important;
-}
-
-body.dark-mode .IU .VO,
-body.dark-mode .IU .OG {
-  color: #f1f1f1 !important;
-}
-
-body.dark-mode .IU .a21,
-body.dark-mode .IU .Q2,
-body.dark-mode .IU .ST {
-  color: #e0e0e0 !important;
-}
-
-body.dark-mode fieldset.VM.aiL {
-  background-color: var(--dm-surface) !important;
-}
-
-body.dark-mode .IU .OD,
-body.dark-mode .IU .Tj {
-  color: var(--dm-accent) !important;
-}
-
 /* The "Theme" heading is a bare div, not an .OG like the other section
    headings, so it kept Gmail's light-mode #444746 - near-invisible here */
 body.dark-mode .IU .QW.Q5 > div:first-child {
@@ -4760,20 +4499,6 @@ body.dark-mode iframe[data-inbox-reborn-dark-pending] {
   visibility: hidden !important;
 }
 
-body.dark-mode .nH.fY [role='presentation'] a.f0 {
-  color: #a0a0a0 !important;
-  opacity: 1 !important;
-}
-
-body.dark-mode .nH.fY [role='presentation'] a.f0:hover {
-  color: var(--dm-accent) !important;
-}
-
-body.dark-mode .nH.fY [role='presentation'] a.f0[aria-selected='true'] {
-  color: var(--dm-accent) !important;
-  border-bottom: 2px solid var(--dm-accent) !important;
-}
-
 /* EMAIL VIEWER */
 body.dark-mode .AO {
   color: #e0e0e0 !important;
@@ -4791,8 +4516,6 @@ body.dark-mode .at9 * {
   box-shadow: none !important;
 }
 
-/* DROPDOWN MENUS - removed black background */
-
 /* EMPTY INBOX DARK IMAGE */
 body.dark-mode .ar4.z .TD > .TC {
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_zero_inbox_2x_dark.png') !important;
@@ -4801,8 +4524,6 @@ body.dark-mode .ar4.z .TD > .TC {
   padding-top: 30px;
   height: 618px;
   width: 456px;
-  background-color: #292929;
-  color: transparent;
   font-size: 14px;
 }
 
@@ -4828,13 +4549,6 @@ body.dark-mode .aRs {
   background: var(--dm-surface) !important;
 }
 
-body.dark-mode .zA,
-body.dark-mode .zA:hover,
-body.dark-mode .Bs.nH.iY.bAt {
-  background: var(--dm-surface) !important;
-  color: var(--dm-text-secondary) !important;
-}
-
 body.dark-mode .zA * {
   color: var(--dm-text-secondary) !important;
 }
@@ -4857,39 +4571,13 @@ body.dark-mode .TO .n0 {
 }
 
 body.dark-mode .brc {
-  background-color: var(--dm-hover) !important;
-  color: #fff !important;
   box-shadow:
     0 0 1px rgb(0 0 0 / 31%),
     0 1px 2px rgb(0 0 0 / 42%) !important;
 }
 
-body.dark-mode .bundle-senders {
-  color: #fff !important;
-}
-
-body.dark-mode .bundle-wrapper .label-link .bundle-count {
-  color: var(--dm-text-secondary) !important;
-}
-
-body.dark-mode .calendar-attachment .event-time {
-  color: var(--dm-text-secondary) !important;
-}
-
 body.dark-mode .time {
   color: var(--dm-text-secondary) !important;
-}
-
-body.dark-mode .nH.bkK.nn + .nH.nn {
-  background-color: var(--dm-hover) !important;
-}
-
-body.dark-mode .IU {
-  background-color: var(--dm-hover) !important;
-}
-
-body.dark-mode .wT > .n3 .byl:first-child .aim:first-child .nZ {
-  background-color: rgb(255 255 255 / 5%) !important;
 }
 
 /* ========================================
@@ -5011,13 +4699,7 @@ body.dark-mode .nH.a98.iY.aHo .adx {
 
 /* Remove borders from action icons (reactions, etc.) */
 body.dark-mode .nH.a98.iY.aHo .T-I:not(.J-J5-Ji) {
-  border: none !important;
-  border-width: 0 !important;
-  border-style: none !important;
-  border-color: transparent !important;
   border-image: none !important;
-  outline: none !important;
-  box-shadow: none !important;
 }
 
 /* Remove borders from icon images specifically */
@@ -5206,51 +4888,6 @@ body.dark-mode .aEc.aHS-bnr .qj {
   mask-image: none !important;
 }
 
-/* Override the above rule for Categories to preserve its mask-image */
-body.dark-mode [data-tooltip='Categories'] .aEc.aHS-bnr .qj {
-  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-  -webkit-mask-size: 24px !important;
-  mask-size: 24px !important;
-  -webkit-mask-repeat: no-repeat !important;
-  mask-repeat: no-repeat !important;
-  -webkit-mask-position: center !important;
-  mask-position: center !important;
-  background-color: var(--dm-text-muted) !important;
-  background-image: none !important;
-}
-
-/* Firefox-specific dark mode override for Categories */
-@-moz-document url-prefix() {
-  body.dark-mode [data-tooltip='Categories'] .aEc.aHS-bnr .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    -webkit-mask-size: 24px !important;
-    mask-size: 24px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-color: var(--dm-text-muted) !important;
-    background-image: none !important;
-  }
-}
-
-/* Labels - let Gmail use default colorful icons in dark mode too */
-body.dark-mode .aHS-bnr .qj,
-body.dark-mode .zw .aHS-bnr .qj {
-  /* Let Gmail use its default colorful square icons */
-}
-
-body.dark-mode .G4,
-body.dark-mode .GR,
-body.dark-mode div[aria-label='Inbox tip'] {
-  box-shadow:
-    0 -1px 0 var(--dm-hover),
-    0 0 2px rgb(0 0 0 / 32%),
-    0 2px 4px rgb(0 0 0 / 44%) !important;
-}
-
 body.dark-mode .D.E.G-atb {
   background: var(--dm-bg) !important;
 }
@@ -5366,13 +5003,11 @@ body.dark-mode .Tm.aeJ::-webkit-scrollbar-thumb:hover {
 body.dark-mode .aeF::-webkit-scrollbar {
   width: 10px !important;
   background: transparent !important;
-  transition: background 0.2s !important;
 }
 
 body.dark-mode .aeF::-webkit-scrollbar-thumb {
   background: transparent !important;
   border-radius: 8px !important;
-  transition: background 0.2s !important;
 }
 
 body.dark-mode .aeF:hover::-webkit-scrollbar-thumb,
@@ -5389,7 +5024,6 @@ body.dark-mode .aeF:not(:hover)::-webkit-scrollbar-thumb {
   body.dark-mode .aeF {
     scrollbar-width: thin !important;
     scrollbar-color: transparent transparent !important;
-    transition: scrollbar-color 0.2s !important;
   }
 
   body.dark-mode .aeF:hover {
@@ -5406,15 +5040,12 @@ body.dark-mode .wT::-webkit-scrollbar,
 body.dark-mode .nH .AO::-webkit-scrollbar {
   display: block !important;
   width: 10px !important;
-  background: transparent !important;
 }
 
 body.dark-mode .wT::-webkit-scrollbar-thumb,
 body.dark-mode .nH .AO::-webkit-scrollbar-thumb {
   display: block !important;
-  background: transparent !important;
   border-radius: 8px !important;
-  transition: background 0.2s !important;
 }
 
 body.dark-mode .wT:hover::-webkit-scrollbar-thumb,
@@ -5433,7 +5064,6 @@ body.dark-mode .nH .AO:not(:hover)::-webkit-scrollbar-thumb {
 body.dark-mode .wT,
 body.dark-mode .nH .AO {
   scrollbar-color: transparent transparent !important;
-  transition: scrollbar-color 0.2s !important;
 }
 
 body.dark-mode .wT:hover,
@@ -5466,7 +5096,6 @@ body.dark-mode .nH .AO::-webkit-scrollbar {
   body.dark-mode .nH .AO {
     scrollbar-width: thin !important;
     scrollbar-color: transparent transparent !important;
-    transition: scrollbar-color 0.2s !important;
   }
 
   body.dark-mode .wT:hover,
@@ -5591,25 +5220,6 @@ body.dark-mode .zA.zE .xW span {
   color: #e8eaed !important;
 }
 
-body.dark-mode .zA .apU.xY .T-KT::before,
-body.dark-mode .zA .apU.xY .T-KT.xl::before,
-body.dark-mode .zA .apU.xY .T-KT.T-KT-Jp::before,
-body.dark-mode .zA .apU.xY .T-KT.xn::before,
-body.dark-mode .zA .apU.xY .T-KT.xm::before,
-body.dark-mode .zA .apU.xY .T-KT.xj::before,
-body.dark-mode .zA .apU.xY .T-KT.xk::before {
-  /* Keep star images, do not recolor */
-}
-
-body.dark-mode .zA .apU.xY .T-KT.xg::before,
-body.dark-mode .zA .apU.xY .T-KT.xe::before,
-body.dark-mode .zA .apU.xY .T-KT.xh::before,
-body.dark-mode .zA .apU.xY .T-KT.xd::before,
-body.dark-mode .zA .apU.xY .T-KT.xc::before,
-body.dark-mode .zA .apU.xY .T-KT.xf::before {
-  /* Keep cleardot gif */
-}
-
 /* Dark mode star icons - use SVG with mask-image approach */
 body.dark-mode .zA .apU.xY .T-KT::before,
 body.dark-mode .zA .apU.xY .T-KT.xl::before {
@@ -5651,10 +5261,6 @@ body.dark-mode .D.E.G-atb::before {
 
 body.dark-mode header svg {
   color: #fff !important;
-}
-
-body.dark-mode header form {
-  /* Remove forced background - let Gmail handle it naturally */
 }
 
 body.dark-mode header form input {
@@ -5830,7 +5436,6 @@ body.dark-mode [data-tooltip='Updates'] .qj {
 }
 
 body.dark-mode [data-tooltip='Forums'] .qj {
-  background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -5839,7 +5444,6 @@ body.dark-mode [data-tooltip='Forums'] .qj {
   mask-repeat: no-repeat !important;
   -webkit-mask-position: center !important;
   mask-position: center !important;
-  background-image: none !important;
 }
 
 body.dark-mode [data-tooltip='Promotions'] .qj {
@@ -6262,10 +5866,6 @@ body.dark-mode .oc:not(.nH.Hd .oc) {
   border-color: var(--dm-selected) !important;
 }
 
-/* Make dropdown menus readable - removed black background */
-
-/* Let Gmail use its default colorful icons for system labels */
-
 /* Dark Mode Quick Settings Panel Fix */
 body.dark-mode .IU {
   background-color: var(--dm-bg) !important;
@@ -6314,10 +5914,6 @@ body.dark-mode .IU .OF {
 body.dark-mode .IU .Vo {
   border: 2px solid #888 !important;
   background-color: transparent !important;
-}
-
-body.dark-mode .IU .Q1:checked + .Vo {
-  border-color: var(--dm-accent) !important;
 }
 
 /* The ring itself is a ::before painted with Gmail's black (unchecked) or
@@ -6416,13 +6012,6 @@ body.dark-mode .IU .Q1:checked + .Vo {
   border-color: var(--dm-accent) !important;
 }
 
-/* --- Final Attempt: Force remove borders from option labels --- */
-body.dark-mode .QX,
-body.dark-mode .Vn,
-body.dark-mode .XL {
-  border: 1px solid transparent !important;
-}
-
 /* Remove boxes around radio buttons in dark mode */
 body.dark-mode .Vo {
   border: none !important;
@@ -6433,19 +6022,6 @@ body.dark-mode .Vo {
 body.dark-mode .Q1:checked + .Vo {
   border: none !important;
   background: transparent !important;
-}
-
-body.dark-mode .Q1:checked + .Vo::after {
-  content: '';
-  display: block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: var(--dm-accent-surface) !important;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 /* Remove boxes around radio buttons in dark mode for ALL sections */
@@ -6559,76 +6135,8 @@ body.dark-mode
   opacity: 0.5;
 }
 
-/* Dark Mode Theme Selection Dialog Styling */
-body.dark-mode .uW2Fw-bHo {
-  background-color: var(--dm-surface) !important;
-  color: #e0e0e0 !important;
-}
-
-/* Theme selection dialog header */
-body.dark-mode .uW2Fw-bHo .cER4xe {
-  color: #f1f1f1 !important;
-}
-
-/* Theme preview containers */
-body.dark-mode .uW2Fw-bHo .a7H {
-  background-color: var(--dm-bg) !important;
-  border: 1px solid var(--dm-selected) !important;
-}
-
-/* Theme preview labels */
-body.dark-mode .uW2Fw-bHo .a7N {
-  background-color: rgb(45 45 48 / 80%) !important;
-}
-
-body.dark-mode .uW2Fw-bHo .a9J {
-  color: #e0e0e0 !important;
-}
-
-/* Buttons styling */
-body.dark-mode .uW2Fw-bHo .mUIrbf-I {
-  background-color: var(--dm-hover) !important;
-  color: #e0e0e0 !important;
-  border: 1px solid var(--dm-border) !important;
-}
-
-body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover {
-  background-color: var(--dm-text-muted) !important;
-}
-
-body.dark-mode .uW2Fw-bHo .eV8l8d {
-  background-color: var(--dm-accent-surface) !important;
-  color: var(--dm-surface) !important;
-}
-
-/* More Images and My Photos buttons */
-body.dark-mode .uW2Fw-bHo .fQ1uhf,
-body.dark-mode .uW2Fw-bHo .PKBsLc button {
-  background-color: var(--dm-bg) !important;
-  color: #e0e0e0 !important;
-  border: 1px solid var(--dm-selected) !important;
-}
-
-body.dark-mode .uW2Fw-bHo .fQ1uhf:hover,
-body.dark-mode .uW2Fw-bHo .PKBsLc button:hover {
-  background-color: var(--dm-hover) !important;
-}
-
-/* Dark Mode Theme Selection Dialog Enhanced Styling */
-body.dark-mode .uW2Fw-bHo {
-  background-color: var(--dm-surface) !important;
-  color: #e0e0e0 !important;
-}
-
-/* Theme selection dialog header */
-body.dark-mode .uW2Fw-bHo .cER4xe {
-  color: #f1f1f1 !important;
-}
-
 /* Custom theme preview containers */
 body.dark-mode .uW2Fw-bHo .a7H {
-  background-color: var(--dm-bg) !important;
-  border: 1px solid var(--dm-selected) !important;
   transition: transform 0.2s ease;
 }
 
@@ -6637,31 +6145,8 @@ body.dark-mode .uW2Fw-bHo .a7H:hover {
   box-shadow: 0 4px 8px rgb(0 0 0 / 30%);
 }
 
-/* Ensure theme images are fully visible */
-body.dark-mode .uW2Fw-bHo .a7G {
-  opacity: 1 !important;
-  filter: brightness(0.8);
-  transition: filter 0.2s ease;
-}
-
-body.dark-mode .uW2Fw-bHo .a7G:hover {
-  filter: brightness(1);
-}
-
-/* Theme preview labels */
-body.dark-mode .uW2Fw-bHo .a7N {
-  background-color: rgb(45 45 48 / 80%) !important;
-}
-
-body.dark-mode .uW2Fw-bHo .a9J {
-  color: #e0e0e0 !important;
-}
-
 /* Buttons styling - More prominent and clear */
 body.dark-mode .uW2Fw-bHo .mUIrbf-I {
-  background-color: var(--dm-hover) !important;
-  color: #e0e0e0 !important;
-  border: 1px solid var(--dm-border) !important;
   transition:
     background-color 0.2s ease,
     color 0.2s ease;
@@ -6670,14 +6155,6 @@ body.dark-mode .uW2Fw-bHo .mUIrbf-I {
 body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover {
   background-color: var(--dm-text-muted) !important;
   color: white !important;
-}
-
-/* Save button - more prominent */
-body.dark-mode .uW2Fw-bHo .eV8l8d {
-  background-color: var(--dm-accent-surface) !important;
-  color: white !important;
-  border: 1px solid var(--dm-accent) !important;
-  font-weight: bold;
 }
 
 body.dark-mode .uW2Fw-bHo .eV8l8d:hover {
@@ -6701,36 +6178,12 @@ body.dark-mode .uW2Fw-bHo .PKBsLc button:hover {
 
 /* Aggressive Dark Mode Theme Selection Dialog Styling */
 body.dark-mode .uW2Fw-bHo .a7G {
-  opacity: 1 !important;
-  filter: brightness(1) !important;
   mix-blend-mode: normal !important;
 }
 
 body.dark-mode .uW2Fw-bHo .a7H {
   background-color: transparent !important;
   border: none !important;
-}
-
-body.dark-mode .uW2Fw-bHo .a7N {
-  background-color: rgb(0 0 0 / 50%) !important;
-}
-
-/* Buttons with high contrast */
-body.dark-mode .uW2Fw-bHo .mUIrbf-I {
-  background-color: var(--dm-hover) !important;
-  color: #fff !important;
-  border: 1px solid #666 !important;
-}
-
-body.dark-mode .uW2Fw-bHo .eV8l8d {
-  background-color: var(--dm-accent-strong) !important;
-  color: white !important;
-  border: 1px solid var(--dm-accent) !important;
-}
-
-body.dark-mode .uW2Fw-bHo .mUIrbf-I:hover,
-body.dark-mode .uW2Fw-bHo .eV8l8d:hover {
-  opacity: 0.9 !important;
 }
 
 /* Ensure text visibility */
@@ -6753,8 +6206,6 @@ body.dark-mode .uW2Fw-bHo .a7H img.a7G {
 
 body.dark-mode .uW2Fw-bHo .a7H,
 body.dark-mode .uW2Fw-bHo .a7Y {
-  background-color: transparent !important;
-  border: 1px solid rgb(255 255 255 / 10%) !important;
   transition: all 0.3s ease !important;
 }
 
@@ -6765,11 +6216,6 @@ body.dark-mode .uW2Fw-bHo .a7Y:hover {
 }
 
 body.dark-mode .uW2Fw-bHo .a7N {
-  background-color: rgb(0 0 0 / 50%) !important;
-  color: #fff !important;
-}
-
-body.dark-mode .uW2Fw-bHo .a9J {
   color: #fff !important;
 }
 
@@ -6783,9 +6229,6 @@ body.dark-mode .uW2Fw-bHo .PKBsLc button {
 }
 
 body.dark-mode .uW2Fw-bHo .eV8l8d {
-  background-color: var(--dm-accent-strong) !important;
-  color: white !important;
-  border: 1px solid var(--dm-accent) !important;
   font-weight: bold !important;
 }
 
@@ -6798,13 +6241,6 @@ body.dark-mode .uW2Fw-bHo .eV8l8d:hover {
 body.dark-mode .uW2Fw-bHo .mUIrbf-anl,
 body.dark-mode .uW2Fw-bHo .a7C {
   color: #fff !important;
-}
-
-/* More Images section */
-body.dark-mode .uW2Fw-bHo .fQ1uhf {
-  background-color: var(--dm-bg) !important;
-  color: #fff !important;
-  border: 1px solid var(--dm-selected) !important;
 }
 
 /* Dark Mode Theme Selection Dialog Fix */
@@ -6895,8 +6331,7 @@ body.dark-mode .aaB {
 
 /* Dark mode: compose icon glyphs (a3I) */
 body.dark-mode .a3I {
-  background-color: transparent !important; /* remove square */
-  filter: invert(1) !important; /* black glyph -> white */
+  background-color: transparent !important;
 }
 
 /* Dark mode: reset wrapper squares so they don't invert */
@@ -7258,19 +6693,6 @@ body.dark-mode .avatar:not(.web-avatar, .reminder .avatar) {
    in dark mode. Kept at the end of the file so it wins over the generic
    label icon rules in both modes.
    ============================================================================= */
-[data-tooltip='Purchases'] .qj,
-[data-tooltip='Purchased'] .qj {
-  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
-  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
-  -webkit-mask-size: 24px !important;
-  mask-size: 24px !important;
-  -webkit-mask-repeat: no-repeat !important;
-  mask-repeat: no-repeat !important;
-  -webkit-mask-position: center !important;
-  mask-position: center !important;
-  background-color: #444746 !important;
-  background-image: none !important;
-}
 
 /* Light-mode mask for Purchases - this rule existed only in the Firefox
    block below; the Chrome twin was missing, so Chrome always showed Gmail's
@@ -7285,13 +6707,6 @@ body.dark-mode .avatar:not(.web-avatar, .reminder .avatar) {
   mask-repeat: no-repeat !important;
   -webkit-mask-position: center !important;
   mask-position: center !important;
-  background-color: #4c4f4d !important;
-  background-image: none !important;
-}
-
-body.dark-mode [data-tooltip='Purchases'] .qj,
-body.dark-mode [data-tooltip='Purchased'] .qj {
-  background-color: var(--dm-text-muted) !important;
 }
 
 @-moz-document url-prefix() {
@@ -7470,10 +6885,6 @@ body.dark-mode .D.E.G-atb .G-tF .T-Jo[aria-checked='mixed'] {
   box-shadow: inset 0 0 0 24px #e8eaed !important;
   filter: none !important;
   opacity: 1 !important;
-}
-
-body.dark-mode .D.E.G-atb .G-tF .T-Jo .T-Jo-auh {
-  background: none !important;
 }
 
 /* Row checkboxes (shown when hovering an avatar, and on selected rows) are
