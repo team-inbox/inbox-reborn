@@ -5,14 +5,28 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## Unreleased
 
+- An online manual, with screenshots, at https://team-inbox.github.io/inbox-reborn/
+  (source in `website/`, built with Docusaurus and published by GitHub Pages on every
+  push to master). The settings popup's footer links to it.
+- Each email sits in one bundle, as in Inbox. A conversation that Gmail chipped
+  with both Updates and Forums (it sorts every message on its own) used to show
+  up in both bundles and be counted twice; now a label of your own wins over the
+  categories, and between categories Inbox's order decides, so it bundles under
+  Updates only.
 - The left menu's labels are split the way Inbox split them: **Bundled in
   the inbox** (Travel, Purchases, Finance, Social, Updates, Forums,
   Promotions, then every label that bundles) and **Unbundled**. Drag a label
   up into Bundled in the inbox to bundle its emails, and back down to show
-  them one by one. As in Inbox, every label starts out in Unbundled, so
-  **label bundles from earlier versions come back once you drag those labels
-  up**; the categories keep bundling on their own. The choice is saved per
-  account. A nested label goes with the label it is nested under, and labels
+  them one by one. The label's mail goes with it: dragged down, its inbox
+  mail is archived and remembered; dragged up, you're asked, then exactly
+  those conversations come back to the inbox. With nothing remembered,
+  you're shown the archived mail and asked before all of it moves in - all
+  through Gmail's own list, a page at a time, so Gmail's Undo still works.
+  The categories drag too, mail and all: Promotions dragged to Unbundled
+  stops bundling and its emails show as ordinary rows, until it is dragged
+  back. As in Inbox, every label starts out in Unbundled, so **label bundles
+  from earlier versions come back once you drag those labels up**; the
+  categories start out bundled. The choices are saved per account. A nested label goes with the label it is nested under, and labels
   nested under an `Unbundled` label stay unbundled as they always did. Shown
   while bundling is on.
 - Your own labels always get Inbox's stacked-envelopes bundle icon, in the

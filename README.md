@@ -11,6 +11,13 @@ Web extension which modifies Gmail™ to bring back the features and uncluttered
 - **Chrome & Microsoft Edge:** [Chrome Web Store](https://chrome.google.com/webstore/detail/inbox-reborn-theme-for-gm/bkphmihkdbdgedlaflnkhnmnmibffomf)
 - **Firefox:** [Firefox Add-ons](https://addons.mozilla.org/en-GB/firefox/addon/inbox-reborn-theme-gmail/)
 
+## Manual
+
+The full manual, with screenshots, is at **https://team-inbox.github.io/inbox-reborn/**:
+getting started, the inbox, bundles and the two label sections, Gmail's categories, rules,
+settings, privacy and troubleshooting. Its source is in [`website/`](website/) (Docusaurus);
+pushes to master publish it through GitHub Pages.
+
 ## Features
 
 - **Stock Inbox** — one switch, on for new installs, that sets everything to Inbox's own
@@ -91,12 +98,27 @@ Bundles are built from the **labels on your inbox emails**, the way Inbox built 
 - The left menu is split like Inbox's: **Bundled in the inbox** lists Travel, Purchases,
   Finance, Social, Updates, Forums and Promotions plus every label that bundles;
   **Unbundled** lists the labels whose emails show one by one. **Drag a label from
-  Unbundled up into Bundled in the inbox** to bundle it, and back down to stop. As in
-  Inbox, every label starts out in Unbundled; your choice is saved per account. A nested
-  label goes with the label it is nested under (drag the top-level label).
+  Unbundled up into Bundled in the inbox** to bundle it, and back down to stop. The
+  label's mail goes with it: dragged down, its inbox mail is archived and the extension
+  remembers exactly which conversations went; dragged up, you're asked first, then those
+  come back to the inbox (where the bundle forms). If nothing was archived by a drag,
+  you're shown the label's archived mail instead and asked before all of it moves in.
+  Cancel keeps the label bundled and its bundle fills as new mail arrives. Gmail does the moving through its
+  own list, a page at a time, and its Undo works as usual. The categories drag too: pull Promotions (or any of the seven) down to Unbundled and its
+  bundle leaves the inbox, its emails showing as ordinary rows; drag it back up and the
+  bundle returns. A category's mail moves the same way: dragging Finance down archives its
+  inbox mail, dragging it back up brings back just that mail. A move stops after 5,000
+  conversations and says so, and dragging again continues. As in Inbox, every label starts out in Unbundled and every category in
+  Bundled in the inbox; your choices are saved per account. A nested label goes with the
+  label it is nested under (drag the top-level label).
 - A bundled label shared by **two or more inbox emails** collapses into a single bundle
   row. Tick _"Show bundle if only one email"_ in the options to bundle single emails too.
 - Clicking a bundle row opens that label's view, just like Inbox did.
+- **Each email sits in one bundle**, as in Inbox. When its labels would put it in several,
+  a label of your own wins over the categories, and between categories Inbox's order
+  decides (Travel, Purchases, Finance, Social, Updates, Forums, Promotions). Gmail sorts
+  each message of a conversation on its own, so a conversation often carries both an
+  Updates and a Forums chip; it bundles under Updates and is counted once.
 - **Starred emails always stay out of bundles**, so important mail never gets hidden.
 - Only mail that is actually **in the inbox** can be bundled — labels applied to archived
   mail don't create bundles.

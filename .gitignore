@@ -4,3 +4,8 @@
 node_modules/
 dist/
 build/
+
+# Docusaurus manual
+website/node_modules/
+website/build/
+website/.docusaurus/
