@@ -2633,6 +2633,19 @@ body:not(.dark-mode) .G-atb .asa > .ar8 {
   margin-right: 10px;
 }
 
+/* Hide date and time option: Inbox showed no date or time on list rows -
+   the date groups carry it. The cell goes (its span stays in the DOM for the
+   date groups to read) and the attachment-icon cell gives up the room it
+   kept beside the date, so subjects run on to the pin, ending where bundle
+   senders do. Bundles keep their cell, it holds their senders. */
+body.hide-date-time .zA:not(.bundle-wrapper) > .xW.xY {
+  display: none !important;
+}
+
+body.hide-date-time .zA > .yf {
+  padding-right: 6px !important;
+}
+
 /* The quick action icons that appear when you mouse over an email row sit
    where the pin rests, with More (⋮) in its spot; the pin moves in front of
    them while the row is hovered, to the offset positionRowPin measures

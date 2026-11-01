@@ -12,6 +12,7 @@ const BUNDLE_ONE_SELECTOR = 'input[name=bundle-one]';
 const BUNDLE_TODAY_SELECTOR = 'input[name=bundle-today]';
 const AVATAR_TOGGLE_SELECTOR = '#avatar-toggle';
 const PRIORITY_INBOX_TOGGLE_SELECTOR = '#priority-inbox-toggle';
+const HIDE_DATE_TIME_TOGGLE_SELECTOR = '#hide-date-time-toggle';
 const HIDE_AI_INBOX_TOGGLE_SELECTOR = '#hide-ai-inbox-toggle';
 const HIDE_ALL_MAIL_TOGGLE_SELECTOR = '#hide-all-mail-toggle';
 const HIDE_TRAVEL_TOGGLE_SELECTOR = '#hide-travel-toggle';
@@ -34,6 +35,9 @@ function saveOptions() {
     ? 'enabled'
     : 'disabled';
   const darkMode = document.querySelector(DARK_MODE_TOGGLE_SELECTOR).checked
+    ? 'enabled'
+    : 'disabled';
+  const hideDateTime = document.querySelector(HIDE_DATE_TIME_TOGGLE_SELECTOR).checked
     ? 'enabled'
     : 'disabled';
   const hideAiInbox = document.querySelector(HIDE_AI_INBOX_TOGGLE_SELECTOR).checked
@@ -60,6 +64,7 @@ function saveOptions() {
     showAvatar,
     priorityInbox,
     darkMode,
+    hideDateTime,
     hideAiInbox,
     hideAllMail,
     hideTravel,
@@ -80,6 +85,8 @@ function restoreOptions() {
     document.querySelector(PRIORITY_INBOX_TOGGLE_SELECTOR).checked =
       options.priorityInbox === 'enabled';
     document.querySelector(DARK_MODE_TOGGLE_SELECTOR).checked = options.darkMode === 'enabled';
+    document.querySelector(HIDE_DATE_TIME_TOGGLE_SELECTOR).checked =
+      options.hideDateTime === 'enabled';
     document.querySelector(HIDE_AI_INBOX_TOGGLE_SELECTOR).checked =
       options.hideAiInbox === 'enabled';
     document.querySelector(HIDE_ALL_MAIL_TOGGLE_SELECTOR).checked =
@@ -125,6 +132,7 @@ bundlingToggle.addEventListener('change', () => {
 });
 document.querySelector(AVATAR_TOGGLE_SELECTOR).addEventListener('change', saveOptions);
 document.querySelector(PRIORITY_INBOX_TOGGLE_SELECTOR).addEventListener('change', saveOptions);
+document.querySelector(HIDE_DATE_TIME_TOGGLE_SELECTOR).addEventListener('change', saveOptions);
 document.querySelector(HIDE_AI_INBOX_TOGGLE_SELECTOR).addEventListener('change', saveOptions);
 document.querySelector(HIDE_ALL_MAIL_TOGGLE_SELECTOR).addEventListener('change', saveOptions);
 document.querySelector(HIDE_TRAVEL_TOGGLE_SELECTOR).addEventListener('change', saveOptions);

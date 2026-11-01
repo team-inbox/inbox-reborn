@@ -18,6 +18,9 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 - The reminder button stays hidden until you hover the compose button,
   then fans out with the recent contacts, like Inbox's speed dial.
 - The Hide settings can hide the Travel and Finance rows in the left menu.
+- A new Hide setting removes the date and time from emails in the list, as
+  Inbox did - the date groups carry it. Subjects and snippets run on to
+  where bundle senders end. Open emails still show their date and time.
 - Hovering a bundle shows a sweep, which marks the whole bundle done
   (pinned emails stay), and a ⋮ menu with Gmail's actions - Delete, Mark
   as read, Snooze, Move to, Labels and the rest - for every email in it.
