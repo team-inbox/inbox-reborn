@@ -1895,6 +1895,12 @@ const CATEGORIES_MESSAGE_SOURCE = 'inbox-reborn-categories';
 let categoryThreads = new Map(); // hex thread id -> bundle name
 let wantedCategoriesKey = null;
 
+/* The page script's messages come over window.postMessage, which any script
+   in Gmail's page can also send, so what is taken from them is bounded:
+   a search page is 100 threads, and the speed dial keeps 3 people */
+const MAX_CATEGORY_THREADS = 500;
+const MAX_SENT_RECIPIENTS = 50;
+
 /**
  * Gmail's thread id for a row, as hex (what the category search returns)
  * @param {Element} email - The email row
@@ -1953,7 +1959,7 @@ const applyCategoryThreads = (threads) => {
   const next = new Map();
   Object.entries(CATEGORY_BUNDLES).forEach(([name, key]) => {
     if (!isCategoryBundled(name)) return;
-    const ids = Array.isArray(threads?.[key]) ? threads[key] : [];
+    const ids = Array.isArray(threads?.[key]) ? threads[key].slice(0, MAX_CATEGORY_THREADS) : [];
     ids.forEach((id) => {
       if (typeof id === 'string' && /^[0-9a-f]{1,32}$/.test(id) && !next.has(id)) {
         next.set(id, name);
@@ -1983,6 +1989,7 @@ window.addEventListener('message', (e) => {
   // same order the Sent list re-sync uses
   if (e.data.type === 'sent' && Array.isArray(e.data.recipients)) {
     const recipients = e.data.recipients
+      .slice(0, MAX_SENT_RECIPIENTS)
       .filter((r) => typeof r?.email === 'string' && r.email.includes('@'))
       .map((r) => ({ email: r.email, name: typeof r.name === 'string' ? r.name : '' }));
     if (recipients.length) rememberRecentContacts(recipients, true);
