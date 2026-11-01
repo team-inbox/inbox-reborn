@@ -697,7 +697,8 @@ const isInboxHash = (hash = getViewHash()) => /^#(inbox|category\/\w+)(\/p\d+)?$
  * Checks if the current view is a bundle
  * @returns {boolean} True if current view is a bundle
  */
-const isInBundle = () => getViewHash().match(/#search\/in%3Ainbox\+label%3A/g) !== null;
+const isInBundle = () =>
+  /#search\/in%3Ainbox\+(label%3A|category%3A|%7Bcategory%3A)/.test(getViewHash());
 
 /**
  * Checks if the current view is the Pinned filter
@@ -1477,6 +1478,21 @@ const getCategoryColor = (label) =>
   })[getBundleIconKind(label)] || '#616161';
 
 /**
+ * Where clicking a bundle leads: the label's inbox mail, or for Purchases,
+ * Travel and Finance the same category search the bundle was built from
+ * (plus a label of the same name, if there is one - the two share a bundle)
+ * @param {string} label - The bundle label
+ * @returns {string} The hash to open
+ */
+const getBundleHash = (label) => {
+  if (!isCategoryBundle(label)) return `#search/in%3Ainbox+label%3A${fixLabel(label)}`;
+  const category = `category:${CATEGORY_BUNDLES[label]}`;
+  const hasLabel = !!document.querySelector(`.zw .TO a[href$="#label/${fixLabel(label)}"]`);
+  const query = hasLabel ? `in:inbox {${category} label:${label}}` : `in:inbox ${category}`;
+  return `#search/${encodeURIComponent(query).replace(/%20/g, '+')}`;
+};
+
+/**
  * Builds a bundle wrapper element for a label
  * @param {Element} email - The email DOM element
  * @param {string} label - The bundle label
@@ -1515,7 +1531,7 @@ const buildBundleWrapper = (email, label, hasImportantMarkers) => {
   bundleWrapper.append(createBundleActions(bundleWrapper));
 
   // Add click handler to navigate to the bundle
-  bundleWrapper.onclick = () => (location.href = `#search/in%3Ainbox+label%3A${fixLabel(label)}`);
+  bundleWrapper.onclick = () => (location.href = getBundleHash(label));
 
   // Insert the bundle wrapper
   if (email && email.parentNode) {
@@ -1668,6 +1684,7 @@ const reloadOptions = () => {
   chrome.runtime.sendMessage({ method: 'getOptions' }, function (ops) {
     options = ops;
     markOptionsLoaded();
+    requestCategoryThreads();
 
     // Apply avatar options
     if (options.showAvatar === 'enabled') {
@@ -1740,8 +1757,143 @@ chrome.storage?.onChanged.addListener((changes, area) => {
  * @returns {string[]} Array of label names
  */
 const getLabels = (email) => {
-  return Array.from(select.emailLabels(email)).map((el) => el.attributes.title?.value || '');
+  const chips = Array.from(select.emailLabels(email)).map((el) => el.attributes.title?.value || '');
+  const category = getCategoryBundle(email);
+  if (!category) return chips;
+  // One bundle per email, like Inbox: Purchases/Travel/Finance beat the
+  // broad tab category chip Gmail also files the email under (usually Updates)
+  return [
+    ...chips.filter((label) => label !== category && !GMAIL_CATEGORY_CHIPS.includes(label)),
+    category,
+  ];
 };
+
+// =============================================================================
+// CATEGORY BUNDLES (PURCHASES, TRAVEL, FINANCE)
+// =============================================================================
+
+/* Gmail sorts mail into Purchases, Travel and Finance on its servers but
+   draws no chip for them on inbox rows, so getLabels can't see them. The
+   page script src/gmail-categories.js runs Gmail's own "in:inbox
+   category:<name>" searches and posts back the matching thread ids, and
+   getLabels adds the category to those rows. Inbox's order decides between
+   them when Gmail files an email under more than one. */
+const CATEGORY_BUNDLES = { Travel: 'travel', Purchases: 'purchases', Finance: 'finance' };
+const CATEGORY_BUNDLE_OPTIONS = {
+  Travel: 'bundleTravel',
+  Purchases: 'bundlePurchases',
+  Finance: 'bundleFinance',
+};
+// Gmail's tab categories, as their chips read on a row
+const GMAIL_CATEGORY_CHIPS = ['Social', 'Updates', 'Forums', 'Promotions'];
+const CATEGORIES_MESSAGE_SOURCE = 'inbox-reborn-categories';
+
+let categoryThreads = new Map(); // hex thread id -> bundle name
+let wantedCategoriesKey = null;
+
+/**
+ * Gmail's thread id for a row, as hex (what the category search returns)
+ * @param {Element} email - The email row
+ * @returns {string|undefined} e.g. "1a1959a3d36e4ab1"
+ */
+const getThreadId = (email) =>
+  email.querySelector('[data-legacy-thread-id]')?.getAttribute('data-legacy-thread-id');
+
+/**
+ * The Purchases/Travel/Finance bundle an inbox row belongs in, if that
+ * bundle is turned on
+ * @param {Element} email - The email row
+ * @returns {string|undefined} 'Travel', 'Purchases' or 'Finance'
+ */
+const getCategoryBundle = (email) => {
+  if (!categoryThreads.size) return undefined;
+  const id = getThreadId(email);
+  return id && categoryThreads.get(id);
+};
+
+/**
+ * Whether a bundle name is one of the category bundles
+ * @param {string} label - The bundle label
+ * @returns {boolean} True for a turned-on Purchases, Travel or Finance
+ */
+const isCategoryBundle = (label) =>
+  label in CATEGORY_BUNDLES && !!options[CATEGORY_BUNDLE_OPTIONS[label]];
+
+/**
+ * Tells the page script which category searches to run - none unless
+ * bundling and at least one category switch are on. Only sends on change,
+ * since options reload on every pass.
+ */
+const requestCategoryThreads = () => {
+  const categories =
+    options.emailBundling === 'enabled'
+      ? Object.entries(CATEGORY_BUNDLES)
+          .filter(([name]) => options[CATEGORY_BUNDLE_OPTIONS[name]])
+          .map(([, key]) => key)
+      : [];
+  const key = categories.join(',');
+  if (key === wantedCategoriesKey) return;
+  wantedCategoriesKey = key;
+  if (!categories.length) categoryThreads = new Map();
+  window.postMessage(
+    { source: CATEGORIES_MESSAGE_SOURCE, type: 'want', categories },
+    location.origin,
+  );
+};
+
+/**
+ * Takes the page script's search results. Rows whose category changed are
+ * let go from their old bundle, and the next pass bundles them again.
+ * @param {Object} threads - { travel: [ids], purchases: [ids], finance: [ids] }
+ */
+const applyCategoryThreads = (threads) => {
+  const next = new Map();
+  Object.entries(CATEGORY_BUNDLES).forEach(([name, key]) => {
+    if (!options[CATEGORY_BUNDLE_OPTIONS[name]]) return;
+    const ids = Array.isArray(threads?.[key]) ? threads[key] : [];
+    ids.forEach((id) => {
+      if (typeof id === 'string' && /^[0-9a-f]{1,32}$/.test(id) && !next.has(id)) {
+        next.set(id, name);
+      }
+    });
+  });
+
+  const changed = new Set(
+    [...categoryThreads.keys(), ...next.keys()].filter(
+      (id) => categoryThreads.get(id) !== next.get(id),
+    ),
+  );
+  categoryThreads = next;
+  if (!changed.size) return;
+
+  document.querySelectorAll(`.zA.${CSS_CLASSES.BUNDLED_EMAIL}`).forEach((email) => {
+    if (!changed.has(getThreadId(email))) return;
+    email.classList.remove(CSS_CLASSES.BUNDLED_EMAIL);
+    removeStyleNodeWithEmailId(email.id);
+  });
+};
+
+window.addEventListener('message', (e) => {
+  if (e.source !== window || e.data?.source !== CATEGORIES_MESSAGE_SOURCE) return;
+  if (e.data.type === 'threads') applyCategoryThreads(e.data.threads);
+  // The speed dial's people from Gmail's Sent search, newest first - the
+  // same order the Sent list re-sync uses
+  if (e.data.type === 'sent' && Array.isArray(e.data.recipients)) {
+    const recipients = e.data.recipients
+      .filter((r) => typeof r?.email === 'string' && r.email.includes('@'))
+      .map((r) => ({ email: r.email, name: typeof r.name === 'string' ? r.name : '' }));
+    if (recipients.length) rememberRecentContacts(recipients, true);
+  }
+});
+
+// Firefox's Manifest V2 build can't declare a main-world content script
+// (chrome.json does), so it adds the page script as a <script> instead
+if (chrome.runtime?.getManifest?.().manifest_version === 2) {
+  const pageScript = document.createElement('script');
+  pageScript.src = chrome.runtime.getURL('src/gmail-categories.js');
+  pageScript.onload = () => pageScript.remove();
+  (document.head || document.documentElement).append(pageScript);
+}
 
 /**
  * Gets all tabs from the UI
@@ -2976,7 +3128,8 @@ const addReminderButton = () => {
 /* Inbox's speed dial: hovering the compose button shows the last people you
    wrote to above the reminder button. Gmail exposes no recent-recipients
    list, so the extension keeps its own in local storage - recorded at Send,
-   and re-synced from the Sent list whenever that list is on screen. */
+   re-synced from Gmail's Sent search on each page load (src/gmail-categories.js
+   runs it), and from the Sent list whenever that list is on screen. */
 const RECENT_CONTACTS_KEY = 'recentContacts';
 const MAX_RECENT_CONTACTS = 3;
 
@@ -3173,6 +3326,9 @@ const addRecentContacts = () => {
   const render = (contacts = []) => container.replaceChildren(...contacts.map(buildRecentContact));
 
   chrome.storage.local.get(RECENT_CONTACTS_KEY, (result) => render(result[RECENT_CONTACTS_KEY]));
+  // Ask the page script for the newest Sent recipients (answered below the
+  // category bundles' message listener)
+  window.postMessage({ source: CATEGORIES_MESSAGE_SOURCE, type: 'wantSent' }, location.origin);
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area === 'local' && changes[RECENT_CONTACTS_KEY]) {
       render(changes[RECENT_CONTACTS_KEY].newValue);
