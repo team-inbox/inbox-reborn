@@ -45,5 +45,5 @@
       "run_at": "document_start"
     }
   ],
-  "web_accessible_resources": ["images/*"]
+  "web_accessible_resources": ["images/*", "src/gmail-categories.js"]
 }
