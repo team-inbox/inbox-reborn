@@ -496,9 +496,11 @@ body.dark-mode.inbox-list .sweep-button:hover {
 }
 
 /* The Done and system-group dividers are fixed-width, so they'd stay
-   visible after the slide - hide them with the rest of the menu */
-.bhZ .TO.inbox-reborn-done::after,
-.bhZ .TN.bzz:is(.aHS-aHO, .aHS-bnv)::after {
+   visible after the slide - hide them with the rest of the menu. .aeN is
+   here for specificity: the Spam divider's "body.hide-all-mail" rule
+   (system-group divider, below) outranked a plain .bhZ selector */
+.aeN.bhZ .TO.inbox-reborn-done::after,
+.aeN.bhZ .TN.bzz:is(.aHS-aHO, .aHS-bnv)::after {
   display: none;
 }
 
