@@ -215,7 +215,7 @@ td.apU.xY .T-KT::before {
   mask-position: center !important;
   background-color: #444746 !important; /* Greyish color for light mode */
   background-image: none !important; /* Ensure no conflicting background image */
-  opacity: 0.7 !important;
+  opacity: 1 !important; /* Same strength as the hover actions beside it */
 }
 
 /* Starred */
@@ -495,10 +495,10 @@ body.dark-mode.inbox-list .sweep-button:hover {
   transition: transform 0.2s ease;
 }
 
-/* The Done and Trash dividers are fixed-width, so they'd stay visible after
-   the slide - hide them with the rest of the menu */
+/* The Done and system-group dividers are fixed-width, so they'd stay
+   visible after the slide - hide them with the rest of the menu */
 .bhZ .TO.inbox-reborn-done::after,
-.bhZ .TN.bzz.aHS-bnx::after {
+.bhZ .TN.bzz:is(.aHS-aHO, .aHS-bnv)::after {
   display: none;
 }
 
@@ -607,6 +607,44 @@ body.dark-mode .TO.inbox-reborn-done::after {
 /* Compose email boxes wrapper */
 .nH.Hd {
   margin-right: 40px;
+}
+
+/* Shift the whole compose-window strip left so the rightmost window
+   clears the floating Compose button by 32px, as in Inbox. This is the one
+   right-floated row holding every compose column (inner rows sit inside
+   .nH.nn); a margin on the window itself shrinks it instead of moving it. */
+.dw .nH:not(.nn) > .no {
+  margin-right: 27px;
+}
+
+/* Sit flush on the bottom edge: Gmail's 2026 compose adds an empty 16px
+   spacer under each window */
+.AD > .nH:empty {
+  display: none;
+}
+
+/* Gmail's JS pins the Send/formatting row position:fixed at bottom:16px,
+   counting that spacer - with it gone the row floated 16px above the
+   window's bottom edge. (Dark mode re-pins the row absolutely at bottom:0
+   further down, so this only matters in light mode.) */
+.AD .nH.Hd[role='dialog'] .aDg > .aDj {
+  bottom: 0 !important;
+}
+
+/* Square corners, as in Inbox (Gmail rounds the dialog 20px, its body's
+   bottom corners 20px and the title bar's top corners 8px) */
+.nH.Hd[role='dialog'],
+.nH.Hd .aaZ,
+.nH.Hd .l.n,
+.nH.Hd .k {
+  border-radius: 0 !important;
+}
+
+/* Send and its scheduled-send arrow (compose and inline replies) in the
+   Inbox bar blue instead of Gmail's #0b57d0. Dark mode keeps the same blue
+   (DARK MODE: compose Send) */
+.btC .T-I-atl:is(.aoO, .hG) {
+  background-color: #4285f4 !important;
 }
 
 /* Compose email popup */
@@ -1045,8 +1083,8 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
 
 /* Trash */
 .aHS-bnx .qj {
-  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
   -webkit-mask-size: 24px !important;
   mask-size: 24px !important;
   background-color: #4c4f4d !important;
@@ -1121,6 +1159,113 @@ body.hide-ai-inbox .byl:has(+ .CL[data-tooltip='AI Inbox']) > .TK {
 
 body.hide-ai-inbox .CL[data-tooltip='AI Inbox'] + .byl > .TK {
   padding-top: 0 !important;
+}
+
+/* "Hide All Mail" option - hide the row's .aim wrapper so no gap is left */
+body.hide-all-mail .aim:has(.aHS-aHO) {
+  display: none !important;
+}
+
+/* =============================================================================
+   SYSTEM MENU ORDER
+   Starred and Snoozed (with Done) first, then Drafts, Sent, Reminders, Trash,
+   Spam and All Mail. Done with CSS order rather than by moving rows - Gmail
+   updates the menu by position and redraws rows that moved.
+   ============================================================================= */
+.TK:has(> .aim .aHS-bnu) {
+  display: flex !important;
+  flex-direction: column;
+}
+
+.TK:has(> .aim .aHS-bnu) > * {
+  order: 100;
+}
+
+.TK:has(> .aim .aHS-bnu) > .aim:has(.aHS-bnw) {
+  order: 1;
+}
+
+.TK:has(> .aim .aHS-bnu) > .aim:has(.aHS-bu1) {
+  order: 2;
+}
+
+.TK:has(> .aim .aHS-bnu) > .aim:has(.aHS-bnq) {
+  order: 3;
+}
+
+.TK:has(> .aim .aHS-bnu) > .aim:has(.aHS-bnu) {
+  order: 4;
+}
+
+.TK:has(> .aim .aHS-bnu) > .inbox-reborn-reminders {
+  order: 5;
+}
+
+.TK:has(> .aim .aHS-bnu) > .aim:has(.aHS-bnx) {
+  order: 6;
+}
+
+.TK:has(> .aim .aHS-bnu) > .aim:has(.aHS-bnv) {
+  order: 7;
+}
+
+.TK:has(> .aim .aHS-bnu) > .aim:has(.aHS-aHO) {
+  order: 8;
+}
+
+/* Label options (⋮) in the left menu - Gmail puts it at the row's right
+   edge, past where the menu panel clips (rows run 24px wider than the
+   panel), so it couldn't be seen or clicked and Label color etc. were out of
+   reach. Shift it back inside; the unread counts it would sit over are
+   hidden. Gmail paints it black, so dark mode repaints it as a mask. */
+.wT .TN > .nL {
+  transform: translateX(-24px);
+}
+
+body.dark-mode .wT .TN > .nL .pM {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') !important;
+  -webkit-mask-size: 20px !important;
+  mask-size: 20px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-image: none !important;
+  background-color: var(--dm-text-secondary) !important;
+}
+
+@-moz-document url-prefix() {
+  body.dark-mode .wT .TN > .nL .pM {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') !important;
+  }
+}
+
+/* Reminders row (insertRemindersMenuItem) - Inbox's pointing finger, in the
+   gray of the Sent and Drafts icons around it */
+.inbox-reborn-reminders .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-color: #616161 !important;
+  background-image: none !important;
+}
+
+body.dark-mode .inbox-reborn-reminders .qj {
+  background-color: var(--dm-text-muted) !important;
+}
+
+@-moz-document url-prefix() {
+  .inbox-reborn-reminders .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png') !important;
+  }
 }
 
 /* AI Inbox (Gmail 2026 Gemini row - a bare .TN carrying the tooltip, no .TO
@@ -1292,8 +1437,8 @@ body.dark-mode [data-tooltip='AI Inbox'].CL svg {
 
   /* Trash */
   .aHS-bnx .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
     -webkit-mask-position: center !important;
     mask-position: center !important;
     -webkit-mask-repeat: no-repeat !important;
@@ -1453,15 +1598,17 @@ body.dark-mode [data-tooltip='AI Inbox'].CL svg {
   background-color: transparent !important;
 }
 
-/* left menu border under trash - matches Done divider styling */
-.TN.bzz.aHS-bnx {
+/* left menu border under the system group (Drafts, Sent, Reminders, Trash,
+   Spam, All Mail) - on All Mail, or on Spam once "Hide All Mail" hides it.
+   Matches the Done divider styling */
+.TN.bzz:is(.aHS-bnx, .aHS-bnv, .aHS-aHO) {
   padding-bottom: 5px;
   padding-top: 5px;
   position: relative;
 }
 
-/* Trash divider - match Done divider exactly */
-.TN.bzz.aHS-bnx::after {
+.TN.bzz.aHS-aHO::after,
+body.hide-all-mail .TN.bzz.aHS-bnv::after {
   content: '';
   display: block;
   position: absolute;
@@ -1472,8 +1619,9 @@ body.dark-mode [data-tooltip='AI Inbox'].CL svg {
   background: #e0e0e0; /* Match Done divider color */
 }
 
-/* Dark mode: Trash divider */
-body.dark-mode .TN.bzz.aHS-bnx::after {
+/* Dark mode: system-group divider */
+body.dark-mode .TN.bzz.aHS-aHO::after,
+body.dark-mode.hide-all-mail .TN.bzz.aHS-bnv::after {
   background: var(--dm-border-muted) !important; /* Match Done divider dark mode color */
 }
 
@@ -1704,6 +1852,16 @@ div[role='complementary'][aria-label='Side panel'],
   background-color: #795548;
 }
 
+/* Travel */
+.w-asV.bbg.aiw[pageTitle='travel'] {
+  background-color: #9c27b0;
+}
+
+/* Finance */
+.w-asV.bbg.aiw[pageTitle='finance'] {
+  background-color: #679f38;
+}
+
 /* Important */
 .w-asV.bbg.aiw[pageTitle='imp'] {
   background-color: #ff5722;
@@ -1775,6 +1933,14 @@ div[role='complementary'][aria-label='Side panel'],
 
 .w-asV.bbg.aiw[pageTitle='purchases'] a[aria-label='Gmail']::after {
   content: 'Purchases';
+}
+
+.w-asV.bbg.aiw[pageTitle='travel'] a[aria-label='Gmail']::after {
+  content: 'Travel';
+}
+
+.w-asV.bbg.aiw[pageTitle='finance'] a[aria-label='Gmail']::after {
+  content: 'Finance';
 }
 
 .w-asV.bbg.aiw[pageTitle='labels'] a[aria-label='Gmail']::after {
@@ -2035,7 +2201,6 @@ header form input {
   z-index: 1000;
   border-radius: 50%;
   padding: 0;
-  overflow: hidden;
   box-shadow:
     0 1px 2px 0 rgb(60 64 67 / 30.2%),
     0 1px 3px 1px rgb(60 64 67 / 14.9%);
@@ -2049,13 +2214,27 @@ header form input {
     0 4px 8px 3px rgb(60 64 67 / 14.9%);
 }
 
-/* Add reminder button */
+/* Add reminder button - the first speed-dial entry, hidden until the
+   pointer is on the compose stack (body.speed-dial-open, like the recent
+   contacts above it) */
 .add-reminder {
   right: 48px;
   bottom: 90px;
   width: 40px;
   height: 40px;
   background: #4285f4;
+  opacity: 0;
+  transform: translateY(12px) scale(0.6);
+  pointer-events: none;
+  transition:
+    opacity 0.15s,
+    transform 0.15s;
+}
+
+body.speed-dial-open .add-reminder {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
 }
 
 /* Add reminder button image */
@@ -2147,8 +2326,11 @@ body.speed-dial-open .recent-contacts {
 }
 
 /* Name + address label to the left, shown the moment the avatar is hovered
-   (Inbox's speed-dial labels; the native title tooltip lags about a second) */
-.recent-contact::after {
+   (Inbox's speed-dial labels; the native title tooltip lags about a second).
+   Compose and Reminder get the same label ("Compose", "Reminder"). */
+.recent-contact::after,
+.floating-compose::after,
+.add-reminder::after {
   content: attr(data-label);
   position: absolute;
   right: calc(100% + 12px);
@@ -2168,7 +2350,9 @@ body.speed-dial-open .recent-contacts {
   transition: opacity 0.1s;
 }
 
-.recent-contact:hover::after {
+.recent-contact:hover::after,
+.floating-compose:hover::after,
+.add-reminder:hover::after {
   opacity: 1;
 }
 
@@ -2177,13 +2361,17 @@ body.speed-dial-open .recent-contact {
   transform: none;
 }
 
-/* Fan out bottom-up, nearest the reminder button first */
-body.speed-dial-open .recent-contact:nth-child(2) {
+/* Fan out bottom-up after the reminder button, nearest it first */
+body.speed-dial-open .recent-contact:nth-child(1) {
   transition-delay: 0.04s;
 }
 
-body.speed-dial-open .recent-contact:nth-child(3) {
+body.speed-dial-open .recent-contact:nth-child(2) {
   transition-delay: 0.08s;
+}
+
+body.speed-dial-open .recent-contact:nth-child(3) {
+  transition-delay: 0.12s;
 }
 
 .recent-contact:hover {
@@ -2234,11 +2422,24 @@ body.speed-dial-open .recent-contact:nth-child(3) {
   mask-repeat: no-repeat !important;
   -webkit-mask-position: center !important;
   mask-position: center !important;
-  background-color: #5f6368 !important; /* Medium gray for consistent visibility in light mode */
+  background-color: #444746 !important; /* Gmail's icon gray, matching the icons beside it */
   background-image: none !important;
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
+}
+
+/* Toolbar Archive in light mode: Gmail dims the button to 43% opacity,
+   which left it fainter than the icons beside it */
+body:not(.dark-mode) .G-atb .asa > .ar8 {
+  opacity: 1 !important;
+}
+
+/* Hover Archive on a row: Gmail dims it to 43% on search pages (Travel, an
+   open bundle) though not in the inbox - keep it as strong as the hover
+   icons beside it, in both themes */
+.bqY .bqX.brq {
+  opacity: 1 !important;
 }
 
 /* Force archive icon styling - override any conflicting styles */
@@ -2288,7 +2489,7 @@ body.speed-dial-open .recent-contact:nth-child(3) {
     mask-repeat: no-repeat !important;
     -webkit-mask-position: center !important;
     mask-position: center !important;
-    background-color: #5f6368 !important; /* Medium gray for consistent visibility in light mode */
+    background-color: #444746 !important; /* Gmail's icon gray, matching the icons beside it */
     background-image: none !important;
     border: none !important;
     outline: none !important;
@@ -2296,20 +2497,70 @@ body.speed-dial-open .recent-contact:nth-child(3) {
   }
 }
 
-/* Action buttons on email row */
+/* Action buttons on email row, in Inbox's order: Pin (its own cell, moved
+   in front while hovering - "PIN ICON STYLING"), Snooze, Trash, Done, then
+   More (addRowMoreButtons), which opens Gmail's right-click menu. Mark as
+   read / unread is left to that menu. */
 .bqX {
   margin: 0 10px !important;
 }
 
-/* Done button on email row */
-.bqX.brq {
-  order: 3;
-  margin-right: 22px !important;
+.bqX.brv {
+  order: 1;
 }
 
-/* Delete button on email row */
 .bqX.bru {
   order: 2;
+}
+
+.bqX.brq {
+  order: 3;
+}
+
+.bqX.inbox-reborn-more {
+  order: 4;
+  cursor: pointer;
+}
+
+.bqY .bqX.brr,
+.bqY .bqX.SHFPQe {
+  display: none !important;
+}
+
+/* Trash and More - Inbox's solid trash can and a vertical ellipsis, as masks
+   in the gray of the hover icons beside them */
+.bqY .bqX.bru,
+.bqY .bqX.inbox-reborn-more {
+  -webkit-mask-size: 20px !important;
+  mask-size: 20px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-color: #444746 !important;
+  background-image: none !important;
+}
+
+.bqY .bqX.bru {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
+}
+
+.bqY .bqX.inbox-reborn-more {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') !important;
+}
+
+@-moz-document url-prefix() {
+  .bqY .bqX.bru {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
+  }
+
+  .bqY .bqX.inbox-reborn-more {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') !important;
+  }
 }
 
 /* =============================================================================
@@ -2382,10 +2633,34 @@ body.speed-dial-open .recent-contact:nth-child(3) {
   margin-right: 10px;
 }
 
-/* Handles the positioning of the quick action icons that appear when you mouse over an email row to make room for the pin */
+/* Hide date and time option: Inbox showed no date or time on list rows -
+   the date groups carry it. The cell goes (its span stays in the DOM for the
+   date groups to read) and the attachment-icon cell gives up the room it
+   kept beside the date, so subjects run on to the pin, ending where bundle
+   senders do. Bundles keep their cell, it holds their senders. */
+body.hide-date-time .zA:not(.bundle-wrapper) > .xW.xY {
+  display: none !important;
+}
+
+body.hide-date-time .zA > .yf {
+  padding-right: 6px !important;
+}
+
+/* The quick action icons that appear when you mouse over an email row sit
+   where the pin rests, with More (⋮) in its spot; the pin moves in front of
+   them while the row is hovered, to the offset positionRowPin measures
+   (Inbox's order: Pin, Snooze, Trash, Done, More) */
 .bqY {
   position: relative;
-  left: -10px;
+  left: 20px;
+
+  /* Room for the pin in front, so quick-action chips (Unsubscribe, View
+     Pull Request) end the same 20px before it as the icons are apart */
+  padding-left: 20px !important;
+}
+
+.zA:hover td.apU.xY {
+  right: var(--inbox-reborn-pin-right, 156px);
 }
 
 /* Hides the pin when not pinned, until the cursor is over it */
@@ -2851,34 +3126,136 @@ div[aria-label='Hangouts'][role='complementary'] {
   color: gray;
 }
 
-/* Colored bundle titles for Inbox categories */
-.zA.yO[bundleLabel='Updates'] .label-link > span:not(.bundle-count) {
+/* Bundle hover actions - sweep (archive the bundle) and ⋮ (Gmail's toolbar
+   actions for every email in it), sized and spaced like an email's hover
+   icons. Painted over the senders in the row's own background. */
+.bundle-actions {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 12px;
+  bottom: 0;
+  align-items: center;
+  padding-left: 8px;
+  background: inherit;
+}
+
+.bundle-wrapper:hover .bundle-actions,
+.bundle-wrapper.bundle-menu-open .bundle-actions {
+  display: flex;
+}
+
+.bundle-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin: 0 10px;
+  color: #444746;
+  cursor: pointer;
+}
+
+.bundle-action:hover {
+  color: #202124;
+}
+
+.bundle-sweep svg {
+  width: 20px;
+  height: 20px;
+}
+
+.bundle-more::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background-color: currentcolor;
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg')
+    center / 20px no-repeat;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') center /
+    20px no-repeat;
+}
+
+@-moz-document url-prefix() {
+  .bundle-more::before {
+    -webkit-mask: url('moz-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg')
+      center / 20px no-repeat;
+    mask: url('moz-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') center /
+      20px no-repeat;
+  }
+}
+
+/* The bundle's ⋮ menu, in the look of Gmail's own menus */
+.bundle-menu {
+  position: fixed;
+  z-index: 1001;
+  min-width: 180px;
+  padding: 6px 0;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow:
+    0 2px 2px 0 rgb(0 0 0 / 14%),
+    0 3px 1px -2px rgb(0 0 0 / 12%),
+    0 1px 5px 0 rgb(0 0 0 / 20%);
+  font-size: 14px;
+  color: #202124;
+}
+
+.bundle-menu-item {
+  padding: 6px 24px;
+  line-height: 20px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.bundle-menu-item:hover {
+  background: rgb(32 33 36 / 6%);
+}
+
+body.dark-mode .bundle-action {
+  color: #e8eaed;
+}
+
+body.dark-mode .bundle-action:hover {
+  color: #fff;
+}
+
+body.dark-mode .bundle-menu {
+  background: var(--dm-surface-raised);
+  color: #e8eaed;
+}
+
+body.dark-mode .bundle-menu-item:hover {
+  background: var(--dm-hover);
+}
+
+/* Colored bundle titles for Inbox categories, by icon kind (bundleKind is
+   set from the label name by getBundleIconKind - a "Cruise" label is travel) */
+.zA.yO[bundleKind='updates'] .label-link > span:not(.bundle-count) {
   color: rgb(255 104 57);
 }
 
-.zA.yO[bundleLabel='Promotions'] .label-link > span:not(.bundle-count) {
+.zA.yO[bundleKind='promotions'] .label-link > span:not(.bundle-count) {
   color: rgb(0 188 212);
 }
 
-.zA.yO[bundleLabel='Forums'] .label-link > span:not(.bundle-count) {
+.zA.yO[bundleKind='forums'] .label-link > span:not(.bundle-count) {
   color: rgb(63 81 181);
 }
 
-.zA.yO[bundleLabel='Social'] .label-link > span:not(.bundle-count) {
+.zA.yO[bundleKind='social'] .label-link > span:not(.bundle-count) {
   color: rgb(219 68 55);
 }
 
-.zA.yO[bundleLabel='Travel'] .label-link > span:not(.bundle-count),
-.zA.yO[bundleLabel='Trips'] .label-link > span:not(.bundle-count) {
+.zA.yO[bundleKind='travel'] .label-link > span:not(.bundle-count) {
   color: rgb(156 39 176);
 }
 
-.zA.yO[bundleLabel^='Finance'] .label-link > span:not(.bundle-count) {
+.zA.yO[bundleKind='finance'] .label-link > span:not(.bundle-count) {
   color: rgb(103 159 56);
 }
 
-.zA.yO[bundleLabel='Orders'] .label-link > span:not(.bundle-count),
-.zA.yO[bundleLabel='Purchases'] .label-link > span:not(.bundle-count) {
+.zA.yO[bundleKind='purchases'] .label-link > span:not(.bundle-count) {
   color: rgb(121 85 72);
 }
 
@@ -2896,32 +3273,31 @@ div[aria-label='Hangouts'][role='complementary'] {
   background-color: #444 !important;
 }
 
-.zA[bundlelabel^='Finance'] > .xY.bundle-image {
+.zA[bundlekind='finance'] > .xY.bundle-image {
   background-color: rgb(103 159 56) !important;
 }
 
-.zA[bundlelabel='Forums'] > .xY.bundle-image {
+.zA[bundlekind='forums'] > .xY.bundle-image {
   background-color: rgb(63 81 181) !important;
 }
 
-.zA[bundlelabel='Orders'] > span.oZ-x3,
-.zA[bundlelabel='Purchases'] > span.oZ-x3 {
+.zA[bundlekind='purchases'] > span.oZ-x3 {
   background-color: rgb(121 85 72) !important;
 }
 
-.zA[bundlelabel='Promotions'] > span.oZ-x3 {
+.zA[bundlekind='promotions'] > span.oZ-x3 {
   background-color: rgb(0 188 212) !important;
 }
 
-.zA[bundlelabel='Social'] > span.oZ-x3 {
+.zA[bundlekind='social'] > span.oZ-x3 {
   background-color: rgb(219 68 55) !important;
 }
 
-.zA[bundlelabel='Travel'] > span.oZ-x3 {
+.zA[bundlekind='travel'] > span.oZ-x3 {
   background-color: rgb(156 39 176) !important;
 }
 
-.zA[bundlelabel='Updates'] > span.oZ-x3 {
+.zA[bundlekind='updates'] > span.oZ-x3 {
   background-color: rgb(255 104 57) !important;
 }
 
@@ -3225,9 +3601,55 @@ body.dark-mode .ya .BM {
 }
 
 /* "In Trash" marker on each row of Trash (and of search results that
-   include trashed mail) - Gmail's black delete PNG */
+   include trashed mail) - Gmail's black delete PNG, replaced with Inbox's
+   solid trash can (the one on the left menu and the hover actions) */
+.zA .aqM img.aqN {
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg')
+    center / 20px no-repeat !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') center / 20px
+    no-repeat !important;
+  background-color: #444746 !important;
+  background-image: none !important;
+}
+
 body.dark-mode .zA .aqM img.aqN {
-  filter: invert(0.85) !important;
+  filter: none !important;
+  background-color: var(--dm-text-secondary) !important;
+}
+
+@-moz-document url-prefix() {
+  .zA .aqM img.aqN {
+    -webkit-mask: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg')
+      center / 20px no-repeat !important;
+    mask: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') center / 20px
+      no-repeat !important;
+  }
+}
+
+/* Discard draft (compose window, inline reply) - Gmail's slotted delete
+   sprite, replaced with Inbox's solid trash can as a mask in Gmail's icon
+   gray. Dark mode lightens it like its neighbors: the compose window is
+   inverted as a whole, and the inline reply row inverts its glyphs (see
+   "Inline-reply send row") - that rule also clears their background, so
+   the reply-row selector below restores the fill. */
+.og.T-I-J3,
+body.dark-mode .btC:not(.nH.Hd .btC) .og.T-I-J3 {
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg')
+    center / 20px no-repeat !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') center / 20px
+    no-repeat !important;
+  background-color: #444746 !important;
+  background-image: none !important;
+}
+
+@-moz-document url-prefix() {
+  .og.T-I-J3,
+  body.dark-mode .btC:not(.nH.Hd .btC) .og.T-I-J3 {
+    -webkit-mask: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg')
+      center / 20px no-repeat !important;
+    mask: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') center / 20px
+      no-repeat !important;
+  }
 }
 
 /* MAIN INTERFACE DARK MODE */
@@ -3310,6 +3732,22 @@ body.dark-mode .nH.Hd[role='dialog'] {
 body.dark-mode .nH.Hd[role='dialog'] img,
 body.dark-mode .nH.Hd[role='dialog'] video {
   filter: invert(1) hue-rotate(180deg);
+}
+
+/* DARK MODE: compose Send - the same Inbox blue as light mode, like the
+   Reminder button. Inside the dialog's filter these are pre-inverted:
+   #3189ff renders ~#4588e2 (the filter's 0.88 can't reach #4285f4's full
+   blue, this is the closest) and black text/divider render #e0e0e0. The
+   arrow is a white image, flipped so it also comes out light. Inline
+   replies have no filter and keep the plain rule. */
+body.dark-mode .nH.Hd .btC .T-I-atl:is(.aoO, .hG) {
+  background-color: #3189ff !important;
+  color: #000 !important;
+  border-left-color: #000 !important;
+}
+
+body.dark-mode .nH.Hd .btC .T-I-atl.hG .G-asx {
+  filter: invert(1);
 }
 
 /* Gmail's mid-2026 compose relayout made the Send/formatting action row
@@ -3828,13 +4266,15 @@ body.dark-mode .ar8.T-I-J3.J-J5-Ji {
   background-color: #e8eaed !important; /* Light gray for better visibility in dark mode */
 }
 
-/* Row hover actions - delete, mark read/unread, and snooze are plain dark
-   sprites (only archive is a mask), so replace them with Material Symbols
-   masks with the same light fill */
+/* Row hover actions - mark read/unread and snooze are plain dark sprites
+   (only archive is a mask), so replace them with Material Symbols masks with
+   the same light fill. Trash and More take their masks from the shared
+   rules ("Action buttons on email row") and only the fill here */
 body.dark-mode .bqY .bqX.bru,
 body.dark-mode .bqY .bqX.brr,
 body.dark-mode .bqY .bqX.SHFPQe,
-body.dark-mode .bqY .bqX.brv {
+body.dark-mode .bqY .bqX.brv,
+body.dark-mode .bqY .bqX.inbox-reborn-more {
   -webkit-mask-size: 20px !important;
   mask-size: 20px !important;
   -webkit-mask-repeat: no-repeat !important;
@@ -3843,11 +4283,6 @@ body.dark-mode .bqY .bqX.brv {
   mask-position: center !important;
   background-color: #e8eaed !important;
   background-image: none !important;
-}
-
-body.dark-mode .bqY .bqX.bru {
-  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_delete_24dp.svg') !important;
-  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_delete_24dp.svg') !important;
 }
 
 body.dark-mode .bqY .bqX.brr {
@@ -3890,8 +4325,13 @@ body.dark-mode .zA img.aJ4 {
 
 /* Toolbar glyphs - Gmail's light-theme sprites are dark glyphs with no mask
    to recolor, so replace them with Google Material Symbols masks filled with
-   the same light gray as the archive button. Covered: back, report spam,
-   delete, mark read, snooze, add to tasks, move to, labels, more, refresh. */
+   the same light gray. Covered: archive, back, report spam, delete, mark
+   read, snooze, add to tasks, move to, labels, more, refresh. Archive was
+   already a mask but painted only by background-color, which the toolbar
+   catch-all overrode (it vanished on search pages and open bundles); it now
+   takes the same box-shadow fill as the rest, at full opacity - Gmail dims
+   it to 43%. */
+body.dark-mode .G-atb .asa > .ar8,
 body.dark-mode .G-atb .asa > .asl,
 body.dark-mode .G-atb .asa > .ar9,
 body.dark-mode .G-atb .asa > .bAO,
@@ -3915,6 +4355,10 @@ body.dark-mode .G-atb .asa > .ase {
   /* The list-toolbar catch-all (.nH.aqK :not()) outranks any background-color
      here, but it never touches box-shadow - paint the fill with that instead */
   box-shadow: inset 0 0 0 24px #e8eaed !important;
+}
+
+body.dark-mode .G-atb .asa > .ar8 {
+  opacity: 1 !important;
 }
 
 /* Back arrow glyph (.ar6) - class is present from page load, unlike the
@@ -3983,8 +4427,13 @@ body.dark-mode .G-atb .T-I .asa svg path {
   fill: #e8eaed !important;
 }
 
-/* Remove label (shown inside a label view) - dark sprite; the list-toolbar
-   catch-all paints its background, which the filter would turn white */
+/* Remove label (shown inside a label view) - dark sprite, lightened with a
+   filter. The filter also lightens the icon's background, so that has to be
+   transparent: the list-toolbar catch-all (.nH.aqK :not() *, "Nuclear
+   option") paints it dark gray and outranked this rule, which turned the
+   icon into a white square - the first selector repeats the catch-all's
+   ancestors to win. */
+body.dark-mode .G-atb .nH.aqK:not(.Cr.aqJ .nH.aqK) .asa > .bAD,
 body.dark-mode .G-atb .asa > .bAD {
   filter: brightness(0) invert(0.91);
   opacity: 1 !important;
@@ -5196,8 +5645,8 @@ body.dark-mode .aHS-aHO .qj {
 
 body.dark-mode .aHS-bnx .qj {
   background-color: var(--dm-text-muted) !important;
-  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
   -webkit-mask-size: 24px !important;
   mask-size: 24px !important;
   -webkit-mask-repeat: no-repeat !important;
@@ -5390,8 +5839,8 @@ body.dark-mode [aria-label='Create new label'] .n0 {
 
   body.dark-mode .aHS-bnx .qj {
     background-color: var(--dm-text-muted) !important;
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_trash_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
     -webkit-mask-repeat: no-repeat !important;
@@ -5647,6 +6096,16 @@ body.dark-mode .w-asV.bbg.aiw[pageTitle='promotions'] {
 /* Purchases */
 body.dark-mode .w-asV.bbg.aiw[pageTitle='purchases'] {
   background-color: #573d34 !important; /* darker brown */
+}
+
+/* Travel */
+body.dark-mode .w-asV.bbg.aiw[pageTitle='travel'] {
+  background-color: #6d1b7b !important; /* darker purple */
+}
+
+/* Finance */
+body.dark-mode .w-asV.bbg.aiw[pageTitle='finance'] {
+  background-color: #4b7329 !important; /* darker green */
 }
 
 /* Important */
@@ -7314,4 +7773,378 @@ body:not(.dark-mode)
   :is(.aHS-bnu, .aHS-bnq, .aHS-aHO, .aHS-bnv, .aHS-bnx, .aHS-bnr, .aHS-nd, .aHS-bns, .aHS-aHP)
   .qj {
   background-color: #616161 !important;
+}
+
+/* =============================================================================
+   LABEL SIDEBAR ICONS (Inbox's bundle icons)
+   Labels in the left menu show the icon their bundle uses in the inbox:
+   Inbox's stacked envelopes, or the travel / purchases / finance / category
+   art for labels named that way (tagSidebarLabelIcons in script.js tags the
+   row with data-inbox-icon, using the same rules as the bundle rows). They
+   are masks, so a label's own color (Gmail's inline style) still paints
+   them; uncolored special labels take Inbox's color for that kind and the
+   rest stay gray. Kept at the end of the file so it wins over the
+   label_important masks in both themes.
+   The envelopes are a full-opacity copy of Inbox's 60%-alpha art (as a mask
+   that alpha would fade the color), and the older labels rule's 0.9 opacity
+   is lifted, so they come out the same gray as Sent and Drafts.
+   ============================================================================= */
+.wT .zw .aHS-bnr .qj,
+body.dark-mode .wT .zw .aHS-bnr .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_label_cluster_24dp.png') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_label_cluster_24dp.png') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  opacity: 1 !important;
+}
+
+.wT .zw [data-inbox-icon='promotions'] .aHS-bnr .qj,
+body.dark-mode .wT .zw [data-inbox-icon='promotions'] .aHS-bnr .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+}
+
+.wT .zw [data-inbox-icon='finance'] .aHS-bnr .qj,
+body.dark-mode .wT .zw [data-inbox-icon='finance'] .aHS-bnr .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_finance_24px_clr_r3_2x.png') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_finance_24px_clr_r3_2x.png') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+}
+
+.wT .zw [data-inbox-icon='purchases'] .aHS-bnr .qj,
+body.dark-mode .wT .zw [data-inbox-icon='purchases'] .aHS-bnr .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+}
+
+.wT .zw [data-inbox-icon='travel'] .aHS-bnr .qj,
+body.dark-mode .wT .zw [data-inbox-icon='travel'] .aHS-bnr .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_travel_clr_24dp_r1_2x.png') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_travel_clr_24dp_r1_2x.png') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+}
+
+.wT .zw [data-inbox-icon='updates'] .aHS-bnr .qj,
+body.dark-mode .wT .zw [data-inbox-icon='updates'] .aHS-bnr .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+}
+
+.wT .zw [data-inbox-icon='forums'] .aHS-bnr .qj,
+body.dark-mode .wT .zw [data-inbox-icon='forums'] .aHS-bnr .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+}
+
+.wT .zw [data-inbox-icon='social'] .aHS-bnr .qj,
+body.dark-mode .wT .zw [data-inbox-icon='social'] .aHS-bnr .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+}
+
+.wT .zw [data-inbox-icon='promotions'] .aHS-bnr .qj {
+  background-color: #00bcd4 !important;
+}
+
+.wT .zw [data-inbox-icon='finance'] .aHS-bnr .qj {
+  background-color: #679f38 !important;
+}
+
+body.dark-mode .wT .zw [data-inbox-icon='finance'] .aHS-bnr .qj {
+  background-color: #7cb342 !important;
+}
+
+.wT .zw [data-inbox-icon='purchases'] .aHS-bnr .qj {
+  background-color: #795548 !important;
+}
+
+body.dark-mode .wT .zw [data-inbox-icon='purchases'] .aHS-bnr .qj {
+  background-color: #a1887f !important;
+}
+
+.wT .zw [data-inbox-icon='travel'] .aHS-bnr .qj {
+  background-color: #9c27b0 !important;
+}
+
+body.dark-mode .wT .zw [data-inbox-icon='travel'] .aHS-bnr .qj {
+  background-color: #ba68c8 !important;
+}
+
+.wT .zw [data-inbox-icon='updates'] .aHS-bnr .qj {
+  background-color: #ff6839 !important;
+}
+
+.wT .zw [data-inbox-icon='forums'] .aHS-bnr .qj {
+  background-color: #3f51b5 !important;
+}
+
+body.dark-mode .wT .zw [data-inbox-icon='forums'] .aHS-bnr .qj {
+  background-color: #7986cb !important;
+}
+
+.wT .zw [data-inbox-icon='social'] .aHS-bnr .qj {
+  background-color: #db4437 !important;
+}
+
+@-moz-document url-prefix() {
+  .wT .zw .aHS-bnr .qj,
+  body.dark-mode .wT .zw .aHS-bnr .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_label_cluster_24dp.png') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_label_cluster_24dp.png') !important;
+  }
+
+  .wT .zw [data-inbox-icon='promotions'] .aHS-bnr .qj,
+  body.dark-mode .wT .zw [data-inbox-icon='promotions'] .aHS-bnr .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png') !important;
+  }
+
+  .wT .zw [data-inbox-icon='finance'] .aHS-bnr .qj,
+  body.dark-mode .wT .zw [data-inbox-icon='finance'] .aHS-bnr .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_finance_24px_clr_r3_2x.png') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_finance_24px_clr_r3_2x.png') !important;
+  }
+
+  .wT .zw [data-inbox-icon='purchases'] .aHS-bnr .qj,
+  body.dark-mode .wT .zw [data-inbox-icon='purchases'] .aHS-bnr .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
+  }
+
+  .wT .zw [data-inbox-icon='travel'] .aHS-bnr .qj,
+  body.dark-mode .wT .zw [data-inbox-icon='travel'] .aHS-bnr .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_travel_clr_24dp_r1_2x.png') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_travel_clr_24dp_r1_2x.png') !important;
+  }
+
+  .wT .zw [data-inbox-icon='updates'] .aHS-bnr .qj,
+  body.dark-mode .wT .zw [data-inbox-icon='updates'] .aHS-bnr .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png') !important;
+  }
+
+  .wT .zw [data-inbox-icon='forums'] .aHS-bnr .qj,
+  body.dark-mode .wT .zw [data-inbox-icon='forums'] .aHS-bnr .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png') !important;
+  }
+
+  .wT .zw [data-inbox-icon='social'] .aHS-bnr .qj,
+  body.dark-mode .wT .zw [data-inbox-icon='social'] .aHS-bnr .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png') !important;
+  }
+}
+
+/* =============================================================================
+   TRAVEL & FINANCE SIDEBAR ROWS
+   insertCategoryMenuItems() in script.js adds these two Inbox categories to
+   the left menu (Gmail sorts mail into them but lists neither). Inbox's
+   plane and chart, as masks in Inbox's colors like the other categories.
+   ============================================================================= */
+
+/* The rows are appended after Gmail's own (inserting them in between made
+   Gmail redraw Forums and Promotions twice), so the list becomes a flex
+   column and CSS order puts them in Inbox's order. Anything else in the list
+   keeps its place after the categories. */
+.TK:has(> .inbox-reborn-category) {
+  display: flex !important;
+  flex-direction: column;
+}
+
+.TK:has(> .inbox-reborn-category) > * {
+  order: 100;
+}
+
+.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-tooltip='Travel']) {
+  order: 1;
+}
+
+.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-tooltip='Purchases']) {
+  order: 2;
+}
+
+.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-tooltip='Finance']) {
+  order: 3;
+}
+
+.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-tooltip='Social']) {
+  order: 4;
+}
+
+.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-tooltip='Updates']) {
+  order: 5;
+}
+
+.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-tooltip='Forums']) {
+  order: 6;
+}
+
+.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-tooltip='Promotions']) {
+  order: 7;
+}
+
+/* "Hide Travel" / "Hide Finance" options - hide the whole .aim row so no
+   gap is left */
+body.hide-travel .aim:has(> .TO[data-tooltip='Travel']),
+body.hide-finance .aim:has(> .TO[data-tooltip='Finance']) {
+  display: none !important;
+}
+
+[data-tooltip='Travel'] .qj,
+body.dark-mode [data-tooltip='Travel'] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_travel_clr_24dp_r1_2x.png') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_travel_clr_24dp_r1_2x.png') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-color: #9c27b0 !important;
+  background-image: none !important;
+}
+
+body.dark-mode [data-tooltip='Travel'] .qj {
+  background-color: #ba68c8 !important;
+}
+
+[data-tooltip='Finance'] .qj,
+body.dark-mode [data-tooltip='Finance'] .qj {
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_finance_24px_clr_r3_2x.png') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_finance_24px_clr_r3_2x.png') !important;
+  -webkit-mask-size: 24px !important;
+  mask-size: 24px !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-color: #679f38 !important;
+  background-image: none !important;
+}
+
+body.dark-mode [data-tooltip='Finance'] .qj {
+  background-color: #7cb342 !important;
+}
+
+@-moz-document url-prefix() {
+  [data-tooltip='Travel'] .qj,
+  body.dark-mode [data-tooltip='Travel'] .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_travel_clr_24dp_r1_2x.png') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_travel_clr_24dp_r1_2x.png') !important;
+  }
+
+  [data-tooltip='Finance'] .qj,
+  body.dark-mode [data-tooltip='Finance'] .qj {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_finance_24px_clr_r3_2x.png') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_finance_24px_clr_r3_2x.png') !important;
+  }
+}
+
+/* =============================================================================
+   DARK MODE CATEGORY BUNDLES
+   Bundles for Inbox's categories keep their color in dark mode, in the same
+   lighter shades the left menu uses (brown, indigo, purple and green step
+   up so they read on the dark list). The older rule above paints every
+   bundle icon light gray and the dark .zA text rule grays every title;
+   bundles with the plain envelope icon still get that gray.
+   ============================================================================= */
+body.dark-mode .bundle-wrapper[bundlekind='updates'] > .bundle-image {
+  background-color: #ff6839 !important;
+}
+
+body.dark-mode .zA.yO[bundlekind='updates'] .label-link > span:not(.bundle-count) {
+  color: #ff6839 !important;
+}
+
+body.dark-mode .bundle-wrapper[bundlekind='promotions'] > .bundle-image {
+  background-color: #00bcd4 !important;
+}
+
+body.dark-mode .zA.yO[bundlekind='promotions'] .label-link > span:not(.bundle-count) {
+  color: #00bcd4 !important;
+}
+
+body.dark-mode .bundle-wrapper[bundlekind='forums'] > .bundle-image {
+  background-color: #7986cb !important;
+}
+
+body.dark-mode .zA.yO[bundlekind='forums'] .label-link > span:not(.bundle-count) {
+  color: #7986cb !important;
+}
+
+body.dark-mode .bundle-wrapper[bundlekind='social'] > .bundle-image {
+  background-color: #db4437 !important;
+}
+
+body.dark-mode .zA.yO[bundlekind='social'] .label-link > span:not(.bundle-count) {
+  color: #db4437 !important;
+}
+
+body.dark-mode .bundle-wrapper[bundlekind='travel'] > .bundle-image {
+  background-color: #ba68c8 !important;
+}
+
+body.dark-mode .zA.yO[bundlekind='travel'] .label-link > span:not(.bundle-count) {
+  color: #ba68c8 !important;
+}
+
+body.dark-mode .bundle-wrapper[bundlekind='finance'] > .bundle-image {
+  background-color: #7cb342 !important;
+}
+
+body.dark-mode .zA.yO[bundlekind='finance'] .label-link > span:not(.bundle-count) {
+  color: #7cb342 !important;
+}
+
+body.dark-mode .bundle-wrapper[bundlekind='purchases'] > .bundle-image {
+  background-color: #a1887f !important;
+}
+
+body.dark-mode .zA.yO[bundlekind='purchases'] .label-link > span:not(.bundle-count) {
+  color: #a1887f !important;
 }
