@@ -2657,22 +2657,62 @@ const unbundledCategories = {
 };
 const LABEL_SECTION_SETS = [bundledLabels, unbundledCategories];
 
+/* What a drag down archived, per account and bundle name, so a drag up
+   brings back exactly that and nothing else:
+   { [account]: { [name]: { ids: thread ids (hex), since: "YYYY-MM-DD" } } }
+   `since` is the oldest day among them, which bounds the search that finds
+   them again. */
+const archivedByDrag = { key: 'archivedByDrag', store: null };
+
+/**
+ * The account the sets belong to, as getSectionSet works it out
+ * @returns {string} The address, or 'default' until Gmail has drawn it
+ */
+const sectionsAccount = () => {
+  getSectionSet(bundledLabels);
+  return bundledLabels.cache.account;
+};
+
+/**
+ * What dragging a label or category down archived, if anything
+ * @param {string} name - The label or category
+ * @returns {{ ids: string[], since: string }|null}
+ */
+const getArchivedByDrag = (name) => archivedByDrag.store?.[sectionsAccount()]?.[name] || null;
+
+/**
+ * Remembers (or, with null, forgets) what dragging a name down archived
+ * @param {string} name - The label or category
+ * @param {{ ids: string[], since: string }|null} memory - The conversations
+ */
+const setArchivedByDrag = (name, memory) => {
+  const account = sectionsAccount();
+  const mine = { ...(archivedByDrag.store?.[account] || {}) };
+  if (memory?.ids?.length) mine[name] = memory;
+  else delete mine[name];
+  archivedByDrag.store = { ...archivedByDrag.store, [account]: mine };
+  chrome.storage.local.set({ [archivedByDrag.key]: archivedByDrag.store });
+};
+
 /**
  * Reads the two sets from storage and follows later changes (a drop in
  * another Gmail tab)
  */
 const loadLabelSections = () => {
-  const keys = LABEL_SECTION_SETS.map((entry) => entry.key);
+  const keys = [...LABEL_SECTION_SETS.map((entry) => entry.key), archivedByDrag.key];
   chrome.storage?.local.get(keys, (result) => {
     LABEL_SECTION_SETS.forEach((entry) => {
       entry.store = result[entry.key] || {};
       entry.cache = { account: null, set: null };
     });
+    archivedByDrag.store = result[archivedByDrag.key] || {};
     rebuildBundles();
     layoutLabelSections();
   });
   chrome.storage?.onChanged.addListener((changes, area) => {
     if (area !== 'local') return;
+    if (changes[archivedByDrag.key])
+      archivedByDrag.store = changes[archivedByDrag.key].newValue || {};
     let changed = false;
     LABEL_SECTION_SETS.forEach((entry) => {
       if (!changes[entry.key]) return;
@@ -2804,35 +2844,40 @@ const rebuildBundles = () => {
  * @param {boolean} bundled - True to start bundling it
  */
 const setLabelBundled = (name, bundled) => {
+  let turnOnOption = null;
   if (!isCategoryName(name)) {
     if (!updateSectionSet(bundledLabels, name, bundled)) return;
   } else {
     updateSectionSet(unbundledCategories, name, !bundled);
     const optionKey = CATEGORY_BUNDLE_OPTIONS[name];
-    if (bundled && optionKey && !options[optionKey]) {
-      chrome.storage.local.get('options', (result) => {
-        chrome.storage.local.set({ options: { ...result.options, [optionKey]: true } });
-      });
-    }
+    if (bundled && optionKey && !options[optionKey]) turnOnOption = optionKey;
   }
   rebuildBundles();
   layoutLabelSections();
-  if (!isCategoryName(name)) moveLabelMail(name, bundled);
+  // The mail moves first: turning the switch on reloads the page
+  moveLabelMail(name, bundled).then(() => {
+    if (!turnOnOption) return;
+    chrome.storage.local.get('options', (result) => {
+      chrome.storage.local.set({ options: { ...result.options, [turnOnOption]: true } });
+    });
+  });
 };
 
 // ---------------------------------------------------------------------------
 // A label's mail follows it between the sections
 // ---------------------------------------------------------------------------
 
-/* Dragged up, a label's archived mail comes back to the inbox, where its
-   bundle forms; dragged down, its inbox mail is archived. Both go through
-   Gmail's own list and toolbar: open the search for that mail, tick the
-   page's select-all box, press Move to Inbox or Archive, and again until the
-   search comes back empty (Gmail offers no "select all conversations" link
-   on a search), then go back to where the drag started. Gmail's Undo toast
-   and sync apply as if done by hand. The categories' mail stays put: a
-   category is Gmail's sorting of all mail, and its archive would be
-   thousands of rows. */
+/* Dragged down, a label's or category's inbox mail is archived, and what
+   went is remembered (archivedByDrag). Dragged up, exactly those
+   conversations come back to the inbox - never the rest of the archive,
+   which for a category can be years of mail someone reads on their phone
+   too. Both go through Gmail's own list and toolbar: open the search for
+   that mail, tick the rows (the page's select-all box when archiving, the
+   remembered rows when restoring), press Archive or Move to Inbox, and
+   again until done (Gmail offers no "select all conversations" link on a
+   search), then go back to where the drag started. Gmail's Undo toast and
+   sync apply as if done by hand. The page limit below is where a move
+   stops and says so. */
 const LABEL_MAIL_PAGE_LIMIT = 50; // pages of up to 100 threads - a safety stop
 const LIST_WAIT_TRIES = 100; // 100ms apart: 10s for Gmail to show a list
 const TOAST_CLASS = 'inbox-reborn-toast';
@@ -2840,12 +2885,17 @@ let movingLabelMail = false;
 
 /**
  * Gmail's search for the mail a drag moves
- * @param {string} label - The label name
+ * @param {string} label - The label or category name
  * @param {boolean} intoInbox - True for the archived mail, false for the inbox mail
- * @returns {string} The query, e.g. "label:Cruise -in:inbox"
+ * @returns {string} The query, e.g. "label:Cruise -in:inbox" or
+ *   "in:inbox category:finance"
  */
-const labelMailQuery = (label, intoInbox) =>
-  intoInbox ? `label:${searchLabel(label)} -in:inbox` : `in:inbox label:${searchLabel(label)}`;
+const labelMailQuery = (label, intoInbox) => {
+  const term = isCategoryName(label)
+    ? `category:${label.toLowerCase()}`
+    : `label:${searchLabel(label)}`;
+  return intoInbox ? `${term} -in:inbox` : `in:inbox ${term}`;
+};
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const isShown = (el) => !!el && el.getClientRects().length > 0;
@@ -2900,84 +2950,205 @@ const showToast = (text) => {
 const hideToast = () => document.querySelector(`.${TOAST_CLASS}`)?.remove();
 
 /**
- * Moves a label's mail into the inbox (dragged up) or to the archive
- * (dragged down), a page at a time, then returns to the view the drag
- * started in. One move at a time; a drag during a move only changes the
- * section.
- * @param {string} label - The label name
- * @param {boolean} intoInbox - True to bring its archived mail back
+ * Opens a Gmail search and waits for its list: another list element, a new
+ * title, rows that weren't there, or an empty result where there were rows
+ * @param {string} query - The search
+ * @returns {Promise<{ pane: Element, rows: Element[] }|null>} The list, or
+ *   null if Gmail showed nothing in time
+ */
+const openSearch = (query) => {
+  const startList = shownList();
+  const startTitle = document.title;
+  const startIds = new Set((startList?.rows || []).map(getThreadId));
+  window.location.hash = toSearchHash(query);
+  return pollFor(() => {
+    const shown = shownList();
+    if (!shown) return null;
+    const changed =
+      shown.pane !== startList?.pane ||
+      document.title !== startTitle ||
+      (shown.rows.length ? !startIds.has(getThreadId(shown.rows[0])) : startList?.rows.length > 0);
+    return changed ? shown : null;
+  });
+};
+
+/**
+ * Presses a button on the shown toolbar
+ * @param {string} selector - Within .G-atb
+ * @returns {boolean} False if Gmail isn't showing it
+ */
+const pressToolbar = (selector) => {
+  const button = firstShown(document.querySelectorAll(`.G-atb ${selector}`));
+  if (!button || button.getAttribute('aria-disabled') === 'true') return false;
+  simulateClick(button);
+  return true;
+};
+
+/** A date as "YYYY-MM-DD" in local time, which sorts as text */
+const localDay = (date) =>
+  `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+/**
+ * Gmail's "after:" date for a remembered day: the day before it, in Gmail's
+ * YYYY/MM/DD, so the day itself is covered whichever way Gmail reads "after"
+ * @param {string} day - "YYYY-MM-DD"
+ * @returns {string} e.g. "2026/10/31"
+ */
+const searchAfter = (day) => {
+  const [y, m, d] = day.split('-').map(Number);
+  const before = new Date(y, m - 1, d - 1);
+  return `${before.getFullYear()}/${before.getMonth() + 1}/${before.getDate()}`;
+};
+
+/**
+ * Archives the inbox mail of a label or category a page at a time, and
+ * remembers every conversation it archived so a drag up can bring exactly
+ * those back
+ * @param {string} label - The label or category name
+ */
+const archiveInboxMail = async (label) => {
+  showToast(`Archiving ${label}…`);
+  const memory = getArchivedByDrag(label);
+  const ids = new Set(memory?.ids || []);
+  let since = memory?.since || null;
+  let moved = 0;
+  let page = 0;
+
+  let list = await openSearch(labelMailQuery(label, false));
+  for (; list && list.rows.length && page < LABEL_MAIL_PAGE_LIMIT; page++) {
+    const { rows } = list;
+    const toolbar = firstShown(document.querySelectorAll('.G-atb'));
+    const selectAll = toolbar && firstShown(toolbar.querySelectorAll('[role=checkbox]'));
+    if (!selectAll) break;
+    if (selectAll.getAttribute('aria-checked') !== 'true') simulateClick(selectAll);
+    const selected = await pollFor(
+      () =>
+        selectAll.getAttribute('aria-checked') === 'true' &&
+        rows.some((row) => row.classList.contains('x7')),
+      30,
+    );
+    if (!selected) break;
+
+    // Remember what is about to go, and how far back it reaches
+    rows.forEach((row) => {
+      const id = getThreadId(row);
+      if (id) ids.add(id);
+      const date = getDate(getRawDate(row));
+      if (date && !Number.isNaN(date.getTime())) {
+        const day = localDay(date);
+        if (!since || day < since) since = day;
+      }
+    });
+
+    if (!pressToolbar('[act="7"]')) break;
+    moved += rows.length;
+    showToast(`Archiving ${label}… ${moved}`);
+
+    // Gmail takes these rows out, then shows the next page or its empty note
+    list = await pollFor(() => (rows.some(isShown) ? null : shownList()));
+  }
+
+  if (moved) setArchivedByDrag(label, { ids: [...ids], since: since || localDay(new Date()) });
+
+  const what = moved === 1 ? '1 conversation' : `${moved} conversations`;
+  const more =
+    page >= LABEL_MAIL_PAGE_LIMIT && list?.rows.length ? ' so far - drag again for the rest' : '';
+  showToast(moved ? `Archived ${what}${more}` : `${label} has no mail in the inbox`);
+};
+
+/**
+ * Brings back into the inbox the conversations a drag down archived - those
+ * and no others. Walks Gmail's search for the label's or category's archived
+ * mail, bounded to the days those conversations are from, ticking the
+ * remembered rows on each page and pressing Move to Inbox, and paging with
+ * Older where a page has none.
+ * @param {string} label - The label or category name
+ */
+const restoreArchivedByDrag = async (label) => {
+  const memory = getArchivedByDrag(label);
+  if (!memory?.ids?.length) {
+    showToast(`Nothing to bring back: no ${label} mail was archived by dragging it down`);
+    return;
+  }
+  showToast(`Bringing ${label} back into the inbox…`);
+  const remaining = new Set(memory.ids);
+  let moved = 0;
+  let pages = 0;
+  let scannedAll = false;
+
+  let list = await openSearch(`${labelMailQuery(label, true)} after:${searchAfter(memory.since)}`);
+  for (let step = 0; list && remaining.size && step < LABEL_MAIL_PAGE_LIMIT * 2; step++) {
+    if (!list.rows.length) {
+      scannedAll = true;
+      break;
+    }
+    const wanted = list.rows.filter((row) => remaining.has(getThreadId(row)));
+    if (wanted.length) {
+      selectOnlyEmails(list.pane, wanted);
+      const selected = await pollFor(() => wanted.every((row) => row.classList.contains('x7')), 30);
+      if (!selected || !pressToolbar('[act="8"]')) break;
+      wanted.forEach((row) => remaining.delete(getThreadId(row)));
+      moved += wanted.length;
+      showToast(`Bringing ${label} back into the inbox… ${moved}`);
+      // Gmail takes them out and fills the page from the next ones
+      list = await pollFor(() => (wanted.some(isShown) ? null : shownList()));
+    } else {
+      // Nothing of ours on this page: the next one, if there is one
+      const firstId = getThreadId(list.rows[0]);
+      if (
+        ++pages >= LABEL_MAIL_PAGE_LIMIT ||
+        !pressToolbar('.amD.T-I-Js-Gs, [aria-label="Older"]')
+      ) {
+        scannedAll = pages < LABEL_MAIL_PAGE_LIMIT;
+        break;
+      }
+      list = await pollFor(() => {
+        const shown = shownList();
+        return shown && (!shown.rows.length || getThreadId(shown.rows[0]) !== firstId)
+          ? shown
+          : null;
+      });
+    }
+  }
+
+  // Found or gone for good (deleted, moved by hand): forget them. Stopped
+  // early: keep the rest for another drag.
+  setArchivedByDrag(
+    label,
+    remaining.size && !scannedAll ? { ids: [...remaining], since: memory.since } : null,
+  );
+
+  const what = moved === 1 ? '1 conversation' : `${moved} conversations`;
+  const more = remaining.size && !scannedAll ? ' so far - drag again for the rest' : '';
+  showToast(
+    moved
+      ? `Brought ${what} back into the inbox${more}`
+      : `The archived ${label} mail is no longer there`,
+  );
+};
+
+/**
+ * Moves a label's or category's mail with it: dragged up, the conversations
+ * a drag down archived come back to the inbox; dragged down, its inbox mail
+ * is archived and remembered. Returns to the view the drag started in. One
+ * move at a time; a drag during a move only changes the section.
+ * @param {string} label - The label or category name
+ * @param {boolean} intoInbox - True to bring the archived mail back
  */
 const moveLabelMail = async (label, intoInbox) => {
   if (movingLabelMail) return;
   movingLabelMail = true;
   const returnHash = getViewHash();
-  const startList = shownList();
-  const startTitle = document.title;
-  const startIds = new Set((startList?.rows || []).map(getThreadId));
-  const action = intoInbox ? 8 : 7; // Gmail's Move to Inbox and Archive buttons
-  let moved = 0;
-
-  showToast(intoInbox ? `Moving ${label} into the inbox…` : `Archiving ${label}…`);
   try {
-    window.location.hash = toSearchHash(labelMailQuery(label, intoInbox));
-
-    // The search has replaced the starting view: another list element, a new
-    // title, rows that weren't there, or an empty result where there were rows
-    let list = await pollFor(() => {
-      const shown = shownList();
-      if (!shown) return null;
-      const changed =
-        shown.pane !== startList?.pane ||
-        document.title !== startTitle ||
-        (shown.rows.length
-          ? !startIds.has(getThreadId(shown.rows[0]))
-          : startList?.rows.length > 0);
-      return changed ? shown : null;
-    });
-
-    for (let page = 0; list && list.rows.length && page < LABEL_MAIL_PAGE_LIMIT; page++) {
-      const { rows } = list;
-      const toolbar = firstShown(document.querySelectorAll('.G-atb'));
-      const selectAll = toolbar && firstShown(toolbar.querySelectorAll('[role=checkbox]'));
-      if (!selectAll) break;
-      if (selectAll.getAttribute('aria-checked') !== 'true') simulateClick(selectAll);
-      const selected = await pollFor(
-        () =>
-          selectAll.getAttribute('aria-checked') === 'true' &&
-          rows.some((row) => row.classList.contains('x7')),
-        30,
-      );
-      if (!selected) break;
-
-      const button = firstShown(document.querySelectorAll(`.G-atb [act="${action}"]`));
-      if (!button) break;
-      simulateClick(button);
-      moved += rows.length;
-      showToast(
-        intoInbox ? `Moving ${label} into the inbox… ${moved}` : `Archiving ${label}… ${moved}`,
-      );
-
-      // Gmail takes these rows out, then shows the next page or its empty note
-      list = await pollFor(() => (rows.some(isShown) ? null : shownList()));
-    }
-
-    const what = moved === 1 ? '1 conversation' : `${moved} conversations`;
-    showToast(
-      moved === 0
-        ? intoInbox
-          ? `${label} has no archived mail to bring in`
-          : `${label} has no mail in the inbox`
-        : intoInbox
-          ? `Moved ${what} into the inbox`
-          : `Archived ${what}`,
-    );
+    if (intoInbox) await restoreArchivedByDrag(label);
+    else await archiveInboxMail(label);
   } catch (e) {
     console.warn(`[Inbox Reborn] Moving ${label}'s mail stopped (${e.message})`);
     showToast(`Couldn't finish moving ${label}'s mail`);
   } finally {
     window.location.hash = returnHash;
     movingLabelMail = false;
-    setTimeout(hideToast, 3000);
+    setTimeout(hideToast, 4000);
   }
 };
 

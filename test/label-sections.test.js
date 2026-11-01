@@ -98,6 +98,20 @@ test('a dragged label moves its mail with Gmail searches, in Gmail search spelli
   assert.strictEqual(labelMailQuery('Cruise', false), 'in:inbox label:Cruise');
   assert.strictEqual(labelMailQuery('AC Stuff', false), 'in:inbox label:AC-Stuff');
   assert.strictEqual(labelMailQuery('Software/Chess', true), 'label:Software-Chess -in:inbox');
+  // The categories go by Gmail's category: search
+  assert.strictEqual(labelMailQuery('Finance', true), 'category:finance -in:inbox');
+  assert.strictEqual(labelMailQuery('Promotions', false), 'in:inbox category:promotions');
+});
+
+test('the restore search starts the day before the oldest archived conversation', () => {
+  const get = loadScript();
+  const localDay = get('localDay');
+  const searchAfter = get('searchAfter');
+  assert.strictEqual(localDay(new Date(2026, 10, 1, 23, 30)), '2026-11-01');
+  assert.strictEqual(localDay(new Date(2026, 0, 9)), '2026-01-09');
+  assert.strictEqual(searchAfter('2026-11-01'), '2026/10/31');
+  assert.strictEqual(searchAfter('2026-03-01'), '2026/2/28');
+  assert.strictEqual(searchAfter('2026-01-01'), '2025/12/31');
 });
 
 test('categories and top-level labels drag; nested and Unbundled/ labels do not', () => {

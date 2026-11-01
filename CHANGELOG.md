@@ -9,10 +9,11 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
   the inbox** (Travel, Purchases, Finance, Social, Updates, Forums,
   Promotions, then every label that bundles) and **Unbundled**. Drag a label
   up into Bundled in the inbox to bundle its emails, and back down to show
-  them one by one. The label's mail goes with it: dragged up, its archived
-  mail comes back to the inbox; dragged down, its inbox mail is archived -
+  them one by one. The label's mail goes with it: dragged down, its inbox
+  mail is archived and remembered; dragged up, exactly those conversations
+  come back to the inbox and the rest of its archive is left alone - all
   through Gmail's own list, a page at a time, so Gmail's Undo still works.
-  The categories drag too (their mail stays put): Promotions dragged to Unbundled
+  The categories drag too, mail and all: Promotions dragged to Unbundled
   stops bundling and its emails show as ordinary rows, until it is dragged
   back. As in Inbox, every label starts out in Unbundled, so **label bundles
   from earlier versions come back once you drag those labels up**; the
