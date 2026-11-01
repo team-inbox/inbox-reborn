@@ -4489,23 +4489,48 @@ body.dark-mode .G-atb .asa > .bAD {
   box-shadow: none !important;
 }
 
-/* Message header star (unstarred) - replace the dark sprite with a Material
-   star mask; the starred state is left alone so it keeps Gmail's yellow */
-body.dark-mode .nH.a98.iY.aHo .T-KT:not(.T-KT-Jp) {
-  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_star_24dp.svg')
+/* Message header star - Inbox's pin, as on the list rows, in both themes:
+   the keep-icon mask over Gmail's star box, gray until pinned, then the
+   color of the star type in use (the same --pin-color the list pins take,
+   set on .T-KT.<type> near the top of this file). Gmail draws its star as a
+   ::before sprite plus a transparent img - both go. */
+.nH.a98.iY.aHo .T-KT {
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg')
     center / 20px no-repeat !important;
-  mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_star_24dp.svg') center / 20px
-    no-repeat !important;
-  background-color: #e8eaed !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg')
+    center / 20px no-repeat !important;
+  background-color: #444746 !important;
   background-image: none !important;
+  opacity: 1 !important;
 }
 
-body.dark-mode .nH.a98.iY.aHo .T-KT:not(.T-KT-Jp) img {
+@-moz-document url-prefix() {
+  .nH.a98.iY.aHo .T-KT {
+    -webkit-mask: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg')
+      center / 20px no-repeat !important;
+    mask: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg')
+      center / 20px no-repeat !important;
+  }
+}
+
+body.dark-mode .nH.a98.iY.aHo .T-KT {
+  background-color: #e8eaed !important;
+}
+
+/* Pinned: the pin takes the star type's color (after the dark rule, to win
+   the tie there) */
+body
+  .nH.a98.iY.aHo
+  .T-KT:is(.N6cuDc, .T-KT-Jp, .xl, .xn, .xm, .xj, .xk, .xg, .xe, .xh, .xd, .xc, .xf) {
+  background-color: var(--pin-color) !important;
+}
+
+.nH.a98.iY.aHo .T-KT img {
   visibility: hidden !important;
 }
 
-body.dark-mode .nH.a98.iY.aHo .T-KT:not(.T-KT-Jp)::before,
-body.dark-mode .nH.a98.iY.aHo .T-KT:not(.T-KT-Jp)::after {
+.nH.a98.iY.aHo .T-KT::before,
+.nH.a98.iY.aHo .T-KT::after {
   content: none !important;
 }
 
@@ -4613,6 +4638,15 @@ body.dark-mode .amn .jWOS7-JX-I[aria-disabled='true'],
 body.dark-mode .btDi4d .jWOS7-JX-I:disabled,
 body.dark-mode .btDi4d .jWOS7-JX-I[aria-disabled='true'] {
   display: none !important;
+}
+
+/* The message header's emoji-react button when Gmail disables it ("You
+   can't react with an emoji to a group" - most list and notification mail).
+   Gmail dims it to 38% in light mode; the reading-pane color dump above
+   painted it full-bright in dark mode, where it read as an active button. */
+body.dark-mode .nH.a98.iY.aHo button.pYTkkf-JX-I:is(:disabled, [aria-disabled='true']),
+body.dark-mode .nH.a98.iY.aHo button.pYTkkf-JX-I:is(:disabled, [aria-disabled='true']) * {
+  color: rgb(232 234 237 / 38%) !important;
 }
 
 /* .T-I-atl exclusion: glyphs on the blue Send/Send-and-archive pills use
