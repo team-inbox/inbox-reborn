@@ -30,6 +30,14 @@ async function copyExtension(target, dir) {
     }
   }
   await fs.copy(manifestSrc, path.join(dir, 'manifest.json'));
+
+  // The stylesheet is written for Chrome; Firefox serves extension files
+  // from moz-extension:// instead, so the package gets that scheme
+  if (target === 'firefox') {
+    const stylesheet = path.join(dir, 'src', 'style.css');
+    const css = await fs.readFile(stylesheet, 'utf8');
+    await fs.writeFile(stylesheet, css.replaceAll('chrome-extension://', 'moz-extension://'));
+  }
 }
 
 function getOutputDir() {
