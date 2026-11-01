@@ -9,10 +9,14 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
   the inbox** (Travel, Purchases, Finance, Social, Updates, Forums,
   Promotions, then every label that bundles) and **Unbundled**. Drag a label
   up into Bundled in the inbox to bundle its emails, and back down to show
-  them one by one. As in Inbox, every label starts out in Unbundled, so
-  **label bundles from earlier versions come back once you drag those labels
-  up**; the categories keep bundling on their own. The choice is saved per
-  account. A nested label goes with the label it is nested under, and labels
+  them one by one. The label's mail goes with it: dragged up, its archived
+  mail comes back to the inbox; dragged down, its inbox mail is archived -
+  through Gmail's own list, a page at a time, so Gmail's Undo still works.
+  The categories drag too (their mail stays put): Promotions dragged to Unbundled
+  stops bundling and its emails show as ordinary rows, until it is dragged
+  back. As in Inbox, every label starts out in Unbundled, so **label bundles
+  from earlier versions come back once you drag those labels up**; the
+  categories start out bundled. The choices are saved per account. A nested label goes with the label it is nested under, and labels
   nested under an `Unbundled` label stay unbundled as they always did. Shown
   while bundling is on.
 - Your own labels always get Inbox's stacked-envelopes bundle icon, in the

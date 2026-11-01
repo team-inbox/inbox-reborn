@@ -1,20 +1,39 @@
-// The left menu's Bundled in the inbox / Unbundled sections: which labels
-// bundle, and which rows can be dragged between the sections.
+// The left menu's Bundled in the inbox / Unbundled sections: which labels and
+// categories bundle, and which rows can be dragged between the sections.
 
 const test = require('node:test');
 const assert = require('node:assert');
 const { loadScript } = require('./load-script');
 
-// A loaded script with these labels dragged to Bundled in the inbox for the
-// signed-in account (an account name is set, so no Gmail lookup happens)
-const withBundled = (labels) => {
+/**
+ * A loaded script with the sections' storage in a given state, for a signed-in
+ * account (an account name is set, so no Gmail lookup happens)
+ * @param {Object} [state]
+ * @param {string[]} [state.bundled] - Labels dragged to Bundled in the inbox
+ * @param {string[]} [state.unbundledCategories] - Categories dragged to Unbundled
+ * @param {boolean} [state.loaded] - False to stand for storage not answered yet
+ * @param {Object} [state.options] - The options, e.g. { bundleTravel: true }
+ * @returns {Function} get(name) from loadScript
+ */
+const withSections = ({
+  bundled = [],
+  unbundledCategories = [],
+  loaded = true,
+  options = {},
+} = {}) => {
   const get = loadScript();
+  const entry = (names) =>
+    `{ store: ${loaded ? `{ 't@example.com': ${JSON.stringify(names)} }` : 'null'},
+       cache: { account: 't@example.com', set: new Set(${JSON.stringify(names)}) } }`;
   get(
-    `(() => { bundledLabelsStore = { 't@example.com': ${JSON.stringify(labels)} };
-      bundledLabels = { account: 't@example.com', set: new Set(${JSON.stringify(labels)}) }; })()`,
+    `(() => { Object.assign(bundledLabels, ${entry(bundled)});
+      Object.assign(unbundledCategories, ${entry(unbundledCategories)});
+      options = ${JSON.stringify(options)}; })()`,
   );
   return get;
 };
+
+const ALL_ON = { bundlePurchases: true, bundleTravel: true, bundleFinance: true };
 
 test('labelAndParents lists a label and every label it is nested under', () => {
   // Spread: the script's arrays come from another realm
@@ -28,23 +47,40 @@ test('labelAndParents lists a label and every label it is nested under', () => {
 });
 
 test('a label bundles once dragged to Bundled in the inbox, with its nested labels', () => {
-  const isLabelBundled = withBundled(['Work'])('isLabelBundled');
+  const isLabelBundled = withSections({ bundled: ['Work'] })('isLabelBundled');
   assert.strictEqual(isLabelBundled('Work'), true);
   assert.strictEqual(isLabelBundled('Work/Projects'), true);
   assert.strictEqual(isLabelBundled('Workshop'), false);
   assert.strictEqual(isLabelBundled('Taxes'), false);
 });
 
-test('the categories always bundle, labels under an "Unbundled" label never do', () => {
-  const isLabelBundled = withBundled(['Unbundled'])('isLabelBundled');
-  ['Travel', 'Purchases', 'Finance', 'Social', 'Updates', 'Forums', 'Promotions'].forEach((name) =>
+test('the categories bundle until dragged to Unbundled', () => {
+  const isLabelBundled = withSections({
+    unbundledCategories: ['Promotions', 'Travel'],
+    options: ALL_ON,
+  })('isLabelBundled');
+  ['Purchases', 'Finance', 'Social', 'Updates', 'Forums'].forEach((name) =>
     assert.strictEqual(isLabelBundled(name), true, name),
   );
+  assert.strictEqual(isLabelBundled('Promotions'), false);
+  assert.strictEqual(isLabelBundled('Travel'), false);
+});
+
+test('Purchases, Travel and Finance also need their switch in the options', () => {
+  const isLabelBundled = withSections({ options: { bundleTravel: true } })('isLabelBundled');
+  assert.strictEqual(isLabelBundled('Travel'), true);
+  assert.strictEqual(isLabelBundled('Purchases'), false);
+  assert.strictEqual(isLabelBundled('Finance'), false);
+  assert.strictEqual(isLabelBundled('Updates'), true); // no switch for the tab categories
+});
+
+test('labels under an "Unbundled" label never bundle', () => {
+  const isLabelBundled = withSections({ bundled: ['Unbundled'] })('isLabelBundled');
   assert.strictEqual(isLabelBundled('Unbundled/Newsletter'), false);
 });
 
-test('nothing but the categories bundles before storage has answered', () => {
-  const isLabelBundled = loadScript()('isLabelBundled');
+test('no label bundles before storage has answered', () => {
+  const isLabelBundled = withSections({ bundled: ['Work'], loaded: false })('isLabelBundled');
   assert.strictEqual(isLabelBundled('Work'), false);
   assert.strictEqual(isLabelBundled('Updates'), true);
 });
@@ -56,13 +92,21 @@ test('an email under an "Unbundled" label stays out of bundles', () => {
   assert.strictEqual(checkEmailUnbundledLabel([]), false);
 });
 
-test('only top-level labels drag; nested, Unbundled/ and category-named ones do not', () => {
+test('a dragged label moves its mail with Gmail searches, in Gmail search spelling', () => {
+  const labelMailQuery = loadScript()('labelMailQuery');
+  assert.strictEqual(labelMailQuery('Cruise', true), 'label:Cruise -in:inbox');
+  assert.strictEqual(labelMailQuery('Cruise', false), 'in:inbox label:Cruise');
+  assert.strictEqual(labelMailQuery('AC Stuff', false), 'in:inbox label:AC-Stuff');
+  assert.strictEqual(labelMailQuery('Software/Chess', true), 'label:Software-Chess -in:inbox');
+});
+
+test('categories and top-level labels drag; nested and Unbundled/ labels do not', () => {
   const isLabelDraggable = loadScript()('isLabelDraggable');
   assert.strictEqual(isLabelDraggable('Taxes'), true);
   assert.strictEqual(isLabelDraggable('AC Stuff'), true);
+  assert.strictEqual(isLabelDraggable('Purchases'), true);
+  assert.strictEqual(isLabelDraggable('Updates'), true);
   assert.strictEqual(isLabelDraggable('Software/Chess'), false);
   assert.strictEqual(isLabelDraggable('Unbundled/Newsletter'), false);
-  assert.strictEqual(isLabelDraggable('Purchases'), false);
-  assert.strictEqual(isLabelDraggable('Updates'), false);
   assert.strictEqual(isLabelDraggable(''), false);
 });
