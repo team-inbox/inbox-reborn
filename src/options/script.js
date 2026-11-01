@@ -13,6 +13,7 @@ const BUNDLE_TOP_SELECTOR = 'input[name=bundle-top]';
 const AVATAR_TOGGLE_SELECTOR = '#avatar-toggle';
 const PRIORITY_INBOX_TOGGLE_SELECTOR = '#priority-inbox-toggle';
 const HIDE_AI_INBOX_TOGGLE_SELECTOR = '#hide-ai-inbox-toggle';
+const HIDE_ALL_MAIL_TOGGLE_SELECTOR = '#hide-all-mail-toggle';
 const GRAVATAR_TOGGLE_SELECTOR = '#gravatar-toggle';
 const DARK_MODE_TOGGLE_SELECTOR = '#dark-mode-toggle';
 const BUNDLING_TOGGLE_SELECTOR = '#bundling-toggle';
@@ -36,6 +37,9 @@ function saveOptions() {
   const hideAiInbox = document.querySelector(HIDE_AI_INBOX_TOGGLE_SELECTOR).checked
     ? 'enabled'
     : 'disabled';
+  const hideAllMail = document.querySelector(HIDE_ALL_MAIL_TOGGLE_SELECTOR).checked
+    ? 'enabled'
+    : 'disabled';
   const gravatar = document.querySelector(GRAVATAR_TOGGLE_SELECTOR).checked
     ? 'enabled'
     : 'disabled';
@@ -49,6 +53,7 @@ function saveOptions() {
     priorityInbox,
     darkMode,
     hideAiInbox,
+    hideAllMail,
     gravatar,
   };
 
@@ -67,6 +72,8 @@ function restoreOptions() {
     document.querySelector(DARK_MODE_TOGGLE_SELECTOR).checked = options.darkMode === 'enabled';
     document.querySelector(HIDE_AI_INBOX_TOGGLE_SELECTOR).checked =
       options.hideAiInbox === 'enabled';
+    document.querySelector(HIDE_ALL_MAIL_TOGGLE_SELECTOR).checked =
+      options.hideAllMail === 'enabled';
     document.querySelector(GRAVATAR_TOGGLE_SELECTOR).checked = options.gravatar === 'enabled';
     document.body.classList.toggle('dark-mode', options.darkMode === 'enabled');
 
@@ -106,4 +113,5 @@ bundlingToggle.addEventListener('change', () => {
 document.querySelector(AVATAR_TOGGLE_SELECTOR).addEventListener('change', saveOptions);
 document.querySelector(PRIORITY_INBOX_TOGGLE_SELECTOR).addEventListener('change', saveOptions);
 document.querySelector(HIDE_AI_INBOX_TOGGLE_SELECTOR).addEventListener('change', saveOptions);
+document.querySelector(HIDE_ALL_MAIL_TOGGLE_SELECTOR).addEventListener('change', saveOptions);
 document.querySelector(GRAVATAR_TOGGLE_SELECTOR).addEventListener('change', saveOptions);

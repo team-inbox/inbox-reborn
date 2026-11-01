@@ -24,6 +24,13 @@ Web extension which modifies Gmail™ to bring back the features and uncluttered
 - Email bundling by label, with Inbox's classic colored bundle icons
 - Clean interface returning to the simplicity of Inbox — Inbox, Snoozed and Done at the
   top of the menu, colored category icons, bold selected row
+- Inbox's categories in the left menu, in Inbox's order: **Travel, Purchases, Finance,
+  Social, Updates, Forums, Promotions**. Gmail sorts mail into Travel and Finance but
+  never lists them; the extension adds them
+- Labels in the left menu use Inbox's icons (see
+  [Label names and icons](#label-names-and-icons))
+- **Drag emails onto Social, Updates, Forums or Promotions** in the left menu to re-file
+  them there; they stay in your inbox, like Inbox's bundles
 - Emails sent to yourself displayed as reminders
 - Avatars with real pictures where available — photos Gmail has shown you, brand logos,
   company site icons, and optionally Gravatar — or a colored initial
@@ -36,15 +43,14 @@ Web extension which modifies Gmail™ to bring back the features and uncluttered
 Click the extension's icon at the top right of your browser to adjust its behavior.
 Changes apply immediately — the page refreshes itself when needed.
 
-| Option                           | What it does                                                                                                                             |
-| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| **Dark Mode**                    | Toggles the extension's built-in dark theme. No need to change Gmail's own theme setting. Applies instantly, no refresh.                 |
-| **Reminders**                    | How emails sent to yourself are treated: every self-sent email, only those with the subject "Reminder", or none.                         |
-| **Email Bundling**               | Groups inbox emails by label (see [Email Bundling](#email-bundling) below). Sub-options: bundle even single emails; move bundles to top. |
-| **Avatars**                      | Shows each sender's avatar next to their email — a picture when one is found, otherwise a colored circle with their first initial.       |
-| **Gravatar Photos**              | Also looks up sender pictures on Gravatar. Off by default — it shares a hashed copy of each sender's address with Gravatar.              |
-| **Hide Priority Inbox Headings** | Cleans up the section headings when Gmail's "Priority Inbox" type is enabled.                                                            |
-| **Hide AI Inbox**                | Removes Gmail's AI Inbox row from the left menu.                                                                                         |
+| Option              | What it does                                                                                                                                      |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Dark Mode**       | Toggles the extension's built-in dark theme. No need to change Gmail's own theme setting. Applies instantly, no refresh.                          |
+| **Reminders**       | How emails sent to yourself are treated: every self-sent email, only those with the subject "Reminder", or none.                                  |
+| **Email Bundling**  | Groups inbox emails by label (see [Email Bundling](#email-bundling) below). Sub-options: bundle even single emails; move bundles to top.          |
+| **Avatars**         | Shows each sender's avatar next to their email — a picture when one is found, otherwise a colored circle with their first initial.                |
+| **Gravatar Photos** | Also looks up sender pictures on Gravatar. Off by default — it shares a hashed copy of each sender's address with Gravatar.                       |
+| **Hide**            | Three switches: Priority Inbox headings (when Gmail's "Priority Inbox" type is enabled), the AI Inbox row, and the All Mail row in the left menu. |
 
 ## Recommended Gmail™ Settings
 
@@ -70,9 +76,9 @@ Bundles are built from the **labels on your inbox emails**:
 - **Starred emails always stay out of bundles**, so important mail never gets hidden.
 - Only mail that is actually **in the inbox** can be bundled — labels applied to archived
   mail don't create bundles.
-- Bundles named **Purchases, Social, Updates, Forums, Promotions, Finance, Trips**
-  automatically get their original Inbox colored icons. Any other label gets a neutral
-  bundle icon.
+- Labels with certain names automatically get their original Inbox colored icons, on
+  the bundle and in the left menu (see [Label names and icons](#label-names-and-icons)).
+  Any other label gets Inbox's stacked-envelopes icon.
 - To keep a label out of bundling entirely, create a label called `Unbundled` and nest
   the label underneath it.
 
@@ -105,8 +111,29 @@ Promotions). Here's how to get them back:
 
 The same label + filter recipe works for any bundle you want — Shipping, Receipts,
 Newsletters, work projects, family. Filters apply the label as mail arrives, so your
-bundles maintain themselves. Name a bundle `Finance` or `Trips` and it even gets the
+bundles maintain themselves. Name a bundle `Taxes` or `Trips` and it even gets the
 matching Inbox icon.
+
+### Label names and icons
+
+A label's name decides its icon, both on its bundle and in the left menu. Capitalization
+doesn't matter. "Whole word" means the word stands on its own in the name:
+`Summer Vacation` and `Trips/Japan` count, `Cruising` doesn't.
+
+| Icon                                | Label name has…                                                               | Examples                                        |
+| ----------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------- |
+| Travel (purple plane)               | the whole word trip(s), travel, cruise(s), flight(s), vacation(s) or hotel(s) | `Cruise`, `Trips`, `Flights`, `Summer Vacation` |
+| Finance (green chart)               | the whole word finance(s), bank, banking, tax or taxes                        | `Taxes`, `Bank`, `Home Finance`                 |
+| Purchases (brown cart)              | exactly `Orders` or `Purchases`                                               | `Orders`                                        |
+| Social, Updates, Forums, Promotions | exactly that name                                                             |                                                 |
+| Stacked envelopes                   | anything else                                                                 | `Family`, `Work`                                |
+
+Labels you've given a color in Gmail keep that color on their icon.
+
+**Travel labels also show up under Travel.** The Travel item in the left menu opens the
+mail Google files as travel, plus the mail in every travel-named label you have. Without
+a travel label, Travel shows only Google's sorting. Gmail won't let you create a label
+named `Travel` (it's reserved), so use `Trips`, `Cruise`, `Flights` or `Vacation`.
 
 ### Bundling troubleshooting
 

@@ -235,6 +235,7 @@ const CSS_CLASSES = {
   STYLE_NODE_ID_PREFIX: 'hide-email-',
   PRIORITY_INBOX_OPTION: 'priority-inbox-enabled',
   HIDE_AI_INBOX_OPTION: 'hide-ai-inbox',
+  HIDE_ALL_MAIL_OPTION: 'hide-all-mail',
   PINNED_VIEW: 'pinned-view',
   INBOX_LIST: 'inbox-list',
 };
@@ -321,6 +322,12 @@ const select = {
   currentTab: () => document.querySelector('.aAy[aria-selected="true"]'),
   // Gmail keeps toolbars for other views in the DOM too; callers pick the visible one
   archiveButtons: () => document.querySelectorAll('.G-atb [act="7"]'),
+  labelsButtons: () => document.querySelectorAll('.G-atb [aria-label="Labels"]'),
+  // The Labels menu; Gmail keeps it in the DOM with display: none when closed
+  labelsMenu: () =>
+    [...document.querySelectorAll('.J-M[role=menu]')].find(
+      (menu) => menu.getClientRects().length && menu.querySelector('[role=menuitemcheckbox]'),
+    ),
 
   // Menu elements
   menu: () => document.body.querySelector('.J-Ke.n4.ah9'),
@@ -802,6 +809,24 @@ const addDateLabel = (email, label) => {
 };
 
 /**
+ * Makes exactly these emails the selection in a list by ticking Gmail's own
+ * checkboxes, so toolbar actions apply to them (and only them)
+ * @param {Element} list - The list the emails live in
+ * @param {Element[]} emails - Rows to select; rows without a checkbox are skipped
+ */
+const selectOnlyEmails = (list, emails) => {
+  const wanted = new Set(emails);
+  list.querySelectorAll('.zA.x7').forEach((email) => {
+    const checkbox = select.emailCheckbox(email);
+    if (checkbox && !wanted.has(email)) simulateClick(checkbox);
+  });
+  emails.forEach((email) => {
+    const checkbox = select.emailCheckbox(email);
+    if (checkbox && !email.classList.contains('x7')) simulateClick(checkbox);
+  });
+};
+
+/**
  * Archives every email in a date group except pinned (starred) ones, like
  * Inbox's sweep. Selects the rows and presses Gmail's own Archive button, so
  * Gmail's "Undo" toast still works. A bundle in the group sweeps the bundled
@@ -831,12 +856,7 @@ const sweepDateGroup = (timeRow) => {
   if (!emails.length) return;
 
   // Start from an empty selection so only this group gets archived
-  list.querySelectorAll('.zA.x7').forEach((email) => {
-    const checkbox = select.emailCheckbox(email);
-    if (checkbox) simulateClick(checkbox);
-  });
-
-  emails.forEach((email) => simulateClick(select.emailCheckbox(email)));
+  selectOnlyEmails(list, emails);
 
   // Gmail only shows Archive once something is selected
   const archiveButton = Array.from(select.archiveButtons()).find(
@@ -847,6 +867,178 @@ const sweepDateGroup = (timeRow) => {
   } else {
     emails.forEach((email) => simulateClick(select.emailCheckbox(email)));
   }
+};
+
+// =============================================================================
+// DRAG EMAILS ONTO A CATEGORY
+// =============================================================================
+
+/**
+ * Categories a drag onto the left menu can move mail into. Gmail's own drop
+ * there is a "move": it sets the category but also archives the email, so it
+ * never shows up under that category in the inbox. Inbox's bundles kept the
+ * email in the inbox, so we take over the drop and only change the category.
+ * Purchases is left out: Gmail ignores drops on it, and the Labels menu
+ * offers no way to assign it by hand.
+ */
+const DROPPABLE_CATEGORIES = ['Social', 'Updates', 'Forums', 'Promotions'];
+
+// How far the mouse must travel before a press counts as a drag, not a click
+const DRAG_THRESHOLD_PX = 5;
+
+/**
+ * Polls until find() returns something, for Gmail UI that draws a beat late
+ * @param {Function} find - Returns the element, or a falsy value if not there yet
+ * @param {number} tries - Attempts, 100ms apart (default: 20)
+ * @returns {Promise<Element|null>} The element, or null on timeout
+ */
+const waitForMatch = (find, tries = 20) =>
+  new Promise((resolve) => {
+    const attempt = (left) => {
+      const found = find();
+      if (found || left <= 0) resolve(found || null);
+      else setTimeout(() => attempt(left - 1), 100);
+    };
+    attempt(tries);
+  });
+
+/**
+ * Moves emails into a Gmail category through the toolbar's Labels menu.
+ * Clicking a category there applies it at once, replaces the old category,
+ * and shows Gmail's "Undo" toast. Afterwards the selection is set back to
+ * what it was.
+ * @param {Element} list - The list the emails live in
+ * @param {Element[]} emails - Rows to move
+ * @param {string} category - One of DROPPABLE_CATEGORIES
+ * @param {Element[]} previousSelection - Rows to leave selected afterwards
+ */
+const moveEmailsToCategory = async (list, emails, category, previousSelection) => {
+  const restoreSelection = () =>
+    selectOnlyEmails(
+      list,
+      previousSelection.filter((email) => email.isConnected),
+    );
+
+  selectOnlyEmails(list, emails);
+
+  const labelsButton = await waitForMatch(() =>
+    [...select.labelsButtons()].find((el) => el.getClientRects().length),
+  );
+  if (!labelsButton) {
+    console.warn('[Inbox Reborn] Labels button not found - could not move emails to', category);
+    restoreSelection();
+    return;
+  }
+  simulateClick(labelsButton);
+
+  const menu = await waitForMatch(select.labelsMenu);
+  const item =
+    menu &&
+    [...menu.querySelectorAll('[role=menuitemcheckbox]')].find(
+      (el) => el.textContent.trim() === category,
+    );
+
+  if (item && item.getAttribute('aria-checked') !== 'true') {
+    // The menu shows before Gmail wires it up, and an early click is ignored.
+    // A click that lands applies the category and closes the menu.
+    for (
+      let tries = 0;
+      tries < 10 && menu.getClientRects().length && item.getAttribute('aria-checked') !== 'true';
+      tries++
+    ) {
+      simulateClick(item);
+      await new Promise((resolve) => setTimeout(resolve, 150));
+    }
+  } else if (menu) {
+    // Already in that category (or Gmail renamed it): close without changes
+    (menu.querySelector('input') || menu).dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', keyCode: 27, bubbles: true }),
+    );
+  }
+
+  // Let Gmail finish the move before handing the old selection back
+  setTimeout(restoreSelection, 300);
+};
+
+/**
+ * Takes over Gmail's drag-to-category: when a drag that started on a list row
+ * ends on Social, Updates, Forums, or Promotions in the left menu, keeps the
+ * dragged emails in the inbox and just changes their category.
+ *
+ * Gmail drags with pointer/mouse events, not HTML5 drag and drop, and commits
+ * the drop on pointerup. Both pointerup and mouseup are swallowed before
+ * Gmail sees them (window, capture phase), then replayed over the row the
+ * drag started on, which Gmail treats as a drop on nothing - its drag ends
+ * cleanly without archiving anything.
+ */
+const watchCategoryDrops = () => {
+  let drag = null;
+  let swallowMouseUp = false;
+
+  window.addEventListener(
+    'pointerdown',
+    (e) => {
+      drag = null;
+      swallowMouseUp = false;
+      if (e.button !== 0 || !e.isTrusted) return;
+      const row = e.target.closest?.('.oy8Mbf .zA');
+      if (!row || row.classList.contains(CSS_CLASSES.BUNDLE_WRAPPER)) return;
+      // Read the selection now - Gmail ticks the dragged row once it moves
+      const selection = [...row.parentElement.querySelectorAll('.zA.x7')];
+      drag = { row, x: e.clientX, y: e.clientY, selection };
+    },
+    true,
+  );
+
+  const endDrag = (e) => {
+    if (!e.isTrusted) return;
+    if (e.type === 'mouseup' && swallowMouseUp) {
+      swallowMouseUp = false;
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      return;
+    }
+
+    const start = drag;
+    drag = null;
+    if (!start || !start.row.isConnected) return;
+    if (Math.hypot(e.clientX - start.x, e.clientY - start.y) < DRAG_THRESHOLD_PX) return;
+
+    const category = e.target.closest?.('.TO[data-tooltip]')?.getAttribute('data-tooltip');
+    if (!DROPPABLE_CATEGORIES.includes(category)) return;
+
+    // Like Gmail: dragging a selected row drags the whole selection
+    const list = start.row.parentElement;
+    const emails = start.selection.includes(start.row) ? start.selection : [start.row];
+
+    // Keep Gmail's move (and its archive) from running...
+    e.stopImmediatePropagation();
+    e.preventDefault();
+    swallowMouseUp = e.type === 'pointerup';
+
+    // ...and end its drag over the starting row instead. Gmail drops onto
+    // whatever the pointer last hovered, so move back over the row first.
+    const init = {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+      clientX: start.x,
+      clientY: start.y,
+      button: 0,
+    };
+    const pointer = { pointerId: e.pointerId ?? 1, pointerType: 'mouse', isPrimary: true };
+    const replay = (type, EventType, extra) =>
+      start.row.dispatchEvent(new EventType(type, { ...init, ...extra }));
+    replay('pointermove', PointerEvent, { ...pointer, buttons: 1 });
+    replay('mousemove', MouseEvent, { buttons: 1 });
+    replay('pointerup', PointerEvent, pointer);
+    replay('mouseup', MouseEvent, {});
+
+    setTimeout(() => moveEmailsToCategory(list, emails, category, start.selection), 0);
+  };
+
+  window.addEventListener('pointerup', endDrag, true);
+  window.addEventListener('mouseup', endDrag, true);
 };
 
 /**
@@ -999,29 +1191,66 @@ const addSendersToBundle = (label, senders) => {
 };
 
 /**
+ * Inbox's bundle icons, by kind. The sidebar's label icons (style.css,
+ * "LABEL SIDEBAR ICONS") use the same art, keyed by these names.
+ */
+const BUNDLE_ICONS = {
+  promotions: 'images/ic_offers_24px_clr_r3_2x.png',
+  finance: 'images/ic_finance_24px_clr_r3_2x.png',
+  purchases: 'images/ic_purchases_24px_clr_r3_2x.png',
+  travel: 'images/ic_travel_clr_24dp_r1_2x.png',
+  updates: 'images/ic_updates_24px_clr_r3_2x.png',
+  forums: 'images/ic_forums_24px_clr_r3_2x.png',
+  social: 'images/ic_social_24px_clr_r3_2x.png',
+  custom: 'images/ic_custom-cluster_24px_g60_r3_2x.png',
+};
+
+/**
+ * Picks which of Inbox's bundle icons a label gets
+ * @param {string} label - The label name
+ * @returns {string} A BUNDLE_ICONS key
+ */
+const getBundleIconKind = (label) => {
+  switch (true) {
+    case label === 'Promotions':
+      return 'promotions';
+    case /\b(finance|finances|banking|bank|tax|taxes)\b/i.test(label):
+      return 'finance';
+    case ['Orders', 'Purchases'].includes(label):
+      return 'purchases';
+    // Generic travel words only - anyone's "Cruise" or "Flights" label counts
+    case /\b(trips?|travel|cruises?|flights?|vacations?|hotels?)\b/i.test(label):
+      return 'travel';
+    case label === 'Updates':
+      return 'updates';
+    case label === 'Forums':
+      return 'forums';
+    case label === 'Social':
+      return 'social';
+    default:
+      return 'custom';
+  }
+};
+
+/**
  * Gets the appropriate bundle image for a label
  * @param {string} label - The bundle label
  * @returns {string} URL to the bundle image
  */
-const getBundleImageForLabel = (label) => {
-  switch (true) {
-    case label === 'Promotions':
-      return chrome.runtime.getURL('images/ic_offers_24px_clr_r3_2x.png');
-    case !!label.match(/\b(finance|finances|banking|bank|tax|taxes)\b/gi):
-      return chrome.runtime.getURL('images/ic_finance_24px_clr_r3_2x.png');
-    case ['Orders', 'Purchases'].includes(label):
-      return chrome.runtime.getURL('images/ic_purchases_24px_clr_r3_2x.png');
-    case !!label.match(/\b(trip|trips|travel)\b/gi):
-      return chrome.runtime.getURL('images/ic_travel_clr_24dp_r1_2x.png');
-    case label === 'Updates':
-      return chrome.runtime.getURL('images/ic_updates_24px_clr_r3_2x.png');
-    case label === 'Forums':
-      return chrome.runtime.getURL('images/ic_forums_24px_clr_r3_2x.png');
-    case label === 'Social':
-      return chrome.runtime.getURL('images/ic_social_24px_clr_r3_2x.png');
-    default:
-      return chrome.runtime.getURL('images/ic_custom-cluster_24px_g60_r3_2x.png');
-  }
+const getBundleImageForLabel = (label) =>
+  chrome.runtime.getURL(BUNDLE_ICONS[getBundleIconKind(label)]);
+
+/**
+ * Tags each label in the left menu with the bundle icon it should show
+ * (data-inbox-icon), so the stylesheet can paint the same art the label's
+ * bundle uses in the inbox. Only writes when the kind changes.
+ */
+const tagSidebarLabelIcons = () => {
+  document.querySelectorAll('.zw .TO[data-tooltip]').forEach((row) => {
+    if (!row.querySelector('.aHS-bnr')) return;
+    const kind = getBundleIconKind(row.getAttribute('data-tooltip'));
+    if (row.dataset.inboxIcon !== kind) row.dataset.inboxIcon = kind;
+  });
 };
 
 /**
@@ -1055,16 +1284,14 @@ const getBundleTitleColorForLabel = (email, label) => {
  */
 const getCategoryColor = (label) =>
   ({
-    Updates: 'rgb(255, 104, 57)',
-    Promotions: 'rgb(0, 188, 212)',
-    Forums: 'rgb(63, 81, 181)',
-    Social: 'rgb(219, 68, 55)',
-    Travel: 'rgb(156, 39, 176)',
-    Trips: 'rgb(156, 39, 176)',
-    Finance: 'rgb(103, 159, 56)',
-    Orders: 'rgb(121, 85, 72)',
-    Purchases: 'rgb(121, 85, 72)',
-  })[label] || '#616161';
+    updates: 'rgb(255, 104, 57)',
+    promotions: 'rgb(0, 188, 212)',
+    forums: 'rgb(63, 81, 181)',
+    social: 'rgb(219, 68, 55)',
+    travel: 'rgb(156, 39, 176)',
+    finance: 'rgb(103, 159, 56)',
+    purchases: 'rgb(121, 85, 72)',
+  })[getBundleIconKind(label)] || '#616161';
 
 /**
  * Builds a bundle wrapper element for a label
@@ -1081,7 +1308,7 @@ const buildBundleWrapper = (email, label, hasImportantMarkers) => {
   const style = `-webkit-mask: url(${bundleImage}) 0 0/100% 100%; background-color: ${styleColor};`;
 
   const bundleWrapper = htmlToElements(`
-    <div class="zA yO" bundleLabel="${label}">
+    <div class="zA yO" bundleLabel="${label}" bundleKind="${getBundleIconKind(label)}">
       <span class="oZ-x3 xY aid bundle-image" style="${style}"></span>
       <span class="WA xY ${importantMarkerClass}"></span>
       <span class="yX xY label-link .yW" ${bundleTitleColor ? `style="color: ${bundleTitleColor}"` : ''}>${label}</span>
@@ -1262,8 +1489,9 @@ const reloadOptions = () => {
       removeClassFromBody(CSS_CLASSES.PRIORITY_INBOX_OPTION);
     }
 
-    // Hide Gmail's AI Inbox menu row
+    // Hide Icons: Gmail's AI Inbox and All Mail menu rows
     toggleBodyClass(CSS_CLASSES.HIDE_AI_INBOX_OPTION, options.hideAiInbox === 'enabled');
+    toggleBodyClass(CSS_CLASSES.HIDE_ALL_MAIL_OPTION, options.hideAllMail === 'enabled');
 
     // Apply email bundling options
     if (options.emailBundling === 'enabled') {
@@ -1739,6 +1967,8 @@ const setupMenuNodes = () => {
     if (!sidebar) return;
 
     insertDoneMenuItem();
+    insertCategoryMenuItems();
+    insertRemindersMenuItem();
 
     // Map menu items to their selectors
     [
@@ -1792,6 +2022,9 @@ const SIDEBAR_ICON_ROWS = [
   '.TO[data-tooltip="Categories"] .TN',
   '.TO[data-tooltip="Purchases"] .TN',
   '.TO[data-tooltip="Purchased"] .TN',
+  // Travel and Finance rows the extension adds (insertCategoryMenuItems)
+  '.TO[data-tooltip="Travel"] .TN',
+  '.TO[data-tooltip="Finance"] .TN',
   // AI Inbox (2026 Gemini row): a bare .TN carrying the tooltip itself
   '.TN[data-tooltip="AI Inbox"]',
 ].join(', ');
@@ -1813,6 +2046,164 @@ const normalizeSidebarIcons = () => {
     iconWraps.slice(1).forEach((el) => el.classList.add('inbox-reborn-hidden'));
   });
 };
+
+/**
+ * Inbox's category bundles in their original order. Gmail still sorts mail
+ * into Travel and Finance but has no menu row for them, so the extension adds
+ * those two (Finance has no Gmail page either - it opens as a search).
+ */
+const CATEGORY_MENU_ORDER = [
+  'Travel',
+  'Purchases',
+  'Finance',
+  'Social',
+  'Updates',
+  'Forums',
+  'Promotions',
+];
+const EXTRA_CATEGORIES = ['Travel', 'Finance'];
+const FINANCE_HASH = '#search/category%3Afinance';
+const TRAVEL_PAGE_HASH = '#category/travel';
+
+/**
+ * Full names of the travel labels in the left menu - whatever labels this
+ * person has with a travel word in the name (see getBundleIconKind)
+ * @returns {string[]} Label names, e.g. ["Cruise", "Trips/Japan"]
+ */
+const getTravelLabels = () =>
+  [...document.querySelectorAll('.zw .TO a[href*="#label/"]')]
+    .map((link) => {
+      try {
+        return decodeURIComponent(
+          link.getAttribute('href').split('#label/')[1].replace(/\+/g, ' '),
+        );
+      } catch {
+        return '';
+      }
+    })
+    .filter((name) => name && getBundleIconKind(name) === 'travel');
+
+/**
+ * Where an extra category row leads. Travel is Gmail's hidden Travel page,
+ * or - when the person has travel labels - a search for that page's mail
+ * plus those labels, so a "Cruise" label's mail shows up under Travel.
+ * @param {string} name - 'Travel' or 'Finance'
+ * @returns {string} The hash to open
+ */
+const getCategoryHash = (name) => {
+  if (name === 'Finance') return FINANCE_HASH;
+  const labels = getTravelLabels();
+  if (!labels.length) return TRAVEL_PAGE_HASH;
+  const terms = labels.map((label) => `label:${label.replace(/[/\\& ]/g, '-')}`);
+  return `#search/${encodeURIComponent(`{category:travel ${terms.join(' ')}}`).replace(/%20/g, '+')}`;
+};
+
+/**
+ * Whether a hash is the page an extra category row leads to. Compares the
+ * decoded hash, since Gmail may re-encode a search after opening it.
+ * @param {string} name - 'Travel' or 'Finance'
+ * @param {string} hash - The hash to test (default: the current one)
+ * @returns {boolean} True on that category's page
+ */
+const isCategoryPage = (name, hash = window.location.hash) => {
+  let decoded = hash;
+  try {
+    decoded = decodeURIComponent(hash.replace(/\+/g, ' '));
+  } catch {
+    // Malformed escape - compare the raw hash
+  }
+  if (name === 'Finance') return /^#search\/category:finance(\/|$)/i.test(decoded);
+  return (
+    decoded.startsWith(TRAVEL_PAGE_HASH) ||
+    /^#search\/\{category:travel [^}]*\}(\/|$)/i.test(decoded)
+  );
+};
+
+/**
+ * Builds a menu row for one of the extra categories from a copy of one of
+ * Gmail's own category rows. Gmail's ids and click wiring are stripped so the
+ * copy acts only as a link, and its count and label-options button go too.
+ * @param {Element} template - A Gmail category row (.aim)
+ * @param {string} name - The category name
+ * @returns {Element} The new row
+ */
+const buildCategoryMenuItem = (template, name) => {
+  const item = template.cloneNode(true);
+  item.classList.add('inbox-reborn-category');
+  item
+    .querySelectorAll('*')
+    .forEach((el) =>
+      ['id', 'jslog', 'jsaction', 'jscontroller', 'jsmodel', 'data-label-name'].forEach((attr) =>
+        el.removeAttribute(attr),
+      ),
+    );
+  item.querySelectorAll('.bsU, .nL').forEach((el) => el.remove());
+
+  const row = item.querySelector('.TO');
+  row.setAttribute('data-tooltip', name);
+  // Gmail's per-category marker (UV, aS6...) and selected state
+  row.className = 'TO';
+
+  const link = item.querySelector('a');
+  if (link) {
+    link.href = getCategoryHash(name);
+    link.textContent = name;
+    link.setAttribute('aria-label', name);
+  }
+
+  // Worked out on click, so labels added since the row was built count
+  item.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.hash = getCategoryHash(name);
+  });
+  return item;
+};
+
+/**
+ * Highlights the extra category row for the page being shown, the way Gmail
+ * highlights its own rows (Gmail highlights nothing on these pages)
+ */
+const updateCategoryHighlight = () => {
+  document.querySelectorAll('.inbox-reborn-category .TO').forEach((row) => {
+    const active = isCategoryPage(row.getAttribute('data-tooltip'));
+    row.classList.toggle('nZ', active);
+    row.classList.toggle('aiq', active);
+  });
+};
+
+/**
+ * Adds Travel and Finance to the left menu's categories so they read like
+ * Inbox's: Travel, Purchases, Finance, Social, Updates, Forums, Promotions.
+ *
+ * The rows are appended after Gmail's own and put in place with CSS order
+ * (style.css, "TRAVEL & FINANCE SIDEBAR ROWS"). Inserting them between
+ * Gmail's rows shifted the positions Gmail updates the list by, and it drew
+ * Forums and Promotions a second time. Runs on every sidebar change, so it
+ * only touches the DOM when a row is missing.
+ */
+const insertCategoryMenuItems = () => {
+  const rowFor = (name) => document.querySelector(`.TO[data-tooltip="${name}"]`)?.closest('.aim');
+  const template = CATEGORY_MENU_ORDER.filter((name) => !EXTRA_CATEGORIES.includes(name))
+    .map(rowFor)
+    .find(Boolean);
+  if (!template) return;
+  const container = template.parentElement;
+
+  // Normalize first so copies carry a .qj for the icon rules
+  normalizeSidebarIcons();
+
+  EXTRA_CATEGORIES.forEach((name) => {
+    const item = rowFor(name);
+    if (item?.parentElement === container) return;
+    item?.remove();
+    container.append(buildCategoryMenuItem(template, name));
+  });
+
+  updateCategoryHighlight();
+};
+
+window.addEventListener('hashchange', updateCategoryHighlight);
 
 /**
  * Inserts a "Done" menu item in the sidebar
@@ -1901,37 +2292,92 @@ const insertDoneMenuItem = () => {
 };
 
 /**
- * Reorders menu items in the sidebar
+ * The Reminders row the extension adds to the left menu: starred inbox mail
+ * plus emails to yourself with "reminder" in the subject
  */
-const reorderMenuItems = () => {
-  const desiredOrder = [
-    '.aHS-bnq', // Drafts
-    '.aHS-bnu', // Sent
-    '.aHS-aHO', // All Mail
-    '.aHS-bnx', // Trash
-    '.aHS-bnv', // Spam
-  ];
+const REMINDERS_SEARCH = 'in:inbox (is:starred OR (from:me to:me subject:reminder))';
+const REMINDERS_CLASS = 'inbox-reborn-reminders';
 
-  const parent = select.menuParent();
-  const refer = select.menuRefer();
+/**
+ * Highlights the Reminders row while its search is showing
+ */
+const updateRemindersHighlight = () => {
+  const row = document.querySelector(`.${REMINDERS_CLASS} .TO`);
+  if (!row) return;
+  const active = window.location.hash === toSearchHash(REMINDERS_SEARCH);
+  row.classList.toggle('nZ', active);
+  row.classList.toggle('aiq', active);
+};
 
-  function tryReorder() {
-    // Find all the menu nodes in the desired order
-    const nodes = desiredOrder.map((sel) => document.querySelector(sel)?.closest('.TO'));
+/**
+ * Adds a Reminders row to the system group, built from a copy of Sent's row
+ * with Gmail's ids, click wiring, count and Sent marker stripped so it acts
+ * only as a link to REMINDERS_SEARCH.
+ *
+ * The row is appended after Gmail's own and the group is put in order with
+ * CSS (style.css, "SYSTEM MENU ORDER"). Gmail updates the menu by position,
+ * so inserting or moving rows between its own made it draw All Mail twice.
+ */
+const insertRemindersMenuItem = () => {
+  if (document.querySelector(`.wT .${REMINDERS_CLASS}`)) return;
+  const sent = document.querySelector('.wT .aHS-bnu')?.closest('.aim');
+  if (!sent) return;
 
-    if (nodes.some((n) => !n) || !parent || !refer) {
-      setTimeout(tryReorder, 250);
-      return;
-    }
+  // Normalize first so the copy carries a .qj for the icon rule
+  normalizeSidebarIcons();
 
-    // Remove from current position
-    nodes.forEach((node) => parent.contains(node) && parent.removeChild(node));
+  const item = sent.cloneNode(true);
+  item.classList.add(REMINDERS_CLASS);
+  item
+    .querySelectorAll('*')
+    .forEach((el) =>
+      ['id', 'jslog', 'jsaction', 'jscontroller', 'jsmodel', 'data-label-name'].forEach((attr) =>
+        el.removeAttribute(attr),
+      ),
+    );
+  item.querySelectorAll('.bsU, .nL').forEach((el) => el.remove());
+  item.querySelectorAll('[class*="aHS-"]').forEach((el) => {
+    [...el.classList].filter((c) => c.startsWith('aHS-')).forEach((c) => el.classList.remove(c));
+  });
 
-    // Insert in the new order before the reference node
-    nodes.forEach((node) => parent.insertBefore(node, refer));
+  const row = item.querySelector('.TO');
+  if (row) {
+    row.setAttribute('data-tooltip', 'Reminders');
+    row.className = 'TO';
   }
 
-  tryReorder();
+  const hash = toSearchHash(REMINDERS_SEARCH);
+  const link = item.querySelector('a');
+  if (link) {
+    link.href = hash;
+    link.textContent = 'Reminders';
+    link.setAttribute('aria-label', 'Reminders');
+    link.removeAttribute('title');
+  }
+
+  item.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.location.hash = hash;
+  });
+
+  sent.parentElement.append(item);
+  updateRemindersHighlight();
+};
+
+window.addEventListener('hashchange', updateRemindersHighlight);
+
+/**
+ * Adds the Reminders row once Sent renders, and again if Gmail rebuilds the
+ * menu without it
+ */
+const watchRemindersMenuItem = () => {
+  const tryInsert = () => {
+    insertRemindersMenuItem();
+    if (!document.querySelector(`.wT .${REMINDERS_CLASS}`)) setTimeout(tryInsert, 250);
+  };
+  tryInsert();
+  window.addEventListener('hashchange', insertRemindersMenuItem);
 };
 
 // =============================================================================
@@ -1961,6 +2407,8 @@ const handleHashChange = () => {
     if (hash.startsWith('#category/forums')) hash = '#forums';
     if (hash.startsWith('#category/promotions')) hash = '#promotions';
     if (hash.startsWith('#category/purchases')) hash = '#purchases';
+    if (isCategoryPage('Travel', hash)) hash = '#travel';
+    if (isCategoryPage('Finance', hash)) hash = '#finance';
     if (hash.startsWith('#settings/labels')) hash = '#labels';
 
     // Handle user-created/dynamic labels
@@ -2003,8 +2451,14 @@ const handleHashChange = () => {
   if (!titleNode || !headerElement) return;
 
   headerElement.setAttribute('pageTitle', hash.replace('#', ''));
-  // #pinned is ours, not a Gmail route - the title links back to the inbox
-  titleNode.href = hash === '#pinned' ? '#inbox' : hash;
+  // #pinned, #travel and #finance are ours, not Gmail routes - the title
+  // links to the page they stand for
+  const titleLinks = {
+    '#pinned': '#inbox',
+    '#travel': getCategoryHash('Travel'),
+    '#finance': FINANCE_HASH,
+  };
+  titleNode.href = titleLinks[hash] || hash;
 };
 
 /**
@@ -2930,7 +3384,7 @@ const setFavicon = () => {
 const init = () => {
   setFavicon();
   setupMenuNodes();
-  reorderMenuItems();
+  watchRemindersMenuItem();
 };
 
 // Initialize if document.head is available, otherwise wait for DOMContentLoaded
@@ -3039,6 +3493,7 @@ document.addEventListener('DOMContentLoaded', function () {
     addRecentContacts();
   });
   watchSentMessages();
+  watchCategoryDrops();
 
   // Set up label color observer (.FgKVne is Wiz build-hashed; .aeN .yJ is the
   // same label region anchored on the stable nav container)
@@ -3056,6 +3511,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Keep sidebar icons painted on Gmail's new SVG markup (sidebar rerenders
   // when labels expand/collapse, so this must re-run; no-op when normalized)
   setInterval(normalizeSidebarIcons, 500);
+  setInterval(tagSidebarLabelIcons, 500);
 
   // Set up side panel handler - wait for any recognizable side-panel button
   // (old build-hashed markup or the new role-based markup)

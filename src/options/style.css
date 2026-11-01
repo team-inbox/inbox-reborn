@@ -55,6 +55,11 @@ body {
   color: #616161;
 }
 
+/* Settings that group several toggles (Hide Icons) */
+.setting-content + .setting-content {
+  margin-top: 8px;
+}
+
 body.dark-mode {
   background-color: #303030;
   color: #fafafa;
