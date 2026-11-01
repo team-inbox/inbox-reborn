@@ -234,6 +234,7 @@ const CSS_CLASSES = {
   WEB_AVATAR: 'web-avatar',
   STYLE_NODE_ID_PREFIX: 'hide-email-',
   PRIORITY_INBOX_OPTION: 'priority-inbox-enabled',
+  HIDE_DATE_TIME_OPTION: 'hide-date-time',
   HIDE_AI_INBOX_OPTION: 'hide-ai-inbox',
   HIDE_ALL_MAIL_OPTION: 'hide-all-mail',
   HIDE_TRAVEL_OPTION: 'hide-travel',
@@ -1687,8 +1688,9 @@ const reloadOptions = () => {
       removeClassFromBody(CSS_CLASSES.PRIORITY_INBOX_OPTION);
     }
 
-    // Hide: Gmail's AI Inbox and All Mail menu rows, and the extension's
-    // Travel and Finance category rows
+    // Hide: the date/time on list rows (Inbox showed none), Gmail's AI Inbox
+    // and All Mail menu rows, and the extension's Travel and Finance rows
+    toggleBodyClass(CSS_CLASSES.HIDE_DATE_TIME_OPTION, options.hideDateTime === 'enabled');
     toggleBodyClass(CSS_CLASSES.HIDE_AI_INBOX_OPTION, options.hideAiInbox === 'enabled');
     toggleBodyClass(CSS_CLASSES.HIDE_ALL_MAIL_OPTION, options.hideAllMail === 'enabled');
     toggleBodyClass(CSS_CLASSES.HIDE_TRAVEL_OPTION, options.hideTravel === 'enabled');

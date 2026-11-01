@@ -43,14 +43,14 @@ Web extension which modifies Gmail™ to bring back the features and uncluttered
 Click the extension's icon at the top right of your browser to adjust its behavior.
 Changes apply immediately — the page refreshes itself when needed.
 
-| Option              | What it does                                                                                                                                                  |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Dark Mode**       | Toggles the extension's built-in dark theme. No need to change Gmail's own theme setting. Applies instantly, no refresh.                                      |
-| **Reminders**       | How emails sent to yourself are treated: every self-sent email, only those with the subject "Reminder", or none.                                              |
-| **Email Bundling**  | Groups inbox emails by label (see [Email Bundling](#email-bundling) below). Sub-options: bundle even single emails; show bundles in Today.                    |
-| **Avatars**         | Shows each sender's avatar next to their email — a picture when one is found, otherwise a colored circle with their first initial.                            |
-| **Gravatar Photos** | Also looks up sender pictures on Gravatar. Off by default — it shares a hashed copy of each sender's address with Gravatar.                                   |
-| **Hide**            | Five switches: Priority Inbox headings (when Gmail's "Priority Inbox" type is enabled), and the AI Inbox, All Mail, Travel and Finance rows in the left menu. |
+| Option              | What it does                                                                                                                                                                                                                                         |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Dark Mode**       | Toggles the extension's built-in dark theme. No need to change Gmail's own theme setting. Applies instantly, no refresh.                                                                                                                             |
+| **Reminders**       | How emails sent to yourself are treated: every self-sent email, only those with the subject "Reminder", or none.                                                                                                                                     |
+| **Email Bundling**  | Groups inbox emails by label (see [Email Bundling](#email-bundling) below). Sub-options: bundle even single emails; show bundles in Today.                                                                                                           |
+| **Avatars**         | Shows each sender's avatar next to their email — a picture when one is found, otherwise a colored circle with their first initial.                                                                                                                   |
+| **Gravatar Photos** | Also looks up sender pictures on Gravatar. Off by default — it shares a hashed copy of each sender's address with Gravatar.                                                                                                                          |
+| **Hide**            | Six switches: the date and time on emails in the list (like Inbox, where the date groups carried it), Priority Inbox headings (when Gmail's "Priority Inbox" type is enabled), and the AI Inbox, All Mail, Travel and Finance rows in the left menu. |
 
 ## Recommended Gmail™ Settings
 
