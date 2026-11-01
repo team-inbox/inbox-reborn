@@ -34,6 +34,9 @@ Web extension which modifies Gmail™ to bring back the features and uncluttered
 - Inbox's categories in the left menu, in Inbox's order: **Travel, Purchases, Finance,
   Social, Updates, Forums, Promotions**. Gmail sorts mail into Travel and Finance but
   never lists them; the extension adds them
+- Inbox's two label sections in the left menu, **Bundled in the inbox** and
+  **Unbundled** — drag a label between them to choose whether its emails bundle (see
+  [How bundling works](#how-bundling-works))
 - Labels in the left menu use Inbox's icons (see
   [Label names and icons](#label-names-and-icons))
 - **Drag emails onto Social, Updates, Forums or Promotions** in the left menu to re-file
@@ -83,19 +86,25 @@ Using these settings will more closely replicate the visual style of Inbox:
 
 ### How bundling works
 
-Bundles are built from the **labels on your inbox emails**:
+Bundles are built from the **labels on your inbox emails**, the way Inbox built them:
 
-- Any label shared by **two or more inbox emails** collapses into a single bundle row.
-  Tick _"Show bundle if only one email"_ in the options to bundle single emails too.
+- The left menu is split like Inbox's: **Bundled in the inbox** lists Travel, Purchases,
+  Finance, Social, Updates, Forums and Promotions plus every label that bundles;
+  **Unbundled** lists the labels whose emails show one by one. **Drag a label from
+  Unbundled up into Bundled in the inbox** to bundle it, and back down to stop. As in
+  Inbox, every label starts out in Unbundled; your choice is saved per account. A nested
+  label goes with the label it is nested under (drag the top-level label).
+- A bundled label shared by **two or more inbox emails** collapses into a single bundle
+  row. Tick _"Show bundle if only one email"_ in the options to bundle single emails too.
 - Clicking a bundle row opens that label's view, just like Inbox did.
 - **Starred emails always stay out of bundles**, so important mail never gets hidden.
 - Only mail that is actually **in the inbox** can be bundled — labels applied to archived
   mail don't create bundles.
-- Labels with certain names automatically get their original Inbox colored icons, on
-  the bundle and in the left menu (see [Label names and icons](#label-names-and-icons)).
-  Any other label gets Inbox's stacked-envelopes icon.
-- To keep a label out of bundling entirely, create a label called `Unbundled` and nest
-  the label underneath it.
+- The categories carry their original Inbox colored icons; your own labels get Inbox's
+  stacked-envelopes bundle icon, on the bundle and in the left menu (see
+  [Label names and icons](#label-names-and-icons)).
+- A label nested under a label called `Unbundled` (the original way to keep a label out
+  of bundling) never bundles, and keeps its emails out of other bundles too.
 
 ### Recreate Inbox's default bundles
 
@@ -145,29 +154,21 @@ Forums, Promotions). Here's how to get them back:
 
 The same label + filter recipe works for any bundle you want — Shipping, Receipts,
 Newsletters, work projects, family. Filters apply the label as mail arrives, so your
-bundles maintain themselves. Name a bundle `Taxes` or `Trips` and it even gets the
-matching Inbox icon.
+bundles maintain themselves.
 
 ### Label names and icons
 
-A label's name decides its icon, both on its bundle and in the left menu. Capitalization
-doesn't matter. "Whole word" means the word stands on its own in the name:
-`Summer Vacation` and `Trips/Japan` count, `Cruising` doesn't.
+Travel, Purchases, Finance, Social, Updates, Forums and Promotions have Inbox's own
+colored icons. Every label of yours gets Inbox's stacked-envelopes bundle icon, on its
+bundle and in the left menu, whatever it is called. Labels you've given a color in Gmail
+keep that color on their icon.
 
-| Icon                                | Label name has…                                                               | Examples                                        |
-| ----------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------- |
-| Travel (purple plane)               | the whole word trip(s), travel, cruise(s), flight(s), vacation(s) or hotel(s) | `Cruise`, `Trips`, `Flights`, `Summer Vacation` |
-| Finance (green chart)               | the whole word finance(s), bank, banking, tax or taxes                        | `Taxes`, `Bank`, `Home Finance`                 |
-| Purchases (brown cart)              | exactly `Orders` or `Purchases`                                               | `Orders`                                        |
-| Social, Updates, Forums, Promotions | exactly that name                                                             |                                                 |
-| Stacked envelopes                   | anything else                                                                 | `Family`, `Work`                                |
-
-Labels you've given a color in Gmail keep that color on their icon.
-
-**Travel labels also show up under Travel.** The Travel item in the left menu opens the
-mail Google files as travel, plus the mail in every travel-named label you have. Without
-a travel label, Travel shows only Google's sorting. Gmail won't let you create a label
-named `Travel` (it's reserved), so use `Trips`, `Cruise`, `Flights` or `Vacation`.
+**Travel-named labels also show up under Travel.** The Travel item in the left menu
+opens the mail Google files as travel, plus the mail in every label of yours with the
+whole word trip(s), travel, cruise(s), flight(s), vacation(s) or hotel(s) in its name
+(`Cruise`, `Trips/Japan`, `Summer Vacation`; not `Cruising`). Without such a label,
+Travel shows only Google's sorting. Gmail won't let you create a label named `Travel`
+(it's reserved), so use `Trips`, `Cruise`, `Flights` or `Vacation`.
 
 ### Bundling troubleshooting
 

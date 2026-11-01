@@ -332,6 +332,11 @@ const select = {
       (menu) => menu.getClientRects().length && menu.querySelector('[role=menuitemcheckbox]'),
     ),
 
+  // Left menu: Gmail's list of the person's labels, and the "Labels" title
+  // (with the create-label + button) above it
+  labelList: () => document.querySelector('.wT .zw > .TK'),
+  labelListTitle: () => document.querySelector('.aAw .aAv'),
+
   // Menu elements
   menu: () => document.body.querySelector('.J-Ke.n4.ah9'),
   composeButtonNew: () => document.querySelector('.Yh.akV'),
@@ -727,12 +732,22 @@ const getPinnedHash = () =>
 const checkImportantMarkers = () => select.importanceMarkers();
 
 /**
- * Checks if an email has the Unbundled parent label
+ * Whether a label is nested under an "Unbundled" label - the original way to
+ * keep a label out of bundling, still honored
+ * @param {string} label - The label name
+ * @returns {boolean} True for Unbundled/... labels
+ */
+const hasUnbundledParentLabel = (label) => label.indexOf(CSS_CLASSES.UNBUNDLED_PARENT_LABEL) >= 0;
+
+/**
+ * Checks if an email has a label nested under an "Unbundled" label, which
+ * keeps the whole email out of bundles (its chips are tidied too). Labels
+ * left in the left menu's Unbundled section are simply skipped when the
+ * email is bundled - see isLabelBundled.
  * @param {string[]} labels - Array of label names
  * @returns {boolean} True if the email has an Unbundled label
  */
-const checkEmailUnbundledLabel = (labels) =>
-  labels.some((label) => label.indexOf(CSS_CLASSES.UNBUNDLED_PARENT_LABEL) >= 0);
+const checkEmailUnbundledLabel = (labels) => labels.some(hasUnbundledParentLabel);
 
 /**
  * Gets the read status of an email
@@ -1390,31 +1405,28 @@ const BUNDLE_ICONS = {
 };
 
 /**
- * Picks which of Inbox's bundle icons a label gets
+ * Picks which of Inbox's bundle icons a label gets: the seven categories
+ * have their own, and every label of the person's own gets Inbox's stacked
+ * envelopes, whatever it is called (a "Cruise" label is a custom bundle,
+ * not Travel)
  * @param {string} label - The label name
  * @returns {string} A BUNDLE_ICONS key
  */
-const getBundleIconKind = (label) => {
-  switch (true) {
-    case label === 'Promotions':
-      return 'promotions';
-    case /\b(finance|finances|banking|bank|tax|taxes)\b/i.test(label):
-      return 'finance';
-    case ['Orders', 'Purchases'].includes(label):
-      return 'purchases';
-    // Generic travel words only - anyone's "Cruise" or "Flights" label counts
-    case /\b(trips?|travel|cruises?|flights?|vacations?|hotels?)\b/i.test(label):
-      return 'travel';
-    case label === 'Updates':
-      return 'updates';
-    case label === 'Forums':
-      return 'forums';
-    case label === 'Social':
-      return 'social';
-    default:
-      return 'custom';
-  }
+const getBundleIconKind = (label) => CATEGORY_ICON_KINDS[label] || 'custom';
+
+const CATEGORY_ICON_KINDS = {
+  Travel: 'travel',
+  Purchases: 'purchases',
+  Finance: 'finance',
+  Social: 'social',
+  Updates: 'updates',
+  Forums: 'forums',
+  Promotions: 'promotions',
 };
+
+// Labels whose mail the Travel page also lists (getTravelLabels) - generic
+// travel words only, so anyone's "Cruise" or "Flights" label counts
+const TRAVEL_LABEL_WORDS = /\b(trips?|travel|cruises?|flights?|vacations?|hotels?)\b/i;
 
 /**
  * Gets the appropriate bundle image for a label
@@ -2004,19 +2016,22 @@ const getEmails = () => {
     ) {
       addClassToEmail(email, CSS_CLASSES.UNBUNDLED_EMAIL);
 
-      // Process labels for unbundled emails
-      select.emailAllLabels(info.emailEl).forEach((labelEl) => {
-        if (select.labelTitle(labelEl).title.indexOf(CSS_CLASSES.UNBUNDLED_PARENT_LABEL) >= 0) {
-          // Remove 'Unbundled/' from display in the UI
-          select.labelInnerText(labelEl).innerText = labelEl.innerText.replace(
-            CSS_CLASSES.UNBUNDLED_PARENT_LABEL + '/',
-            '',
-          );
-        } else {
-          // Hide labels that aren't nested under UNBUNDLED_PARENT_LABEL
-          labelEl.hidden = true;
-        }
-      });
+      // Tidy the chips of emails under an "Unbundled" label (labels dragged
+      // to the Unbundled section keep their chips as they are)
+      if (info.labels.some(hasUnbundledParentLabel)) {
+        select.emailAllLabels(info.emailEl).forEach((labelEl) => {
+          if (hasUnbundledParentLabel(select.labelTitle(labelEl).title)) {
+            // Remove 'Unbundled/' from display in the UI
+            select.labelInnerText(labelEl).innerText = labelEl.innerText.replace(
+              CSS_CLASSES.UNBUNDLED_PARENT_LABEL + '/',
+              '',
+            );
+          } else {
+            // Hide labels that aren't nested under UNBUNDLED_PARENT_LABEL
+            labelEl.hidden = true;
+          }
+        });
+      }
     }
 
     // Hide tab labels from emails
@@ -2270,8 +2285,9 @@ const updateReminders = () => {
         }
       }
 
-      // Filter out tab labels
-      let labels = emailInfo.labels.filter((x) => !tabs.includes(x));
+      // Filter out tab labels and labels left in the left menu's Unbundled
+      // section (the categories always bundle)
+      let labels = emailInfo.labels.filter((x) => !tabs.includes(x) && isLabelBundled(x));
 
       // If bundleOne is disabled, only bundle labels with multiple emails
       if (!options.bundleOne) {
@@ -2425,7 +2441,7 @@ const TRAVEL_PAGE_HASH = '#category/travel';
 
 /**
  * Full names of the travel labels in the left menu - whatever labels this
- * person has with a travel word in the name (see getBundleIconKind)
+ * person has with a travel word in the name (TRAVEL_LABEL_WORDS)
  * @returns {string[]} Label names, e.g. ["Cruise", "Trips/Japan"]
  */
 const getTravelLabels = () =>
@@ -2439,7 +2455,7 @@ const getTravelLabels = () =>
         return '';
       }
     })
-    .filter((name) => name && getBundleIconKind(name) === 'travel');
+    .filter((name) => name && TRAVEL_LABEL_WORDS.test(name));
 
 /**
  * Where an extra category row leads. Travel is Gmail's hidden Travel page,
@@ -2483,9 +2499,11 @@ const isCategoryPage = (name, hash = getViewHash()) => {
  * copy acts only as a link, and its count and label-options button go too.
  * @param {Element} template - A Gmail category row (.aim)
  * @param {string} name - The category name
+ * @param {string} [href] - Where the row leads (default: getCategoryHash)
  * @returns {Element} The new row
  */
-const buildCategoryMenuItem = (template, name) => {
+const buildCategoryMenuItem = (template, name, href) => {
+  const target = () => href || getCategoryHash(name);
   const item = template.cloneNode(true);
   item.classList.add('inbox-reborn-category');
   item
@@ -2504,7 +2522,7 @@ const buildCategoryMenuItem = (template, name) => {
 
   const link = item.querySelector('a');
   if (link) {
-    link.href = getCategoryHash(name);
+    link.href = target();
     link.textContent = name;
     link.setAttribute('aria-label', name);
   }
@@ -2513,18 +2531,24 @@ const buildCategoryMenuItem = (template, name) => {
   item.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
-    window.location.hash = getCategoryHash(name);
+    window.location.hash = target();
   });
   return item;
 };
 
 /**
- * Highlights the extra category row for the page being shown, the way Gmail
- * highlights its own rows (Gmail highlights nothing on these pages)
+ * Highlights the category rows the extension draws for the page being shown,
+ * the way Gmail highlights its own rows (Gmail highlights nothing on the
+ * Travel and Finance pages, and its own category rows are hidden while the
+ * label sections are on)
  */
 const updateCategoryHighlight = () => {
+  const hash = getViewHash();
   document.querySelectorAll('.inbox-reborn-category .TO').forEach((row) => {
-    const active = isCategoryPage(row.getAttribute('data-tooltip'));
+    const name = row.getAttribute('data-tooltip');
+    const active = EXTRA_CATEGORIES.includes(name)
+      ? isCategoryPage(name)
+      : new RegExp(`^#category/${name.toLowerCase()}(/|$)`).test(hash);
     row.classList.toggle('nZ', active);
     row.classList.toggle('aiq', active);
   });
@@ -2541,6 +2565,14 @@ const updateCategoryHighlight = () => {
  * only touches the DOM when a row is missing.
  */
 const insertCategoryMenuItems = () => {
+  // With the label sections on, the categories are drawn in the label list
+  // instead (layoutLabelSections); rows added here earlier go
+  if (areLabelSectionsOn()) {
+    document
+      .querySelectorAll(`.inbox-reborn-category:not(.${LABEL_SECTION_CLASSES.LIST} > *)`)
+      .forEach((row) => row.remove());
+    return;
+  }
   const rowFor = (name) => document.querySelector(`.TO[data-tooltip="${name}"]`)?.closest('.aim');
   const template = CATEGORY_MENU_ORDER.filter((name) => !EXTRA_CATEGORIES.includes(name))
     .map(rowFor)
@@ -2562,6 +2594,392 @@ const insertCategoryMenuItems = () => {
 };
 
 window.addEventListener('hashchange', updateCategoryHighlight);
+
+// =============================================================================
+// BUNDLED / UNBUNDLED LABEL SECTIONS
+// =============================================================================
+
+/* Inbox split the left menu's labels in two. "Bundled in the inbox" held the
+   category bundles and the labels whose mail collapsed into bundles;
+   "Unbundled" held the labels whose mail showed as single rows. Dragging a
+   label from one section to the other switched it over.
+
+   As in Inbox, the categories always bundle and a label bundles only once
+   it has been dragged to "Bundled in the inbox", so what is stored
+   (chrome.storage.local, per account) is the set of bundled labels. Gmail's
+   rows never move: Gmail redraws a row when it changes (a nested label
+   expands, a count changes) and looks for it where it left it. The sections
+   are made inside Gmail's own label list with CSS order (style.css,
+   "BUNDLED / UNBUNDLED LABEL SECTIONS"): copies of the category rows go to
+   the top and Gmail's own are hidden, each label row is tagged with its
+   section, and an "Unbundled" title sits between the two. Gmail's "Labels"
+   title reads "Bundled in the inbox". A nested label follows the label it
+   is nested under. */
+const BUNDLED_LABELS_KEY = 'bundledLabels';
+const LABEL_SECTIONS = { BUNDLED: 'bundled', UNBUNDLED: 'unbundled' };
+const LABEL_SECTION_ATTR = 'data-inbox-section';
+const DROP_TARGET_ATTR = 'data-drop-target';
+const LABEL_SECTION_CLASSES = {
+  ON: 'inbox-reborn-label-sections-on', // on <body> while the sections are drawn
+  LIST: 'inbox-reborn-label-sections', // Gmail's label list, once split
+  TITLE: 'inbox-reborn-section-title', // the Unbundled title row
+  HINT: 'inbox-reborn-section-hint', // how-to row, shown while no label is bundled
+  DRAGGING: 'inbox-reborn-label-dragging', // on <body> during a drag
+  GHOST: 'inbox-reborn-label-ghost', // the label name under the pointer
+  DRAG_SOURCE: 'inbox-reborn-label-drag-source', // the row being dragged
+};
+const BUNDLED_SECTION_TITLE = 'Bundled in the inbox';
+const UNBUNDLED_SECTION_TITLE = 'Unbundled';
+const BUNDLED_SECTION_HINT = 'Drag a label up here to bundle its emails in the inbox';
+
+let bundledLabelsStore = null; // { [account]: label names } as stored; null until read
+let bundledLabels = { account: null, set: new Set() }; // the signed-in account's share
+
+/**
+ * Reads the bundled labels from storage and follows later changes (a drop
+ * in another Gmail tab)
+ */
+const loadBundledLabels = () => {
+  chrome.storage?.local.get(BUNDLED_LABELS_KEY, (result) => {
+    bundledLabelsStore = result[BUNDLED_LABELS_KEY] || {};
+    bundledLabels = { account: null, set: new Set() };
+    rebuildBundles();
+    layoutLabelSections();
+  });
+  chrome.storage?.onChanged.addListener((changes, area) => {
+    if (area !== 'local' || !changes[BUNDLED_LABELS_KEY]) return;
+    const next = changes[BUNDLED_LABELS_KEY].newValue || {};
+    if (JSON.stringify(next) === JSON.stringify(bundledLabelsStore)) return; // this tab's own write
+    bundledLabelsStore = next;
+    bundledLabels = { account: null, set: new Set() };
+    rebuildBundles();
+    layoutLabelSections();
+  });
+};
+
+/**
+ * The bundled labels of the signed-in account. The account is looked up
+ * until Gmail has drawn it; after that the set is reused.
+ * @returns {Set<string>} Top-level label names
+ */
+const getBundledLabelSet = () => {
+  if (!bundledLabels.account || bundledLabels.account === 'default') {
+    const account = getMyEmailAddress() || 'default';
+    if (bundledLabels.account !== account) {
+      bundledLabels = { account, set: new Set(bundledLabelsStore?.[account] || []) };
+    }
+  }
+  return bundledLabels.set;
+};
+
+/**
+ * Whether the left menu is split into the two sections: bundling is on and
+ * the stored bundled labels have been read
+ * @returns {boolean} True when the sections are drawn
+ */
+const areLabelSectionsOn = () => options.emailBundling === 'enabled' && !!bundledLabelsStore;
+
+/**
+ * A label and the labels it is nested under, outermost first
+ * @param {string} label - e.g. "Work/Projects/Alpha"
+ * @returns {string[]} e.g. ["Work", "Work/Projects", "Work/Projects/Alpha"]
+ */
+const labelAndParents = (label) =>
+  label.split('/').map((_, i, parts) => parts.slice(0, i + 1).join('/'));
+
+/**
+ * Whether a label's mail bundles in the inbox: the categories always do, and
+ * a label does once it (or a label it is nested under) was dragged to
+ * "Bundled in the inbox". Nothing bundles until storage has answered.
+ * @param {string} label - The label name
+ * @returns {boolean} True for a bundled label
+ */
+const isLabelBundled = (label) => {
+  if (label in CATEGORY_BUNDLES || GMAIL_CATEGORY_CHIPS.includes(label)) return true;
+  if (!bundledLabelsStore || hasUnbundledParentLabel(label)) return false;
+  return labelAndParents(label).some((name) => getBundledLabelSet().has(name));
+};
+
+/**
+ * Whether a left-menu label row can be dragged between the sections. Nested
+ * labels follow their parent; labels under an "Unbundled" label are unbundled
+ * by name; a label named like a category shares that category's bundle.
+ * @param {string} label - The label name
+ * @returns {boolean} True when the row can be dragged
+ */
+const isLabelDraggable = (label) =>
+  !!label &&
+  !label.includes('/') &&
+  !hasUnbundledParentLabel(label) &&
+  !(label in CATEGORY_BUNDLES) &&
+  !GMAIL_CATEGORY_CHIPS.includes(label);
+
+/**
+ * Takes the inbox back to plain rows, so the next pass (updateReminders)
+ * bundles it again by the current rules
+ */
+const rebuildBundles = () => {
+  closeBundleMenu(false);
+  document
+    .querySelectorAll(`.${CSS_CLASSES.BUNDLED_EMAIL}, .${CSS_CLASSES.UNBUNDLED_EMAIL}`)
+    .forEach((el) => el.classList.remove(CSS_CLASSES.BUNDLED_EMAIL, CSS_CLASSES.UNBUNDLED_EMAIL));
+  document.querySelectorAll(`.${CSS_CLASSES.BUNDLE_WRAPPER}`).forEach((el) => el.remove());
+  [...hiddenEmailIds].forEach(removeStyleNodeWithEmailId);
+  document.querySelectorAll('.time-row[hidden]').forEach((row) => (row.hidden = false));
+};
+
+/**
+ * Moves a label into or out of "Bundled in the inbox", saves it, and redraws
+ * the left menu and the inbox
+ * @param {string} label - A top-level label name
+ * @param {boolean} bundled - True to start bundling the label
+ */
+const setLabelBundled = (label, bundled) => {
+  const set = getBundledLabelSet();
+  if (set.has(label) === bundled) return;
+  if (bundled) set.add(label);
+  else set.delete(label);
+  bundledLabelsStore = { ...bundledLabelsStore, [bundledLabels.account]: [...set].sort() };
+  chrome.storage.local.set({ [BUNDLED_LABELS_KEY]: bundledLabelsStore });
+  rebuildBundles();
+  layoutLabelSections();
+};
+
+/**
+ * The full name of the label a left-menu row shows ("Software/Chess" - the
+ * row's tooltip only has the last part)
+ * @param {Element} row - A label row (.aim)
+ * @returns {string} The label name, or '' for other rows
+ */
+const getLabelRowName = (row) => {
+  const href = row.querySelector('a[href*="#label/"]')?.getAttribute('href') || '';
+  return href ? decodeHashPart(href.split('#label/')[1] || '') : '';
+};
+
+/**
+ * Gmail's label rows in the label list - not the category copies or the title
+ * @param {Element} list - The label list (.zw > .TK)
+ * @returns {Element[]} The rows
+ */
+const getLabelRows = (list) =>
+  [...list.children].filter(
+    (row) =>
+      row.classList.contains('aim') &&
+      !row.classList.contains('inbox-reborn-category') &&
+      getLabelRowName(row),
+  );
+
+/**
+ * Gmail's own row for a category, wherever Gmail drew it
+ * @param {string} name - The category name
+ * @returns {Element|undefined} The row (.aim)
+ */
+const getGmailCategoryRow = (name) =>
+  [...document.querySelectorAll(`.TO[data-tooltip="${name}"]`)]
+    .map((row) => row.closest('.aim'))
+    .find((row) => row && !row.classList.contains('inbox-reborn-category'));
+
+/**
+ * Draws the category rows at the top of the label list, in Inbox's order:
+ * copies of Gmail's own rows (which the stylesheet hides while the sections
+ * are on) plus Travel and Finance. Only adds what is missing.
+ * @param {Element} list - The label list
+ */
+const placeCategoryRows = (list) => {
+  const gmailRows = Object.fromEntries(
+    CATEGORY_MENU_ORDER.map((name) => [name, getGmailCategoryRow(name)]),
+  );
+  const template = CATEGORY_MENU_ORDER.map((name) => gmailRows[name]).find(Boolean);
+  if (!template) return;
+
+  const copies = new Set(
+    [...list.querySelectorAll(':scope > .inbox-reborn-category .TO')].map((row) =>
+      row.getAttribute('data-tooltip'),
+    ),
+  );
+  const wanted = (name) => gmailRows[name] || EXTRA_CATEGORIES.includes(name);
+  if (CATEGORY_MENU_ORDER.every((name) => copies.has(name) || !wanted(name))) return;
+
+  // Normalize first so copies carry a .qj for the icon rules
+  normalizeSidebarIcons();
+  CATEGORY_MENU_ORDER.forEach((name) => {
+    const source = gmailRows[name];
+    if (copies.has(name) || !wanted(name)) return;
+    // Gmail's rows keep their own page; Travel and Finance work theirs out
+    const href = source && !EXTRA_CATEGORIES.includes(name) ? source.querySelector('a')?.href : '';
+    list.append(
+      buildCategoryMenuItem(source || template, name, href ? `#${href.split('#')[1]}` : undefined),
+    );
+  });
+  updateCategoryHighlight();
+};
+
+/**
+ * Builds the Unbundled title row
+ * @returns {Element} The title row
+ */
+const buildUnbundledTitle = () =>
+  createEl('div', LABEL_SECTION_CLASSES.TITLE, { role: 'heading', 'aria-level': '2' }, [
+    UNBUNDLED_SECTION_TITLE,
+  ]);
+
+/**
+ * Splits Gmail's label list into the two sections (or leaves it alone while
+ * bundling is off). Runs on every change to the list and on a timer, and
+ * only writes what differs, so a redrawn row is tagged before it is painted.
+ */
+const layoutLabelSections = () => {
+  const list = select.labelList();
+  const on = !!list && areLabelSectionsOn();
+  toggleBodyClass(LABEL_SECTION_CLASSES.ON, on);
+  if (!on) return;
+
+  list.classList.add(LABEL_SECTION_CLASSES.LIST);
+  const title = select.labelListTitle();
+  if (title && title.textContent !== BUNDLED_SECTION_TITLE) {
+    title.textContent = BUNDLED_SECTION_TITLE;
+  }
+
+  placeCategoryRows(list);
+
+  // The how-to row (below the categories, until a label joins them) and the
+  // Unbundled title
+  if (!list.querySelector(`:scope > .${LABEL_SECTION_CLASSES.TITLE}`)) {
+    list.append(
+      createEl('div', LABEL_SECTION_CLASSES.HINT, {}, [BUNDLED_SECTION_HINT]),
+      buildUnbundledTitle(),
+    );
+  }
+
+  let bundledCount = 0;
+  getLabelRows(list).forEach((row) => {
+    const section = isLabelBundled(getLabelRowName(row))
+      ? LABEL_SECTIONS.BUNDLED
+      : LABEL_SECTIONS.UNBUNDLED;
+    if (section === LABEL_SECTIONS.BUNDLED) bundledCount++;
+    if (row.getAttribute(LABEL_SECTION_ATTR) !== section) {
+      row.setAttribute(LABEL_SECTION_ATTR, section);
+    }
+  });
+  list.classList.toggle('has-bundled-labels', bundledCount > 0);
+};
+
+/**
+ * Keeps the sections in step with Gmail's label list: Gmail redraws rows as
+ * labels expand, collapse, get created or renamed
+ */
+const watchLabelList = () => {
+  waitForElement('.wT .zw', (zw) => {
+    new MutationObserver(layoutLabelSections).observe(zw, { childList: true, subtree: true });
+    layoutLabelSections();
+  });
+};
+
+/**
+ * Lets a label row be dragged between the two sections. Gmail's rows don't
+ * drag natively, so this follows the pointer itself: past a few pixels the
+ * label's name follows the pointer, the section under it lights up, and
+ * releasing over the other section moves the label there. The click Gmail
+ * would take from the release (opening the label) is swallowed.
+ */
+const watchLabelSectionDrags = () => {
+  let drag = null; // { row, label, x, y, ghost }
+
+  // The section under a point. Looks through everything stacked there, as
+  // Gmail lays a transparent layer over the page while the button is down.
+  const sectionAt = (x, y) => {
+    for (const el of document.elementsFromPoint(x, y)) {
+      if (el.closest(`.aAw, .${LABEL_SECTION_CLASSES.HINT}`)) return LABEL_SECTIONS.BUNDLED;
+      if (el.closest(`.${LABEL_SECTION_CLASSES.TITLE}`)) return LABEL_SECTIONS.UNBUNDLED;
+      const row = el.closest(`.${LABEL_SECTION_CLASSES.LIST} > .aim`);
+      if (row) {
+        return row.classList.contains('inbox-reborn-category')
+          ? LABEL_SECTIONS.BUNDLED
+          : row.getAttribute(LABEL_SECTION_ATTR);
+      }
+    }
+    return null;
+  };
+
+  const setDropTarget = (section) => {
+    [select.labelList(), select.labelListTitle()?.closest('.aAw')].forEach((el) => {
+      if (!el) return;
+      if (section) el.setAttribute(DROP_TARGET_ATTR, section);
+      else el.removeAttribute(DROP_TARGET_ATTR);
+    });
+  };
+
+  const stopDrag = () => {
+    const current = drag;
+    drag = null;
+    if (!current?.ghost) return;
+    current.ghost.remove();
+    current.row.classList.remove(LABEL_SECTION_CLASSES.DRAG_SOURCE);
+    removeClassFromBody(LABEL_SECTION_CLASSES.DRAGGING);
+    setDropTarget(null);
+  };
+
+  const swallowClick = (e) => {
+    e.stopImmediatePropagation();
+    e.preventDefault();
+  };
+  const swallowNextClick = () => {
+    window.addEventListener('click', swallowClick, { capture: true, once: true });
+    setTimeout(() => window.removeEventListener('click', swallowClick, true), 500);
+  };
+
+  window.addEventListener(
+    'pointerdown',
+    (e) => {
+      stopDrag();
+      if (e.button !== 0 || !e.isTrusted || !areLabelSectionsOn()) return;
+      const row = e.target.closest?.(`.${LABEL_SECTION_CLASSES.LIST} > .aim`);
+      if (!row || row.classList.contains('inbox-reborn-category')) return;
+      // The label's ⋮ menu and the nested-labels arrow keep Gmail's behavior
+      if (e.target.closest('.nL, .TH')) return;
+      const label = getLabelRowName(row);
+      if (!isLabelDraggable(label)) return;
+      drag = { row, label, x: e.clientX, y: e.clientY, ghost: null };
+    },
+    true,
+  );
+
+  window.addEventListener(
+    'pointermove',
+    (e) => {
+      if (!drag) return;
+      if (!drag.ghost) {
+        if (Math.hypot(e.clientX - drag.x, e.clientY - drag.y) < DRAG_THRESHOLD_PX) return;
+        const name = drag.row.querySelector('.n0, a')?.textContent?.trim() || drag.label;
+        drag.ghost = createEl('div', LABEL_SECTION_CLASSES.GHOST, {}, [name]);
+        document.body.append(drag.ghost);
+        drag.row.classList.add(LABEL_SECTION_CLASSES.DRAG_SOURCE);
+        addClassToBody(LABEL_SECTION_CLASSES.DRAGGING);
+      }
+      drag.ghost.style.transform = `translate(${e.clientX + 12}px, ${e.clientY + 12}px)`;
+      setDropTarget(sectionAt(e.clientX, e.clientY));
+    },
+    true,
+  );
+
+  const endDrag = (e) => {
+    if (!drag) return;
+    if (!drag.ghost) {
+      drag = null; // a click, not a drag
+      return;
+    }
+    const { label } = drag;
+    const target = e.type === 'pointerup' ? sectionAt(e.clientX, e.clientY) : null;
+    stopDrag();
+    swallowNextClick();
+    if (target) setLabelBundled(label, target === LABEL_SECTIONS.BUNDLED);
+  };
+  window.addEventListener('pointerup', endDrag, true);
+  window.addEventListener('pointercancel', endDrag, true);
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drag?.ghost) stopDrag();
+  });
+};
 
 /**
  * Inserts a "Done" menu item in the sidebar
@@ -4023,6 +4441,13 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   watchSentMessages();
   watchCategoryDrops();
+
+  // Inbox's "Bundled in the inbox" / "Unbundled" label sections, and
+  // dragging labels between them
+  loadBundledLabels();
+  watchLabelList();
+  watchLabelSectionDrags();
+  setInterval(layoutLabelSections, 500);
 
   // Set up label color observer (.FgKVne is Wiz build-hashed; .aeN .yJ is the
   // same label region anchored on the stable nav container)
