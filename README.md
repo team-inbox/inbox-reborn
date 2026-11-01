@@ -48,17 +48,24 @@ Web extension which modifies Gmail™ to bring back the features and uncluttered
 <img src="https://github.com/team-inbox/inbox-reborn/blob/master/screenshots/options.png?raw=true" alt="options popup screenshot" width="400">
 
 Click the extension's icon at the top right of your browser to adjust its behavior.
-Changes apply immediately — the page refreshes itself when needed.
+Changes save as you make them, and open Gmail tabs refresh themselves when needed.
 
-| Option              | What it does                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Stock Inbox**     | On by default for new installs: Inbox's own settings — bundling with Purchases, Travel and Finance bundles, single-email bundles, bundles in their own date group, avatars, no dates in the list, AI Inbox and All Mail hidden. Changing one of those turns it off and keeps your change; turning it back on restores them. Turning it on also turns on Gravatar Photos (new installs start with Gravatar off). Dark mode, reminders and Priority Inbox headings are separate. |
-| **Dark Mode**       | Toggles the extension's built-in dark theme. No need to change Gmail's own theme setting. Applies instantly, no refresh.                                                                                                                                                                                                                                                                                                                                                       |
-| **Reminders**       | How emails sent to yourself are treated: every self-sent email, only those with the subject "Reminder", or none.                                                                                                                                                                                                                                                                                                                                                               |
-| **Email Bundling**  | Groups inbox emails by label (see [Email Bundling](#email-bundling) below). Sub-options: bundle even single emails; show bundles in Today; bundle Purchases, Travel and Finance.                                                                                                                                                                                                                                                                                               |
-| **Avatars**         | Shows each sender's avatar next to their email — a picture when one is found, otherwise a colored circle with their first initial.                                                                                                                                                                                                                                                                                                                                             |
-| **Gravatar Photos** | Also looks up sender pictures on Gravatar. Off by default — it shares a hashed copy of each sender's address with Gravatar. Turning Stock Inbox on turns it on too.                                                                                                                                                                                                                                                                                                            |
-| **Hide**            | Six switches: the date and time on emails in the list (like Inbox, where the date groups carried it), Priority Inbox headings (when Gmail's "Priority Inbox" type is enabled), and the AI Inbox, All Mail, Travel and Finance rows in the left menu.                                                                                                                                                                                                                           |
+**Up front:**
+
+| Setting             | What it does                                                                                                                                                                                                                                                                                                                                                             |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Stock Inbox**     | On by default for new installs: Inbox's own settings — bundling with Purchases, Travel and Finance bundles, single-email bundles, bundles in their own date group, avatars, no dates in the list, AI Inbox and All Mail hidden. Changing one of those turns it off and keeps your change; turning it back on restores them. Turning it on also turns on Gravatar photos. |
+| **Dark mode**       | The extension's built-in dark theme. No need to change Gmail's own theme setting. Applies instantly, no refresh.                                                                                                                                                                                                                                                         |
+| **Reminders**       | Which emails you send yourself show as reminders: all of them, only those with the subject "Reminder", or none.                                                                                                                                                                                                                                                          |
+| **Gravatar photos** | Also looks up sender pictures on Gravatar. Off by default — it shares a hashed copy of each sender's address with Gravatar. Needs Avatars on.                                                                                                                                                                                                                            |
+
+**Under Customize** (open by itself when Stock Inbox is off):
+
+| Section        | Settings                                                                                                                                                                                      |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Bundles**    | Bundle emails by label (see [Email Bundling](#email-bundling) below); also bundle Purchases, Travel and Finance; bundle single emails; show bundles in Today instead of their own date group. |
+| **Email list** | Avatars (a picture when one is found, otherwise a colored initial); dates on emails (Inbox showed none — the date headings carried them); Gmail's Priority Inbox headings.                    |
+| **Left menu**  | Show or hide AI Inbox, All Mail, Travel and Finance.                                                                                                                                          |
 
 ## Recommended Gmail™ Settings
 
@@ -112,8 +119,8 @@ Forums, Promotions). Here's how to get them back:
      Show it if that's what you want; leave it hidden to keep that mail loose.
 
 3. **Purchases, Travel and Finance** bundle on their own with **Stock Inbox** on (the
-   default for new installs). Otherwise tick _Bundle Purchases_, _Bundle Travel_ and
-   _Bundle Finance_ under Email Bundling in the options. Gmail has no chip for these, so
+   default for new installs). Otherwise tick Purchases, Travel and Finance under
+   Customize → Bundles in the options. Gmail has no chip for these, so
    the extension runs the same searches Gmail's Purchases, Travel and Finance pages do
    (`in:inbox category:purchases` and so on) and bundles the inbox emails they find.
    Each email lands in one bundle: a Finance email Gmail also files under Updates goes
@@ -172,7 +179,7 @@ named `Travel` (it's reserved), so use `Trips`, `Cruise`, `Flights` or `Vacation
   email?** Set that category to **show** in the message list (Settings → Labels →
   Categories). Social, Updates, Forums and Promotions only bundle once Gmail draws
   their chip on the inbox row. Purchases, Travel and Finance have no chip - turn on
-  their _Bundle_ switches under Email Bundling instead.
+  them under Customize → Bundles in the options instead.
 
 ## Speed Dial
 
@@ -205,7 +212,7 @@ The only requests to anyone else are for **sender pictures**:
 - **Brand logos** — a DNS lookup of the sender's domain (via Google, Cloudflare, or DNSPod
   DNS-over-HTTPS) for its published BIMI logo.
 - **Company site icons** — loaded from Google's icon service using the sender's domain.
-- **Gravatar** — only with _Gravatar Photos_ on (off by default; turning Stock Inbox on
+- **Gravatar** — only with _Gravatar photos_ on (off by default; turning Stock Inbox on
   turns it on); sends a hashed copy of the sender's address to Gravatar.
 
 Turning **Avatars** off in the options stops all of them. Beyond that, this extension just sits
