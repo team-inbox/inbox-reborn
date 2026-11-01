@@ -3001,20 +3001,18 @@ const searchAfter = (day) => {
 };
 
 /**
- * Archives the inbox mail of a label or category a page at a time, and
- * remembers every conversation it archived so a drag up can bring exactly
- * those back
- * @param {string} label - The label or category name
+ * Ticks the page's select-all box and presses a toolbar action, page after
+ * page, until the shown search is empty or the page limit is reached
+ * @param {{ pane: Element, rows: Element[] }|null} list - The search's first page
+ * @param {number} action - Gmail's act id: 7 Archive, 8 Move to Inbox
+ * @param {Function} progress - Called with the running count
+ * @param {Function} [onRows] - Called with each page's rows before they go
+ * @returns {Promise<{ moved: number, more: boolean }>} How many went, and
+ *   whether rows were left when the page limit stopped it
  */
-const archiveInboxMail = async (label) => {
-  showToast(`Archiving ${label}…`);
-  const memory = getArchivedByDrag(label);
-  const ids = new Set(memory?.ids || []);
-  let since = memory?.since || null;
+const moveShownPages = async (list, action, progress, onRows) => {
   let moved = 0;
   let page = 0;
-
-  let list = await openSearch(labelMailQuery(label, false));
   for (; list && list.rows.length && page < LABEL_MAIL_PAGE_LIMIT; page++) {
     const { rows } = list;
     const toolbar = firstShown(document.querySelectorAll('.G-atb'));
@@ -3028,32 +3026,120 @@ const archiveInboxMail = async (label) => {
       30,
     );
     if (!selected) break;
-
-    // Remember what is about to go, and how far back it reaches
-    rows.forEach((row) => {
-      const id = getThreadId(row);
-      if (id) ids.add(id);
-      const date = getDate(getRawDate(row));
-      if (date && !Number.isNaN(date.getTime())) {
-        const day = localDay(date);
-        if (!since || day < since) since = day;
-      }
-    });
-
-    if (!pressToolbar('[act="7"]')) break;
+    if (onRows) onRows(rows);
+    if (!pressToolbar(`[act="${action}"]`)) break;
     moved += rows.length;
-    showToast(`Archiving ${label}… ${moved}`);
-
+    progress(moved);
     // Gmail takes these rows out, then shows the next page or its empty note
     list = await pollFor(() => (rows.some(isShown) ? null : shownList()));
   }
+  return { moved, more: page >= LABEL_MAIL_PAGE_LIMIT && !!list?.rows.length };
+};
+
+/**
+ * How many conversations the shown search has, from Gmail's "1–50 of 123"
+ * counter. Gmail says "many" past a point.
+ * @returns {string} e.g. "123 conversations" or "more than 100 conversations"
+ */
+const shownCount = () => {
+  const counter = firstShown(document.querySelectorAll('.Dj'))?.textContent || '';
+  const total = counter.match(/\d[\d,.]*\s*$/)?.[0].trim();
+  if (!total) return 'more than 100 conversations';
+  return total === '1' ? '1 conversation' : `${total} conversations`;
+};
+
+const DIALOG_CLASS = 'inbox-reborn-dialog';
+
+/**
+ * Asks before a drag up moves mail into the inbox
+ * @param {string} label - The label or category name
+ * @param {string[]} lines - What will move, a paragraph each
+ * @returns {Promise<boolean>} True on Move
+ */
+const askToMove = (label, lines) =>
+  new Promise((resolve) => {
+    const button = (text, className) =>
+      createEl('button', `inbox-reborn-dialog-button ${className}`, { type: 'button' }, [text]);
+    const cancel = button('Cancel', 'is-cancel');
+    const move = button('Move to inbox', 'is-move');
+    const dialog = createEl(
+      'div',
+      DIALOG_CLASS,
+      { role: 'alertdialog', 'aria-modal': 'true', 'aria-labelledby': 'inbox-reborn-dialog-title' },
+      [
+        createEl('div', 'inbox-reborn-dialog-card', {}, [
+          createEl('h2', 'inbox-reborn-dialog-title', { id: 'inbox-reborn-dialog-title' }, [
+            `Bring ${label} into the inbox?`,
+          ]),
+          ...lines.map((line) => createEl('p', 'inbox-reborn-dialog-text', {}, [line])),
+          createEl('p', 'inbox-reborn-dialog-text', {}, [
+            `Cancel keeps ${label} bundled; its bundle fills as new mail arrives.`,
+          ]),
+          createEl('div', 'inbox-reborn-dialog-actions', {}, [cancel, move]),
+        ]),
+      ],
+    );
+    const finish = (answer) => {
+      dialog.remove();
+      window.removeEventListener('keydown', onKey, true);
+      resolve(answer);
+    };
+    const onKey = (e) => {
+      if (e.key === 'Escape') finish(false);
+      else if (e.key === 'Enter') finish(true);
+      else return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    };
+    cancel.addEventListener('click', () => finish(false));
+    move.addEventListener('click', () => finish(true));
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) finish(false);
+    });
+    window.addEventListener('keydown', onKey, true);
+    document.body.append(dialog);
+    move.focus();
+  });
+
+/**
+ * Archives the inbox mail of a label or category a page at a time, and
+ * remembers every conversation it archived so a drag up can bring exactly
+ * those back
+ * @param {string} label - The label or category name
+ */
+const archiveInboxMail = async (label) => {
+  showToast(`Archiving ${label}…`);
+  const memory = getArchivedByDrag(label);
+  const ids = new Set(memory?.ids || []);
+  let since = memory?.since || null;
+
+  const list = await openSearch(labelMailQuery(label, false));
+  const { moved, more } = await moveShownPages(
+    list,
+    7,
+    (count) => showToast(`Archiving ${label}… ${count}`),
+    (rows) => {
+      // Remember what is about to go, and how far back it reaches
+      rows.forEach((row) => {
+        const id = getThreadId(row);
+        if (id) ids.add(id);
+        const date = getDate(getRawDate(row));
+        if (date && !Number.isNaN(date.getTime())) {
+          const day = localDay(date);
+          if (!since || day < since) since = day;
+        }
+      });
+    },
+  );
 
   if (moved) setArchivedByDrag(label, { ids: [...ids], since: since || localDay(new Date()) });
 
   const what = moved === 1 ? '1 conversation' : `${moved} conversations`;
-  const more =
-    page >= LABEL_MAIL_PAGE_LIMIT && list?.rows.length ? ' so far - drag again for the rest' : '';
-  showToast(moved ? `Archived ${what}${more}` : `${label} has no mail in the inbox`);
+  showToast(
+    moved
+      ? `Archived ${what}${more ? ' so far - drag again for the rest' : ''}`
+      : `${label} has no mail in the inbox`,
+  );
 };
 
 /**
@@ -3063,11 +3149,15 @@ const archiveInboxMail = async (label) => {
  * remembered rows on each page and pressing Move to Inbox, and paging with
  * Older where a page has none.
  * @param {string} label - The label or category name
+ * @param {{ ids: string[], since: string }} memory - What a drag down archived
  */
-const restoreArchivedByDrag = async (label) => {
-  const memory = getArchivedByDrag(label);
-  if (!memory?.ids?.length) {
-    showToast(`Nothing to bring back: no ${label} mail was archived by dragging it down`);
+const restoreRemembered = async (label, memory) => {
+  const count = memory.ids.length === 1 ? '1 conversation' : `${memory.ids.length} conversations`;
+  const lines = [
+    `The ${count} that dragging ${label} down archived will move back to the inbox and show in its bundle. Nothing else moves.`,
+  ];
+  if (!(await askToMove(label, lines))) {
+    showToast(`${label} stays bundled; its bundle fills as mail arrives`);
     return;
   }
   showToast(`Bringing ${label} back into the inbox…`);
@@ -3128,24 +3218,62 @@ const restoreArchivedByDrag = async (label) => {
 };
 
 /**
- * Moves a label's or category's mail with it: dragged up, the conversations
- * a drag down archived come back to the inbox; dragged down, its inbox mail
- * is archived and remembered. Returns to the view the drag started in. One
+ * A drag up with nothing remembered: shows the name's archived mail and asks
+ * before moving all of it into the inbox
+ * @param {string} label - The label or category name
+ */
+const offerWholeArchive = async (label) => {
+  showToast(`Looking for archived ${label} mail…`);
+  const list = await openSearch(labelMailQuery(label, true));
+  if (!list?.rows.length) {
+    showToast(`${label} has no archived mail; its bundle fills as mail arrives`);
+    return;
+  }
+  hideToast();
+  const lines = [
+    `All of ${label}'s archived mail - ${shownCount()}, the list behind this - will move to the inbox and show in its bundle. Mail in Trash and Spam stays where it is.`,
+  ];
+  if (!(await askToMove(label, lines))) {
+    showToast(`${label} stays bundled; its bundle fills as mail arrives`);
+    return;
+  }
+  showToast(`Moving ${label} into the inbox…`);
+  const { moved, more } = await moveShownPages(list, 8, (count) =>
+    showToast(`Moving ${label} into the inbox… ${count}`),
+  );
+  const what = moved === 1 ? '1 conversation' : `${moved} conversations`;
+  showToast(
+    moved
+      ? `Moved ${what} into the inbox${more ? ' so far - drag again for the rest' : ''}`
+      : `Couldn't move ${label}'s mail`,
+  );
+};
+
+/**
+ * Moves a label's or category's mail with it. Dragged down, its inbox mail
+ * is archived and remembered. Dragged up, what a drag down archived comes
+ * back; with nothing remembered, the person is shown the archive and asked
+ * before all of it moves in. Returns to the view the drag started in. One
  * move at a time; a drag during a move only changes the section.
  * @param {string} label - The label or category name
- * @param {boolean} intoInbox - True to bring the archived mail back
+ * @param {boolean} intoInbox - True for a drag up
  */
 const moveLabelMail = async (label, intoInbox) => {
   if (movingLabelMail) return;
   movingLabelMail = true;
   const returnHash = getViewHash();
   try {
-    if (intoInbox) await restoreArchivedByDrag(label);
-    else await archiveInboxMail(label);
+    if (!intoInbox) await archiveInboxMail(label);
+    else {
+      const memory = getArchivedByDrag(label);
+      if (memory?.ids?.length) await restoreRemembered(label, memory);
+      else await offerWholeArchive(label);
+    }
   } catch (e) {
     console.warn(`[Inbox Reborn] Moving ${label}'s mail stopped (${e.message})`);
     showToast(`Couldn't finish moving ${label}'s mail`);
   } finally {
+    document.querySelector(`.${DIALOG_CLASS}`)?.remove();
     window.location.hash = returnHash;
     movingLabelMail = false;
     setTimeout(hideToast, 4000);

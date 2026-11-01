@@ -8257,9 +8257,11 @@ body.inbox-reborn-label-sections-on
   display: none !important;
 }
 
-/* The label list: categories (order 1-7), bundled labels (100, the default
-   for anything in the list), the Unbundled title (200), categories dragged
-   to Unbundled (300-306, set inline), unbundled labels (320) */
+/* The label list: the how-to hint (order -20, while no label is bundled),
+   bundled labels (-10), categories (1-7 by the rules above, which outrank
+   the bundled rule for the category rows), anything else (100), the
+   Unbundled title (200), categories dragged to Unbundled (300-306, set
+   inline), unbundled labels (320) */
 .inbox-reborn-label-sections {
   display: flex !important;
   flex-direction: column;
@@ -8267,6 +8269,10 @@ body.inbox-reborn-label-sections-on
 
 .inbox-reborn-label-sections > * {
   order: 100;
+}
+
+.inbox-reborn-label-sections > [data-inbox-section='bundled'] {
+  order: -10;
 }
 
 .inbox-reborn-label-sections > .inbox-reborn-section-title {
@@ -8362,9 +8368,13 @@ body.inbox-reborn-label-sections-on .aAw::before {
   transition: color 0.15s;
 }
 
-/* How to bundle a label - sits under the categories until a label is there */
+/* How to bundle a label - sits where the bundled labels go, above the
+   categories, until a label is there */
+.inbox-reborn-label-sections > .inbox-reborn-section-hint {
+  order: -20;
+}
+
 .inbox-reborn-section-hint {
-  order: 150;
   padding: 8px 16px 0;
   line-height: 16px;
   white-space: normal;
@@ -8489,4 +8499,112 @@ body.dark-mode
     Arial,
     sans-serif;
   color: #fff;
+}
+
+/* Asks before a drag up moves a whole archive into the inbox (askToMoveArchive) */
+.inbox-reborn-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 10002;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 40%);
+}
+
+.inbox-reborn-dialog-card {
+  width: 420px;
+  max-width: calc(100vw - 48px);
+  padding: 24px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow:
+    0 11px 15px -7px rgb(0 0 0 / 20%),
+    0 24px 38px 3px rgb(0 0 0 / 14%);
+  font:
+    400 14px Roboto,
+    RobotoDraft,
+    Helvetica,
+    Arial,
+    sans-serif;
+  color: #202124;
+}
+
+.inbox-reborn-dialog-title {
+  margin: 0 0 12px;
+  font:
+    400 20px 'Google Sans',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  color: #202124;
+}
+
+.inbox-reborn-dialog-text {
+  margin: 0 0 12px;
+  line-height: 20px;
+  color: #5f6368;
+}
+
+.inbox-reborn-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.inbox-reborn-dialog-button {
+  min-width: 72px;
+  padding: 0 16px;
+  height: 36px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  font:
+    500 14px 'Google Sans',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  color: #1a73e8;
+  cursor: pointer;
+}
+
+.inbox-reborn-dialog-button:hover,
+.inbox-reborn-dialog-button:focus-visible {
+  background: rgb(26 115 232 / 8%);
+  outline: none;
+}
+
+.inbox-reborn-dialog-button.is-move {
+  background: #1a73e8;
+  color: #fff;
+}
+
+.inbox-reborn-dialog-button.is-move:hover,
+.inbox-reborn-dialog-button.is-move:focus-visible {
+  background: #1765cc;
+}
+
+body.dark-mode .inbox-reborn-dialog-card {
+  background: #2d2e30;
+  color: #e8eaed;
+}
+
+body.dark-mode .inbox-reborn-dialog-title {
+  color: #e8eaed;
+}
+
+body.dark-mode .inbox-reborn-dialog-text {
+  color: var(--dm-text-secondary);
+}
+
+body.dark-mode .inbox-reborn-dialog-button {
+  color: #8ab4f8;
+}
+
+body.dark-mode .inbox-reborn-dialog-button.is-move {
+  background: #8ab4f8;
+  color: #202124;
 }
