@@ -236,6 +236,8 @@ const CSS_CLASSES = {
   PRIORITY_INBOX_OPTION: 'priority-inbox-enabled',
   HIDE_AI_INBOX_OPTION: 'hide-ai-inbox',
   HIDE_ALL_MAIL_OPTION: 'hide-all-mail',
+  HIDE_TRAVEL_OPTION: 'hide-travel',
+  HIDE_FINANCE_OPTION: 'hide-finance',
   PINNED_VIEW: 'pinned-view',
   INBOX_LIST: 'inbox-list',
 };
@@ -1685,9 +1687,12 @@ const reloadOptions = () => {
       removeClassFromBody(CSS_CLASSES.PRIORITY_INBOX_OPTION);
     }
 
-    // Hide Icons: Gmail's AI Inbox and All Mail menu rows
+    // Hide: Gmail's AI Inbox and All Mail menu rows, and the extension's
+    // Travel and Finance category rows
     toggleBodyClass(CSS_CLASSES.HIDE_AI_INBOX_OPTION, options.hideAiInbox === 'enabled');
     toggleBodyClass(CSS_CLASSES.HIDE_ALL_MAIL_OPTION, options.hideAllMail === 'enabled');
+    toggleBodyClass(CSS_CLASSES.HIDE_TRAVEL_OPTION, options.hideTravel === 'enabled');
+    toggleBodyClass(CSS_CLASSES.HIDE_FINANCE_OPTION, options.hideFinance === 'enabled');
 
     // Apply email bundling options
     if (options.emailBundling === 'enabled') {

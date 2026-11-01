@@ -14,6 +14,8 @@ const AVATAR_TOGGLE_SELECTOR = '#avatar-toggle';
 const PRIORITY_INBOX_TOGGLE_SELECTOR = '#priority-inbox-toggle';
 const HIDE_AI_INBOX_TOGGLE_SELECTOR = '#hide-ai-inbox-toggle';
 const HIDE_ALL_MAIL_TOGGLE_SELECTOR = '#hide-all-mail-toggle';
+const HIDE_TRAVEL_TOGGLE_SELECTOR = '#hide-travel-toggle';
+const HIDE_FINANCE_TOGGLE_SELECTOR = '#hide-finance-toggle';
 const GRAVATAR_TOGGLE_SELECTOR = '#gravatar-toggle';
 const DARK_MODE_TOGGLE_SELECTOR = '#dark-mode-toggle';
 const BUNDLING_TOGGLE_SELECTOR = '#bundling-toggle';
@@ -40,6 +42,12 @@ function saveOptions() {
   const hideAllMail = document.querySelector(HIDE_ALL_MAIL_TOGGLE_SELECTOR).checked
     ? 'enabled'
     : 'disabled';
+  const hideTravel = document.querySelector(HIDE_TRAVEL_TOGGLE_SELECTOR).checked
+    ? 'enabled'
+    : 'disabled';
+  const hideFinance = document.querySelector(HIDE_FINANCE_TOGGLE_SELECTOR).checked
+    ? 'enabled'
+    : 'disabled';
   const gravatar = document.querySelector(GRAVATAR_TOGGLE_SELECTOR).checked
     ? 'enabled'
     : 'disabled';
@@ -54,6 +62,8 @@ function saveOptions() {
     darkMode,
     hideAiInbox,
     hideAllMail,
+    hideTravel,
+    hideFinance,
     gravatar,
   };
 
@@ -74,6 +84,9 @@ function restoreOptions() {
       options.hideAiInbox === 'enabled';
     document.querySelector(HIDE_ALL_MAIL_TOGGLE_SELECTOR).checked =
       options.hideAllMail === 'enabled';
+    document.querySelector(HIDE_TRAVEL_TOGGLE_SELECTOR).checked = options.hideTravel === 'enabled';
+    document.querySelector(HIDE_FINANCE_TOGGLE_SELECTOR).checked =
+      options.hideFinance === 'enabled';
     document.querySelector(GRAVATAR_TOGGLE_SELECTOR).checked = options.gravatar === 'enabled';
     document.body.classList.toggle('dark-mode', options.darkMode === 'enabled');
 
@@ -114,4 +127,6 @@ document.querySelector(AVATAR_TOGGLE_SELECTOR).addEventListener('change', saveOp
 document.querySelector(PRIORITY_INBOX_TOGGLE_SELECTOR).addEventListener('change', saveOptions);
 document.querySelector(HIDE_AI_INBOX_TOGGLE_SELECTOR).addEventListener('change', saveOptions);
 document.querySelector(HIDE_ALL_MAIL_TOGGLE_SELECTOR).addEventListener('change', saveOptions);
+document.querySelector(HIDE_TRAVEL_TOGGLE_SELECTOR).addEventListener('change', saveOptions);
+document.querySelector(HIDE_FINANCE_TOGGLE_SELECTOR).addEventListener('change', saveOptions);
 document.querySelector(GRAVATAR_TOGGLE_SELECTOR).addEventListener('change', saveOptions);

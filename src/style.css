@@ -8015,6 +8015,13 @@ body.dark-mode .wT .zw [data-inbox-icon='forums'] .aHS-bnr .qj {
   order: 7;
 }
 
+/* "Hide Travel" / "Hide Finance" options - hide the whole .aim row so no
+   gap is left */
+body.hide-travel .aim:has(> .TO[data-tooltip='Travel']),
+body.hide-finance .aim:has(> .TO[data-tooltip='Finance']) {
+  display: none !important;
+}
+
 [data-tooltip='Travel'] .qj,
 body.dark-mode [data-tooltip='Travel'] .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_travel_clr_24dp_r1_2x.png') !important;
