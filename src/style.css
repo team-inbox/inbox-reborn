@@ -8204,3 +8204,260 @@ body.dark-mode .bundle-wrapper[bundlekind='purchases'] > .bundle-image {
 body.dark-mode .zA.yO[bundlekind='purchases'] .label-link > span:not(.bundle-count) {
   color: #a1887f !important;
 }
+
+/* =============================================================================
+   BUNDLED / UNBUNDLED LABEL SECTIONS
+   layoutLabelSections() in script.js splits Gmail's label list the way
+   Inbox's left menu was: "Bundled in the inbox" (the category rows, then the
+   labels whose mail bundles) and "Unbundled". Nothing of Gmail's moves: the
+   list becomes a flex column and CSS order groups the rows. The category
+   rows at the top are copies (.inbox-reborn-category), ordered by the
+   "TRAVEL & FINANCE SIDEBAR ROWS" rules above; Gmail's own are hidden here.
+   ============================================================================= */
+
+/* Gmail's own category rows, drawn again at the top of the label list */
+body.inbox-reborn-label-sections-on
+  .aim:not(.inbox-reborn-category):has(
+    > .TO:is(
+        [data-tooltip='Travel'],
+        [data-tooltip='Purchases'],
+        [data-tooltip='Finance'],
+        [data-tooltip='Social'],
+        [data-tooltip='Updates'],
+        [data-tooltip='Forums'],
+        [data-tooltip='Promotions']
+      )
+  ) {
+  display: none !important;
+}
+
+/* ...and the group that held them, once nothing else is in it */
+body.inbox-reborn-label-sections-on
+  .byl:has(> .TK > .aim > .TO[data-tooltip='Updates']):not(
+    :has(
+      > .TK
+        > .aim
+        > .TO:not(
+          [data-tooltip='Travel'],
+          [data-tooltip='Purchases'],
+          [data-tooltip='Finance'],
+          [data-tooltip='Social'],
+          [data-tooltip='Updates'],
+          [data-tooltip='Forums'],
+          [data-tooltip='Promotions']
+        )
+    )
+  ) {
+  display: none !important;
+}
+
+/* The label list: categories (order 1-7), bundled labels (100, the default
+   for anything in the list), the Unbundled title (200), unbundled labels (300) */
+.inbox-reborn-label-sections {
+  display: flex !important;
+  flex-direction: column;
+}
+
+.inbox-reborn-label-sections > * {
+  order: 100;
+}
+
+.inbox-reborn-label-sections > .inbox-reborn-section-title {
+  order: 200;
+}
+
+.inbox-reborn-label-sections > [data-inbox-section='unbundled'] {
+  order: 300;
+}
+
+/* Both section titles in Inbox's small, regular, gray caption style: Gmail's
+   "Labels" title (now "Bundled in the inbox") and the Unbundled title */
+body.inbox-reborn-label-sections-on .aAw .aAv,
+.inbox-reborn-section-title {
+  font:
+    400 13px Roboto,
+    RobotoDraft,
+    Helvetica,
+    Arial,
+    sans-serif !important;
+  letter-spacing: 0.2px;
+  color: #757575 !important;
+
+  /* Gmail's title is antialiased; without this the other reads bolder on macOS */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Gmail's create-label + beside the title goes; the More menu has it */
+body.inbox-reborn-label-sections-on .aAw .aAu {
+  display: none !important;
+}
+
+/* Left menu collapsed: the titles, the hint and the divider would stay in
+   view after the slide (see ".aeN.bhZ" above), so they go with the text */
+body.inbox-reborn-label-sections-on .aeN.bhZ:not(.bym) .aAw,
+.aeN.bhZ:not(.bym) .inbox-reborn-section-title,
+.aeN.bhZ:not(.bym) .inbox-reborn-section-hint {
+  display: none !important;
+}
+
+/* Spacing as Inbox had it: 13px from the last row of a group to its divider
+   (what the Done and system-group dividers use), 20px from the divider to
+   the title text, 5px from the title to the first row. The dividers are the
+   same 200px lines, drawn from the title boxes; the system-group divider
+   above More goes, so More reads as the end of that group. The title text
+   starts at the icons' left edge (x=24), 8px of it from the label list. */
+body.inbox-reborn-label-sections-on .TN.bzz.aHS-aHO::after,
+body.inbox-reborn-label-sections-on.hide-all-mail .TN.bzz.aHS-bnv::after {
+  display: none;
+}
+
+/* The system groups' block ends 12px (its padding) + 1px after More */
+body.inbox-reborn-label-sections-on .nM > .yJ:has(> .ajl > .wT > .n6) {
+  margin-bottom: 1px !important;
+}
+
+body.inbox-reborn-label-sections-on .aAw {
+  position: relative;
+  height: auto !important;
+  margin: 0 0 1px !important;
+  padding: 20px 8px 0 24px !important;
+}
+
+body.inbox-reborn-label-sections-on .aAw::before,
+.inbox-reborn-section-title::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 200px;
+  height: 1px;
+  background: #e0e0e0;
+}
+
+body.inbox-reborn-label-sections-on .aAw::before {
+  left: -2px;
+}
+
+.inbox-reborn-section-title::before {
+  left: -10px;
+}
+
+/* The list's own top padding would add to the 5px under the title */
+.inbox-reborn-label-sections {
+  padding-top: 0 !important;
+}
+
+.inbox-reborn-section-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 13px 0 5px;
+  padding: 20px 8px 0 16px;
+  transition: color 0.15s;
+}
+
+/* How to bundle a label - sits under the categories until a label is there */
+.inbox-reborn-section-hint {
+  order: 150;
+  padding: 8px 16px 0;
+  line-height: 16px;
+  white-space: normal;
+  font:
+    400 12px Roboto,
+    RobotoDraft,
+    Helvetica,
+    Arial,
+    sans-serif;
+  color: #9e9e9e;
+}
+
+.inbox-reborn-label-sections.has-bundled-labels > .inbox-reborn-section-hint {
+  display: none;
+}
+
+/* Dragging a label: no text selection, the row dims, its name follows the
+   pointer, and the section under the pointer lights up */
+body.inbox-reborn-label-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+body.inbox-reborn-label-dragging .TK .TO:hover {
+  cursor: grabbing;
+}
+
+.inbox-reborn-label-drag-source > .TO {
+  opacity: 0.4;
+}
+
+.inbox-reborn-label-ghost {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  max-width: 220px;
+  padding: 8px 16px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow:
+    0 1px 3px rgb(0 0 0 / 20%),
+    0 4px 12px rgb(0 0 0 / 20%);
+  font:
+    400 14px Roboto,
+    RobotoDraft,
+    Helvetica,
+    Arial,
+    sans-serif;
+  color: #202124;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+.aAw[data-drop-target='bundled'] .aAv,
+.inbox-reborn-label-sections[data-drop-target='unbundled'] > .inbox-reborn-section-title {
+  color: #4285f4 !important;
+}
+
+.inbox-reborn-label-sections[data-drop-target='bundled']
+  > :is(.inbox-reborn-category, [data-inbox-section='bundled'])
+  > .TO,
+.inbox-reborn-label-sections[data-drop-target='unbundled']
+  > [data-inbox-section='unbundled']
+  > .TO {
+  background-color: rgb(66 133 244 / 10%) !important;
+}
+
+/* Both titles the same dark-mode gray (the light-mode rule above would
+   otherwise outrank Gmail's title's dark color) */
+body.dark-mode.inbox-reborn-label-sections-on .aAw .aAv,
+body.dark-mode .at9 .inbox-reborn-section-title {
+  color: var(--dm-text-secondary) !important;
+}
+
+/* .at9 is the nav; a dark-mode rule above clears every border inside it */
+body.dark-mode .at9 .aAw::before,
+body.dark-mode .at9 .inbox-reborn-section-title::before {
+  background: var(--dm-border-muted) !important;
+}
+
+body.dark-mode .inbox-reborn-section-hint {
+  color: var(--dm-text-secondary);
+  opacity: 0.7;
+}
+
+body.dark-mode .inbox-reborn-label-ghost {
+  background: #2d2e30;
+  color: #e8eaed;
+}
+
+body.dark-mode
+  .inbox-reborn-label-sections[data-drop-target='bundled']
+  > :is(.inbox-reborn-category, [data-inbox-section='bundled'])
+  > .TO,
+body.dark-mode
+  .inbox-reborn-label-sections[data-drop-target='unbundled']
+  > [data-inbox-section='unbundled']
+  > .TO {
+  background-color: rgb(138 180 248 / 15%) !important;
+}
