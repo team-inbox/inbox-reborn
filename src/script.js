@@ -428,14 +428,21 @@ const getMyEmailAddress = () => {
 };
 
 /**
- * Converts HTML string to DOM elements
- * @param {string} html - HTML string to convert
- * @returns {Element} The first element from the created HTML
+ * Creates an element with the given classes, attributes and children. Built
+ * with DOM calls rather than innerHTML, so label and sender names are always
+ * text (and addons.mozilla.org review doesn't flag it)
+ * @param {string} tag - The tag name
+ * @param {string} [className] - Space-separated classes
+ * @param {Object<string, string>} [attrs] - Attributes to set
+ * @param {Array<Node|string>} [children] - Child nodes or text
+ * @returns {Element} The new element
  */
-const htmlToElements = (html) => {
-  const template = document.createElement('template');
-  template.innerHTML = html.trim();
-  return template.content.firstElementChild;
+const createEl = (tag, className = '', attrs = {}, children = []) => {
+  const el = document.createElement(tag);
+  if (className) el.className = className;
+  Object.entries(attrs).forEach(([name, value]) => el.setAttribute(name, value));
+  el.append(...children);
+  return el;
 };
 
 /**
@@ -1154,10 +1161,20 @@ const addCountToBundle = (label, count) => {
   const bundleLabel = document.querySelector(`div[bundleLabel="${label}"] .label-link`);
   if (!bundleLabel) return;
 
-  const replacementHTML = `<span>${label}</span><span class="bundle-count">(${count})</span>`;
-  if (bundleLabel.innerHTML !== replacementHTML) {
-    bundleLabel.innerHTML = replacementHTML;
+  const countText = `(${count})`;
+  const [name, badge] = bundleLabel.children;
+  if (
+    bundleLabel.childNodes.length === 2 &&
+    name?.textContent === label &&
+    badge?.classList.contains('bundle-count') &&
+    badge.textContent === countText
+  ) {
+    return;
   }
+  bundleLabel.replaceChildren(
+    createEl('span', '', {}, [label]),
+    createEl('span', 'bundle-count', {}, [countText]),
+  );
 };
 
 /**
@@ -1181,13 +1198,17 @@ const addSendersToBundle = (label, senders) => {
     return false;
   });
 
-  const replacementHTML = uniqueSenders
-    .map((sender) => `<span class="${sender.isUnread ? 'strong' : ''}">${sender.name}</span>`)
-    .join(', ');
+  // Only rebuild when the list changed (this runs on every poll)
+  const key = JSON.stringify(uniqueSenders.map((sender) => [sender.name, sender.isUnread]));
+  if (bundleSenders.dataset.senders === key) return;
+  bundleSenders.dataset.senders = key;
 
-  if (bundleSenders.innerHTML !== replacementHTML) {
-    bundleSenders.innerHTML = replacementHTML;
-  }
+  bundleSenders.replaceChildren(
+    ...uniqueSenders.flatMap((sender, i) => [
+      ...(i ? [', '] : []),
+      createEl('span', sender.isUnread ? 'strong' : '', {}, [sender.name]),
+    ]),
+  );
 };
 
 /**
@@ -1307,17 +1328,26 @@ const buildBundleWrapper = (email, label, hasImportantMarkers) => {
   const styleColor = bundleTitleColor || getCategoryColor(label);
   const style = `-webkit-mask: url(${bundleImage}) 0 0/100% 100%; background-color: ${styleColor};`;
 
-  const bundleWrapper = htmlToElements(`
-    <div class="zA yO" bundleLabel="${label}" bundleKind="${getBundleIconKind(label)}">
-      <span class="oZ-x3 xY aid bundle-image" style="${style}"></span>
-      <span class="WA xY ${importantMarkerClass}"></span>
-      <span class="yX xY label-link .yW" ${bundleTitleColor ? `style="color: ${bundleTitleColor}"` : ''}>${label}</span>
-      <span class="xW xY">
-        <span title="${getRawDate(email)}"/>
-      </span>
-      <div class="y2 bundle-senders"></div>
-    </div>
-  `);
+  // The senders sit inside the date cell (style.css "Parent of .bundle-senders")
+  const bundleWrapper = createEl(
+    'div',
+    'zA yO',
+    { bundleLabel: label, bundleKind: getBundleIconKind(label) },
+    [
+      createEl('span', 'oZ-x3 xY aid bundle-image', { style }),
+      createEl('span', `WA xY ${importantMarkerClass}`.trim()),
+      createEl(
+        'span',
+        'yX xY label-link',
+        bundleTitleColor ? { style: `color: ${bundleTitleColor}` } : {},
+        [label],
+      ),
+      createEl('span', 'xW xY', {}, [
+        createEl('span', '', { title: getRawDate(email) }),
+        createEl('div', 'y2 bundle-senders'),
+      ]),
+    ],
+  );
 
   addClassToEmail(bundleWrapper, CSS_CLASSES.BUNDLE_WRAPPER);
 
