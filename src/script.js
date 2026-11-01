@@ -672,26 +672,35 @@ const checkEmailClass = (emailEl, klass) => emailEl.classList.contains(klass);
 const isInInbox = () => isInboxHash();
 
 /**
+ * The current view's hash, without the query Gmail appends while a compose
+ * window is open (#inbox?compose=new, #inbox?compose=<draft id>). Without
+ * this, opening a compose window read as leaving the inbox, and the bundles
+ * were taken down. A ? typed into a search is encoded (%3F), so the first
+ * literal ? always starts Gmail's query.
+ * @returns {string} e.g. #inbox
+ */
+const getViewHash = () => window.location.hash.split('?')[0];
+
+/**
  * Checks whether a hash is an inbox list (Inbox, its category tabs, and
  * their pages). The URL changes before Gmail redraws, unlike the sidebar's
  * selected row, which lags behind and once let bundles form in Sent.
  * @param {string} hash - URL hash (default: the current one)
  * @returns {boolean} True for an inbox list
  */
-const isInboxHash = (hash = window.location.hash) => /^#(inbox|category\/\w+)(\/p\d+)?$/.test(hash);
+const isInboxHash = (hash = getViewHash()) => /^#(inbox|category\/\w+)(\/p\d+)?$/.test(hash);
 
 /**
  * Checks if the current view is a bundle
  * @returns {boolean} True if current view is a bundle
  */
-const isInBundle = () => document.location.hash.match(/#search\/in%3Ainbox\+label%3A/g) !== null;
+const isInBundle = () => getViewHash().match(/#search\/in%3Ainbox\+label%3A/g) !== null;
 
 /**
  * Checks if the current view is the Pinned filter
  * @returns {boolean} True if showing pinned inbox mail
  */
-const isPinnedView = () =>
-  Object.values(PINNED_SEARCHES).map(toSearchHash).includes(window.location.hash);
+const isPinnedView = () => Object.values(PINNED_SEARCHES).map(toSearchHash).includes(getViewHash());
 
 /**
  * Builds a Gmail search URL hash, in the form Gmail itself keeps in the URL
@@ -849,20 +858,39 @@ const sweepDateGroup = (timeRow) => {
     if (!row.classList.contains('zA')) continue;
 
     if (row.classList.contains(CSS_CLASSES.BUNDLE_WRAPPER)) {
-      const bundleLabel = row.getAttribute('bundleLabel');
-      list.querySelectorAll(`.zA.${CSS_CLASSES.BUNDLED_EMAIL}`).forEach((email) => {
-        if (getLabels(email).includes(bundleLabel)) toSweep.add(email);
-      });
+      getBundleEmails(row).forEach((email) => toSweep.add(email));
     } else if (!row.classList.contains(CSS_CLASSES.BUNDLED_EMAIL)) {
       // Bundled rows are hidden; they go with their bundle, wherever it sits
       toSweep.add(row);
     }
   }
 
-  const emails = [...toSweep].filter((email) => !isStarred(email) && select.emailCheckbox(email));
+  archiveUnpinned(list, [...toSweep]);
+};
+
+/**
+ * The hidden email rows behind a bundle, in the bundle's own list
+ * @param {Element} wrapper - The bundle row
+ * @returns {Element[]} The bundled emails with that bundle's label
+ */
+const getBundleEmails = (wrapper) => {
+  const bundleLabel = wrapper.getAttribute('bundleLabel');
+  return [...wrapper.parentElement.querySelectorAll(`.zA.${CSS_CLASSES.BUNDLED_EMAIL}`)].filter(
+    (email) => getLabels(email).includes(bundleLabel),
+  );
+};
+
+/**
+ * Archives emails except pinned (starred) ones. Selects the rows and presses
+ * Gmail's own Archive button, so Gmail's "Undo" toast still works.
+ * @param {Element} list - The list the emails live in
+ * @param {Element[]} candidates - Rows to archive
+ */
+const archiveUnpinned = (list, candidates) => {
+  const emails = candidates.filter((email) => !isStarred(email) && select.emailCheckbox(email));
   if (!emails.length) return;
 
-  // Start from an empty selection so only this group gets archived
+  // Start from an empty selection so only these get archived
   selectOnlyEmails(list, emails);
 
   // Gmail only shows Archive once something is selected
@@ -874,6 +902,137 @@ const sweepDateGroup = (timeRow) => {
   } else {
     emails.forEach((email) => simulateClick(select.emailCheckbox(email)));
   }
+};
+
+// =============================================================================
+// BUNDLE HOVER ACTIONS
+// =============================================================================
+
+/**
+ * The toolbar actions a bundle's ⋮ menu offers, in toolbar order: Archive,
+ * Report spam, Delete, Mark as read/unread, Snooze, Add to Tasks (by Gmail's
+ * act id), Move to (.ns) and Labels (.mw). Gmail only shows them while
+ * emails are selected, and they act on the whole selection.
+ */
+const BUNDLE_MENU_ACTIONS = [7, 9, 10, 1, 2, 290, 95]
+  .map((act) => `[act="${act}"]`)
+  .concat('.ns', '.mw')
+  .map((sel) => `.G-atb .T-I${sel}`)
+  .join(', ');
+
+const BUNDLE_MENU_CLASS = 'bundle-menu';
+const BUNDLE_MENU_OPEN_CLASS = 'bundle-menu-open';
+
+/**
+ * Closes the bundle menu
+ * @param {boolean} clearSelection - Untick the bundle's emails too (the menu
+ *   was dismissed rather than used)
+ */
+const closeBundleMenu = (clearSelection) => {
+  const menu = document.querySelector(`.${BUNDLE_MENU_CLASS}`);
+  if (!menu) return;
+  const wrapper = document.querySelector(`.${BUNDLE_MENU_OPEN_CLASS}`);
+  wrapper?.classList.remove(BUNDLE_MENU_OPEN_CLASS);
+  if (clearSelection && wrapper?.parentElement) selectOnlyEmails(wrapper.parentElement, []);
+  menu.remove();
+};
+
+/**
+ * Opens a bundle's ⋮ menu: selects the bundle's emails, then lists Gmail's
+ * toolbar actions for that selection under Gmail's own names. Picking one
+ * presses that toolbar button, so it applies to every email in the bundle
+ * (Move to, Labels and Snooze open their pickers from the toolbar).
+ * @param {Element} wrapper - The bundle row
+ * @param {Element} anchor - The ⋮ button, to open the menu under
+ */
+const openBundleMenu = async (wrapper, anchor) => {
+  closeBundleMenu(true);
+  const list = wrapper.parentElement;
+  const emails = getBundleEmails(wrapper).filter((email) => select.emailCheckbox(email));
+  if (!emails.length) return;
+
+  selectOnlyEmails(list, emails);
+  const visibleActions = () =>
+    [...document.querySelectorAll(BUNDLE_MENU_ACTIONS)].filter((el) => el.getClientRects().length);
+  // The selection's toolbar draws a beat after the checkboxes tick
+  await waitForMatch(() => visibleActions().length && visibleActions());
+  const actions = visibleActions();
+  if (!actions.length) {
+    selectOnlyEmails(list, []);
+    return;
+  }
+
+  const menu = createEl('div', BUNDLE_MENU_CLASS, { role: 'menu' });
+  actions.forEach((button) => {
+    const item = createEl('div', 'bundle-menu-item', { role: 'menuitem' }, [
+      button.getAttribute('data-tooltip') || button.getAttribute('aria-label') || '',
+    ]);
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeBundleMenu(false);
+      simulateClick(button);
+    });
+    menu.append(item);
+  });
+
+  wrapper.classList.add(BUNDLE_MENU_OPEN_CLASS);
+  document.body.append(menu);
+
+  // Under the ⋮, right-aligned to it, flipped above when there's no room
+  const rect = anchor.getBoundingClientRect();
+  const { offsetWidth: width, offsetHeight: height } = menu;
+  const below = rect.bottom + 4;
+  menu.style.left = `${Math.max(8, rect.right - width)}px`;
+  menu.style.top = `${below + height > window.innerHeight - 8 ? Math.max(8, rect.top - height - 4) : below}px`;
+};
+
+/**
+ * Builds a bundle's hover actions: sweep (archive the whole bundle, pinned
+ * emails stay) and ⋮ (Gmail's toolbar actions for the whole bundle)
+ * @param {Element} wrapper - The bundle row
+ * @returns {Element} The actions container
+ */
+const createBundleActions = (wrapper) => {
+  const button = (className, title, children, onClick) => {
+    const el = createEl('div', `bundle-action ${className}`, { role: 'button', title }, children);
+    // Keep the row from opening the bundle
+    ['mousedown', 'mouseup'].forEach((type) =>
+      el.addEventListener(type, (e) => e.stopPropagation()),
+    );
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      onClick(el);
+    });
+    return el;
+  };
+
+  return createEl('div', 'bundle-actions', {}, [
+    button('bundle-sweep', 'Mark all as done (pinned emails stay)', [createSweepIcon()], () =>
+      archiveUnpinned(wrapper.parentElement, getBundleEmails(wrapper)),
+    ),
+    button('bundle-more', 'More', [], (el) =>
+      wrapper.classList.contains(BUNDLE_MENU_OPEN_CLASS)
+        ? closeBundleMenu(true)
+        : openBundleMenu(wrapper, el),
+    ),
+  ]);
+};
+
+/**
+ * Closes the bundle menu on a click outside it, Escape, or leaving the page
+ */
+const watchBundleMenu = () => {
+  document.addEventListener(
+    'mousedown',
+    (e) => {
+      if (!e.target.closest?.(`.${BUNDLE_MENU_CLASS}, .bundle-more`)) closeBundleMenu(true);
+    },
+    true,
+  );
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeBundleMenu(true);
+  });
+  window.addEventListener('hashchange', () => closeBundleMenu(false));
 };
 
 // =============================================================================
@@ -1350,15 +1509,22 @@ const buildBundleWrapper = (email, label, hasImportantMarkers) => {
   );
 
   addClassToEmail(bundleWrapper, CSS_CLASSES.BUNDLE_WRAPPER);
+  bundleWrapper.append(createBundleActions(bundleWrapper));
 
   // Add click handler to navigate to the bundle
   bundleWrapper.onclick = () => (location.href = `#search/in%3Ainbox+label%3A${fixLabel(label)}`);
 
   // Insert the bundle wrapper
   if (email && email.parentNode) {
-    if (options.bundleTop) {
-      const parent = email.parentElement;
-      parent.insertBefore(bundleWrapper, parent.firstChild);
+    if (options.bundleToday) {
+      // At the top of Today: just under its header when the list starts
+      // with one, otherwise first (the next pass adds the header above it)
+      const list = email.parentElement;
+      const first = list.firstElementChild;
+      const startsWithToday =
+        first?.className === 'time-row' &&
+        first.querySelector('.time')?.innerText === DATE_LABELS.TODAY;
+      list.insertBefore(bundleWrapper, startsWithToday ? first.nextSibling : list.firstChild);
     } else {
       email.parentElement.insertBefore(bundleWrapper, email);
     }
@@ -1899,7 +2065,10 @@ const updateReminders = () => {
       lastLabel = null;
     }
 
-    let label = emailInfo.dateLabel;
+    // "Show bundles in Today" puts every bundle in Today, whatever its
+    // newest email's date
+    let label =
+      options.bundleToday && emailInfo.isBundleWrapper() ? DATE_LABELS.TODAY : emailInfo.dateLabel;
 
     // Special handling for snoozed emails
     if (emailInfo.isSnooze) {
@@ -2135,7 +2304,7 @@ const getCategoryHash = (name) => {
  * @param {string} hash - The hash to test (default: the current one)
  * @returns {boolean} True on that category's page
  */
-const isCategoryPage = (name, hash = window.location.hash) => {
+const isCategoryPage = (name, hash = getViewHash()) => {
   let decoded = hash;
   try {
     decoded = decodeURIComponent(hash.replace(/\+/g, ' '));
@@ -2309,7 +2478,7 @@ const insertDoneMenuItem = () => {
     const doneMenu = document.querySelector('.TO.inbox-reborn-done');
     if (!doneMenu) return;
 
-    if (window.location.hash === '#archive') {
+    if (getViewHash() === '#archive') {
       doneMenu.classList.add('nZ');
       snoozedTO.classList.remove('nZ');
     } else {
@@ -2334,7 +2503,7 @@ const REMINDERS_CLASS = 'inbox-reborn-reminders';
 const updateRemindersHighlight = () => {
   const row = document.querySelector(`.${REMINDERS_CLASS} .TO`);
   if (!row) return;
-  const active = window.location.hash === toSearchHash(REMINDERS_SEARCH);
+  const active = getViewHash() === toSearchHash(REMINDERS_SEARCH);
   row.classList.toggle('nZ', active);
   row.classList.toggle('aiq', active);
 };
@@ -2411,6 +2580,118 @@ const watchRemindersMenuItem = () => {
 };
 
 // =============================================================================
+// ROW HOVER ACTIONS
+// =============================================================================
+
+const ROW_MORE_CLASS = 'inbox-reborn-more';
+
+/**
+ * Opens Gmail's right-click menu for an email row, at the given point
+ * @param {Element} row - The email row (tr.zA)
+ * @param {number} x - Client x to open the menu at
+ * @param {number} y - Client y to open the menu at
+ */
+const openRowContextMenu = (row, x, y) => {
+  row.dispatchEvent(
+    new MouseEvent('contextmenu', {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+      button: 2,
+      buttons: 2,
+      clientX: x,
+      clientY: y,
+    }),
+  );
+};
+
+/**
+ * Adds a More (⋮) button to a row's hover actions, after Done, that opens
+ * the same menu as right-clicking the email. Gmail builds the hover actions
+ * when a row is first hovered, so this runs on hover.
+ * @param {Element} row - The email row (tr.zA)
+ */
+const addRowMoreButton = (row) => {
+  const actions = row.querySelector('ul.bqY');
+  if (!actions || actions.querySelector(`.${ROW_MORE_CLASS}`)) return;
+
+  const more = createEl('li', `bqX ${ROW_MORE_CLASS}`, {
+    role: 'button',
+    'aria-label': 'More',
+    'data-tooltip': 'More',
+  });
+
+  // Keep the row from opening the email (Gmail acts on mousedown and click)
+  ['mousedown', 'mouseup', 'dblclick'].forEach((type) =>
+    more.addEventListener(type, (e) => e.stopPropagation()),
+  );
+  more.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const rect = more.getBoundingClientRect();
+    openRowContextMenu(row, rect.left + rect.width / 2, rect.bottom);
+  });
+
+  actions.append(more);
+};
+
+/**
+ * Puts the pin one step in front of the row's first hover action, so the
+ * row reads Pin, Snooze, Trash, Done, More. Measured rather than fixed
+ * because some views (Trash, Spam) show other actions. The pin cell is
+ * placed from the row's right edge (style.css "PIN ICON STYLING").
+ * @param {Element} row - The hovered email row (tr.zA)
+ */
+const positionRowPin = (row) => {
+  const actions = [...row.querySelectorAll('ul.bqY > li')].filter(
+    (li) => li.getClientRects().length,
+  );
+  if (!actions.length) return;
+  const firstLeft = Math.min(...actions.map((li) => li.getBoundingClientRect().left));
+  // One 40px step left of the first action's center (it's 20px wide); the
+  // pin's icon sits 22px in from the right of its cell
+  const right = `${Math.round(row.getBoundingClientRect().right - firstLeft + 8)}px`;
+  if (row.style.getPropertyValue('--inbox-reborn-pin-right') !== right) {
+    row.style.setProperty('--inbox-reborn-pin-right', right);
+  }
+};
+
+/**
+ * Clears hover actions Gmail left showing. Opening Snooze from a row marks
+ * the row (buL) and the button (bz5) so the actions stay up while the picker
+ * is open, but dismissing the picker by clicking elsewhere never clears
+ * them - the row kept its actions, with Snooze pressed, until a reload.
+ * Only runs while no Gmail menu is open, so an open picker keeps its row.
+ */
+const clearStaleRowActions = () => {
+  const stale = document.querySelectorAll('tr.zA.buL, tr.zA li.bqX.bz5');
+  if (!stale.length) return;
+  const menuOpen = [...document.querySelectorAll('[role=menu]')].some(
+    (menu) => menu.getClientRects().length,
+  );
+  if (menuOpen) return;
+  stale.forEach((el) => el.classList.remove('buL', 'bz5'));
+};
+
+/**
+ * Adds the More button to each email row as it's hovered, and moves its pin
+ * in front of the hover actions
+ */
+const watchRowHoverActions = () => {
+  document.addEventListener('mouseover', (e) => {
+    clearStaleRowActions();
+    const row = e.target.closest?.('tr.zA');
+    if (!row || row.classList.contains(CSS_CLASSES.BUNDLE_WRAPPER)) return;
+    addRowMoreButton(row);
+    // Gmail may only build the hover actions in response to this hover
+    requestAnimationFrame(() => {
+      addRowMoreButton(row);
+      positionRowPin(row);
+    });
+  });
+};
+
+// =============================================================================
 // UI CUSTOMIZATION
 // =============================================================================
 
@@ -2418,7 +2699,7 @@ const watchRemindersMenuItem = () => {
  * Updates the Gmail top bar header to display the correct page title
  */
 const handleHashChange = () => {
-  let hash = window.location.hash;
+  let hash = getViewHash();
 
   addPinnedToggle();
   updatePinnedToggle();
@@ -2624,6 +2905,9 @@ const addFloatingComposeButton = () => {
 
   const floatingComposeButton = document.createElement('div');
   floatingComposeButton.className = 'floating-compose';
+  floatingComposeButton.dataset.label = 'Compose';
+  floatingComposeButton.setAttribute('role', 'button');
+  floatingComposeButton.setAttribute('aria-label', 'Compose');
   floatingComposeButton.addEventListener('click', function () {
     const composeButton = select.composeButton();
     composeButton?.click();
@@ -2666,6 +2950,9 @@ const openCompose = ({ from, to, subject } = {}) => {
 const addReminderButton = () => {
   const addReminder = document.createElement('div');
   addReminder.className = 'add-reminder';
+  addReminder.dataset.label = 'Reminder';
+  addReminder.setAttribute('role', 'button');
+  addReminder.setAttribute('aria-label', 'Reminder');
 
   addReminder.addEventListener('click', function () {
     const myEmail = getMyEmailAddress();
@@ -2792,7 +3079,7 @@ let sentListSynced = false;
  * visit to Sent, as soon as its rows are on screen.
  */
 const syncRecentContactsFromSent = () => {
-  if (window.location.hash !== '#sent') {
+  if (getViewHash() !== '#sent') {
     sentListSynced = false;
     return;
   }
@@ -3462,6 +3749,8 @@ const init = () => {
   setFavicon();
   setupMenuNodes();
   watchRemindersMenuItem();
+  watchRowHoverActions();
+  watchBundleMenu();
 };
 
 // Initialize if document.head is available, otherwise wait for DOMContentLoaded
