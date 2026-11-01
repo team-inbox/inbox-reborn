@@ -11,6 +11,13 @@ Web extension which modifies Gmail™ to bring back the features and uncluttered
 - **Chrome & Microsoft Edge:** [Chrome Web Store](https://chrome.google.com/webstore/detail/inbox-reborn-theme-for-gm/bkphmihkdbdgedlaflnkhnmnmibffomf)
 - **Firefox:** [Firefox Add-ons](https://addons.mozilla.org/en-GB/firefox/addon/inbox-reborn-theme-gmail/)
 
+## Manual
+
+The full manual, with screenshots, is at **https://team-inbox.github.io/inbox-reborn/**:
+getting started, the inbox, bundles and the two label sections, Gmail's categories, rules,
+settings, privacy and troubleshooting. Its source is in [`website/`](website/) (Docusaurus);
+pushes to master publish it through GitHub Pages.
+
 ## Features
 
 - **Stock Inbox** — one switch, on for new installs, that sets everything to Inbox's own
@@ -107,6 +114,11 @@ Bundles are built from the **labels on your inbox emails**, the way Inbox built 
 - A bundled label shared by **two or more inbox emails** collapses into a single bundle
   row. Tick _"Show bundle if only one email"_ in the options to bundle single emails too.
 - Clicking a bundle row opens that label's view, just like Inbox did.
+- **Each email sits in one bundle**, as in Inbox. When its labels would put it in several,
+  a label of your own wins over the categories, and between categories Inbox's order
+  decides (Travel, Purchases, Finance, Social, Updates, Forums, Promotions). Gmail sorts
+  each message of a conversation on its own, so a conversation often carries both an
+  Updates and a Forums chip; it bundles under Updates and is counted once.
 - **Starred emails always stay out of bundles**, so important mail never gets hidden.
 - Only mail that is actually **in the inbox** can be bundled — labels applied to archived
   mail don't create bundles.
