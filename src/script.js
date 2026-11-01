@@ -1508,6 +1508,56 @@ const tagSidebarLabelIcons = () => {
   });
 };
 
+/* The left menu's rows the stylesheet restyles (category rows, the
+   Categories group, AI Inbox, the label-list buttons), keyed by what they
+   link to rather than their English tooltip, so the stylesheet's
+   [data-inbox-nav] selectors hold in any Gmail language whose links are
+   recognizable. The tooltip is the fallback for rows without a link. */
+const NAV_BY_HASH = [
+  [/^#category\/social/, 'social'],
+  [/^#category\/updates/, 'updates'],
+  [/^#category\/forums/, 'forums'],
+  [/^#category\/promotions/, 'promotions'],
+  [/^#category\/purchases/, 'purchases'],
+  [/^#category\/travel/, 'travel'],
+  [/^#search\/category%3Afinance/, 'finance'],
+  [/^#settings\/labels/, 'manage-labels'],
+  [/^#subscriptions/, 'manage-subscriptions'],
+];
+const NAV_BY_TOOLTIP = {
+  Social: 'social',
+  Updates: 'updates',
+  Forums: 'forums',
+  Promotions: 'promotions',
+  Purchases: 'purchases',
+  Purchased: 'purchases',
+  Travel: 'travel',
+  Finance: 'finance',
+  Categories: 'categories',
+  'AI Inbox': 'ai-inbox',
+  'Manage labels': 'manage-labels',
+  'Manage subscriptions': 'manage-subscriptions',
+  'Create new label': 'create-label',
+};
+
+/**
+ * Tags the left menu's rows and buttons with data-inbox-nav (see above).
+ * Only writes when the value changes.
+ */
+const tagSidebarNav = () => {
+  const hashOf = (el) => {
+    const link = el.matches('a') ? el : el.querySelector('a[href*="#"]') || el.closest('a');
+    return link?.getAttribute('href')?.replace(/^[^#]*/, '') || '';
+  };
+  document.querySelectorAll('.aeN [data-tooltip], .aeN [aria-label]').forEach((el) => {
+    const hash = hashOf(el);
+    const nav =
+      NAV_BY_HASH.find(([pattern]) => pattern.test(hash))?.[1] ||
+      NAV_BY_TOOLTIP[el.getAttribute('data-tooltip') || el.getAttribute('aria-label')];
+    if (nav && el.dataset.inboxNav !== nav) el.dataset.inboxNav = nav;
+  });
+};
+
 /**
  * Gets the color for a bundle title based on the label color
  * @param {Element} email - The email DOM element
@@ -2612,6 +2662,7 @@ const buildCategoryMenuItem = (template, name, href) => {
 
   const row = item.querySelector('.TO');
   row.setAttribute('data-tooltip', name);
+  row.dataset.inboxNav = name.toLowerCase();
   // Gmail's per-category marker (UV, aS6...) and selected state
   row.className = 'TO';
 
@@ -4157,6 +4208,7 @@ const openCompose = ({ from, to, subject } = {}) => {
  * Adds a reminder button to the UI
  */
 const addReminderButton = () => {
+  if (document.querySelector('.add-reminder')) return;
   const addReminder = document.createElement('div');
   addReminder.className = 'add-reminder';
   addReminder.dataset.label = 'Reminder';
@@ -5108,6 +5160,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // when labels expand/collapse, so this must re-run; no-op when normalized)
   every(normalizeSidebarIcons, 500);
   every(tagSidebarLabelIcons, 500);
+  every(tagSidebarNav, 500);
 
   // Set up side panel handler - wait for any recognizable side-panel button
   // (old build-hashed markup or the new role-based markup)
