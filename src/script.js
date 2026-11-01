@@ -1297,6 +1297,22 @@ const removeStrayBundles = () => {
 };
 
 /**
+ * The one bundle an email goes in when its labels would put it in several,
+ * as in Inbox, where an email sat in a single bundle: a label of your own
+ * beats the categories, and between categories Inbox's menu order decides
+ * (Travel, Purchases, Finance, Social, Updates, Forums, Promotions). Gmail
+ * sorts each message of a conversation on its own, so a conversation often
+ * carries both an Updates and a Forums chip - it bundles under Updates
+ * @param {string[]} labels - The email's labels that bundle
+ * @returns {string[]} The label to bundle under, or none
+ */
+const pickBundleLabel = (labels) => {
+  if (labels.length < 2) return labels;
+  const own = labels.find((label) => !isCategoryName(label));
+  return [own || CATEGORY_MENU_ORDER.find((name) => labels.includes(name))];
+};
+
+/**
  * Gets all currently bundled labels
  * @returns {Object} Object with label names as keys
  */
@@ -2299,13 +2315,15 @@ const updateReminders = () => {
       }
 
       // Filter out tab labels and labels left in the left menu's Unbundled
-      // section (the categories always bundle)
+      // section
       let labels = emailInfo.labels.filter((x) => !tabs.includes(x) && isLabelBundled(x));
 
       // If bundleOne is disabled, only bundle labels with multiple emails
       if (!options.bundleOne) {
         labels = labelsToBundle.length ? labels.filter((x) => labelsToBundle.includes(x)) : [];
       }
+
+      labels = pickBundleLabel(labels);
 
       // Bundle eligible emails
       if (
