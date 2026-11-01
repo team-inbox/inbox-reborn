@@ -92,6 +92,19 @@ test('an email under an "Unbundled" label stays out of bundles', () => {
   assert.strictEqual(checkEmailUnbundledLabel([]), false);
 });
 
+test('an email goes in one bundle: its own label first, then the first category in Inbox order', () => {
+  const pick = (labels) => [...loadScript()('pickBundleLabel')(labels)];
+  assert.deepStrictEqual(pick([]), []);
+  assert.deepStrictEqual(pick(['Taxes']), ['Taxes']);
+  // Gmail chips a conversation with every category its messages got
+  assert.deepStrictEqual(pick(['Forums', 'Updates']), ['Updates']);
+  assert.deepStrictEqual(pick(['Promotions', 'Social']), ['Social']);
+  assert.deepStrictEqual(pick(['Updates', 'Finance']), ['Finance']);
+  // A label of your own beats a category, whatever the chip order
+  assert.deepStrictEqual(pick(['Updates', 'Receipts']), ['Receipts']);
+  assert.deepStrictEqual(pick(['Receipts', 'Work/Projects', 'Forums']), ['Receipts']);
+});
+
 test('a dragged label moves its mail with Gmail searches, in Gmail search spelling', () => {
   const labelMailQuery = loadScript()('labelMailQuery');
   assert.strictEqual(labelMailQuery('Cruise', true), 'label:Cruise -in:inbox');
