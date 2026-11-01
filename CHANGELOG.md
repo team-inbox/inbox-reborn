@@ -5,6 +5,10 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## Unreleased
 
+- The Pinned switch in the header is drawn as Inbox drew it: off is a
+  lighter-blue thumb with a white pin leaning right on a dark track; on
+  lights the thumb up white with a blue pin. Same in dark mode on the darker
+  header blue.
 - The settings popup is redesigned: Stock Inbox up front as the recommended
   choice, then Dark mode, Reminders and Gravatar photos; everything else sits
   under Customize (Bundles, Email list, Left menu), which opens by itself when
