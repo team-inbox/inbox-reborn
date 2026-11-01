@@ -4131,8 +4131,13 @@ body.dark-mode .G-atb .T-I .asa svg path {
   fill: #e8eaed !important;
 }
 
-/* Remove label (shown inside a label view) - dark sprite; the list-toolbar
-   catch-all paints its background, which the filter would turn white */
+/* Remove label (shown inside a label view) - dark sprite, lightened with a
+   filter. The filter also lightens the icon's background, so that has to be
+   transparent: the list-toolbar catch-all (.nH.aqK :not() *, "Nuclear
+   option") paints it dark gray and outranked this rule, which turned the
+   icon into a white square - the first selector repeats the catch-all's
+   ancestors to win. */
+body.dark-mode .G-atb .nH.aqK:not(.Cr.aqJ .nH.aqK) .asa > .bAD,
 body.dark-mode .G-atb .asa > .bAD {
   filter: brightness(0) invert(0.91);
   opacity: 1 !important;

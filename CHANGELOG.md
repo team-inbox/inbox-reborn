@@ -5,6 +5,13 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## Unreleased
 
+- With an email open from a label (or on a label's second page), the top
+  bar showed part of the email's id or "p2" instead of the label's name.
+
+- In dark mode, the Remove label button (in the toolbar on a label's page
+  once emails are selected) showed as a white square. It's now the same
+  light gray icon as the buttons next to it.
+
 - Bundle rows are built without `innerHTML`, so a sender's display name or a
   label name is always shown as text and never read as HTML. The Firefox
   manifest declares its data use (sender domains and Gravatar hashes from
