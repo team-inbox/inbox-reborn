@@ -5,6 +5,31 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## Unreleased
 
+- Robustness and performance pass, from a review of the whole extension:
+  - The options are read once per page load instead of being asked of the
+    service worker four times a second, and a tab left open across an
+    extension update stops its timers quietly instead of throwing
+    "Extension context invalidated" four times a second until reloaded.
+  - A label name with a double quote in it no longer breaks the list pass
+    (bundle lookups now escape the name), and a row Gmail takes out mid-pass
+    no longer aborts the pass with an `insertBefore` error.
+  - Two leaks are closed: a `hashchange` listener added every time the Done
+    row was rebuilt, and a new `ResizeObserver` on every side-panel click.
+  - The idle label-list and label-icon rewrites (twice a second, a needless
+    style invalidation) are gone.
+  - The Purchases/Travel/Finance searches time out instead of hanging
+    category refreshes for good, re-run when a list loads mid-refresh, and
+    back off after failures instead of retrying on every list load.
+  - The settings popup keeps its controls inert until the stored settings
+    are shown, so a slow answer from the service worker can no longer be
+    saved over the real settings as blank defaults, and "Saved" now waits
+    for the write to land.
+  - `src/style.css` lost 590 lines of rules that a later rule with the same
+    selector always overrode (five stacked rewrites of the theme-picker
+    dialog among them), nine empty blocks, unused custom properties and
+    no-op scrollbar transitions. Verified against computed-style snapshots
+    of the inbox, a bundle, an open conversation, compose and the theme
+    picker in both light and dark mode: no element's style changed.
 - An open email's message headers show Inbox's pin instead of Gmail's star,
   in both themes: gray until pinned, then the color of the star type in use,
   as on the list rows. Dark mode drew a star there; light mode left Gmail's.

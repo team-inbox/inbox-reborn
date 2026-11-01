@@ -52,6 +52,11 @@
   const KNOWN = ['purchases', 'travel', 'finance'];
   const MIN_GAP_MS = 10 * 1000; // between refreshes triggered by Gmail's own loads
   const POLL_MS = 90 * 1000; // background refresh while the tab is visible
+  const SEARCH_TIMEOUT_MS = 30 * 1000; // a search that takes longer is given up on
+  // After a failed refresh the next waits twice as long as the one before,
+  // up to this, so a Gmail change doesn't mean three failing requests per
+  // list load for the rest of the visit
+  const MAX_FAILURE_WAIT_MS = 30 * 60 * 1000;
   const SENT_THREADS = 10; // newest sent threads read for the speed dial
   // The page size inside the list request body
   const PAGE_SIZE_IN_BODY = /\[\[\[2,\d+\]\]\]/;
@@ -78,6 +83,8 @@
   let lastRun = 0;
   let timer = null;
   let running = false;
+  let pending = false; // a refresh was asked for while one was running
+  let failures = 0; // refreshes failed in a row
   let warned = false;
   let sentWanted = false;
   let sentLooked = false;
@@ -92,8 +99,15 @@
   const warnOnce = (msg) => {
     if (warned) return;
     warned = true;
-    console.warn(`[Inbox Reborn] ${msg} - Purchases, Travel and Finance bundles are paused.`);
+    console.warn(
+      `[Inbox Reborn] ${msg} - Purchases, Travel and Finance bundles are paused; retrying less often.`,
+    );
   };
+
+  // When the next refresh may run: straight away, or after a failure a
+  // wait that doubles with each failure in a row
+  const nextAllowed = () =>
+    failures ? lastRun + Math.min(MIN_GAP_MS * 2 ** failures, MAX_FAILURE_WAIT_MS) : 0;
 
   // ---------------------------------------------------------------------------
   // Watch Gmail's sync requests. The wrappers pass every call straight
@@ -159,6 +173,10 @@
       xhr.onload = () =>
         xhr.status === 200 ? resolve(xhr.responseText) : reject(new Error(`HTTP ${xhr.status}`));
       xhr.onerror = () => reject(new Error('network error'));
+      // Without these a hung request would leave `running` set for good
+      xhr.timeout = SEARCH_TIMEOUT_MS;
+      xhr.ontimeout = () => reject(new Error('timed out'));
+      xhr.onabort = () => reject(new Error('aborted'));
       let sent = (body || builtInBody()).replace(
         QUERY_IN_BODY,
         (_, head) => head + JSON.stringify(query),
@@ -180,7 +198,12 @@
   };
 
   const refresh = async () => {
-    if (running || !session || !wanted.length) return;
+    if (!session || !wanted.length) return;
+    if (running) {
+      // Gmail loaded a list mid-refresh: run again once this one is done
+      pending = true;
+      return;
+    }
     running = true;
     lastRun = Date.now();
     const threads = {};
@@ -189,10 +212,16 @@
         threads[name] = threadIds(await search(`in:inbox category:${name}`));
       }
       window.postMessage({ source: SOURCE, type: 'threads', threads }, location.origin);
+      failures = 0;
     } catch (e) {
+      failures++;
       warnOnce(`Gmail category search failed (${e.message})`);
     } finally {
       running = false;
+      if (pending) {
+        pending = false;
+        schedule(0);
+      }
     }
   };
 
@@ -238,12 +267,20 @@
   const schedule = (delay) => {
     if (!wanted.length) return;
     clearTimeout(timer);
-    const wait = Math.max(delay, lastRun + MIN_GAP_MS - Date.now());
+    const now = Date.now();
+    const wait = Math.max(delay, lastRun + MIN_GAP_MS - now, nextAllowed() - now);
     timer = setTimeout(refresh, wait);
   };
 
   setInterval(() => {
-    if (document.visibilityState === 'visible' && Date.now() - lastRun >= POLL_MS) refresh();
+    const now = Date.now();
+    if (
+      document.visibilityState === 'visible' &&
+      now - lastRun >= POLL_MS &&
+      now >= nextAllowed()
+    ) {
+      refresh();
+    }
   }, 15 * 1000);
 
   // ---------------------------------------------------------------------------
