@@ -2447,9 +2447,9 @@ const handleHashChange = () => {
       const headerElement = select.headerElement();
       const titleNode = select.titleNode();
 
-      // Extract and decode the full label path (e.g., "Software/Chess")
-      const raw = hash.slice('#label/'.length);
-      const labelName = decodeURIComponent(raw.replace(/\+/g, ' '));
+      // The full label path (e.g., "Software/Chess"), without the open
+      // email's id or page number that can follow it
+      const labelName = parseLabelHash(hash, getMenuLabelNames());
 
       // Extract only the last part of the label path (the "leaf" label)
       const leafLabel = labelName.split('/').pop().trim();
@@ -2489,6 +2489,53 @@ const handleHashChange = () => {
     '#finance': FINANCE_HASH,
   };
   titleNode.href = titleLinks[hash] || hash;
+};
+
+/**
+ * Decodes one part of a Gmail hash (Gmail writes spaces as "+")
+ * @param {string} part - The encoded text
+ * @returns {string} The decoded text, or the input if it isn't valid encoding
+ */
+const decodeHashPart = (part) => {
+  try {
+    return decodeURIComponent(part.replace(/\+/g, ' '));
+  } catch {
+    return part;
+  }
+};
+
+/**
+ * Full names of the labels in the left menu, e.g. "Software/Chess"
+ * @returns {Set<string>} The label names
+ */
+const getMenuLabelNames = () =>
+  new Set(
+    [...document.querySelectorAll('.wT a[href*="#label/"]')].map((link) =>
+      decodeHashPart(link.getAttribute('href').split('#label/')[1] || ''),
+    ),
+  );
+
+/**
+ * Gets the label a #label/ hash is showing. Gmail writes nested labels with
+ * a plain slash (#label/Software/Chess), and also puts the open email's id
+ * or a page number after the label (#label/Cruise/FMfcgz..., #label/Cruise/p2),
+ * so the longest run of parts that names a known label wins. Without a match
+ * (a label the menu hasn't drawn), trailing page numbers and id-like parts
+ * are dropped instead.
+ * @param {string} hash - A hash starting with #label/
+ * @param {Set<string>} knownLabels - Full label names (getMenuLabelNames)
+ * @returns {string} The label's full name, e.g. "Software/Chess"
+ */
+const parseLabelHash = (hash, knownLabels) => {
+  const parts = hash.slice('#label/'.length).split('?')[0].split('/').filter(Boolean);
+  for (let count = parts.length; count > 0; count--) {
+    const name = decodeHashPart(parts.slice(0, count).join('/'));
+    if (knownLabels.has(name)) return name;
+  }
+
+  const isPageOrId = (part) => /^p\d+$/.test(part) || /^[A-Za-z0-9_-]{16,}$/.test(part);
+  while (parts.length > 1 && isPageOrId(parts[parts.length - 1])) parts.pop();
+  return decodeHashPart(parts.join('/'));
 };
 
 /**
