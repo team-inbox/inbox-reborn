@@ -5,6 +5,10 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## Unreleased
 
+- Bundle rows are built without `innerHTML`, so a sender's display name or a
+  label name is always shown as text and never read as HTML. The Firefox
+  manifest declares its data use (sender domains and Gravatar hashes from
+  the page, sent only for avatars), so Mozilla's linter reports no warnings.
 - Each label's ⋮ menu in the left menu (Label color, Show/Hide, Edit,
   Remove label) can be reached again. It sat past the edge of the menu,
   and in dark mode it was black on black.

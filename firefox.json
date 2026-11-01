@@ -13,7 +13,10 @@
   "homepage_url": "https://github.com/team-inbox/inbox-reborn",
   "browser_specific_settings": {
     "gecko": {
-      "id": "inbox-reborn-new@team-inbox.github.io"
+      "id": "inbox-reborn-new@team-inbox.github.io",
+      "data_collection_permissions": {
+        "required": ["websiteContent"]
+      }
     }
   },
   "browser_action": {
