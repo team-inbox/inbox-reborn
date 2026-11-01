@@ -9,7 +9,7 @@ const browserAPI =
 
 const REMINDER_SELECT_SELECTOR = '#reminder-select';
 const BUNDLE_ONE_SELECTOR = 'input[name=bundle-one]';
-const BUNDLE_TOP_SELECTOR = 'input[name=bundle-top]';
+const BUNDLE_TODAY_SELECTOR = 'input[name=bundle-today]';
 const AVATAR_TOGGLE_SELECTOR = '#avatar-toggle';
 const PRIORITY_INBOX_TOGGLE_SELECTOR = '#priority-inbox-toggle';
 const HIDE_AI_INBOX_TOGGLE_SELECTOR = '#hide-ai-inbox-toggle';
@@ -24,7 +24,7 @@ function saveOptions() {
     ? 'enabled'
     : 'disabled';
   const bundleOne = getCheckboxState(BUNDLE_ONE_SELECTOR);
-  const bundleTop = getCheckboxState(BUNDLE_TOP_SELECTOR);
+  const bundleToday = getCheckboxState(BUNDLE_TODAY_SELECTOR);
   const showAvatar = document.querySelector(AVATAR_TOGGLE_SELECTOR).checked
     ? 'enabled'
     : 'disabled';
@@ -48,7 +48,7 @@ function saveOptions() {
     reminderTreatment,
     emailBundling,
     bundleOne,
-    bundleTop,
+    bundleToday,
     showAvatar,
     priorityInbox,
     darkMode,
@@ -65,7 +65,7 @@ function restoreOptions() {
     document.querySelector(REMINDER_SELECT_SELECTOR).value = options.reminderTreatment;
     document.querySelector(BUNDLING_TOGGLE_SELECTOR).checked = options.emailBundling === 'enabled';
     setCheckbox(BUNDLE_ONE_SELECTOR, options.bundleOne);
-    setCheckbox(BUNDLE_TOP_SELECTOR, options.bundleTop);
+    setCheckbox(BUNDLE_TODAY_SELECTOR, options.bundleToday);
     document.querySelector(AVATAR_TOGGLE_SELECTOR).checked = options.showAvatar === 'enabled';
     document.querySelector(PRIORITY_INBOX_TOGGLE_SELECTOR).checked =
       options.priorityInbox === 'enabled';
@@ -95,7 +95,7 @@ const monitorChange = (element) => element.addEventListener('click', saveOptions
 document.addEventListener('DOMContentLoaded', restoreOptions);
 document.querySelector(REMINDER_SELECT_SELECTOR).addEventListener('change', saveOptions);
 monitorChange(document.querySelector(BUNDLE_ONE_SELECTOR));
-monitorChange(document.querySelector(BUNDLE_TOP_SELECTOR));
+monitorChange(document.querySelector(BUNDLE_TODAY_SELECTOR));
 document.querySelector(DARK_MODE_TOGGLE_SELECTOR).addEventListener('change', () => {
   saveOptions();
   document.body.classList.toggle(

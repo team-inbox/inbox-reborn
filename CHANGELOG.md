@@ -5,8 +5,37 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## Unreleased
 
+- Hovering an email shows Inbox's actions in Inbox's order: Pin, Snooze,
+  Trash, Done, and a new ⋮ that opens the same menu as right-clicking the
+  email. Mark as read / unread moved into that menu. Closing the Snooze
+  picker by clicking elsewhere no longer leaves that email's actions (and a
+  pressed Snooze) showing - Gmail never cleared them.
+- Trash uses Inbox's solid trash can: in the left menu, on hover, on the
+  "In Trash" marker beside each email in Trash, and on Discard draft in the
+  compose window and in replies.
+- Hovering the compose button shows "Compose", and the reminder button
+  "Reminder", like the speed-dial contacts' names.
+- The reminder button stays hidden until you hover the compose button,
+  then fans out with the recent contacts, like Inbox's speed dial.
+- Hovering a bundle shows a sweep, which marks the whole bundle done
+  (pinned emails stay), and a ⋮ menu with Gmail's actions - Delete, Mark
+  as read, Snooze, Move to, Labels and the rest - for every email in it.
+- Bundles sit in the date group of their newest email, like Inbox. The
+  "Move bundles to top of inbox" setting is replaced by "Show bundles in
+  Today", which puts every bundle at the top of Today instead of above
+  the date groups.
+- Compose windows sit flush on the bottom edge with square corners, with
+  the Send row down at the bottom, and the rightmost one no longer butts up
+  against the compose button.
+- The Send button is the same blue as the inbox's top bar, in light and
+  dark mode.
+
 - With an email open from a label (or on a label's second page), the top
   bar showed part of the email's id or "p2" instead of the label's name.
+- Opening a compose window no longer makes the inbox's bundles disappear
+  (or the Pinned switch, the Done and Reminders highlights and the page
+  title act as if you'd left the page). Gmail adds "?compose=…" to the
+  address while composing, and that was read as a different page.
 
 - In dark mode, the Remove label button (in the toolbar on a label's page
   once emails are selected) showed as a white square. It's now the same
