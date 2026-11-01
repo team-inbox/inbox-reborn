@@ -3,6 +3,94 @@
 All notable changes to the Inbox Reborn theme for Gmail™, grouped by release era.
 PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inbox-reborn/pulls).
 
+## Unreleased
+
+- Hovering an email shows Inbox's actions in Inbox's order: Pin, Snooze,
+  Trash, Done, and a new ⋮ that opens the same menu as right-clicking the
+  email. Mark as read / unread moved into that menu. Closing the Snooze
+  picker by clicking elsewhere no longer leaves that email's actions (and a
+  pressed Snooze) showing - Gmail never cleared them.
+- Trash uses Inbox's solid trash can: in the left menu, on hover, on the
+  "In Trash" marker beside each email in Trash, and on Discard draft in the
+  compose window and in replies.
+- Hovering the compose button shows "Compose", and the reminder button
+  "Reminder", like the speed-dial contacts' names.
+- The reminder button stays hidden until you hover the compose button,
+  then fans out with the recent contacts, like Inbox's speed dial.
+- The Hide settings can hide the Travel and Finance rows in the left menu.
+- A new Hide setting removes the date and time from emails in the list, as
+  Inbox did - the date groups carry it. Subjects and snippets run on to
+  where bundle senders end. Open emails still show their date and time.
+- Hovering a bundle shows a sweep, which marks the whole bundle done
+  (pinned emails stay), and a ⋮ menu with Gmail's actions - Delete, Mark
+  as read, Snooze, Move to, Labels and the rest - for every email in it.
+- Bundles sit in the date group of their newest email, like Inbox. The
+  "Move bundles to top of inbox" setting is replaced by "Show bundles in
+  Today", which puts every bundle at the top of Today instead of above
+  the date groups.
+- Compose windows sit flush on the bottom edge with square corners, with
+  the Send row down at the bottom, and the rightmost one no longer butts up
+  against the compose button.
+- The Send button is the same blue as the inbox's top bar, in light and
+  dark mode.
+
+- With an email open from a label (or on a label's second page), the top
+  bar showed part of the email's id or "p2" instead of the label's name.
+- Opening a compose window no longer makes the inbox's bundles disappear
+  (or the Pinned switch, the Done and Reminders highlights and the page
+  title act as if you'd left the page). Gmail adds "?compose=…" to the
+  address while composing, and that was read as a different page.
+
+- In dark mode, the Remove label button (in the toolbar on a label's page
+  once emails are selected) showed as a white square. It's now the same
+  light gray icon as the buttons next to it.
+
+- Bundle rows are built without `innerHTML`, so a sender's display name or a
+  label name is always shown as text and never read as HTML. The Firefox
+  manifest declares its data use (sender domains and Gravatar hashes from
+  the page, sent only for avatars), so Mozilla's linter reports no warnings.
+- Each label's ⋮ menu in the left menu (Label color, Show/Hide, Edit,
+  Remove label) can be reached again. It sat past the edge of the menu,
+  and in dark mode it was black on black.
+
+- The options' hide switches now share one "Hide" section: Priority Inbox
+  headings, AI Inbox, and a new All Mail switch.
+- The left menu has a Reminders row, with Inbox's pointing-finger icon. It
+  opens your starred inbox mail plus emails to yourself with "reminder" in
+  the subject.
+- The menu now reads Drafts, Sent, Reminders, Trash, Spam, then All Mail.
+  The old reorder had stopped working when Gmail changed its menu markup.
+  The new one uses CSS, because moving Gmail's rows made it draw All Mail
+  twice. The divider under the group follows the last row shown.
+
+- The Archive check mark didn't match the icons next to it, in the toolbar
+  and in the buttons that appear when you hover an email: it was a lighter
+  gray, Gmail dims it to 43% in the toolbar and (on search pages such as
+  Travel or an open bundle) on hover, and in dark mode the toolbar one
+  vanished on those pages. It's now the same color and strength
+  as its neighbors in both themes.
+- In dark mode, category bundles (a "Cruise" bundle's plane, Finance's chart,
+  and so on) keep their colors instead of all turning light gray.
+
+- Dragging emails onto Social, Updates, Forums or Promotions in the left menu
+  now files them there the way Inbox did: they stay in the inbox and change
+  category, with Gmail's "Undo" toast. Gmail's own drop there archived the
+  email, so it never showed up under that category. Purchases can't take
+  drops; Gmail sorts it itself and offers no way to assign it by hand.
+- Labels in the left menu use Inbox's icons instead of Gmail's label tag:
+  the stacked envelopes, or the same travel, purchases, finance or category
+  icon the label's bundle shows in the inbox (a "Taxes" label gets the green
+  finance chart). Labels you've colored keep their color. Labels with a
+  travel word in the name (trip, travel, cruise, flight, vacation, hotel) get
+  the plane, in the menu and on their bundle.
+- The left menu's categories now read like Inbox's: Travel, Purchases,
+  Finance, Social, Updates, Forums, Promotions. Gmail still sorts mail into
+  Travel and Finance but never listed them (and won't let you create a
+  "Travel" label - it's reserved). Travel opens Gmail's hidden Travel page,
+  plus the mail in any of your labels with a travel word in the name (a
+  "Cruise" or "Flights" label); Finance opens a search for that category.
+  Both get Inbox's icons and their own colored top bar.
+
 ## 2.4.2 — October 2026
 
 - The top bar title read "Inbox" on Spam, Trash, Sent, Drafts and the other
