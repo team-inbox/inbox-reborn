@@ -5,6 +5,20 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## Unreleased
 
+- The left menu's labels are split the way Inbox split them: **Bundled in
+  the inbox** (Travel, Purchases, Finance, Social, Updates, Forums,
+  Promotions, then every label that bundles) and **Unbundled**. Drag a label
+  up into Bundled in the inbox to bundle its emails, and back down to show
+  them one by one. As in Inbox, every label starts out in Unbundled, so
+  **label bundles from earlier versions come back once you drag those labels
+  up**; the categories keep bundling on their own. The choice is saved per
+  account. A nested label goes with the label it is nested under, and labels
+  nested under an `Unbundled` label stay unbundled as they always did. Shown
+  while bundling is on.
+- Your own labels always get Inbox's stacked-envelopes bundle icon, in the
+  left menu and on their bundles. A label called Cruise or Taxes no longer
+  borrows the Travel plane or the Finance chart - those belong to the
+  categories. Travel-named labels still show up under Travel.
 - The Pinned switch in the header is drawn as Inbox drew it: off is a
   lighter-blue thumb with a white pin leaning right on a dark track; on
   lights the thumb up white with a blue pin. Same in dark mode on the darker
