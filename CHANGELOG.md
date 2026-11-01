@@ -5,6 +5,12 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## Unreleased
 
+- An open email's message headers show Inbox's pin instead of Gmail's star,
+  in both themes: gray until pinned, then the color of the star type in use,
+  as on the list rows. Dark mode drew a star there; light mode left Gmail's.
+- In dark mode, the emoji-react button on a message Gmail won't let you
+  react to (lists and notifications) is dimmed the way light mode dims it,
+  instead of reading as a live button.
 - An online manual, with screenshots, at https://team-inbox.github.io/inbox-reborn/
   (source in `website/`, built with Docusaurus and published by GitHub Pages on every
   push to master). The settings popup's footer links to it.
