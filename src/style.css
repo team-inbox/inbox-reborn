@@ -4087,6 +4087,12 @@ body.dark-mode .bundle-wrapper > .bundle-image {
   filter: none !important;
 }
 
+/* Custom bundles use the menu's full-alpha envelopes; this keeps the lighter
+   dark-mode look the old 60%-alpha art gave */
+body.dark-mode .bundle-wrapper[bundlekind='custom'] > .bundle-image {
+  opacity: 0.57;
+}
+
 body.dark-mode .bundle-senders {
   color: #fff !important;
 }
@@ -8252,7 +8258,8 @@ body.inbox-reborn-label-sections-on
 }
 
 /* The label list: categories (order 1-7), bundled labels (100, the default
-   for anything in the list), the Unbundled title (200), unbundled labels (300) */
+   for anything in the list), the Unbundled title (200), categories dragged
+   to Unbundled (300-306, set inline), unbundled labels (320) */
 .inbox-reborn-label-sections {
   display: flex !important;
   flex-direction: column;
@@ -8267,7 +8274,7 @@ body.inbox-reborn-label-sections-on
 }
 
 .inbox-reborn-label-sections > [data-inbox-section='unbundled'] {
-  order: 300;
+  order: 320;
 }
 
 /* Both section titles in Inbox's small, regular, gray caption style: Gmail's
@@ -8460,4 +8467,26 @@ body.dark-mode
   > [data-inbox-section='unbundled']
   > .TO {
   background-color: rgb(138 180 248 / 15%) !important;
+}
+
+/* Status note while a dragged label's mail is moved (moveLabelMail) */
+.inbox-reborn-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 10001;
+  max-width: 360px;
+  padding: 12px 24px;
+  border-radius: 4px;
+  background: #323232;
+  box-shadow:
+    0 3px 5px -1px rgb(0 0 0 / 20%),
+    0 6px 10px 0 rgb(0 0 0 / 14%);
+  font:
+    400 14px Roboto,
+    RobotoDraft,
+    Helvetica,
+    Arial,
+    sans-serif;
+  color: #fff;
 }
