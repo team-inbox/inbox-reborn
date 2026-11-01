@@ -34,14 +34,18 @@
   --dm-accent-strong: #115ea3; /* primary buttons with white text */
 }
 
-/* Let Gmail use its default colorful icons for system labels */
-
 /* =============================================================================
    TYPOGRAPHY AND BASE STYLES
    ============================================================================= */
-* {
+
+/* Inbox's typeface for Gmail's chrome. Message bodies (.a3s) are left to the
+   sender's own fonts: an email that sets Georgia on a cell had every child
+   without its own font-family flipped to Helvetica. The old `* { font-size:
+   99.1% }` is gone too - a percentage on every element compounds with
+   nesting depth, so the same 14px text came out anywhere from 13.9px to
+   12.3px depending on how deep Gmail happened to nest it. */
+*:not(.a3s, .a3s *) {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 99.1%;
   letter-spacing: normal;
 }
 
@@ -285,37 +289,6 @@ body
   opacity: 1 !important;
 }
 
-/* Firefox-specific image paths */
-@-moz-document url-prefix() {
-  /* Not starred image */
-  td.apU.xY .T-KT::before {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    -webkit-mask-size: 20px !important;
-    mask-size: 20px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-color: #444746 !important; /* Greyish color for light mode */
-    background-image: none !important; /* Ensure no conflicting background image */
-  }
-
-  /* Starred */
-  td.apU.xY .T-KT.xl::before {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    -webkit-mask-size: 20px !important;
-    mask-size: 20px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-color: #444746 !important; /* Greyish color for light mode */
-    background-image: none !important; /* Ensure no conflicting background image */
-  }
-}
-
 /* Unread email */
 .yO {
   background: #fff !important;
@@ -400,12 +373,6 @@ body.dark-mode.inbox-list .sweep-button:hover {
   background-color: #f2f2f2;
   color: transparent;
   font-size: 14px;
-}
-
-@-moz-document url-prefix() {
-  .ar4.z .TD > .TC {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_zero_inbox_2x.png') !important;
-  }
 }
 
 /* Fix for weird white space */
@@ -569,12 +536,6 @@ body.dark-mode .TO.inbox-reborn-done::after {
   width: 24px !important;
   height: 24px !important;
   flex-shrink: 0;
-}
-
-@-moz-document url-prefix() {
-  .TO.inbox-reborn-done .qj {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_done_clr_24dp_r4_2x.png') !important;
-  }
 }
 
 /* Compose email old place */
@@ -908,12 +869,6 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
   background-position: center !important;
 }
 
-@-moz-document url-prefix() {
-  .aHS-bnw .qj {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/star_24dp_F1C411_FILL1_wght400_GRAD0_opsz24.svg') !important;
-  }
-}
-
 /* Important */
 .aHS-bns .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
@@ -1036,7 +991,7 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
 }
 
 /* Categories */
-[data-tooltip='Categories'] .aEc.aHS-bnr .qj {
+[data-inbox-nav='categories'] .aEc.aHS-bnr .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -1045,7 +1000,7 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
 }
 
 /* Social */
-[data-tooltip='Social'] .qj {
+[data-inbox-nav='social'] .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -1054,7 +1009,7 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
 }
 
 /* Updates */
-[data-tooltip='Updates'] .qj {
+[data-inbox-nav='updates'] .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -1063,7 +1018,7 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
 }
 
 /* Forums */
-[data-tooltip='Forums'] .qj {
+[data-inbox-nav='forums'] .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -1071,7 +1026,7 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
 }
 
 /* Promotions */
-[data-tooltip='Promotions'] .qj {
+[data-inbox-nav='promotions'] .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -1083,16 +1038,16 @@ body.dark-mode .V3.aam.ada::-webkit-scrollbar-thumb:hover {
    8px below and above it, so drop that padding once it is gone. (Pulling
    the next group up instead overlapped the Inbox highlight in dark mode,
    where the groups have an opaque background.) */
-body.hide-ai-inbox [data-tooltip='AI Inbox'],
-body.hide-ai-inbox .aim:has([data-tooltip='AI Inbox']) {
+body.hide-ai-inbox [data-inbox-nav='ai-inbox'],
+body.hide-ai-inbox .aim:has([data-inbox-nav='ai-inbox']) {
   display: none !important;
 }
 
-body.hide-ai-inbox .byl:has(+ .CL[data-tooltip='AI Inbox']) > .TK {
+body.hide-ai-inbox .byl:has(+ .CL[data-inbox-nav='ai-inbox']) > .TK {
   padding-bottom: 0 !important;
 }
 
-body.hide-ai-inbox .CL[data-tooltip='AI Inbox'] + .byl > .TK {
+body.hide-ai-inbox .CL[data-inbox-nav='ai-inbox'] + .byl > .TK {
   padding-top: 0 !important;
 }
 
@@ -1170,13 +1125,6 @@ body.dark-mode .wT .TN > .nL .pM {
   background-color: var(--dm-text-secondary) !important;
 }
 
-@-moz-document url-prefix() {
-  body.dark-mode .wT .TN > .nL .pM {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') !important;
-  }
-}
-
 /* Reminders row (insertRemindersMenuItem) - Inbox's pointing finger, in the
    gray of the Sent and Drafts icons around it */
 .inbox-reborn-reminders .qj {
@@ -1196,16 +1144,9 @@ body.dark-mode .inbox-reborn-reminders .qj {
   background-color: var(--dm-text-muted) !important;
 }
 
-@-moz-document url-prefix() {
-  .inbox-reborn-reminders .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png') !important;
-  }
-}
-
 /* AI Inbox (Gmail 2026 Gemini row - a bare .TN carrying the tooltip, no .TO
    wrapper). Spark glyph in Google blue to match the colored top group */
-[data-tooltip='AI Inbox'] .qj {
+[data-inbox-nav='ai-inbox'] .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_ai_inbox_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_ai_inbox_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -1218,7 +1159,7 @@ body.dark-mode .inbox-reborn-reminders .qj {
   background-image: none !important;
 }
 
-body.dark-mode [data-tooltip='AI Inbox'] .qj {
+body.dark-mode [data-inbox-nav='ai-inbox'] .qj {
   background-color: #8ab4f8 !important;
 }
 
@@ -1227,30 +1168,23 @@ body.dark-mode [data-tooltip='AI Inbox'] .qj {
    a small dim gray icon, indented 10px past the other rows. Color it the
    same blue, size it like its neighbors, and pull icon + label onto the
    24px / 72px columns the .TO rows use. */
-[data-tooltip='AI Inbox'].CL {
+[data-inbox-nav='ai-inbox'].CL {
   padding-left: 16px !important;
 }
 
-[data-tooltip='AI Inbox'].CL svg {
+[data-inbox-nav='ai-inbox'].CL svg {
   width: 24px !important;
   height: 24px !important;
   margin-right: 24px !important;
   fill: #4285f4 !important;
 }
 
-[data-tooltip='AI Inbox'].CL svg * {
+[data-inbox-nav='ai-inbox'].CL svg * {
   fill: inherit !important;
 }
 
-body.dark-mode [data-tooltip='AI Inbox'].CL svg {
+body.dark-mode [data-inbox-nav='ai-inbox'].CL svg {
   fill: #8ab4f8 !important;
-}
-
-@-moz-document url-prefix() {
-  [data-tooltip='AI Inbox'] .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_ai_inbox_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_ai_inbox_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-  }
 }
 
 /* Category buttons */
@@ -1274,49 +1208,6 @@ body.dark-mode [data-tooltip='AI Inbox'].CL svg {
 }
 
 @-moz-document url-prefix() {
-  /* Inbox */
-  .aHS-bnt .qj {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_googblue_24dp.png') !important;
-  }
-
-  /* Dropdown arrow */
-  .aHS-bnt .afM {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/arrow_drop_down_black_20dp.png') !important;
-  }
-
-  /* Important */
-  .aHS-bns .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    -webkit-mask-size: 20px !important;
-    mask-size: 20px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-color: #444746 !important;
-    background-image: none !important;
-  }
-
-  /* Chats */
-  .aHS-aHP .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_chat_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_chat_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    -webkit-mask-size: 20px !important;
-    mask-size: 20px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-color: #444746 !important;
-    background-image: none !important;
-  }
-
-  /* Snoozed */
-  .aHS-bu1 .qj {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_upcoming_clr_24dp_r5_2x.png') !important;
-  }
-
   /* Sent */
   .aHS-bnu .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -1341,20 +1232,6 @@ body.dark-mode [data-tooltip='AI Inbox'].CL svg {
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
     background-color: #4c4f4d !important;
-  }
-
-  /* Scheduled */
-  .aHS-nd .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_schedule_send_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_schedule_send_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    -webkit-mask-size: 20px !important;
-    mask-size: 20px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-color: #444746 !important; /* Greyish color for light mode */
-    background-image: none !important; /* Ensure no conflicting background image */
   }
 
   /* All Mail */
@@ -1396,37 +1273,8 @@ body.dark-mode [data-tooltip='AI Inbox'].CL svg {
     background-color: #4c4f4d !important;
   }
 
-  /* Labels - Firefox */
-  .aEe,
-  .aEc.aHS-bnr .qj,
-  .aHS-bnr .qj {
-    opacity: 0.9 !important;
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    -webkit-mask-size: 20px !important;
-    mask-size: 20px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-color: #444746 !important;
-  }
-
-  /* Labels (only) - Firefox */
-  .zw .aHS-bnr .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    -webkit-mask-size: 20px !important;
-    mask-size: 20px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-color: #444746 !important;
-  }
-
   /* Category icons */
-  [data-tooltip='Social'] .qj {
+  [data-inbox-nav='social'] .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-position: center !important;
@@ -1438,7 +1286,7 @@ body.dark-mode [data-tooltip='AI Inbox'].CL svg {
     background-color: #4c4f4d !important;
   }
 
-  [data-tooltip='Updates'] .qj {
+  [data-inbox-nav='updates'] .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-position: center !important;
@@ -1450,7 +1298,7 @@ body.dark-mode [data-tooltip='AI Inbox'].CL svg {
     background-color: #4c4f4d !important;
   }
 
-  [data-tooltip='Forums'] .qj {
+  [data-inbox-nav='forums'] .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-position: center !important;
@@ -1462,16 +1310,8 @@ body.dark-mode [data-tooltip='AI Inbox'].CL svg {
     background-color: #4c4f4d !important;
   }
 
-  [data-tooltip='Promotions'] .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    -webkit-mask-size: 24px !important;
-    mask-size: 24px !important;
-    background-color: #4c4f4d !important;
-  }
-
   /* Categories */
-  [data-tooltip='Categories'] .aEc.aHS-bnr .qj {
+  [data-inbox-nav='categories'] .aEc.aHS-bnr .qj {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
@@ -1933,15 +1773,6 @@ div[role='complementary'][aria-label='Side panel'],
   background-color: #4285f4;
 }
 
-@-moz-document url-prefix() {
-  .pinned-toggle-thumb::before {
-    -webkit-mask: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg')
-      center / 14px no-repeat;
-    mask: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg')
-      center / 14px no-repeat;
-  }
-}
-
 /* Pinned view is a search under the hood - drop Gmail's search filter chips
    (From, Any time, Has attachment, ...) that Inbox's filter never had */
 body.pinned-view .Im {
@@ -2394,55 +2225,10 @@ body:not(.dark-mode) .G-atb .asa > .ar8 {
   background-image: none !important;
 }
 
-@-moz-document url-prefix() {
-  .G-atb .asa > .ar9 {
-    -webkit-mask: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg')
-      center / 20px no-repeat !important;
-    mask: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') center / 20px
-      no-repeat !important;
-  }
-}
-
 /* Snooze button (inbox email, opened email) */
 .brv,
 .brW {
   background-size: 20px !important;
-}
-
-@-moz-document url-prefix() {
-  /* Add reminder button image */
-  .add-reminder::before {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_reminders_white_24dp_2x.png') !important;
-  }
-
-  /* Compose email image */
-  .floating-compose::before {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
-  }
-
-  .floating-compose:hover::before,
-  body.speed-dial-open .floating-compose::before {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
-  }
-
-  /* Archive button (inbox email, opened email) */
-  .brq,
-  .ar8,
-  .ar8.T-I-J3.J-J5-Ji {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/archive_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/archive_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    -webkit-mask-size: 24px !important;
-    mask-size: 24px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-color: #444746 !important; /* Gmail's icon gray, matching the icons beside it */
-    background-image: none !important;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-  }
 }
 
 /* Action buttons on email row, in Inbox's order: Pin (its own cell, moved
@@ -2497,18 +2283,6 @@ body:not(.dark-mode) .G-atb .asa > .ar8 {
 .bqY .bqX.inbox-reborn-more {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') !important;
-}
-
-@-moz-document url-prefix() {
-  .bqY .bqX.bru {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
-  }
-
-  .bqY .bqX.inbox-reborn-more {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') !important;
-  }
 }
 
 /* =============================================================================
@@ -2854,12 +2628,6 @@ body.hide-date-time .zA > .yf {
   margin-right: 16px;
 }
 
-@-moz-document url-prefix() {
-  .calendar-image {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/calendar_event_attachment.png') !important;
-  }
-}
-
 /* Remove gmail calendar icon */
 .yf img.xL {
   display: none;
@@ -2928,13 +2696,6 @@ img.ajn[data-avatar-source='icon'],
 .reminder .avatar {
   background: url('chrome-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png')
     center/75% no-repeat !important;
-}
-
-@-moz-document url-prefix() {
-  .reminder .avatar {
-    background: url('moz-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png')
-      center/75% no-repeat !important;
-  }
 }
 
 /* Alignment of calendar icon */
@@ -3099,15 +2860,6 @@ div[aria-label='Hangouts'][role='complementary'] {
     center / 20px no-repeat;
   mask: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') center /
     20px no-repeat;
-}
-
-@-moz-document url-prefix() {
-  .bundle-more::before {
-    -webkit-mask: url('moz-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg')
-      center / 20px no-repeat;
-    mask: url('moz-extension://__MSG_@@extension_id__/images/toolbar_more_vert_24dp.svg') center /
-      20px no-repeat;
-  }
 }
 
 /* The bundle's ⋮ menu, in the look of Gmail's own menus */
@@ -3348,11 +3100,6 @@ div[aria-label='Inbox tip'] {
     background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
   }
 
-  .akV:hover::before,
-  .akV:focus::before {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_compose_white_24dp_2x.png') !important;
-  }
-
   @media (resolution >= 144dpi), (-webkit-min-device-pixel-ratio: 1.5) {
     .akV::before {
       background-image: url('moz-extension://__MSG_@@extension_id__/images/btw_ic_speeddial_white_24dp_2x.png') !important;
@@ -3536,15 +3283,6 @@ body.dark-mode .zA .aqM img.aqN {
   background-color: var(--dm-text-secondary) !important;
 }
 
-@-moz-document url-prefix() {
-  .zA .aqM img.aqN {
-    -webkit-mask: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg')
-      center / 20px no-repeat !important;
-    mask: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') center / 20px
-      no-repeat !important;
-  }
-}
-
 /* Discard draft (compose window, inline reply) - Gmail's slotted delete
    sprite, replaced with Inbox's solid trash can as a mask in Gmail's icon
    gray. Dark mode lightens it like its neighbors: the compose window is
@@ -3559,16 +3297,6 @@ body.dark-mode .btC:not(.nH.Hd .btC) .og.T-I-J3 {
     no-repeat !important;
   background-color: #444746 !important;
   background-image: none !important;
-}
-
-@-moz-document url-prefix() {
-  .og.T-I-J3,
-  body.dark-mode .btC:not(.nH.Hd .btC) .og.T-I-J3 {
-    -webkit-mask: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg')
-      center / 20px no-repeat !important;
-    mask: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') center / 20px
-      no-repeat !important;
-  }
 }
 
 /* MAIN INTERFACE DARK MODE */
@@ -4119,15 +3847,6 @@ body.dark-mode .zA img.aJ4 {
   vertical-align: -2px !important;
 }
 
-@-moz-document url-prefix() {
-  body.dark-mode .zA img.aJ4 {
-    -webkit-mask: url('moz-extension://__MSG_@@extension_id__/images/toolbar_arrow_outward_24dp.svg')
-      center / 14px no-repeat !important;
-    mask: url('moz-extension://__MSG_@@extension_id__/images/toolbar_arrow_outward_24dp.svg')
-      center / 14px no-repeat !important;
-  }
-}
-
 /* Toolbar glyphs - Gmail's light-theme sprites are dark glyphs with no mask
    to recolor, so replace them with Google Material Symbols masks filled with
    the same light gray. Covered: archive, back, report spam, delete, mark
@@ -4188,13 +3907,6 @@ body.dark-mode .G-atb .asa > .asl {
 body.dark-mode .G-atb .asa > .ar9 {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
-}
-
-@-moz-document url-prefix() {
-  body.dark-mode .G-atb .asa > .ar9 {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
-  }
 }
 
 body.dark-mode .G-atb .asa > .bAO {
@@ -4266,15 +3978,6 @@ body.dark-mode .G-atb .asa > .bAD {
   background-color: #444746 !important;
   background-image: none !important;
   opacity: 1 !important;
-}
-
-@-moz-document url-prefix() {
-  .nH.a98.iY.aHo .T-KT {
-    -webkit-mask: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg')
-      center / 20px no-repeat !important;
-    mask: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg')
-      center / 20px no-repeat !important;
-  }
 }
 
 body.dark-mode .nH.a98.iY.aHo .T-KT {
@@ -4525,12 +4228,6 @@ body.dark-mode .ar4.z .TD > .TC {
   height: 618px;
   width: 456px;
   font-size: 14px;
-}
-
-@-moz-document url-prefix() {
-  body.dark-mode .ar4.z .TD > .TC {
-    background-image: url('moz-extension://__MSG_@@extension_id__/images/ic_zero_inbox_2x_dark.png') !important;
-  }
 }
 
 body.dark-mode .aBO,
@@ -5097,16 +4794,6 @@ body.dark-mode .nH .AO::-webkit-scrollbar {
     scrollbar-width: thin !important;
     scrollbar-color: transparent transparent !important;
   }
-
-  body.dark-mode .wT:hover,
-  body.dark-mode .nH .AO:hover {
-    scrollbar-color: var(--dm-surface-raised) transparent !important;
-  }
-
-  body.dark-mode .wT:not(:hover),
-  body.dark-mode .nH .AO:not(:hover) {
-    scrollbar-color: transparent transparent !important;
-  }
 }
 
 /* =============================================================================
@@ -5396,7 +5083,7 @@ body.dark-mode .aHS-aHP .qj {
   background-image: none !important;
 }
 
-body.dark-mode [data-tooltip='Categories'] .qj {
+body.dark-mode [data-inbox-nav='categories'] .qj {
   background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -5409,7 +5096,7 @@ body.dark-mode [data-tooltip='Categories'] .qj {
   background-image: none !important;
 }
 
-body.dark-mode [data-tooltip='Social'] .qj {
+body.dark-mode [data-inbox-nav='social'] .qj {
   background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -5422,7 +5109,7 @@ body.dark-mode [data-tooltip='Social'] .qj {
   background-image: none !important;
 }
 
-body.dark-mode [data-tooltip='Updates'] .qj {
+body.dark-mode [data-inbox-nav='updates'] .qj {
   background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -5435,7 +5122,7 @@ body.dark-mode [data-tooltip='Updates'] .qj {
   background-image: none !important;
 }
 
-body.dark-mode [data-tooltip='Forums'] .qj {
+body.dark-mode [data-inbox-nav='forums'] .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -5446,7 +5133,7 @@ body.dark-mode [data-tooltip='Forums'] .qj {
   mask-position: center !important;
 }
 
-body.dark-mode [data-tooltip='Promotions'] .qj {
+body.dark-mode [data-inbox-nav='promotions'] .qj {
   background-color: var(--dm-text-muted) !important;
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
@@ -5463,219 +5150,25 @@ body.dark-mode [data-tooltip='Promotions'] .qj {
    label) - newer Gmail UI not covered by the class-based rules above. Keep
    their background dark and text toned down to match the other rows. Their
    icons get the monochrome mask treatment at the end of this file. */
-body.dark-mode [data-tooltip='Manage subscriptions'],
-body.dark-mode [data-tooltip='Manage labels'],
-body.dark-mode [data-tooltip='Create new label'],
-body.dark-mode [aria-label='Manage subscriptions'],
-body.dark-mode [aria-label='Manage labels'],
-body.dark-mode [aria-label='Create new label'] {
+body.dark-mode [data-inbox-nav='manage-subscriptions'],
+body.dark-mode [data-inbox-nav='manage-labels'],
+body.dark-mode [data-inbox-nav='create-label'] {
   background-color: transparent !important;
   color: var(--dm-text-secondary) !important;
 }
 
-body.dark-mode [data-tooltip='Manage subscriptions'] .n0,
-body.dark-mode [data-tooltip='Manage labels'] .n0,
-body.dark-mode [data-tooltip='Create new label'] .n0,
-body.dark-mode [aria-label='Manage subscriptions'] .n0,
-body.dark-mode [aria-label='Manage labels'] .n0,
-body.dark-mode [aria-label='Create new label'] .n0 {
+body.dark-mode [data-inbox-nav='manage-subscriptions'] .n0,
+body.dark-mode [data-inbox-nav='manage-labels'] .n0,
+body.dark-mode [data-inbox-nav='create-label'] .n0 {
   color: var(--dm-text-secondary) !important;
 }
 
 /* Firefox-specific dark mode overrides for all icons */
 @-moz-document url-prefix() {
-  body.dark-mode .aHS-bnu .qj {
-    background-color: var(--dm-text-muted) !important;
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_send_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    -webkit-mask-size: 24px !important;
-    mask-size: 24px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-image: none !important;
-  }
-
-  body.dark-mode .aHS-bnq .qj {
-    background-color: var(--dm-text-muted) !important;
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_drafts_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    -webkit-mask-size: 24px !important;
-    mask-size: 24px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-image: none !important;
-  }
-
-  body.dark-mode .aHS-aHO .qj {
-    background-color: var(--dm-text-muted) !important;
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_all_mail_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    -webkit-mask-size: 24px !important;
-    mask-size: 24px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-image: none !important;
-  }
-
-  body.dark-mode .aHS-bnx .qj {
-    background-color: var(--dm-text-muted) !important;
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
-    -webkit-mask-size: 24px !important;
-    mask-size: 24px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-image: none !important;
-  }
-
-  body.dark-mode .aHS-bnv .qj {
-    background-color: var(--dm-text-muted) !important;
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_spam_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    -webkit-mask-size: 24px !important;
-    mask-size: 24px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-image: none !important;
-  }
-
-  body.dark-mode .aHS-bns .qj {
-    background-color: var(--dm-text-muted) !important;
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    -webkit-mask-size: 20px !important;
-    mask-size: 20px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-image: none !important;
-  }
-
-  /* Firefox dark mode star icons - email list */
-  body.dark-mode .zA .apU.xY .T-KT::before,
-  body.dark-mode .zA .apU.xY .T-KT.xl::before {
-    background-color: #e8eaed !important;
-    opacity: 1 !important;
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    -webkit-mask-size: 20px !important;
-    mask-size: 20px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-image: none !important;
-  }
-
-  body.dark-mode .aHS-nd .qj {
-    background-color: var(--dm-text-muted) !important;
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_schedule_send_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_schedule_send_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    -webkit-mask-size: 20px !important;
-    mask-size: 20px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-image: none !important;
-  }
-
-  body.dark-mode .aHS-aHP .qj {
-    background-color: var(--dm-text-muted) !important;
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_chat_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_chat_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    -webkit-mask-size: 20px !important;
-    mask-size: 20px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-image: none !important;
-  }
-
-  /* Labels - Firefox Dark Mode */
-  body.dark-mode .aHS-bnr .qj,
-  body.dark-mode .aEc.aHS-bnr .qj,
-  body.dark-mode .aEe {
-    background-color: var(--dm-text-muted) !important;
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/label_important_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg') !important;
-    -webkit-mask-size: 20px !important;
-    mask-size: 20px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-image: none !important;
-  }
-
-  body.dark-mode [data-tooltip='Categories'] .qj {
-    background-color: var(--dm-text-muted) !important;
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    -webkit-mask-size: 24px !important;
-    mask-size: 24px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-image: none !important;
-  }
-
-  body.dark-mode [data-tooltip='Social'] .qj {
-    background-color: var(--dm-text-muted) !important;
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_social_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    -webkit-mask-size: 24px !important;
-    mask-size: 24px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-image: none !important;
-  }
-
-  body.dark-mode [data-tooltip='Updates'] .qj {
-    background-color: var(--dm-text-muted) !important;
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_updates_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    -webkit-mask-size: 24px !important;
-    mask-size: 24px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-image: none !important;
-  }
-
-  body.dark-mode [data-tooltip='Forums'] .qj {
+  body.dark-mode [data-inbox-nav='forums'] .qj {
     background-color: var(--dm-text-muted) !important;
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_forums_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    -webkit-mask-size: 24px !important;
-    mask-size: 24px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-image: none !important;
-  }
-
-  body.dark-mode [data-tooltip='Promotions'] .qj {
-    background-color: var(--dm-text-muted) !important;
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_promotions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
     -webkit-mask-size: 24px !important;
     mask-size: 24px !important;
     -webkit-mask-repeat: no-repeat !important;
@@ -5968,11 +5461,6 @@ body.dark-mode .IU .SS:checked + .ST::before {
   body.dark-mode .IU .SS + .ST::before {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_check_box_outline_blank_24dp.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_check_box_outline_blank_24dp.svg') !important;
-  }
-
-  body.dark-mode .IU .SS:checked + .ST::before {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_check_box_24dp.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_check_box_24dp.svg') !important;
   }
 }
 
@@ -6466,7 +5954,6 @@ body.dark-mode .aic,
 body.dark-mode .z0,
 body.dark-mode .at9,
 body.dark-mode .Ls77Lb,
-body.dark-mode .aZ6,
 body.dark-mode .pp,
 body.dark-mode .nM,
 body.dark-mode .yJ {
@@ -6475,7 +5962,7 @@ body.dark-mode .yJ {
 }
 
 /* Force Categories icon to work properly */
-body.dark-mode [data-tooltip='Categories'] .aEc.aHS-bnr .qj {
+body.dark-mode [data-inbox-nav='categories'] .aEc.aHS-bnr .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   -webkit-mask-size: 24px !important;
@@ -6486,22 +5973,6 @@ body.dark-mode [data-tooltip='Categories'] .aEc.aHS-bnr .qj {
   mask-position: center !important;
   background-color: var(--dm-text-muted) !important;
   background-image: none !important;
-}
-
-/* Firefox-specific Categories override */
-@-moz-document url-prefix() {
-  body.dark-mode [data-tooltip='Categories'] .aEc.aHS-bnr .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_categories_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    -webkit-mask-size: 24px !important;
-    mask-size: 24px !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: center !important;
-    mask-position: center !important;
-    background-color: var(--dm-text-muted) !important;
-    background-image: none !important;
-  }
 }
 
 /* ========================================
@@ -6604,11 +6075,6 @@ body.dark-mode .ZZ .bs1:checked + .bs3::before {
     -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_check_box_outline_blank_24dp.svg') !important;
     mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_check_box_outline_blank_24dp.svg') !important;
   }
-
-  body.dark-mode .ZZ .bs1:checked + .bs3::before {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_check_box_24dp.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/toolbar_check_box_24dp.svg') !important;
-  }
 }
 
 /* Gmail's date picker (advanced search date field; same widget wherever
@@ -6665,14 +6131,6 @@ body.dark-mode .reminder .avatar {
     center/75% no-repeat !important;
 }
 
-/* Firefox-specific reminder avatar override - same as light mode */
-@-moz-document url-prefix() {
-  body.dark-mode .reminder .avatar {
-    background: url('moz-extension://__MSG_@@extension_id__/images/ic_reminder_blue_24dp_r2_2x.png')
-      center/75% no-repeat !important;
-  }
-}
-
 /* Avatar/checkbox hover swap: the theme-neutral visibility rules in the
    avatar section apply in dark mode too (issue #112 - display swaps here
    reflowed rows on hover and fought other extensions' row wrappers). */
@@ -6697,8 +6155,7 @@ body.dark-mode .avatar:not(.web-avatar, .reminder .avatar) {
 /* Light-mode mask for Purchases - this rule existed only in the Firefox
    block below; the Chrome twin was missing, so Chrome always showed Gmail's
    native icon */
-[data-tooltip='Purchases'] .qj,
-[data-tooltip='Purchased'] .qj {
+[data-inbox-nav='purchases'] .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
   -webkit-mask-size: 24px !important;
@@ -6709,45 +6166,31 @@ body.dark-mode .avatar:not(.web-avatar, .reminder .avatar) {
   mask-position: center !important;
 }
 
-@-moz-document url-prefix() {
-  [data-tooltip='Purchases'] .qj,
-  [data-tooltip='Purchased'] .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
-  }
-}
-
 /* =============================================================================
    SIDEBAR UTILITY ROW ICONS (LIGHT + DARK)
    Manage subscriptions / Manage labels / Create new label - monochrome mask
    icons matching the Sent / Drafts / All Mail treatment: dark gray fill in
    light mode, muted light gray in dark mode.
    ============================================================================= */
-[data-tooltip='Manage subscriptions'] .qj,
-[aria-label='Manage subscriptions'] .qj {
+[data-inbox-nav='manage-subscriptions'] .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_subscriptions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_subscriptions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
 }
 
-[data-tooltip='Manage labels'] .qj,
-[aria-label='Manage labels'] .qj {
+[data-inbox-nav='manage-labels'] .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_settings_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_settings_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
 }
 
-[data-tooltip='Create new label'] .qj,
-[aria-label='Create new label'] .qj {
+[data-inbox-nav='create-label'] .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
 }
 
 /* Shared mask geometry and light-mode fill */
-[data-tooltip='Manage subscriptions'] .qj,
-[data-tooltip='Manage labels'] .qj,
-[data-tooltip='Create new label'] .qj,
-[aria-label='Manage subscriptions'] .qj,
-[aria-label='Manage labels'] .qj,
-[aria-label='Create new label'] .qj {
+[data-inbox-nav='manage-subscriptions'] .qj,
+[data-inbox-nav='manage-labels'] .qj,
+[data-inbox-nav='create-label'] .qj {
   -webkit-mask-size: 20px !important;
   mask-size: 20px !important;
   -webkit-mask-repeat: no-repeat !important;
@@ -6760,36 +6203,33 @@ body.dark-mode .avatar:not(.web-avatar, .reminder .avatar) {
 }
 
 /* Dark-mode fill */
-body.dark-mode [data-tooltip='Manage subscriptions'] .qj,
-body.dark-mode [data-tooltip='Manage labels'] .qj,
-body.dark-mode [data-tooltip='Create new label'] .qj,
-body.dark-mode [aria-label='Manage subscriptions'] .qj,
-body.dark-mode [aria-label='Manage labels'] .qj,
-body.dark-mode [aria-label='Create new label'] .qj {
+body.dark-mode [data-inbox-nav='manage-subscriptions'] .qj,
+body.dark-mode [data-inbox-nav='manage-labels'] .qj,
+body.dark-mode [data-inbox-nav='create-label'] .qj {
   background-color: var(--dm-text-muted) !important;
 }
 
 /* Late-2026 markup: the row is a .CL with no .qj; its glyph is a ::before
    painted with Gmail's dark nv700 PNG, which all but vanished on the dark
    sidebar. Mask the same Material glyphs onto the ::before instead. */
-[data-tooltip='Manage subscriptions'].CL::before {
+[data-inbox-nav='manage-subscriptions'].CL::before {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_subscriptions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_subscriptions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
 }
 
-[data-tooltip='Manage labels'].CL::before {
+[data-inbox-nav='manage-labels'].CL::before {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_settings_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_settings_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
 }
 
-[data-tooltip='Create new label'].CL::before {
+[data-inbox-nav='create-label'].CL::before {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
 }
 
-[data-tooltip='Manage subscriptions'].CL::before,
-[data-tooltip='Manage labels'].CL::before,
-[data-tooltip='Create new label'].CL::before {
+[data-inbox-nav='manage-subscriptions'].CL::before,
+[data-inbox-nav='manage-labels'].CL::before,
+[data-inbox-nav='create-label'].CL::before {
   -webkit-mask-size: 20px !important;
   mask-size: 20px !important;
   -webkit-mask-repeat: no-repeat !important;
@@ -6801,46 +6241,10 @@ body.dark-mode [aria-label='Create new label'] .qj {
   opacity: 1 !important;
 }
 
-body.dark-mode [data-tooltip='Manage subscriptions'].CL::before,
-body.dark-mode [data-tooltip='Manage labels'].CL::before,
-body.dark-mode [data-tooltip='Create new label'].CL::before {
+body.dark-mode [data-inbox-nav='manage-subscriptions'].CL::before,
+body.dark-mode [data-inbox-nav='manage-labels'].CL::before,
+body.dark-mode [data-inbox-nav='create-label'].CL::before {
   background-color: var(--dm-text-muted) !important;
-}
-
-/* Firefox extension-URL variants */
-@-moz-document url-prefix() {
-  [data-tooltip='Manage subscriptions'].CL::before {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_subscriptions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_subscriptions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-  }
-
-  [data-tooltip='Manage labels'].CL::before {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_settings_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_settings_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-  }
-
-  [data-tooltip='Create new label'].CL::before {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-  }
-
-  [data-tooltip='Manage subscriptions'] .qj,
-  [aria-label='Manage subscriptions'] .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_subscriptions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_subscriptions_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-  }
-
-  [data-tooltip='Manage labels'] .qj,
-  [aria-label='Manage labels'] .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_settings_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_settings_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-  }
-
-  [data-tooltip='Create new label'] .qj,
-  [aria-label='Create new label'] .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_add_24dp_FFFFFF_FILL1_wght400_GRAD0_opsz24.svg') !important;
-  }
 }
 
 /* =============================================================================
@@ -7206,42 +6610,40 @@ body.dark-mode .nH.Hd[role='dialog'] {
    tone. Brown and indigo step up to their 300 shades on the dark sidebar.
    Kept at the end of the file so it wins over the monochrome icon rules.
    ============================================================================= */
-[data-tooltip='Social'] .qj,
-body.dark-mode [data-tooltip='Social'] .qj {
+[data-inbox-nav='social'] .qj,
+body.dark-mode [data-inbox-nav='social'] .qj {
   background-color: #db4437 !important;
   background-image: none !important;
 }
 
-[data-tooltip='Updates'] .qj,
-body.dark-mode [data-tooltip='Updates'] .qj {
+[data-inbox-nav='updates'] .qj,
+body.dark-mode [data-inbox-nav='updates'] .qj {
   background-color: #ff6839 !important;
   background-image: none !important;
 }
 
-[data-tooltip='Forums'] .qj {
+[data-inbox-nav='forums'] .qj {
   background-color: #3f51b5 !important;
   background-image: none !important;
 }
 
-[data-tooltip='Promotions'] .qj,
-body.dark-mode [data-tooltip='Promotions'] .qj {
+[data-inbox-nav='promotions'] .qj,
+body.dark-mode [data-inbox-nav='promotions'] .qj {
   background-color: #00bcd4 !important;
   background-image: none !important;
 }
 
-[data-tooltip='Purchases'] .qj,
-[data-tooltip='Purchased'] .qj {
+[data-inbox-nav='purchases'] .qj {
   background-color: #795548 !important;
   background-image: none !important;
 }
 
-body.dark-mode [data-tooltip='Forums'] .qj {
+body.dark-mode [data-inbox-nav='forums'] .qj {
   background-color: #7986cb !important;
   background-image: none !important;
 }
 
-body.dark-mode [data-tooltip='Purchases'] .qj,
-body.dark-mode [data-tooltip='Purchased'] .qj {
+body.dark-mode [data-inbox-nav='purchases'] .qj {
   background-color: #a1887f !important;
   background-image: none !important;
 }
@@ -7437,56 +6839,6 @@ body.dark-mode .wT .zw [data-inbox-icon='forums'] .aHS-bnr .qj {
   background-color: #db4437 !important;
 }
 
-@-moz-document url-prefix() {
-  .wT .zw .aHS-bnr .qj,
-  body.dark-mode .wT .zw .aHS-bnr .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_label_cluster_24dp.png') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/menu_label_cluster_24dp.png') !important;
-  }
-
-  .wT .zw [data-inbox-icon='promotions'] .aHS-bnr .qj,
-  body.dark-mode .wT .zw [data-inbox-icon='promotions'] .aHS-bnr .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_offers_24px_clr_r3_2x.png') !important;
-  }
-
-  .wT .zw [data-inbox-icon='finance'] .aHS-bnr .qj,
-  body.dark-mode .wT .zw [data-inbox-icon='finance'] .aHS-bnr .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_finance_24px_clr_r3_2x.png') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_finance_24px_clr_r3_2x.png') !important;
-  }
-
-  .wT .zw [data-inbox-icon='purchases'] .aHS-bnr .qj,
-  body.dark-mode .wT .zw [data-inbox-icon='purchases'] .aHS-bnr .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_purchases_24px_clr_r3_2x.png') !important;
-  }
-
-  .wT .zw [data-inbox-icon='travel'] .aHS-bnr .qj,
-  body.dark-mode .wT .zw [data-inbox-icon='travel'] .aHS-bnr .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_travel_clr_24dp_r1_2x.png') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_travel_clr_24dp_r1_2x.png') !important;
-  }
-
-  .wT .zw [data-inbox-icon='updates'] .aHS-bnr .qj,
-  body.dark-mode .wT .zw [data-inbox-icon='updates'] .aHS-bnr .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_updates_24px_clr_r3_2x.png') !important;
-  }
-
-  .wT .zw [data-inbox-icon='forums'] .aHS-bnr .qj,
-  body.dark-mode .wT .zw [data-inbox-icon='forums'] .aHS-bnr .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_forums_24px_clr_r3_2x.png') !important;
-  }
-
-  .wT .zw [data-inbox-icon='social'] .aHS-bnr .qj,
-  body.dark-mode .wT .zw [data-inbox-icon='social'] .aHS-bnr .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_social_24px_clr_r3_2x.png') !important;
-  }
-}
-
 /* =============================================================================
    TRAVEL & FINANCE SIDEBAR ROWS
    insertCategoryMenuItems() in script.js adds these two Inbox categories to
@@ -7507,43 +6859,43 @@ body.dark-mode .wT .zw [data-inbox-icon='forums'] .aHS-bnr .qj {
   order: 100;
 }
 
-.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-tooltip='Travel']) {
+.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-inbox-nav='travel']) {
   order: 1;
 }
 
-.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-tooltip='Purchases']) {
+.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-inbox-nav='purchases']) {
   order: 2;
 }
 
-.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-tooltip='Finance']) {
+.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-inbox-nav='finance']) {
   order: 3;
 }
 
-.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-tooltip='Social']) {
+.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-inbox-nav='social']) {
   order: 4;
 }
 
-.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-tooltip='Updates']) {
+.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-inbox-nav='updates']) {
   order: 5;
 }
 
-.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-tooltip='Forums']) {
+.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-inbox-nav='forums']) {
   order: 6;
 }
 
-.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-tooltip='Promotions']) {
+.TK:has(> .inbox-reborn-category) > .aim:has(> .TO[data-inbox-nav='promotions']) {
   order: 7;
 }
 
 /* "Hide Travel" / "Hide Finance" options - hide the whole .aim row so no
    gap is left */
-body.hide-travel .aim:has(> .TO[data-tooltip='Travel']),
-body.hide-finance .aim:has(> .TO[data-tooltip='Finance']) {
+body.hide-travel .aim:has(> .TO[data-inbox-nav='travel']),
+body.hide-finance .aim:has(> .TO[data-inbox-nav='finance']) {
   display: none !important;
 }
 
-[data-tooltip='Travel'] .qj,
-body.dark-mode [data-tooltip='Travel'] .qj {
+[data-inbox-nav='travel'] .qj,
+body.dark-mode [data-inbox-nav='travel'] .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_travel_clr_24dp_r1_2x.png') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_travel_clr_24dp_r1_2x.png') !important;
   -webkit-mask-size: 24px !important;
@@ -7556,12 +6908,12 @@ body.dark-mode [data-tooltip='Travel'] .qj {
   background-image: none !important;
 }
 
-body.dark-mode [data-tooltip='Travel'] .qj {
+body.dark-mode [data-inbox-nav='travel'] .qj {
   background-color: #ba68c8 !important;
 }
 
-[data-tooltip='Finance'] .qj,
-body.dark-mode [data-tooltip='Finance'] .qj {
+[data-inbox-nav='finance'] .qj,
+body.dark-mode [data-inbox-nav='finance'] .qj {
   -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_finance_24px_clr_r3_2x.png') !important;
   mask-image: url('chrome-extension://__MSG_@@extension_id__/images/ic_finance_24px_clr_r3_2x.png') !important;
   -webkit-mask-size: 24px !important;
@@ -7574,22 +6926,8 @@ body.dark-mode [data-tooltip='Finance'] .qj {
   background-image: none !important;
 }
 
-body.dark-mode [data-tooltip='Finance'] .qj {
+body.dark-mode [data-inbox-nav='finance'] .qj {
   background-color: #7cb342 !important;
-}
-
-@-moz-document url-prefix() {
-  [data-tooltip='Travel'] .qj,
-  body.dark-mode [data-tooltip='Travel'] .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_travel_clr_24dp_r1_2x.png') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_travel_clr_24dp_r1_2x.png') !important;
-  }
-
-  [data-tooltip='Finance'] .qj,
-  body.dark-mode [data-tooltip='Finance'] .qj {
-    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_finance_24px_clr_r3_2x.png') !important;
-    mask-image: url('moz-extension://__MSG_@@extension_id__/images/ic_finance_24px_clr_r3_2x.png') !important;
-  }
 }
 
 /* =============================================================================
@@ -7670,13 +7008,13 @@ body.dark-mode .zA.yO[bundlekind='purchases'] .label-link > span:not(.bundle-cou
 body.inbox-reborn-label-sections-on
   .aim:not(.inbox-reborn-category):has(
     > .TO:is(
-        [data-tooltip='Travel'],
-        [data-tooltip='Purchases'],
-        [data-tooltip='Finance'],
-        [data-tooltip='Social'],
-        [data-tooltip='Updates'],
-        [data-tooltip='Forums'],
-        [data-tooltip='Promotions']
+        [data-inbox-nav='travel'],
+        [data-inbox-nav='purchases'],
+        [data-inbox-nav='finance'],
+        [data-inbox-nav='social'],
+        [data-inbox-nav='updates'],
+        [data-inbox-nav='forums'],
+        [data-inbox-nav='promotions']
       )
   ) {
   display: none !important;
@@ -7684,18 +7022,18 @@ body.inbox-reborn-label-sections-on
 
 /* ...and the group that held them, once nothing else is in it */
 body.inbox-reborn-label-sections-on
-  .byl:has(> .TK > .aim > .TO[data-tooltip='Updates']):not(
+  .byl:has(> .TK > .aim > .TO[data-inbox-nav='updates']):not(
     :has(
       > .TK
         > .aim
         > .TO:not(
-          [data-tooltip='Travel'],
-          [data-tooltip='Purchases'],
-          [data-tooltip='Finance'],
-          [data-tooltip='Social'],
-          [data-tooltip='Updates'],
-          [data-tooltip='Forums'],
-          [data-tooltip='Promotions']
+          [data-inbox-nav='travel'],
+          [data-inbox-nav='purchases'],
+          [data-inbox-nav='finance'],
+          [data-inbox-nav='social'],
+          [data-inbox-nav='updates'],
+          [data-inbox-nav='forums'],
+          [data-inbox-nav='promotions']
         )
     )
   ) {
