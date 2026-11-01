@@ -2,6 +2,7 @@
   "name": "Inbox Reborn theme for Gmail™",
   "version": "2.4.2",
   "manifest_version": 3,
+  "minimum_chrome_version": "111",
   "permissions": ["storage"],
   "description": "Adds features like reminders, email bundling, and Inbox's minimalistic style to Gmail™",
   "homepage_url": "https://github.com/team-inbox/inbox-reborn",
@@ -21,13 +22,13 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://mail.google.com/*"],
+      "matches": ["https://mail.google.com/mail/*"],
       "css": ["src/style.css"],
       "js": ["src/script.js"],
       "run_at": "document_start"
     },
     {
-      "matches": ["https://mail.google.com/*"],
+      "matches": ["https://mail.google.com/mail/*"],
       "js": ["src/gmail-categories.js"],
       "run_at": "document_start",
       "world": "MAIN"
