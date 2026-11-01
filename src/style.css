@@ -1956,7 +1956,10 @@ div[role='complementary'][aria-label='Side panel'],
 }
 
 /* Pinned switch in the header (Inbox's pinned filter) - a pin-badged thumb
-   on a short track; checked state follows the view, not the click */
+   on a short track; checked state follows the view, not the click. Off is
+   drawn as Inbox drew it: a thumb of white at 12% over the header blue with
+   a white pin tilted 45 degrees, on a track of black at 26%. On lights the
+   thumb up white with the pin in the header blue. */
 .pinned-toggle {
   position: relative;
   flex: none;
@@ -1986,13 +1989,16 @@ div[role='complementary'][aria-label='Side panel'],
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #fff;
+  background: #5a94fb; /* white 12% over #4285f4, flattened so the track doesn't show through */
   box-shadow: 0 1px 3px rgb(0 0 0 / 40%);
-  transition: transform 0.2s;
+  transition:
+    transform 0.2s,
+    background-color 0.2s;
 }
 
 .pinned-toggle[aria-checked='true'] .pinned-toggle-thumb {
   transform: translateX(20px);
+  background: #fff;
 }
 
 .pinned-toggle-thumb::before {
@@ -2003,6 +2009,12 @@ div[role='complementary'][aria-label='Side panel'],
     center / 14px no-repeat;
   mask: url('chrome-extension://__MSG_@@extension_id__/images/keep_20dp_FFFFFF_FILL1_wght400_GRAD0_opsz20.svg')
     center / 14px no-repeat;
+  background-color: #fff;
+  transform: rotate(45deg); /* Inbox's pin leans right, head up */
+  transition: background-color 0.2s;
+}
+
+.pinned-toggle[aria-checked='true'] .pinned-toggle-thumb::before {
   background-color: #4285f4;
 }
 
@@ -2453,6 +2465,27 @@ body:not(.dark-mode) .G-atb .asa > .ar8 {
 .ar8::after,
 .ar8.T-I-J3.J-J5-Ji::after {
   display: none !important;
+}
+
+/* Delete button (toolbar - opened email, selected emails): Inbox's solid
+   trash can, as on the left menu and the hover actions, in place of Gmail's
+   outline can. Dark mode fills it light ("Toolbar glyphs") */
+.G-atb .asa > .ar9 {
+  -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg')
+    center / 20px no-repeat !important;
+  mask: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') center / 20px
+    no-repeat !important;
+  background-color: #444746 !important;
+  background-image: none !important;
+}
+
+@-moz-document url-prefix() {
+  .G-atb .asa > .ar9 {
+    -webkit-mask: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg')
+      center / 20px no-repeat !important;
+    mask: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') center / 20px
+      no-repeat !important;
+  }
 }
 
 /* Snooze button (inbox email, opened email) */
@@ -4381,8 +4414,15 @@ body.dark-mode .G-atb .asa > .asl {
 }
 
 body.dark-mode .G-atb .asa > .ar9 {
-  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_delete_24dp.svg') !important;
-  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/toolbar_delete_24dp.svg') !important;
+  -webkit-mask-image: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
+  mask-image: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
+}
+
+@-moz-document url-prefix() {
+  body.dark-mode .G-atb .asa > .ar9 {
+    -webkit-mask-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
+    mask-image: url('moz-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') !important;
+  }
 }
 
 body.dark-mode .G-atb .asa > .bAO {
@@ -6043,6 +6083,20 @@ body.dark-mode .w-asV.bbg.aiw {
 body.dark-mode .w-asV.bbg.aiw[pageTitle='inbox'],
 body.dark-mode .w-asV.bbg.aiw[pageTitle='pinned'] {
   background-color: #3060b0 !important; /* darker blue */
+}
+
+/* Pinned switch on the darker header blue: the same white-12% thumb and,
+   when on, a pin in that darker blue */
+body.dark-mode .pinned-toggle-thumb {
+  background: #4973ba;
+}
+
+body.dark-mode .pinned-toggle[aria-checked='true'] .pinned-toggle-thumb {
+  background: #fff;
+}
+
+body.dark-mode .pinned-toggle[aria-checked='true'] .pinned-toggle-thumb::before {
+  background-color: #3060b0;
 }
 
 body.dark-mode .w-asV.bbg.aiw[pageTitle='starred'] {

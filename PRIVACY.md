@@ -53,7 +53,7 @@ The only network requests the extension makes are to find **sender pictures**, a
 | Google, Cloudflare or DNSPod DNS-over-HTTPS | The sender's domain (e.g. `example.com`)                 | To look up the domain's published BIMI logo                                                                                                   |
 | The sender's logo host                      | A request for the logo address found in that BIMI record | To display the brand logo                                                                                                                     |
 | Google's site icon service (`gstatic.com`)  | The sender's domain                                      | To display the company's site icon                                                                                                            |
-| Gravatar                                    | A SHA-256 hash of the sender's email address             | To display their Gravatar photo — **off by default**; only with _Gravatar Photos_ on, which turning _Stock Inbox_ on in the options also does |
+| Gravatar                                    | A SHA-256 hash of the sender's email address             | To display their Gravatar photo — **off by default**; only with _Gravatar photos_ on, which turning _Stock Inbox_ on in the options also does |
 
 These requests come from your browser, so as with any web request the service also sees your
 IP address and browser user agent. Each service's own privacy policy applies to what it receives.
