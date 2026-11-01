@@ -17,6 +17,7 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
   "Reminder", like the speed-dial contacts' names.
 - The reminder button stays hidden until you hover the compose button,
   then fans out with the recent contacts, like Inbox's speed dial.
+- The Hide settings can hide the Travel and Finance rows in the left menu.
 - Hovering a bundle shows a sweep, which marks the whole bundle done
   (pinned emails stay), and a ⋮ menu with Gmail's actions - Delete, Mark
   as read, Snooze, Move to, Labels and the rest - for every email in it.

@@ -43,14 +43,14 @@ Web extension which modifies Gmail™ to bring back the features and uncluttered
 Click the extension's icon at the top right of your browser to adjust its behavior.
 Changes apply immediately — the page refreshes itself when needed.
 
-| Option              | What it does                                                                                                                                      |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Dark Mode**       | Toggles the extension's built-in dark theme. No need to change Gmail's own theme setting. Applies instantly, no refresh.                          |
-| **Reminders**       | How emails sent to yourself are treated: every self-sent email, only those with the subject "Reminder", or none.                                  |
-| **Email Bundling**  | Groups inbox emails by label (see [Email Bundling](#email-bundling) below). Sub-options: bundle even single emails; show bundles in Today.        |
-| **Avatars**         | Shows each sender's avatar next to their email — a picture when one is found, otherwise a colored circle with their first initial.                |
-| **Gravatar Photos** | Also looks up sender pictures on Gravatar. Off by default — it shares a hashed copy of each sender's address with Gravatar.                       |
-| **Hide**            | Three switches: Priority Inbox headings (when Gmail's "Priority Inbox" type is enabled), the AI Inbox row, and the All Mail row in the left menu. |
+| Option              | What it does                                                                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Dark Mode**       | Toggles the extension's built-in dark theme. No need to change Gmail's own theme setting. Applies instantly, no refresh.                                      |
+| **Reminders**       | How emails sent to yourself are treated: every self-sent email, only those with the subject "Reminder", or none.                                              |
+| **Email Bundling**  | Groups inbox emails by label (see [Email Bundling](#email-bundling) below). Sub-options: bundle even single emails; show bundles in Today.                    |
+| **Avatars**         | Shows each sender's avatar next to their email — a picture when one is found, otherwise a colored circle with their first initial.                            |
+| **Gravatar Photos** | Also looks up sender pictures on Gravatar. Off by default — it shares a hashed copy of each sender's address with Gravatar.                                   |
+| **Hide**            | Five switches: Priority Inbox headings (when Gmail's "Priority Inbox" type is enabled), and the AI Inbox, All Mail, Travel and Finance rows in the left menu. |
 
 ## Recommended Gmail™ Settings
 
@@ -90,11 +90,18 @@ Promotions). Here's how to get them back:
 1. **Disable inbox category tabs** — bundles only form in the inbox itself:
    - Settings → Inbox → Categories → leave only **Primary** ticked → Save
 
-2. **Show Social, Promotions, and Forums in the message list** — this makes Gmail tag
+2. **Show the categories you want bundled in the message list** — this makes Gmail tag
    inbox emails with those category chips, which the extension bundles like any label:
    - Settings → Labels → Categories → click **show** next to Social, Promotions, Forums
-   - Leave **Updates** hidden: Gmail classifies almost all automated mail as Updates,
-     so showing it would collapse most of your inbox into one giant bundle.
+     (and Updates, if you want it - see below)
+   - **This step is required.** Without it, Gmail sorts the mail into the category but
+     draws nothing on the inbox row to say so, and the extension can only bundle what's
+     on the row. Clicking Updates (or Social...) in the left menu still lists that
+     category's mail, but those emails stay unbundled in the inbox until the category
+     is set to **show**.
+   - **Updates is optional.** Gmail files almost all automated mail under Updates, so
+     showing it can collapse a large part of your inbox into one big Updates bundle.
+     Show it if that's what you want; leave it hidden to keep that mail loose.
 
 3. **Recreate Purchases with a label + filter.** Gmail's smarter sections (Purchases,
    Subscriptions, Trips) are classified on Google's servers and expose nothing the
@@ -141,13 +148,16 @@ named `Travel` (it's reserved), so use `Trips`, `Cruise`, `Flights` or `Vacation
   (Settings → Labels → "Show in message list") and that at least two inbox emails
   carry it (or enable "Show bundle if only one email").
 - **An email isn't joining its bundle?** Starred emails are excluded by design.
-- **A Gmail category won't bundle?** Categories like Purchases only exist server-side;
+- **A Gmail category won't bundle, even though its page in the left menu lists the
+  email?** Set that category to **show** in the message list (Settings → Labels →
+  Categories). Social, Updates, Forums and Promotions only bundle once Gmail draws
+  their chip on the inbox row. Purchases, Travel and Finance have no chip to show -
   use the label + filter recipe above.
 
 ## Speed Dial
 
-Hover the red compose button and your three most recent contacts fan out above the reminder
-button. Hover one to see their name and address; click to start an email to them.
+Hover the red compose button and the reminder button fans out above it, followed by your
+three most recent contacts. Hover one to see their name and address; click to start an email to them.
 
 **Getting started:** the speed dial learns your contacts from your sent mail, so on a fresh
 install it starts empty. To fill it, either:
