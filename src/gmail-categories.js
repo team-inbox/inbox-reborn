@@ -28,6 +28,14 @@
    (src/script.js, "CATEGORY BUNDLES"). It changes nothing Gmail sends or
    receives, and stays idle until the content script asks for categories.
 
+   The ids of the last answer are remembered too (localStorage, per account
+   slot in the address, ids only), and handed over the moment the content
+   script asks, so the bundles form with the rest of the inbox on the next
+   load instead of a couple of seconds later; the fresh search that follows
+   corrects anything that changed in between. The first search goes out as
+   soon as Gmail's first sync request is seen - its headers are known when
+   it is sent.
+
    The same request, with "in:sent", fills the compose speed dial: once per
    page load it reads who your newest sent threads were with, so the speed
    dial is right without a visit to the Sent page.
@@ -49,6 +57,10 @@
   const SYNC_URL = /\/sync\/u\/\d+\/i\/(?:bv|s|fd)(?=\?|$)/;
   const LIST_URL = /\/sync\/u\/\d+\/i\/bv(?=\?|$)/;
   const BODY_KEY = 'inboxReborn.listRequestBody';
+  // The last answer's thread ids, per account slot (/mail/u/N/) - one
+  // origin serves every signed-in account
+  const THREADS_KEY = `inboxReborn.categoryThreads.${/\/u\/(\d+)\//.exec(location.pathname)?.[1] ?? '0'}`;
+  const MAX_CACHED_THREADS = 500; // per category, what the content script takes anyway
   // Gmail's list request body opens [[<view>,<page size>,null,"<query>",...
   const QUERY_IN_BODY = /^(\[\[\d+,\d+,null,)"(?:[^"\\]|\\.)*"/;
   // Only bodies of view 123 - the inbox and search lists - take a query.
@@ -108,6 +120,44 @@
     // Storage blocked - wait for Gmail to load a list
   }
 
+  // The remembered answer, { travel: [ids], ... }, or nothing
+  const readCachedThreads = () => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(THREADS_KEY) || 'null');
+      if (!saved || typeof saved !== 'object') return null;
+      const threads = {};
+      KNOWN.forEach((name) => {
+        if (Array.isArray(saved[name])) {
+          threads[name] = saved[name]
+            .filter((id) => typeof id === 'string' && /^[0-9a-f]{1,32}$/.test(id))
+            .slice(0, MAX_CACHED_THREADS);
+        }
+      });
+      return Object.keys(threads).length ? threads : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const writeCachedThreads = (threads) => {
+    try {
+      const trimmed = Object.fromEntries(
+        Object.entries(threads).map(([name, ids]) => [name, ids.slice(0, MAX_CACHED_THREADS)]),
+      );
+      localStorage.setItem(THREADS_KEY, JSON.stringify(trimmed));
+    } catch {
+      // Storage blocked - the bundles wait for the search, as before
+    }
+  };
+
+  const forgetCachedThreads = () => {
+    try {
+      localStorage.removeItem(THREADS_KEY);
+    } catch {
+      // Storage blocked - nothing was stored
+    }
+  };
+
   const warnOnce = (msg) => {
     if (warned) return;
     warned = true;
@@ -164,10 +214,10 @@
         }
         // Gmail just loaded a list (the inbox, after an archive, a new search...)
         this.addEventListener('load', () => schedule(1500));
-      } else if (!hadSession) {
-        // First request after the page loaded - enough to run the searches
-        this.addEventListener('load', () => schedule(500));
       }
+      // First request after the page loaded: its headers are the session,
+      // so the searches can go out now rather than after it answers
+      if (!hadSession) schedule(0);
       if (!hadSession) this.addEventListener('load', () => setTimeout(lookUpSent, 500));
     }
     return origSend.apply(this, arguments);
@@ -224,6 +274,7 @@
         threads[name] = threadIds(await search(`in:inbox ${queries[name] || `category:${name}`}`));
       }
       window.postMessage({ source: SOURCE, type: 'threads', threads }, location.origin);
+      writeCachedThreads(threads);
       failures = 0;
     } catch (e) {
       failures++;
@@ -317,7 +368,17 @@
           sent[name].startsWith(`{category:${name} `),
       ).map((name) => [name, sent[name]]),
     );
-    if (wanted.length) schedule(0);
+    if (!wanted.length) {
+      forgetCachedThreads();
+      return;
+    }
+    // Last time's answer first, so the bundles form with the inbox; the
+    // search that follows replaces it
+    const cached = readCachedThreads();
+    if (cached) {
+      window.postMessage({ source: SOURCE, type: 'threads', threads: cached }, location.origin);
+    }
+    schedule(0);
   });
 
   // No sync request seen well after load: Gmail renamed or reshaped them
