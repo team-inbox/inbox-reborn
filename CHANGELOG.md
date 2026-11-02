@@ -5,6 +5,12 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## Unreleased
 
+- An arrow before the Unbundled title in the left menu, laid out like
+  Gmail's More row, folds that section up and out again (the title toggles
+  too, and the arrow takes Enter and Space). The fold is kept in the extension's storage, so every
+  Gmail tab follows it; a label can still be dragged down onto the folded
+  title. The arrow is drawn in the title's own color, so it reads in light
+  and dark mode alike.
 - The Purchases, Travel and Finance bundles form with the rest of the inbox
   on a reload instead of a couple of seconds after it, during which their
   mail sat loose in the list. The page script remembers the thread ids of
