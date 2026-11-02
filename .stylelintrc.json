@@ -12,7 +12,6 @@
     "at-rule-no-vendor-prefix": null,
     "media-feature-name-no-vendor-prefix": null,
     "at-rule-prelude-no-invalid": null,
-    "no-duplicate-selectors": null,
     "declaration-block-no-shorthand-property-overrides": null,
     "declaration-block-no-redundant-longhand-properties": null
   }

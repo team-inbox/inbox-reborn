@@ -9,7 +9,7 @@
     "build:firefox": "node build.js firefox zip",
     "build:chrome:unpacked": "node build.js chrome unpacked",
     "build:firefox:unpacked": "node build.js firefox unpacked",
-    "lint": "npm run lint:js && npm run lint:css && npm run format:check && npm run check:versions && npm run check:assets",
+    "lint": "npm run lint:js && npm run lint:css && npm run format:check && npm run check:versions && npm run check:assets && npm run check:css",
     "lint:js": "eslint .",
     "lint:css": "stylelint \"src/**/*.css\"",
     "lint:firefox": "node scripts/lint-firefox.js",
@@ -18,7 +18,8 @@
     "test": "node --test \"test/*.test.js\"",
     "verify": "npm run lint && npm test && npm run lint:firefox",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "check:css": "node scripts/check-css.js"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

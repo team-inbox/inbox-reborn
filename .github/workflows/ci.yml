@@ -26,6 +26,8 @@ jobs:
         run: npm run check:versions
       - name: Referenced images exist
         run: npm run check:assets
+      - name: No dead stylesheet rules
+        run: npm run check:css
 
   test:
     name: Tests
