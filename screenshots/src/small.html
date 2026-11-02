@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=block" rel="stylesheet">
+<style>
+  html, body { margin: 0; width: 440px; height: 280px; overflow: hidden; }
+  body {
+    font-family: Roboto, sans-serif;
+    background: linear-gradient(135deg, #5194f8 0%, #4285f4 45%, #2d64d2 100%);
+    position: relative;
+    color: #fff;
+  }
+  .brand { position: absolute; left: 30px; top: 50px; width: 250px; }
+  .icon { width: 76px; height: 76px; filter: drop-shadow(0 3px 6px rgb(0 0 0 / 28%)); }
+  h1 { margin: 16px 0 0; font-size: 34px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.05; }
+  p { margin: 9px 0 0; font-size: 16px; font-weight: 400; color: rgb(255 255 255 / 92%); line-height: 1.35; }
+
+  /* Inbox's speed dial: contacts, reminder, compose */
+  .dial { position: absolute; right: 34px; bottom: 26px; display: flex; flex-direction: column; align-items: center; gap: 11px; }
+  .dial .face, .dial .reminder { width: 40px; height: 40px; border-radius: 50%; box-shadow: 0 2px 5px rgb(0 0 0 / 30%); }
+  .dial .face { background-size: cover; background-position: center; border: 2px solid rgb(255 255 255 / 85%); box-sizing: border-box; }
+  .dial .reminder { background: #fff url(btw_ic_speeddial_reminders_white_24dp_2x.png) center / 24px no-repeat; background-color: #4285f4; border: 2px solid rgb(255 255 255 / 85%); box-sizing: border-box; }
+  .dial .compose { width: 56px; height: 56px; border-radius: 50%; background: #d23f31 url(btw_ic_speeddial_compose_white_24dp_2x.png) center / 24px no-repeat; box-shadow: 0 3px 8px rgb(0 0 0 / 35%); margin-top: 3px; }
+</style>
+</head>
+<body>
+  <div class="brand">
+    <img class="icon" src="icon512.png" alt="">
+    <h1>Inbox Reborn</h1>
+    <p>Google Inbox, back in Gmail&trade;</p>
+  </div>
+  <div class="dial">
+    <div class="face" style="background-image:url(https://images.unsplash.com/photo-1627161683077-e34782c24d81?w=120&h=120&fit=crop&crop=faces)"></div>
+    <div class="face" style="background-image:url(https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=faces)"></div>
+    <div class="reminder"></div>
+    <div class="compose"></div>
+  </div>
+</body>
+</html>

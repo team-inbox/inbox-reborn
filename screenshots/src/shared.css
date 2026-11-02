@@ -1,0 +1,12 @@
+html, body { margin: 0; width: 1280px; height: 800px; overflow: hidden; }
+body { font-family: Roboto, sans-serif; color: #fff; position: relative;
+  background: linear-gradient(120deg, #5194f8 0%, #4285f4 45%, #2d64d2 100%); }
+.cap { position: absolute; left: 56px; top: 34px; right: 56px; }
+.cap h1 { margin: 0; font-size: 38px; font-weight: 700; letter-spacing: -0.4px; line-height: 1.1; }
+.cap p { margin: 8px 0 0; font-size: 19px; font-weight: 400; color: rgb(255 255 255 / 92%); line-height: 1.35; }
+.shot { position: absolute; overflow: hidden; border-radius: 10px 10px 0 0; box-shadow: 0 14px 40px rgb(0 0 0 / 35%); background: #f5f5f5; }
+.shot img { display: block; }
+.card { position: absolute; overflow: hidden; border-radius: 10px; box-shadow: 0 12px 32px rgb(0 0 0 / 35%); }
+.card img { display: block; }
+.shot img, .card img { margin: -3px -3px -3px -3px; width: calc(100% + 6px) !important; }
+.shot img { margin: -3px -10px -3px -3px; width: calc(100% + 13px) !important; }

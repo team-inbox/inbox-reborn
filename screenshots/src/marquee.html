@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=block" rel="stylesheet">
+<style>
+  html, body { margin: 0; width: 1400px; height: 560px; overflow: hidden; }
+  body {
+    font-family: Roboto, sans-serif;
+    background: linear-gradient(120deg, #5194f8 0%, #4285f4 40%, #2d64d2 100%);
+    position: relative;
+    color: #fff;
+  }
+  .brand { position: absolute; left: 80px; top: 92px; width: 600px; }
+  .icon { width: 104px; height: 104px; filter: drop-shadow(0 4px 8px rgb(0 0 0 / 28%)); }
+  h1 { margin: 22px 0 0; font-size: 64px; font-weight: 700; letter-spacing: -0.8px; line-height: 1; }
+  p { margin: 14px 0 0; font-size: 26px; font-weight: 400; color: rgb(255 255 255 / 92%); }
+  .chips { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip { padding: 8px 16px; border-radius: 20px; background: rgb(255 255 255 / 18%); font-size: 17px; font-weight: 500; }
+
+  /* Product cards: dark behind, light in front, both running off the edges */
+  .card { position: absolute; border-radius: 12px; overflow: hidden; background-size: 718px auto; background-position: -5px -3px; background-repeat: no-repeat; background-color: #f1f3f4; }
+  .dark { left: 820px; top: 22px; width: 704px; height: 440px; background-image: url(inbox-dark.png); box-shadow: 0 10px 30px rgb(0 0 0 / 30%); }
+  .light { left: 640px; top: 52px; width: 600px; height: 508px; background-image: url(speed-dial.png); background-size: 608px auto; background-position: -4px -3px; box-shadow: 0 14px 40px rgb(0 0 0 / 35%); }
+</style>
+</head>
+<body>
+  <div class="brand">
+    <img class="icon" src="icon512.png" alt="">
+    <h1>Inbox Reborn</h1>
+    <p>Google Inbox, back in Gmail&trade;</p>
+    <div class="chips">
+      <span class="chip">Bundles</span>
+      <span class="chip">Sweep</span>
+      <span class="chip">Pinned</span>
+      <span class="chip">Speed dial</span>
+      <span class="chip">Dark mode</span>
+    </div>
+  </div>
+  <div class="card dark"></div>
+  <div class="card light"></div>
+</body>
+</html>
