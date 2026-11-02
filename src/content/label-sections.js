@@ -32,7 +32,8 @@ const LABEL_SECTION_CLASSES = {
   LIST: 'inbox-reborn-label-sections', // Gmail's label list, once split
   TITLE: 'inbox-reborn-section-title', // the Unbundled title row
   ARROW: 'inbox-reborn-section-arrow', // the title's collapse arrow
-  COLLAPSED: 'inbox-reborn-unbundled-collapsed', // on the list while Unbundled is folded
+  BUNDLED_FOLDED: 'inbox-reborn-bundled-collapsed', // on the list while Bundled is folded
+  UNBUNDLED_FOLDED: 'inbox-reborn-unbundled-collapsed', // ...and while Unbundled is
   HINT: 'inbox-reborn-section-hint', // how-to row, shown while no label is bundled
   DRAGGING: 'inbox-reborn-label-dragging', // on <body> during a drag
   GHOST: 'inbox-reborn-label-ghost', // the label name under the pointer
@@ -62,10 +63,23 @@ const LABEL_SECTION_SETS = [bundledLabels, unbundledCategories];
    them again. */
 const archivedByDrag = { key: 'archivedByDrag', store: null };
 
-/* Whether the Unbundled section is folded up (its rows hidden, the title
-   and its arrow left). One setting for every account: it is a way of
+/* Whether each section is folded up (its rows hidden, the title and its
+   arrow left), one setting per section for every account: it is a way of
    reading the menu, not something about the labels. */
-const unbundledCollapsed = { key: 'unbundledCollapsed', value: false };
+const sectionFolds = {
+  [LABEL_SECTIONS.BUNDLED]: {
+    key: 'bundledCollapsed',
+    value: false,
+    listClass: LABEL_SECTION_CLASSES.BUNDLED_FOLDED,
+    title: BUNDLED_SECTION_TITLE,
+  },
+  [LABEL_SECTIONS.UNBUNDLED]: {
+    key: 'unbundledCollapsed',
+    value: false,
+    listClass: LABEL_SECTION_CLASSES.UNBUNDLED_FOLDED,
+    title: UNBUNDLED_SECTION_TITLE,
+  },
+};
 
 /**
  * The account the sets belong to, as getSectionSet works it out
@@ -105,7 +119,7 @@ const loadLabelSections = () => {
   const keys = [
     ...LABEL_SECTION_SETS.map((entry) => entry.key),
     archivedByDrag.key,
-    unbundledCollapsed.key,
+    ...Object.values(sectionFolds).map((fold) => fold.key),
   ];
   chrome.storage?.local.get(keys, (result) => {
     LABEL_SECTION_SETS.forEach((entry) => {
@@ -113,7 +127,7 @@ const loadLabelSections = () => {
       entry.cache = { account: null, set: null };
     });
     archivedByDrag.store = result[archivedByDrag.key] || {};
-    unbundledCollapsed.value = result[unbundledCollapsed.key] === true;
+    Object.values(sectionFolds).forEach((fold) => (fold.value = result[fold.key] === true));
     rebuildBundles();
     layoutLabelSections();
   });
@@ -121,11 +135,10 @@ const loadLabelSections = () => {
     if (area !== 'local' || !instanceActive()) return;
     if (changes[archivedByDrag.key])
       archivedByDrag.store = changes[archivedByDrag.key].newValue || {};
-    if (changes[unbundledCollapsed.key]) {
-      // Folded or unfolded in another Gmail tab
-      unbundledCollapsed.value = changes[unbundledCollapsed.key].newValue === true;
-      layoutLabelSections();
-    }
+    // A section folded or unfolded in another Gmail tab
+    const folds = Object.values(sectionFolds).filter((fold) => changes[fold.key]);
+    folds.forEach((fold) => (fold.value = changes[fold.key].newValue === true));
+    if (folds.length) layoutLabelSections();
     let changed = false;
     LABEL_SECTION_SETS.forEach((entry) => {
       if (!changes[entry.key]) return;
@@ -767,42 +780,27 @@ const placeCategoryRows = (list) => {
 };
 
 /**
- * Folds the Unbundled section up or out and saves which, for every tab
- * @param {boolean} collapsed - True to fold it up
+ * Folds a section up or out and saves which, for every tab
+ * @param {string} section - LABEL_SECTIONS.BUNDLED or UNBUNDLED
+ * @param {boolean} folded - True to fold it up
  */
-const setUnbundledCollapsed = (collapsed) => {
-  if (unbundledCollapsed.value === collapsed) return;
-  unbundledCollapsed.value = collapsed;
-  chrome.storage.local.set({ [unbundledCollapsed.key]: collapsed });
+const setSectionFolded = (section, folded) => {
+  const fold = sectionFolds[section];
+  if (fold.value === folded) return;
+  fold.value = folded;
+  chrome.storage.local.set({ [fold.key]: folded });
   layoutLabelSections();
 };
 
 /**
- * Draws the saved fold on the list and its arrow; only writes a change
- * @param {Element} list - The label list
+ * The arrow that folds a section up: Gmail's own expand_more chevron, drawn
+ * in the title's color so it reads in light and dark mode, in the gutter
+ * left of the title text (the text stays where it was). The section it
+ * belongs to is on it, for the delegated click and key handling.
+ * @param {string} section - LABEL_SECTIONS.BUNDLED or UNBUNDLED
+ * @returns {Element} The arrow
  */
-const applyUnbundledCollapsed = (list) => {
-  const collapsed = unbundledCollapsed.value;
-  if (list.classList.contains(LABEL_SECTION_CLASSES.COLLAPSED) !== collapsed) {
-    list.classList.toggle(LABEL_SECTION_CLASSES.COLLAPSED, collapsed);
-  }
-  const arrow = list.querySelector(`:scope > .${LABEL_SECTION_CLASSES.TITLE} [role="button"]`);
-  if (!arrow) return;
-  const expanded = String(!collapsed);
-  if (arrow.getAttribute('aria-expanded') !== expanded) {
-    arrow.setAttribute('aria-expanded', expanded);
-    arrow.setAttribute('aria-label', collapsed ? 'Show Unbundled' : 'Hide Unbundled');
-  }
-};
-
-/**
- * Builds the Unbundled title row: the arrow that folds the section up, then
- * the title, laid out like Gmail's More row (the chevron is Gmail's own
- * expand_more, drawn in the title's color so it reads in light and dark
- * mode). The whole row toggles.
- * @returns {Element} The title row
- */
-const buildUnbundledTitle = () => {
+const buildSectionArrow = (section) => {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('viewBox', '0 0 24 24');
   svg.setAttribute('width', '20');
@@ -811,30 +809,84 @@ const buildUnbundledTitle = () => {
   const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   path.setAttribute('d', 'M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z');
   svg.append(path);
-
-  const arrow = createEl(
+  return createEl(
     'span',
     LABEL_SECTION_CLASSES.ARROW,
-    { role: 'button', tabindex: '0', 'aria-expanded': 'true', 'aria-label': 'Hide Unbundled' },
+    { role: 'button', tabindex: '0', [LABEL_SECTION_ATTR]: section },
     [svg],
   );
-  const title = createEl(
-    'div',
-    LABEL_SECTION_CLASSES.TITLE,
-    { role: 'heading', 'aria-level': '2' },
-    [arrow, createEl('span', '', {}, [UNBUNDLED_SECTION_TITLE])],
-  );
+};
 
+/**
+ * Draws the saved folds on the list and the two arrows, adding the Bundled
+ * title's arrow to Gmail's title row when it is missing (Gmail redraws that
+ * row); only writes a change
+ * @param {Element} list - The label list
+ */
+const applySectionFolds = (list) => {
+  const gmailTitle = select.labelListTitle()?.closest('.aAw');
+  if (gmailTitle && !gmailTitle.querySelector(`.${LABEL_SECTION_CLASSES.ARROW}`)) {
+    gmailTitle.prepend(buildSectionArrow(LABEL_SECTIONS.BUNDLED));
+  }
+  Object.entries(sectionFolds).forEach(([section, fold]) => {
+    if (list.classList.contains(fold.listClass) !== fold.value) {
+      list.classList.toggle(fold.listClass, fold.value);
+    }
+    const arrow = document.querySelector(
+      `.${LABEL_SECTION_CLASSES.ARROW}[${LABEL_SECTION_ATTR}="${section}"]`,
+    );
+    const expanded = String(!fold.value);
+    if (arrow && arrow.getAttribute('aria-expanded') !== expanded) {
+      arrow.setAttribute('aria-expanded', expanded);
+      arrow.setAttribute('aria-label', `${fold.value ? 'Show' : 'Hide'} ${fold.title}`);
+    }
+  });
+};
+
+/**
+ * Builds the Unbundled title row: its arrow in the gutter, then the title
+ * @returns {Element} The title row
+ */
+const buildUnbundledTitle = () =>
+  createEl('div', LABEL_SECTION_CLASSES.TITLE, { role: 'heading', 'aria-level': '2' }, [
+    buildSectionArrow(LABEL_SECTIONS.UNBUNDLED),
+    createEl('span', '', {}, [UNBUNDLED_SECTION_TITLE]),
+  ]);
+
+/**
+ * Folds a section when its title or arrow is clicked, or Enter or Space is
+ * pressed on the arrow. One listener for both titles, since Gmail redraws
+ * its own title row (Bundled in the inbox) and would drop a listener on it.
+ */
+const watchSectionFolds = () => {
+  const sectionOf = (target) => {
+    const arrow = target.closest?.(`.${LABEL_SECTION_CLASSES.ARROW}`);
+    if (arrow) return arrow.getAttribute(LABEL_SECTION_ATTR);
+    if (target.closest?.(`.${LABEL_SECTION_CLASSES.TITLE}`)) return LABEL_SECTIONS.UNBUNDLED;
+    if (target.closest?.('.aAw .aAv')) return LABEL_SECTIONS.BUNDLED;
+    return null;
+  };
   const toggle = (e) => {
+    if (!areLabelSectionsOn()) return;
+    const section = sectionOf(e.target);
+    if (!section) return;
     e.preventDefault();
     e.stopPropagation();
-    setUnbundledCollapsed(!unbundledCollapsed.value);
+    setSectionFolded(section, !sectionFolds[section].value);
   };
-  title.addEventListener('click', toggle);
-  arrow.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') toggle(e);
-  });
-  return title;
+  document.addEventListener('click', toggle, true);
+  document.addEventListener(
+    'keydown',
+    (e) => {
+      if (
+        (e.key === 'Enter' || e.key === ' ') &&
+        e.target.closest?.(`.${LABEL_SECTION_CLASSES.ARROW}`)
+      ) {
+        toggle(e);
+      }
+    },
+    true,
+  );
 };
 
 /**
@@ -868,7 +920,7 @@ const layoutLabelSections = () => {
       buildUnbundledTitle(),
     );
   }
-  applyUnbundledCollapsed(list);
+  applySectionFolds(list);
 
   const tag = (row, bundled) => {
     const section = bundled ? LABEL_SECTIONS.BUNDLED : LABEL_SECTIONS.UNBUNDLED;
@@ -905,6 +957,7 @@ const layoutLabelSections = () => {
  * labels expand, collapse, get created or renamed
  */
 const watchLabelList = () => {
+  watchSectionFolds();
   waitForElement('.wT .zw', (zw) => {
     new MutationObserver(layoutLabelSections).observe(zw, { childList: true, subtree: true });
     layoutLabelSections();

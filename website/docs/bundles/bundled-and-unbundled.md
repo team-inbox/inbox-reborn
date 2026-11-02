@@ -12,9 +12,9 @@ Inbox split the left menu's labels in two, and so does Inbox Reborn:
   Updates, Forums, Promotions) and every label of yours whose mail collapses into a bundle.
   Labels you drag up are listed first, above the categories.
 - **Unbundled** — every other label. Their emails show one by one, with the label's chip, as
-  in Gmail. The arrow before the Unbundled title (like Gmail's More) folds the section up, so a long
-  label list stays out of the way; click the title or the arrow again to unfold it. The fold
-  is remembered, in every Gmail tab, and a label can still be dragged down onto the folded
+  in Gmail. The arrow beside each section's title folds that section up, so a long label list (or the
+  bundled rows) stays out of the way; click the title or the arrow again to unfold it. Each
+  fold is remembered, in every Gmail tab, and a label can still be dragged onto a folded
   title.
 
 <div class="pair">
