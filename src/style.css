@@ -3944,8 +3944,55 @@ body.inbox-reborn-label-sections-on .aAw::before {
   display: flex;
   align-items: center;
   margin: 13px 0 5px;
-  padding: 20px 8px 0 16px;
+  padding: 20px 8px 0 24px;
   transition: color 0.15s;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* The arrow that folds Unbundled up, laid out like Gmail's More row: the
+   chevron centered at x=44 (a 24px box from x=32) and the text at x=70. It
+   is drawn in the title's own color (currentColor), so the light-mode gray
+   and the dark-mode secondary text both carry it; it turns to point right
+   while the section is folded. */
+.inbox-reborn-section-arrow {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 14px;
+  border-radius: 50%;
+  color: inherit;
+  transition:
+    transform 0.15s,
+    background-color 0.15s;
+}
+
+.inbox-reborn-section-arrow svg {
+  fill: currentcolor;
+}
+
+.inbox-reborn-section-title:hover .inbox-reborn-section-arrow,
+.inbox-reborn-section-arrow:focus-visible {
+  background-color: rgb(0 0 0 / 8%);
+  outline: none;
+}
+
+body.dark-mode .inbox-reborn-section-title:hover .inbox-reborn-section-arrow,
+body.dark-mode .inbox-reborn-section-arrow:focus-visible {
+  background-color: rgb(255 255 255 / 12%);
+}
+
+.inbox-reborn-unbundled-collapsed > .inbox-reborn-section-title .inbox-reborn-section-arrow {
+  transform: rotate(-90deg);
+}
+
+/* Folded: the unbundled labels and categories go, the title stays (still a
+   drop target for a label dragged down) */
+.inbox-reborn-unbundled-collapsed > [data-inbox-section='unbundled'] {
+  display: none !important;
 }
 
 /* How to bundle a label - sits where the bundled labels go, above the
