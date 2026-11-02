@@ -1,0 +1,102 @@
+{
+  "extensionName": {
+    "message": "Inbox Reborn theme for Gmail™",
+    "description": "The extension name"
+  },
+  "title_inbox": {
+    "message": "Inbox",
+    "description": "Page title shown in the Gmail header bar for the Inbox view"
+  },
+  "title_pinned": {
+    "message": "Pinned",
+    "description": "Page title shown in the Gmail header bar for the Pinned view"
+  },
+  "title_snoozed": {
+    "message": "Snoozed",
+    "description": "Page title shown in the Gmail header bar for the Snoozed view"
+  },
+  "title_done": {
+    "message": "Done",
+    "description": "Page title shown in the Gmail header bar for the Done view"
+  },
+  "title_starred": {
+    "message": "Starred",
+    "description": "Page title shown in the Gmail header bar for the Starred view"
+  },
+  "title_sent": {
+    "message": "Sent",
+    "description": "Page title shown in the Gmail header bar for the Sent view"
+  },
+  "title_drafts": {
+    "message": "Drafts",
+    "description": "Page title shown in the Gmail header bar for the Drafts view"
+  },
+  "title_important": {
+    "message": "Important",
+    "description": "Page title shown in the Gmail header bar for the Important view"
+  },
+  "title_chat": {
+    "message": "Chat",
+    "description": "Page title shown in the Gmail header bar for the Chat view"
+  },
+  "title_meet": {
+    "message": "Meet",
+    "description": "Page title shown in the Gmail header bar for the Meet view"
+  },
+  "title_scheduled": {
+    "message": "Scheduled",
+    "description": "Page title shown in the Gmail header bar for the Scheduled view"
+  },
+  "title_allMail": {
+    "message": "All Mail",
+    "description": "Page title shown in the Gmail header bar for the All Mail view"
+  },
+  "title_spam": {
+    "message": "Spam",
+    "description": "Page title shown in the Gmail header bar for the Spam view"
+  },
+  "title_trash": {
+    "message": "Trash",
+    "description": "Page title shown in the Gmail header bar for the Trash view"
+  },
+  "title_subscriptions": {
+    "message": "Subscriptions",
+    "description": "Page title shown in the Gmail header bar for the Subscriptions view"
+  },
+  "title_search": {
+    "message": "Search",
+    "description": "Page title shown in the Gmail header bar for the Search view"
+  },
+  "title_social": {
+    "message": "Social",
+    "description": "Page title shown in the Gmail header bar for the Social view"
+  },
+  "title_updates": {
+    "message": "Updates",
+    "description": "Page title shown in the Gmail header bar for the Updates view"
+  },
+  "title_forums": {
+    "message": "Forums",
+    "description": "Page title shown in the Gmail header bar for the Forums view"
+  },
+  "title_promotions": {
+    "message": "Promotions",
+    "description": "Page title shown in the Gmail header bar for the Promotions view"
+  },
+  "title_purchases": {
+    "message": "Purchases",
+    "description": "Page title shown in the Gmail header bar for the Purchases view"
+  },
+  "title_travel": {
+    "message": "Travel",
+    "description": "Page title shown in the Gmail header bar for the Travel view"
+  },
+  "title_finance": {
+    "message": "Finance",
+    "description": "Page title shown in the Gmail header bar for the Finance view"
+  },
+  "title_labels": {
+    "message": "Labels",
+    "description": "Page title shown in the Gmail header bar for the Labels view"
+  }
+}
