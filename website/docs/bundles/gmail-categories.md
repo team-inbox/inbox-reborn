@@ -11,7 +11,7 @@ decides:
 
 | Category       | What Gmail puts there                                                                     |
 | -------------- | ----------------------------------------------------------------------------------------- |
-| **Travel**     | Flight, hotel, car and train confirmations and itineraries                                |
+| **Travel**     | Flight, hotel, car and train confirmations and itineraries, plus [your travel-word labels](/bundles/how-bundles-work#travel-and-your-travel-labels) |
 | **Purchases**  | Orders, receipts, shipping and delivery notices                                           |
 | **Finance**    | Bank, card, bill, statement and payment mail                                              |
 | **Social**     | Social networks, dating sites, media-sharing sites                                        |
@@ -102,7 +102,7 @@ conversation there, and a filter's **Categorize as** doesn't offer them. For Tra
 extension takes your own labels as the way in: a label with a travel word in its name
 (`Cruise`, `Trips/Japan`) counts as travel, and the Travel search becomes
 `in:inbox {category:travel label:Cruise}`. See
-[Travel-named labels count as travel](/bundles/how-bundles-work#icons).
+[Travel and your travel labels](/bundles/how-bundles-work#travel-and-your-travel-labels).
 
 They are on with Stock Inbox, and under Customize → Bundles otherwise. Clicking one of these
 bundles opens that search. If Google changes how Gmail asks for its lists, these three bundles
