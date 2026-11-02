@@ -5,6 +5,15 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## Unreleased
 
+- The page title over the Gmail logo (Inbox, Snoozed, Done, Social...) comes
+  from the extension's own messages file (`_locales`) in the user's language
+  instead of English strings fixed in the stylesheet. English is the first
+  locale; translations are a messages file each.
+- In dark mode the compose window is styled by class, like the inline reply,
+  instead of being inverted as a whole: pictures and emoji keep their colors,
+  the Send row stays where Gmail puts it, and the standard dark menus and
+  icons apply inside it. Message bodies keep their inversion, since they are
+  the sender's HTML and would otherwise render white.
 - Robustness and performance pass, from a review of the whole extension:
   - The options are read once per page load instead of being asked of the
     service worker four times a second, and a tab left open across an
