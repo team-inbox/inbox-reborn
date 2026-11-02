@@ -10,7 +10,7 @@ const archiver = require('archiver');
 const os = require('os');
 
 // Only what the extension needs at runtime ships in the package
-const FILES_TO_INCLUDE = ['icons', 'images', 'src', 'LICENSE'];
+const FILES_TO_INCLUDE = ['_locales', 'icons', 'images', 'src', 'LICENSE'];
 
 const BUILD_DIR = 'build';
 
