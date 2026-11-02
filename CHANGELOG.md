@@ -5,6 +5,13 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## Unreleased
 
+- The Purchases, Travel and Finance bundles form with the rest of the inbox
+  on a reload instead of a couple of seconds after it, during which their
+  mail sat loose in the list. The page script remembers the thread ids of
+  its last answer (ids only, per account slot, in the page's local storage)
+  and hands them over at once; the fresh search follows and corrects what
+  changed, and it now starts as soon as Gmail's first sync request is seen
+  rather than half a second after it answers.
 - The Travel bundle takes in the travel labels the Travel row already lists
   (labels with trip, travel, cruise, flight, vacation or hotel in the name):
   its search is now `in:inbox {category:travel label:Cruise}` instead of
