@@ -270,12 +270,28 @@ npm run build                    # store-ready zips for both browsers
 ### Lint and test
 
 ```sh
-npm run lint          # ESLint + Stylelint + Prettier + version and image checks
-npm test              # unit tests (date grouping, label titles)
+npm run lint          # ESLint + Stylelint + Prettier + version, image and dead-CSS checks
+npm test              # unit tests (date grouping, label titles, content-script layout)
 npm run lint:firefox  # Mozilla's addons-linter on the Firefox package
 npm run verify        # all of the above - what CI runs on every pull request
 npm run format        # auto-format
 ```
+
+The content script is the files under `src/content/`, loaded in the order
+`chrome.json` lists them; they share one scope, so a binding declared in an
+earlier file is visible to the later ones. `src/gmail-categories.js` runs in
+the page's own world.
+
+### Checking a stylesheet change
+
+A change to `src/style.css` can shift a color by one shade somewhere you did
+not look. `docs/computed-style-check.js` catches that: paste it into the
+DevTools console on Gmail with the old build loaded and record each view,
+rebuild and reload the extension, load Gmail at a different URL, then paste it
+again and compare. It diffs the computed style of every element, per region,
+in light and dark mode. The usage notes are at the top of the file; the
+selector health check next to it (`docs/selector-health-check.js`) reports
+which Gmail DOM hooks still match.
 
 ---
 
