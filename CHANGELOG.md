@@ -5,6 +5,27 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## Unreleased
 
+- The Purchases, Travel and Finance bundles form with the rest of the inbox
+  on a reload instead of a couple of seconds after it, during which their
+  mail sat loose in the list. The page script remembers the thread ids of
+  its last answer (ids only, per account slot, in the page's local storage)
+  and hands them over at once; the fresh search follows and corrects what
+  changed, and it now starts as soon as Gmail's first sync request is seen
+  rather than half a second after it answers.
+- The Travel bundle takes in the travel labels the Travel row already lists
+  (labels with trip, travel, cruise, flight, vacation or hotel in the name):
+  its search is now `in:inbox {category:travel label:Cruise}` instead of
+  `in:inbox category:travel`, so a Cruise email moved to the inbox bundles
+  under Travel, and clicking the bundle opens the same search. The search is
+  sent again when a travel label is made or renamed. Google offers no way to
+  file mail under Travel by hand, so this is the way in; the manual's bundle
+  pages say so.
+- The Travel and Finance rows in the left menu come back when every category
+  is hidden from the label list in Gmail's settings (Labels, "Show in label
+  list"). They were copies of one of Gmail's category rows, so with none drawn
+  they went too; now they are copied from a system row (Sent, Drafts, Inbox
+  or Snoozed) instead, and with the label sections off they go to the top of
+  the label list since there is no category group.
 - The page title over the Gmail logo (Inbox, Snoozed, Done, Social...) comes
   from the extension's own messages file (`_locales`) in the user's language
   instead of English strings fixed in the stylesheet. English is the first
