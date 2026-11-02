@@ -71,11 +71,23 @@ icons. Every label of yours gets Inbox's stacked-envelopes **bundle icon**, on i
 and in the left menu, whatever the label is called; a label you've given a color in Gmail keeps
 that color on the icon.
 
-**Travel-named labels also show up under Travel.** The Travel page lists the mail Google files
-as travel plus every label of yours with the whole word trip(s), travel, cruise(s), flight(s),
-vacation(s) or hotel(s) in its name (`Cruise`, `Trips/Japan`, `Summer Vacation`; not
-`Cruising`). Gmail won't let you create a label named `Travel`, so use `Trips`, `Cruise`,
-`Flights` or `Vacation`.
+**Travel-named labels count as travel.** Google decides what goes under Travel and offers no
+way to add to it by hand: there is no Travel label to apply, and dropping a row on Travel does
+nothing. The extension fills that gap with your labels. Every label of yours with the whole
+word trip(s), travel, cruise(s), flight(s), vacation(s) or hotel(s) in its name (`Cruise`,
+`Trips/Japan`, `Summer Vacation`; not `Cruising`) is treated as travel, in three places:
+
+- **The Travel row** in the left menu opens the mail Google files as travel plus the mail in
+  those labels, as one search (`{category:travel label:Cruise}`).
+- **The Travel bundle** in the inbox is built from the same search, so an email you label
+  `Cruise` and move to the inbox joins the Travel bundle.
+- **Clicking the Travel bundle** opens that search for the inbox.
+
+The label gets Inbox's plane icon too. Gmail won't let you create a label named `Travel`, so
+use `Trips`, `Cruise`, `Flights` or `Vacation`. One exception follows from
+[one bundle per email](#one-bundle-per-email): if you also drag the `Cruise` label up to
+**Bundled in the inbox**, its mail bundles under `Cruise`, since a label of your own beats a
+category. Leave the label in Unbundled for its mail to bundle under Travel.
 
 ## Bundles are only in this browser
 

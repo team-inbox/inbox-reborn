@@ -9,7 +9,11 @@
    most Purchases and Travel mail.
 
    So this script sends Gmail's own thread-list request (/sync/u/N/i/bv)
-   with the query "in:inbox category:<name>". It builds it from two parts:
+   with the query "in:inbox category:<name>" - or, for Travel, the content
+   script's own search when it sends one: Google's travel mail plus the
+   person's travel labels, "in:inbox {category:travel label:Cruise}", the
+   same search the Travel row in the left menu opens. It builds the request
+   from two parts:
    - the session (address and headers, incl. Gmail's anti-forgery token),
      taken from whatever /sync/ request Gmail sent last - it sends some
      right after loading, and keeps sending them
@@ -29,7 +33,10 @@
    dial is right without a visit to the Sent page.
 
    Messages (window.postMessage, both directions tagged with SOURCE):
-     in:  { type: 'want', categories: ['purchases', ...] }
+     in:  { type: 'want', categories: ['purchases', ...],
+            queries: { travel: '{category:travel label:Cruise}' } }
+          queries is optional, one search per category in place of
+          "category:<name>"; only a category OR group of that shape is taken
      out: { type: 'threads', threads: { purchases: ['1a19...', ...], ... } }
           thread ids are hex, matching a row's data-legacy-thread-id
      in:  { type: 'wantSent' }
@@ -50,6 +57,10 @@
   const SEARCH_VIEW_BODY = /^\[\[123,/;
   const isSearchBody = (text) => QUERY_IN_BODY.test(text) && SEARCH_VIEW_BODY.test(text);
   const KNOWN = ['purchases', 'travel', 'finance'];
+  // The shape of a search the content script may send for a category: its
+  // category plus label terms, in Gmail's {a b} OR group. Anything else is
+  // ignored and the plain category search runs.
+  const QUERY_SHAPE = /^\{category:[a-z]+(?: label:[^\s{}"()]{1,200}){1,50}\}$/;
   const MIN_GAP_MS = 10 * 1000; // between refreshes triggered by Gmail's own loads
   const POLL_MS = 90 * 1000; // background refresh while the tab is visible
   const SEARCH_TIMEOUT_MS = 30 * 1000; // a search that takes longer is given up on
@@ -63,6 +74,7 @@
 
   let session = null; // { url, headers } of Gmail's newest /sync/ request, aimed at /i/bv
   let body = null; // body of the last list request Gmail sent
+  let queries = {}; // category -> the search to run in place of "category:<name>"
 
   // Gmail's inbox list request (as of Nov 2026), for when Gmail hasn't sent
   // one yet: the request time, the timezone offset (ms east of UTC) and
@@ -209,7 +221,7 @@
     const threads = {};
     try {
       for (const name of wanted) {
-        threads[name] = threadIds(await search(`in:inbox category:${name}`));
+        threads[name] = threadIds(await search(`in:inbox ${queries[name] || `category:${name}`}`));
       }
       window.postMessage({ source: SOURCE, type: 'threads', threads }, location.origin);
       failures = 0;
@@ -296,6 +308,15 @@
     if (e.data.type !== 'want') return;
     const list = Array.isArray(e.data.categories) ? e.data.categories : [];
     wanted = KNOWN.filter((name) => list.includes(name));
+    const sent = e.data.queries && typeof e.data.queries === 'object' ? e.data.queries : {};
+    queries = Object.fromEntries(
+      KNOWN.filter(
+        (name) =>
+          typeof sent[name] === 'string' &&
+          QUERY_SHAPE.test(sent[name]) &&
+          sent[name].startsWith(`{category:${name} `),
+      ).map((name) => [name, sent[name]]),
+    );
     if (wanted.length) schedule(0);
   });
 
