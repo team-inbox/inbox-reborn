@@ -25,6 +25,7 @@
       "matches": ["https://mail.google.com/mail/*"],
       "css": ["src/style.css"],
       "js": [
+        "src/content/instance.js",
         "src/content/dark-mode.js",
         "src/content/core.js",
         "src/content/emails.js",

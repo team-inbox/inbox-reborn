@@ -106,7 +106,7 @@ const loadLabelSections = () => {
     layoutLabelSections();
   });
   chrome.storage?.onChanged.addListener((changes, area) => {
-    if (area !== 'local') return;
+    if (area !== 'local' || !instanceActive()) return;
     if (changes[archivedByDrag.key])
       archivedByDrag.store = changes[archivedByDrag.key].newValue || {};
     let changed = false;
@@ -1002,6 +1002,7 @@ const insertDoneMenuItem = () => {
  * menu now and then, so the row is looked up each time rather than kept.
  */
 const updateDoneHighlight = () => {
+  if (!instanceActive()) return;
   const doneMenu = document.querySelector('.TO.inbox-reborn-done');
   if (!doneMenu) return;
   const active = getViewHash() === '#archive';
@@ -1022,6 +1023,7 @@ const REMINDERS_CLASS = 'inbox-reborn-reminders';
  * Highlights the Reminders row while its search is showing
  */
 const updateRemindersHighlight = () => {
+  if (!instanceActive()) return;
   const row = document.querySelector(`.${REMINDERS_CLASS} .TO`);
   if (!row) return;
   const active = getViewHash() === toSearchHash(REMINDERS_SEARCH);
@@ -1039,6 +1041,7 @@ const updateRemindersHighlight = () => {
  * so inserting or moving rows between its own made it draw All Mail twice.
  */
 const insertRemindersMenuItem = () => {
+  if (!instanceActive()) return;
   if (document.querySelector(`.wT .${REMINDERS_CLASS}`)) return;
   const sent = document.querySelector('.wT .aHS-bnu')?.closest('.aim');
   if (!sent) return;

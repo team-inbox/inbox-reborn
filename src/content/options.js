@@ -98,7 +98,7 @@ const applyOptions = (ops) => {
 // effect from a clean state. Dark mode is excluded - it applies instantly
 // via the initDarkMode storage listener without needing a refresh.
 chrome.storage?.onChanged.addListener((changes, area) => {
-  if (area !== 'local' || !changes.options) return;
+  if (area !== 'local' || !changes.options || !instanceActive()) return;
 
   const oldOpts = changes.options.oldValue || {};
   const newOpts = changes.options.newValue || {};

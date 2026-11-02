@@ -222,6 +222,7 @@ const buildCategoryMenuItem = (template, name, href) => {
  * label sections are on)
  */
 const updateCategoryHighlight = () => {
+  if (!instanceActive()) return;
   const hash = getViewHash();
   document.querySelectorAll('.inbox-reborn-category .TO').forEach((row) => {
     const name = row.getAttribute('data-tooltip');

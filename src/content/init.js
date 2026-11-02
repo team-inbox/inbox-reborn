@@ -23,7 +23,9 @@ const init = () => {
 if (document.head) {
   init();
 } else {
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', () => {
+    if (instanceActive()) init();
+  });
 }
 
 // =============================================================================
@@ -114,6 +116,8 @@ window.addEventListener('hashchange', handleHashChange);
 
 // Set up main event listeners when DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
+  // The document was rewritten and a newer copy of the script owns it
+  if (!instanceActive()) return;
   // Add reminder button
   addReminderButton();
 

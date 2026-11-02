@@ -152,7 +152,7 @@ const watchContactPhotos = () => {
   );
 
   chrome.storage.onChanged.addListener((changes, area) => {
-    if (area !== 'local' || !changes[CONTACT_PHOTOS_KEY]) return;
+    if (area !== 'local' || !changes[CONTACT_PHOTOS_KEY] || !instanceActive()) return;
     const oldPhotos = changes[CONTACT_PHOTOS_KEY].oldValue || {};
     Object.entries(changes[CONTACT_PHOTOS_KEY].newValue || {}).forEach(([email, url]) => {
       contactPhotos.set(email, url);
