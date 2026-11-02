@@ -68,13 +68,20 @@ function writeControls(options) {
 }
 
 let savedTimer;
-function saveOptions() {
-  browserAPI.storage.local.set({ options: readControls() });
+function showStatus(text, sticky = false) {
   const status = byId('save-status');
-  status.textContent = 'Saved';
+  status.textContent = text;
   status.classList.add('visible');
   clearTimeout(savedTimer);
-  savedTimer = setTimeout(() => status.classList.remove('visible'), 1500);
+  if (!sticky) savedTimer = setTimeout(() => status.classList.remove('visible'), 1500);
+}
+
+function saveOptions() {
+  // Say "Saved" once the write has landed, and say so if it didn't
+  Promise.resolve(browserAPI.storage.local.set({ options: readControls() })).then(
+    () => showStatus('Saved'),
+    () => showStatus('Not saved - try again', true),
+  );
 }
 
 function applyTheme() {
@@ -120,16 +127,28 @@ function applyStockInbox() {
 }
 
 function restoreOptions() {
+  // Nothing can be changed (or saved) until the stored options are shown:
+  // saving the blank controls would overwrite the real settings
+  const controls = document.querySelector('main');
+  controls.inert = true;
+
+  // The Stock Inbox keys come first - the change listener needs them to
+  // tell which settings turn Stock Inbox off
   browserAPI.runtime.sendMessage({ method: 'getStockInbox' }, (stock) => {
     stockInbox = stock || {};
-  });
-  browserAPI.runtime.sendMessage({ method: 'getOptions' }, (options) => {
-    writeControls(options);
-    applyTheme();
-    updateDependents();
-    updateStatus();
-    // Custom settings are what someone came to change
-    byId('customize').open = options.stockInbox !== 'enabled';
+    browserAPI.runtime.sendMessage({ method: 'getOptions' }, (options) => {
+      if (browserAPI.runtime.lastError || !options) {
+        showStatus('Settings could not be loaded - close and reopen', true);
+        return;
+      }
+      writeControls(options);
+      applyTheme();
+      updateDependents();
+      updateStatus();
+      // Custom settings are what someone came to change
+      byId('customize').open = options.stockInbox !== 'enabled';
+      controls.inert = false;
+    });
   });
 }
 
