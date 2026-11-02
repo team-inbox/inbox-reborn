@@ -6,7 +6,16 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
-const SCRIPT = fs.readFileSync(path.join(__dirname, '..', 'src', 'script.js'), 'utf8');
+const ROOT = path.join(__dirname, '..');
+
+// The content script's files, in the order the manifest loads them (they
+// share one scope, so the order is part of the contract)
+const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'chrome.json'), 'utf8'));
+const FILES = manifest.content_scripts.find((entry) => entry.world !== 'MAIN').js;
+const SCRIPTS = FILES.map((file) => ({
+  file,
+  code: fs.readFileSync(path.join(ROOT, file), 'utf8'),
+}));
 
 /**
  * @param {string} [now] - Fixed "current time" for new Date() inside the
@@ -33,9 +42,9 @@ const loadScript = (now) => {
     );
   }
 
-  vm.runInContext(SCRIPT, context, { filename: 'src/script.js' });
+  for (const { file, code } of SCRIPTS) vm.runInContext(code, context, { filename: file });
   // Top-level const/let live in the context's script scope, not on its global
   return (name) => vm.runInContext(name, context);
 };
 
-module.exports = { loadScript };
+module.exports = { loadScript, FILES };
