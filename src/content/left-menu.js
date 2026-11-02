@@ -21,6 +21,9 @@ const setupMenuNodes = () => {
     insertDoneMenuItem();
     insertCategoryMenuItems();
     insertRemindersMenuItem();
+    // A travel label made or renamed since the last request changes the
+    // Travel bundle's search (only posts when it does)
+    updateCategoryThreadsRequest();
 
     // Map menu items to their selectors
     [
@@ -117,6 +120,23 @@ const EXTRA_CATEGORIES = ['Travel', 'Finance'];
 const FINANCE_HASH = '#search/category%3Afinance';
 const TRAVEL_PAGE_HASH = '#category/travel';
 
+/* Gmail's system rows an extra category row can be copied from when Gmail
+   draws no category row at all - each category can be hidden from the label
+   list in Gmail's settings (Labels, "Show in label list"), and the Travel and
+   Finance rows went with them. Rows the stylesheet never hides, so the copy
+   is visible: Sent, Drafts, Inbox, Snoozed. */
+const FALLBACK_TEMPLATE_ROWS = ['.TN.aHS-bnu', '.TN.aHS-bnq', '.TN.aHS-bnt', '.TN.aHS-bu1'];
+
+/**
+ * A Gmail row to copy the extra category rows from when no category row is
+ * drawn
+ * @returns {Element|undefined} The row (.aim)
+ */
+const getFallbackTemplateRow = () =>
+  FALLBACK_TEMPLATE_ROWS.map((selector) => document.querySelector(selector)?.closest('.aim')).find(
+    Boolean,
+  );
+
 /**
  * Full names of the travel labels in the left menu - whatever labels this
  * person has with a travel word in the name (TRAVEL_LABEL_WORDS)
@@ -136,6 +156,20 @@ const getTravelLabels = () =>
     .filter((name) => name && TRAVEL_LABEL_WORDS.test(name));
 
 /**
+ * The search for Travel's mail: what Google files as travel, or - with
+ * travel labels - that plus those labels, as one OR group. The Travel row,
+ * the Travel bundle and the bundle's click all use it, so the three agree
+ * on what counts as travel.
+ * @param {string[]} labels - The travel labels (getTravelLabels)
+ * @returns {string} e.g. "{category:travel label:Cruise label:Trips-Japan}"
+ */
+const travelSearch = (labels) => {
+  if (!labels.length) return 'category:travel';
+  const terms = labels.map((label) => `label:${searchLabel(label)}`);
+  return `{category:travel ${terms.join(' ')}}`;
+};
+
+/**
  * Where an extra category row leads. Travel is Gmail's hidden Travel page,
  * or - when the person has travel labels - a search for that page's mail
  * plus those labels, so a "Cruise" label's mail shows up under Travel.
@@ -146,8 +180,7 @@ const getCategoryHash = (name) => {
   if (name === 'Finance') return FINANCE_HASH;
   const labels = getTravelLabels();
   if (!labels.length) return TRAVEL_PAGE_HASH;
-  const terms = labels.map((label) => `label:${label.replace(/[/\\& ]/g, '-')}`);
-  return `#search/${encodeURIComponent(`{category:travel ${terms.join(' ')}}`).replace(/%20/g, '+')}`;
+  return `#search/${encodeURIComponent(travelSearch(labels)).replace(/%20/g, '+')}`;
 };
 
 /**
@@ -173,9 +206,11 @@ const isCategoryPage = (name, hash = getViewHash()) => {
 
 /**
  * Builds a menu row for one of the extra categories from a copy of one of
- * Gmail's own category rows. Gmail's ids and click wiring are stripped so the
- * copy acts only as a link, and its count and label-options button go too.
- * @param {Element} template - A Gmail category row (.aim)
+ * Gmail's own rows. Gmail's ids and click wiring are stripped so the copy
+ * acts only as a link, and its count and label-options button go too, as
+ * does the row's aHS marker class (the stylesheet keys the Starred row's
+ * hiding and the system rows' icons on it).
+ * @param {Element} template - A Gmail row (.aim), a category row when there is one
  * @param {string} name - The category name
  * @param {string} [href] - Where the row leads (default: getCategoryHash)
  * @returns {Element} The new row
@@ -192,6 +227,11 @@ const buildCategoryMenuItem = (template, name, href) => {
       ),
     );
   item.querySelectorAll('.bsU, .nL').forEach((el) => el.remove());
+  item.querySelectorAll('.TN').forEach((el) => {
+    [...el.classList]
+      .filter((cls) => cls.startsWith('aHS-'))
+      .forEach((cls) => el.classList.remove(cls));
+  });
 
   const row = item.querySelector('.TO');
   row.setAttribute('data-tooltip', name);
@@ -254,11 +294,15 @@ const insertCategoryMenuItems = () => {
     return;
   }
   const rowFor = (name) => document.querySelector(`.TO[data-tooltip="${name}"]`)?.closest('.aim');
-  const template = CATEGORY_MENU_ORDER.filter((name) => !EXTRA_CATEGORIES.includes(name))
+  const categoryRow = CATEGORY_MENU_ORDER.filter((name) => !EXTRA_CATEGORIES.includes(name))
     .map(rowFor)
     .find(Boolean);
-  if (!template) return;
-  const container = template.parentElement;
+  // With every category hidden from the label list (Gmail's settings) there
+  // is no category group: the rows are copied from a system row and go at
+  // the top of the label list instead (the CSS order rules apply there too)
+  const template = categoryRow || getFallbackTemplateRow();
+  const container = categoryRow ? categoryRow.parentElement : select.labelList();
+  if (!template || !container) return;
 
   // Normalize first so copies carry a .qj for the icon rules
   normalizeSidebarIcons();

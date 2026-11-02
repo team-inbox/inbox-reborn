@@ -28,7 +28,11 @@ Two features ask **Gmail itself**, from your browser with your own Gmail session
 
 - **Purchases, Travel and Finance bundles** run the same searches Gmail's own Purchases,
   Travel and Finance pages run (`in:inbox category:purchases` and so on), to learn which inbox
-  conversations belong in them.
+  conversations belong in them. Travel's search also names your travel labels
+  (`{category:travel label:Cruise}`), so their mail bundles under Travel. The conversation
+  ids the last search returned (ids only, nothing from the messages) stay in the page's
+  local storage, so the bundles form with the inbox on the next load; they are removed when
+  these bundles are turned off.
 - **The speed dial** asks for your newest sent conversations once per load, to know who you
   write to.
 

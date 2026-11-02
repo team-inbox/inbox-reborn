@@ -647,12 +647,17 @@ const getCategoryColor = (label) =>
 /**
  * Where clicking a bundle leads: the label's inbox mail, or for Purchases,
  * Travel and Finance the same category search the bundle was built from
- * (plus a label of the same name, if there is one - the two share a bundle)
+ * (Travel's takes in the travel labels; for the other two, a label of the
+ * same name, if there is one - the two share a bundle)
  * @param {string} label - The bundle label
  * @returns {string} The hash to open
  */
 const getBundleHash = (label) => {
   if (!isCategoryBundle(label)) return `#search/in%3Ainbox+label%3A${fixLabel(label)}`;
+  if (label === 'Travel') {
+    const query = `in:inbox ${travelSearch(getTravelLabels())}`;
+    return `#search/${encodeURIComponent(query).replace(/%20/g, '+')}`;
+  }
   const category = `category:${CATEGORY_BUNDLES[label]}`;
   const hasLabel = !!document.querySelector(`.zw .TO a[href$="#label/${fixLabel(label)}"]`);
   const query = hasLabel ? `in:inbox {${category} label:${label}}` : `in:inbox ${category}`;

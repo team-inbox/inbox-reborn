@@ -93,7 +93,16 @@ Gmail sorts mail into these three too, but draws **no chip** for them and shows 
 Purchases in its own menu. The extension lists all three in the left menu and bundles them by
 running the searches Gmail's own Purchases, Travel and Finance pages run
 (`in:inbox category:purchases` and so on), every minute and a half while Gmail is open and
-after Gmail reloads a list. The bundles appear as soon as Gmail opens.
+after Gmail reloads a list. The bundles form with the inbox from the last search's answer,
+remembered in the browser, and the fresh search a moment later corrects anything that changed.
+
+Unlike Social, Updates, Forums and Promotions, these three can't be applied by hand: Gmail
+has no label for them, so neither the Labels menu nor a drop on the left menu puts a
+conversation there, and a filter's **Categorize as** doesn't offer them. For Travel the
+extension takes your own labels as the way in: a label with a travel word in its name
+(`Cruise`, `Trips/Japan`) counts as travel, and the Travel search becomes
+`in:inbox {category:travel label:Cruise}`. See
+[Travel-named labels count as travel](/bundles/how-bundles-work#icons).
 
 They are on with Stock Inbox, and under Customize → Bundles otherwise. Clicking one of these
 bundles opens that search. If Google changes how Gmail asks for its lists, these three bundles
