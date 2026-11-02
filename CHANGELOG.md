@@ -44,10 +44,31 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
     `font-size: 99.1%` is gone - a percentage on every element compounded
     with nesting depth, so the same text came out anywhere from 14px to
     12.3px. Text in Gmail's chrome is at its intended size again.
-  - The stylesheet's dark-mode rules sit in one DARK MODE section (the 33
-    whose place in the cascade matters stay put, with a note), the
-    Firefox-only overrides in a section after it, and the repeated colors
-    (`#e8eaed`, the two near-identical icon grays) are tokens.
+  - The stylesheet's dark-mode rules all sit in one DARK MODE section, in
+    the order they were written, with the Firefox-only blocks made of them.
+    The sidebar category palette, the one set of rules written to win over
+    them, is the last section, for both themes. Every pair of rules that
+    could tie was checked to keep its order, or shown never to meet in the
+    live Gmail DOM, and the computed-style snapshots agree. The repeated
+    colors (`#e8eaed`, the two near-identical icon grays) are tokens.
+  - 36 selector lists that appeared twice are one rule each (stylelint's
+    `no-duplicate-selectors` is back on), and a Firefox block for the
+    Forums icon that the URL-scheme rewrite made a no-op is gone.
+  - `npm run check:css` (part of `npm run lint` and CI) fails on a
+    declaration a later rule with the same selector always overrides, so
+    the dead rules this pass removed cannot creep back.
+  - The content script is thirteen files under `src/content/`, one per
+    concern, loaded in manifest order into one shared scope (no bundler).
+    ESLint treats each file's bindings as globals for the others, and a
+    test checks that both manifests agree, the set loads, no binding is
+    declared twice, and none is unused across the set.
+  - `docs/computed-style-check.js` is the computed-style snapshot helper
+    this pass was verified with, for the next stylesheet change.
+  - Gmail's loading page rewrites itself with `document.open()`, and Chrome
+    then injects the content script a second time while the first copy's
+    timers live on, so every periodic pass ran twice per tab (the selector
+    health check logged twice). Each copy now stamps the document with a
+    token and the older copy retires when it sees a newer one.
 - An open email's message headers show Inbox's pin instead of Gmail's star,
   in both themes: gray until pinned, then the color of the star type in use,
   as on the list rows. Dark mode drew a star there; light mode left Gmail's.
