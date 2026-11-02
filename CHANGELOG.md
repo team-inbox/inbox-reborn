@@ -64,6 +64,11 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
     declared twice, and none is unused across the set.
   - `docs/computed-style-check.js` is the computed-style snapshot helper
     this pass was verified with, for the next stylesheet change.
+  - Gmail's loading page rewrites itself with `document.open()`, and Chrome
+    then injects the content script a second time while the first copy's
+    timers live on, so every periodic pass ran twice per tab (the selector
+    health check logged twice). Each copy now stamps the document with a
+    token and the older copy retires when it sees a newer one.
 - An open email's message headers show Inbox's pin instead of Gmail's star,
   in both themes: gray until pinned, then the color of the star type in use,
   as on the list rows. Dark mode drew a star there; light mode left Gmail's.

@@ -293,7 +293,7 @@ const timers = [];
 const every = (fn, ms) => {
   timers.push(
     setInterval(() => {
-      if (!extensionAlive()) {
+      if (!extensionAlive() || !instanceActive()) {
         timers.forEach(clearInterval);
         timers.length = 0;
         return;

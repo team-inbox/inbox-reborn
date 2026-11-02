@@ -12,6 +12,7 @@
  * Updates the Gmail top bar header to display the correct page title
  */
 const handleHashChange = () => {
+  if (!instanceActive()) return;
   let hash = getViewHash();
 
   addPinnedToggle();

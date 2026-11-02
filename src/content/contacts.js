@@ -213,7 +213,7 @@ const addRecentContacts = () => {
   // category bundles' message listener)
   window.postMessage({ source: CATEGORIES_MESSAGE_SOURCE, type: 'wantSent' }, location.origin);
   chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === 'local' && changes[RECENT_CONTACTS_KEY]) {
+    if (area === 'local' && changes[RECENT_CONTACTS_KEY] && instanceActive()) {
       render(changes[RECENT_CONTACTS_KEY].newValue);
     }
   });

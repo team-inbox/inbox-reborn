@@ -137,6 +137,7 @@ const applyCategoryThreads = (threads) => {
 
 window.addEventListener('message', (e) => {
   if (e.source !== window || e.data?.source !== CATEGORIES_MESSAGE_SOURCE) return;
+  if (!instanceActive()) return;
   if (e.data.type === 'threads') applyCategoryThreads(e.data.threads);
   // The speed dial's people from Gmail's Sent search, newest first - the
   // same order the Sent list re-sync uses

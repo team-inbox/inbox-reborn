@@ -134,7 +134,7 @@
 
   // Listen for changes to options and toggle class dynamically
   chrome.storage?.onChanged.addListener((changes, area) => {
-    if (area === 'local' && changes.options) {
+    if (area === 'local' && changes.options && instanceActive()) {
       applyDarkMode(changes.options.newValue?.darkMode === 'enabled');
     }
   });
