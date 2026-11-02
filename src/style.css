@@ -2951,8 +2951,8 @@ body:not(.dark-mode) .aeF:not(:hover) {
    input show its surface. Needs the two wrapper classes to outrank the
    rule above, which would otherwise tie on specificity. */
 
-/* Compose dialog and message bodies excluded: both are invert-filtered, so
-   Gmail's default dark-blue links already come out light there */
+/* Message bodies excluded: they are invert-filtered, so Gmail's default
+   dark-blue links already come out light there */
 
 /* Folder notice above the list (e.g. Scheduled's "Messages in Scheduled will
    be sent at their scheduled time.") - its icon is Gmail's black PNG, so
@@ -2972,12 +2972,11 @@ body:not(.dark-mode) .aeF:not(:hover) {
 
 /* Discard draft (compose window, inline reply) - Gmail's slotted delete
    sprite, replaced with Inbox's solid trash can as a mask in Gmail's icon
-   gray. Dark mode lightens it like its neighbors: the compose window is
-   inverted as a whole, and the inline reply row inverts its glyphs (see
-   "Inline-reply send row") - that rule also clears their background, so
-   the reply-row selector below restores the fill. */
+   gray. Dark mode lightens it like its neighbors: the send row inverts its
+   glyphs (see "Inline-reply send row") - that rule also clears their
+   background, so the send-row selector below restores the fill. */
 .og.T-I-J3,
-body.dark-mode .btC:not(.nH.Hd .btC) .og.T-I-J3 {
+body.dark-mode .btC .og.T-I-J3 {
   -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg')
     center / 20px no-repeat !important;
   mask: url('chrome-extension://__MSG_@@extension_id__/images/inbox_delete_24dp.svg') center / 20px
@@ -2993,32 +2992,8 @@ body.dark-mode .btC:not(.nH.Hd .btC) .og.T-I-J3 {
    classes but carry data-guest-app-id, which keeps their colors intact)
    and the hide/show side panel chevron (an svg filled #1f1f1f) */
 
-/* Compose window: invert the whole dialog instead of styling Gmail's
-   obfuscated classes - white flips to #1f1f1f, black text to light gray,
-   and it cannot half-apply when Gmail changes its DOM */
-
-/* DARK MODE: compose Send - the same Inbox blue as light mode, like the
-   Reminder button. Inside the dialog's filter these are pre-inverted:
-   #3189ff renders ~#4588e2 (the filter's 0.88 can't reach #4285f4's full
-   blue, this is the closest) and black text/divider render #e0e0e0. The
-   arrow is a white image, flipped so it also comes out light. Inline
-   replies have no filter and keep the plain rule. */
-
-/* Gmail's mid-2026 compose relayout made the Send/formatting action row
-   position:fixed, placed by JS against the viewport. The invert filter
-   above makes the dialog the containing block for fixed descendants, so
-   those viewport coordinates land the row outside the window and the whole
-   send row vanishes (light mode has no filter and is unaffected). Opt out
-   of the quirk entirely: pin the row absolutely to its .aDg anchor at the
-   dialog bottom. No state class (.ahe appears/disappears as the To field
-   gains and loses focus) and no JS-written viewport coordinate can move it
-   off-dialog. Scoped to the popup dialog; inline replies keep their
-   in-flow row. */
-
-/* The light-mode compose redesign paints the titlebar #404040 with white
-   text/icons; under the dialog invert filter that renders as a washed-out
-   light bar. Pre-invert the intent: light bar + dark text/icons in the DOM
-   come out as a dark bar with light text/icons after the filter. */
+/* Compose window: styled by class in dark mode like the inline reply (see
+   DARK MODE: COMPOSE DIALOG at the end of the dark section) */
 
 /* =============================================================================
    STANDALONE DARK MODE FOUNDATION
@@ -4312,10 +4287,9 @@ body.dark-mode
     [class*='ZH'],
     .nr,
     [class*='nr'],
-    header *,
-    .nH.Hd *
+    header *
   ),
-body.dark-mode textarea:not([aria-label='Message Body'], .nH.Hd *) {
+body.dark-mode textarea:not([aria-label='Message Body']) {
   background-color: var(--dm-hover) !important;
   color: #fff !important;
 }
@@ -4324,7 +4298,7 @@ body.dark-mode .qdOxv-K0-avf-ql-axC .qdOxv-K0-avf input.qdOxv-K0-wGMbrd {
   background-color: transparent !important;
 }
 
-body.dark-mode a:not(.nH.Hd a, .a3s a) {
+body.dark-mode a:not(.a3s a) {
   color: var(--dm-accent) !important;
 }
 
@@ -4386,64 +4360,23 @@ body.dark-mode .TO {
   background: var(--dm-bg) !important;
 }
 
-/* Flip images and video back to their true colors */
-body.dark-mode .nH.Hd[role='dialog'] img,
-body.dark-mode .nH.Hd[role='dialog'] video {
-  filter: invert(1) hue-rotate(180deg);
-}
-
-body.dark-mode .nH.Hd .btC .T-I-atl:is(.aoO, .hG) {
-  background-color: #3189ff !important;
-  color: #000 !important;
-  border-left-color: #000 !important;
-}
-
-body.dark-mode .nH.Hd .btC .T-I-atl.hG .G-asx {
-  filter: invert(1);
-}
-
-body.dark-mode .nH.Hd[role='dialog'] .aDg > .aDj {
-  position: absolute !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  width: auto !important;
-}
-
-body.dark-mode .nH .Hy .m {
-  background: #f6f8fc !important;
-}
-
-body.dark-mode .nH.Hd .Hp {
-  color: var(--dm-bg) !important;
-}
-
-/* filter: none - the generic icon rule further down whitens these glyphs
-   with brightness(0) invert(1), which the dialog invert then turns back to
-   near-black on the dark titlebar */
-body.dark-mode .nH.Hd :is(.Hk, .Hl, .Hq, .Hm .aUG, .Ha) {
-  background: #202124 !important;
-  filter: none !important;
-}
-
 /* Floating menus, pickers and autocomplete lists (More actions, label-as,
-   move-to, snooze, search suggestions). Menus inside the compose dialog are
-   excluded - the whole dialog is inverted, so light menus come out dark. */
-body.dark-mode [role='menu']:not(.nH.Hd [role='menu']),
-body.dark-mode [role='listbox']:not(.nH.Hd [role='listbox']),
-body.dark-mode .J-M:not(.nH.Hd .J-M),
+   move-to, snooze, search suggestions), inside the compose dialog too. */
+body.dark-mode [role='menu'],
+body.dark-mode [role='listbox'],
+body.dark-mode .J-M,
 /* 2026-06: Wiz-rebuilt actions dropdown container (replaces .b7.J-M) */
-body.dark-mode .tB5Jxf-M-S5Cmsd:not(.nH.Hd .tB5Jxf-M-S5Cmsd) {
+body.dark-mode .tB5Jxf-M-S5Cmsd {
   background-color: var(--dm-surface-raised) !important;
   border-color: var(--dm-border-muted) !important;
   color: var(--dm-text-secondary) !important;
 }
 
-body.dark-mode [role='menuitem']:not(.nH.Hd [role='menuitem']),
-body.dark-mode [role='menuitemcheckbox']:not(.nH.Hd [role='menuitemcheckbox']),
-body.dark-mode [role='menuitemradio']:not(.nH.Hd [role='menuitemradio']),
-body.dark-mode [role='option']:not(.nH.Hd [role='option']),
-body.dark-mode .J-N:not(.nH.Hd .J-N) {
+body.dark-mode [role='menuitem'],
+body.dark-mode [role='menuitemcheckbox'],
+body.dark-mode [role='menuitemradio'],
+body.dark-mode [role='option'],
+body.dark-mode .J-N {
   background-color: transparent !important;
   color: var(--dm-text-secondary) !important;
 }
@@ -4452,43 +4385,43 @@ body.dark-mode .J-N:not(.nH.Hd .J-N) {
    names in the compose font picker) keeps Gmail's light-theme dark color
    unless forced to inherit. [role='option'] and .J-N cover the font/size
    listboxes the formatting toolbar opens. */
-body.dark-mode [role='menuitem']:not(.nH.Hd [role='menuitem']) *,
-body.dark-mode [role='menuitemcheckbox']:not(.nH.Hd [role='menuitemcheckbox']) *,
-body.dark-mode [role='menuitemradio']:not(.nH.Hd [role='menuitemradio']) *,
-body.dark-mode [role='option']:not(.nH.Hd [role='option']) *,
-body.dark-mode .J-N:not(.nH.Hd .J-N) * {
+body.dark-mode [role='menuitem'] *,
+body.dark-mode [role='menuitemcheckbox'] *,
+body.dark-mode [role='menuitemradio'] *,
+body.dark-mode [role='option'] *,
+body.dark-mode .J-N * {
   color: inherit !important;
 }
 
-body.dark-mode .J-M td.aAi:not(.nH.Hd td.aAi),
-body.dark-mode [role='menu'] td.aAi:not(.nH.Hd td.aAi) {
+body.dark-mode .J-M td.aAi,
+body.dark-mode [role='menu'] td.aAi {
   color: var(--dm-text-secondary) !important;
 }
 
 /* Hovered / keyboard-highlighted menu items */
-body.dark-mode .J-N-JT:not(.nH.Hd .J-N-JT),
-body.dark-mode [role='menuitem']:hover:not(.nH.Hd [role='menuitem']),
-body.dark-mode [role='menuitemcheckbox']:hover:not(.nH.Hd [role='menuitemcheckbox']),
-body.dark-mode [role='menuitemradio']:hover:not(.nH.Hd [role='menuitemradio']),
-body.dark-mode [role='option']:hover:not(.nH.Hd [role='option']) {
+body.dark-mode .J-N-JT,
+body.dark-mode [role='menuitem']:hover,
+body.dark-mode [role='menuitemcheckbox']:hover,
+body.dark-mode [role='menuitemradio']:hover,
+body.dark-mode [role='option']:hover {
   background-color: var(--dm-hover) !important;
   color: #fff !important;
 }
 
-body.dark-mode .J-M .J-N-JX:not(.nH.Hd .J-N-JX),
-body.dark-mode .J-M .J-N-J5:not(.nH.Hd .J-N-J5),
-body.dark-mode [role='menu'] .J-N-JX:not(.nH.Hd .J-N-JX),
-body.dark-mode .J-M .J-LC-Jo:not(.nH.Hd .J-LC-Jo) /* Label as checkboxes */,
+body.dark-mode .J-M .J-N-JX,
+body.dark-mode .J-M .J-N-J5,
+body.dark-mode [role='menu'] .J-N-JX,
+body.dark-mode .J-M .J-LC-Jo /* Label as checkboxes */,
 body.dark-mode .J-M .J-M-JJ .A0 /* Label as / Move to search glyph */,
 body.dark-mode .J-M .bsJ /* Snooze "Pick date & time" calendar */,
-body.dark-mode .J-M .J-Ph-hFsbo:not(.nH.Hd .J-Ph-hFsbo) /* Move to / Label as submenu arrow */,
-body.dark-mode .J-M .J-Ks-KO .J-N-Jo:not(.nH.Hd .J-N-Jo) /* Font / text size menu tick on the current choice */ {
+body.dark-mode .J-M .J-Ph-hFsbo /* Move to / Label as submenu arrow */,
+body.dark-mode .J-M .J-Ks-KO .J-N-Jo /* Font / text size menu tick on the current choice */ {
   filter: invert(0.82) !important;
   opacity: 1 !important;
 }
 
 /* Menu headings ("Snooze until...") keep Gmail's #5f6368 */
-body.dark-mode .J-M .J-awr:not(.nH.Hd .J-awr) {
+body.dark-mode .J-M .J-awr {
   color: var(--dm-text-muted) !important;
 }
 
@@ -4497,14 +4430,14 @@ body.dark-mode .aqdrmf-Kf-Abojl > * {
   opacity: 1 !important;
 }
 
-body.dark-mode .J-Kh:not(.nH.Hd .J-Kh) {
+body.dark-mode .J-Kh {
   border-color: var(--dm-hover) !important;
   background-color: var(--dm-hover) !important;
 }
 
 /* Modal dialogs and hovercards (confirmations, keyboard help, contact cards).
    The compose dialog (.nH.Hd) keeps its invert-filter treatment instead. */
-body.dark-mode [role='dialog']:not(.nH.Hd),
+body.dark-mode [role='dialog'],
 body.dark-mode [role='alertdialog'] {
   background-color: var(--dm-surface) !important;
   color: var(--dm-text-secondary) !important;
@@ -4516,7 +4449,7 @@ body.dark-mode div.Lf.a5s[role='dialog'] {
 
 body.dark-mode [role='alertdialog'] .Kj-JD-K7-K0,
 body.dark-mode [role='alertdialog'] h2,
-body.dark-mode [role='dialog']:not(.nH.Hd) h2 {
+body.dark-mode [role='dialog'] h2 {
   color: #fff !important;
 }
 
@@ -4930,35 +4863,34 @@ body.dark-mode .btDi4d .jWOS7-JX-ano {
   filter: invert(0.78) !important;
 }
 
-body.dark-mode .J-Z-M-I-JG:not(.nH.Hd .J-Z-M-I-JG) {
+body.dark-mode .J-Z-M-I-JG {
   filter: invert(0.78) !important;
   opacity: 1 !important;
 }
 
 /* Gmail's mid-2026 floating Send/formatting row: in the inline reply it is
    a fixed overlay strip outside the conversation containers, so no scoped
-   dark rule reaches it and it stays stock white. The popup compose variant
-   is excluded - it lives inside the inverted dialog, where Gmail's light
-   fill already renders dark (and a dark fill would invert back to light). */
-body.dark-mode .aDj:not(.nH.Hd .aDj),
-body.dark-mode .btC:not(.nH.Hd .btC) {
+   dark rule reaches it and it stays stock white. The same rules serve the
+   popup compose dialog. */
+body.dark-mode .aDj,
+body.dark-mode .btC {
   background-color: var(--dm-surface) !important;
   color: var(--dm-text) !important;
 }
 
-body.dark-mode .aDj:not(.nH.Hd .aDj) .aDh,
-body.dark-mode .aDj:not(.nH.Hd .aDj) .IZ,
-body.dark-mode .aDj:not(.nH.Hd .aDj) .aDh > *,
-body.dark-mode .aDj:not(.nH.Hd .aDj) .IZ > tbody > tr:not(.btC) {
+body.dark-mode .aDj .aDh,
+body.dark-mode .aDj .IZ,
+body.dark-mode .aDj .aDh > *,
+body.dark-mode .aDj .IZ > tbody > tr:not(.btC) {
   background-color: transparent !important;
 }
 
-body.dark-mode .aC3:not(.nH.Hd .aC3) {
+body.dark-mode .aC3 {
   background: var(--dm-surface) !important;
   border-color: var(--dm-surface) !important;
 }
 
-body.dark-mode .HM .ahe:not(.nH.Hd *)::after {
+body.dark-mode .HM .ahe::after {
   background: var(--dm-surface) !important;
 }
 
@@ -5995,19 +5927,19 @@ body.dark-mode .w-asV.bbg.aiw[pageTitle='calls'] {
   background-color: #9e3128 !important; /* darker red */
 }
 
-body.dark-mode .vR:not(.nH.Hd .vR),
-body.dark-mode .vN:not(.nH.Hd .vN) {
+body.dark-mode .vR,
+body.dark-mode .vN {
   background-color: #3c3c3c !important;
   color: white !important;
 }
 
 /* Make "Draft saved" text visible */
-body.dark-mode .aYF:not(.nH.Hd .aYF) {
+body.dark-mode .aYF {
   color: var(--dm-accent) !important;
 }
 
 /* Make toolbar dividers visible */
-body.dark-mode .oc:not(.nH.Hd .oc) {
+body.dark-mode .oc {
   border-color: var(--dm-selected) !important;
 }
 
@@ -6454,7 +6386,7 @@ body.dark-mode .a3I {
   filter: invert(1) !important;
 }
 
-body.dark-mode .J-M .J-Z-I .aaA.aaB:not(.nH.Hd *) {
+body.dark-mode .J-M .J-Z-I .aaA.aaB {
   filter: invert(0.85) !important;
 }
 
@@ -6482,27 +6414,27 @@ body.dark-mode .uW2Fw-bHo .byd {
   filter: invert(1) !important;
 }
 
-body.dark-mode .btC:not(.nH.Hd .btC) :is(.aaA, .aaB, .dv, .Y1, .og) {
+body.dark-mode .btC :is(.aaA, .aaB, .dv, .Y1, .og) {
   background-color: transparent !important;
   filter: invert(0.78) !important;
 }
 
-body.dark-mode .btC:not(.nH.Hd .btC) :is(.J-JN-M-I-JG, .hG .G-asx),
-body.dark-mode .aoD:not(.nH.Hd .aoD) .Sz {
+body.dark-mode .btC :is(.J-JN-M-I-JG, .hG .G-asx),
+body.dark-mode .aoD .Sz {
   filter: invert(0.78) !important;
   opacity: 1 !important;
 }
 
-body.dark-mode .IG:not(.nH.Hd .IG) .Un::after {
+body.dark-mode .IG .Un::after {
   filter: invert(0.78) !important;
 }
 
-body.dark-mode .J-Z-I-Jp:not(.nH.Hd *)::before,
-body.dark-mode .btC:not(.nH.Hd .btC) .T-I-JO::before {
+body.dark-mode .J-Z-I-Jp::before,
+body.dark-mode .btC .T-I-JO::before {
   background-color: rgb(71 158 245 / 25%) !important;
 }
 
-body.dark-mode .J-Z:not(.nH.Hd *) :is(.aaA, .aaB) {
+body.dark-mode .J-Z :is(.aaA, .aaB) {
   background-color: transparent !important;
   filter: invert(0.78) hue-rotate(180deg) !important;
 }
@@ -6920,109 +6852,6 @@ body.dark-mode {
   --gm3-sys-color-tertiary-rgb: 109, 213, 140;
 }
 
-body.dark-mode .nH.Hd[role='dialog'] {
-  filter: invert(0.88) hue-rotate(180deg);
-
-  --gm3-sys-color-background: #fff;
-  --gm3-sys-color-background-rgb: 255, 255, 255;
-  --gm3-sys-color-error: #b3261e;
-  --gm3-sys-color-error-container: #f9dedc;
-  --gm3-sys-color-error-container-rgb: 249, 222, 220;
-  --gm3-sys-color-error-rgb: 179, 38, 30;
-  --gm3-sys-color-inverse-on-surface: #f2f2f2;
-  --gm3-sys-color-inverse-on-surface-rgb: 242, 242, 242;
-  --gm3-sys-color-inverse-primary: #a8c7fa;
-  --gm3-sys-color-inverse-primary-rgb: 168, 199, 250;
-  --gm3-sys-color-inverse-surface: #303030;
-  --gm3-sys-color-inverse-surface-rgb: 48, 48, 48;
-  --gm3-sys-color-on-background: #1f1f1f;
-  --gm3-sys-color-on-background-rgb: 31, 31, 31;
-  --gm3-sys-color-on-error: #fff;
-  --gm3-sys-color-on-error-container: #410e0b;
-  --gm3-sys-color-on-error-container-rgb: 65, 14, 11;
-  --gm3-sys-color-on-error-rgb: 255, 255, 255;
-  --gm3-sys-color-on-primary: #fff;
-  --gm3-sys-color-on-primary-container: #041e49;
-  --gm3-sys-color-on-primary-container-rgb: 4, 30, 73;
-  --gm3-sys-color-on-primary-fixed: #041e49;
-  --gm3-sys-color-on-primary-fixed-rgb: 4, 30, 73;
-  --gm3-sys-color-on-primary-fixed-variant: #0842a0;
-  --gm3-sys-color-on-primary-fixed-variant-rgb: 8, 66, 160;
-  --gm3-sys-color-on-primary-rgb: 255, 255, 255;
-  --gm3-sys-color-on-secondary: #fff;
-  --gm3-sys-color-on-secondary-container: #001d35;
-  --gm3-sys-color-on-secondary-container-rgb: 0, 29, 53;
-  --gm3-sys-color-on-secondary-fixed: #001d35;
-  --gm3-sys-color-on-secondary-fixed-rgb: 0, 29, 53;
-  --gm3-sys-color-on-secondary-fixed-variant: #004a77;
-  --gm3-sys-color-on-secondary-fixed-variant-rgb: 0, 74, 119;
-  --gm3-sys-color-on-secondary-rgb: 255, 255, 255;
-  --gm3-sys-color-on-surface: #1f1f1f;
-  --gm3-sys-color-on-surface-rgb: 31, 31, 31;
-  --gm3-sys-color-on-surface-variant: #444746;
-  --gm3-sys-color-on-surface-variant-rgb: 68, 71, 70;
-  --gm3-sys-color-on-tertiary: #fff;
-  --gm3-sys-color-on-tertiary-container: #072711;
-  --gm3-sys-color-on-tertiary-container-rgb: 7, 39, 17;
-  --gm3-sys-color-on-tertiary-fixed: #072711;
-  --gm3-sys-color-on-tertiary-fixed-rgb: 7, 39, 17;
-  --gm3-sys-color-on-tertiary-fixed-variant: #0f5223;
-  --gm3-sys-color-on-tertiary-fixed-variant-rgb: 15, 82, 35;
-  --gm3-sys-color-on-tertiary-rgb: 255, 255, 255;
-  --gm3-sys-color-outline: #747775;
-  --gm3-sys-color-outline-rgb: 116, 119, 117;
-  --gm3-sys-color-outline-variant: #c4c7c5;
-  --gm3-sys-color-outline-variant-rgb: 196, 199, 197;
-  --gm3-sys-color-primary: #0b57d0;
-  --gm3-sys-color-primary-container: #d3e3fd;
-  --gm3-sys-color-primary-container-rgb: 211, 227, 253;
-  --gm3-sys-color-primary-fixed: #d3e3fd;
-  --gm3-sys-color-primary-fixed-dim: #a8c7fa;
-  --gm3-sys-color-primary-fixed-dim-rgb: 168, 199, 250;
-  --gm3-sys-color-primary-fixed-rgb: 211, 227, 253;
-  --gm3-sys-color-primary-rgb: 11, 87, 208;
-  --gm3-sys-color-scrim: #000;
-  --gm3-sys-color-scrim-rgb: 0, 0, 0;
-  --gm3-sys-color-secondary: #00639b;
-  --gm3-sys-color-secondary-container: #c2e7ff;
-  --gm3-sys-color-secondary-container-rgb: 194, 231, 255;
-  --gm3-sys-color-secondary-fixed: #c2e7ff;
-  --gm3-sys-color-secondary-fixed-dim: #7fcfff;
-  --gm3-sys-color-secondary-fixed-dim-rgb: 127, 207, 255;
-  --gm3-sys-color-secondary-fixed-rgb: 194, 231, 255;
-  --gm3-sys-color-secondary-rgb: 0, 99, 155;
-  --gm3-sys-color-shadow: #000;
-  --gm3-sys-color-shadow-rgb: 0, 0, 0;
-  --gm3-sys-color-surface: #fff;
-  --gm3-sys-color-surface-bright: #fff;
-  --gm3-sys-color-surface-bright-rgb: 255, 255, 255;
-  --gm3-sys-color-surface-container: #f0f4f9;
-  --gm3-sys-color-surface-container-high: #e9eef6;
-  --gm3-sys-color-surface-container-high-rgb: 233, 238, 246;
-  --gm3-sys-color-surface-container-highest: #dde3ea;
-  --gm3-sys-color-surface-container-highest-rgb: 221, 227, 234;
-  --gm3-sys-color-surface-container-low: #f8fafd;
-  --gm3-sys-color-surface-container-low-rgb: 248, 250, 253;
-  --gm3-sys-color-surface-container-lowest: #fff;
-  --gm3-sys-color-surface-container-lowest-rgb: 255, 255, 255;
-  --gm3-sys-color-surface-container-rgb: 240, 244, 249;
-  --gm3-sys-color-surface-dim: #d3dbe5;
-  --gm3-sys-color-surface-dim-rgb: 211, 219, 229;
-  --gm3-sys-color-surface-rgb: 255, 255, 255;
-  --gm3-sys-color-surface-tint: #6991d6;
-  --gm3-sys-color-surface-tint-rgb: 105, 145, 214;
-  --gm3-sys-color-surface-variant: #e1e3e1;
-  --gm3-sys-color-surface-variant-rgb: 225, 227, 225;
-  --gm3-sys-color-tertiary: #146c2e;
-  --gm3-sys-color-tertiary-container: #c4eed0;
-  --gm3-sys-color-tertiary-container-rgb: 196, 238, 208;
-  --gm3-sys-color-tertiary-fixed: #c4eed0;
-  --gm3-sys-color-tertiary-fixed-dim: #6dd58c;
-  --gm3-sys-color-tertiary-fixed-dim-rgb: 109, 213, 140;
-  --gm3-sys-color-tertiary-fixed-rgb: 196, 238, 208;
-  --gm3-sys-color-tertiary-rgb: 20, 108, 46;
-}
-
 body.dark-mode .wT .zw [data-inbox-icon='finance'] .aHS-bnr .qj {
   background-color: #7cb342 !important;
 }
@@ -7147,6 +6976,56 @@ body.dark-mode .inbox-reborn-dialog-button {
 body.dark-mode .inbox-reborn-dialog-button.is-move {
   background: #8ab4f8;
   color: #202124;
+}
+
+/* -----------------------------------------------------------------------------
+   DARK MODE: COMPOSE DIALOG
+   Styled by class, like the inline reply, instead of inverting the dialog:
+   pictures keep their colors, the Send row stays where Gmail's JS puts it
+   (the filter made the dialog the containing block for its fixed position),
+   and the standard dark menu and icon rules reach inside. Every background
+   inside the dialog goes transparent at zero specificity, so a white
+   surface Gmail adds later cannot show through; the rules above that paint
+   a fill with !important (Send, chips, menus) still win. The dialog and its
+   body carry the surface color.
+   ----------------------------------------------------------------------------- */
+:where(body.dark-mode .nH.Hd[role='dialog']) * {
+  background-color: transparent !important;
+  color: var(--dm-text) !important;
+}
+
+body.dark-mode .nH.Hd[role='dialog'],
+body.dark-mode .nH.Hd .aaZ {
+  background-color: var(--dm-surface) !important;
+}
+
+/* The titlebar keeps light mode's #404040 bar with white glyphs */
+body.dark-mode .nH .Hy .m {
+  background-color: #404040 !important;
+}
+
+/* Recipient and subject fields, the editor, and the plain-text editor */
+body.dark-mode .nH.Hd :is(input, textarea)::placeholder {
+  color: var(--dm-text-muted) !important;
+}
+
+body.dark-mode .nH.Hd .Am,
+body.dark-mode .nH.Hd .Ak {
+  caret-color: var(--dm-text) !important;
+}
+
+/* Formatting toolbar dividers, and the Recipients / Cc / Bcc chip buttons */
+body.dark-mode .nH.Hd .J-Z-axR {
+  background-color: var(--dm-border-muted) !important;
+}
+
+body.dark-mode .nH.Hd .ajR {
+  background-color: var(--dm-hover) !important;
+}
+
+/* Links typed or quoted in the editor keep Gmail's blue, lightened */
+body.dark-mode .nH.Hd .Am a {
+  color: var(--dm-accent) !important;
 }
 
 /* =============================================================================
