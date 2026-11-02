@@ -95,8 +95,8 @@ Using these settings will more closely replicate the visual style of Inbox:
 
 Bundles are built from the **labels on your inbox emails**, the way Inbox built them:
 
-- The left menu is split like Inbox's (the arrow before the Unbundled title folds that section up,
-  and the fold is remembered): **Bundled in the inbox** lists Travel, Purchases,
+- The left menu is split like Inbox's (an arrow beside each title folds that section up, and the
+  fold is remembered): **Bundled in the inbox** lists Travel, Purchases,
   Finance, Social, Updates, Forums and Promotions plus every label that bundles;
   **Unbundled** lists the labels whose emails show one by one. **Drag a label from
   Unbundled up into Bundled in the inbox** to bundle it, and back down to stop. The

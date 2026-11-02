@@ -3906,6 +3906,13 @@ body.inbox-reborn-label-sections-on .aAw {
   height: auto !important;
   margin: 0 0 1px !important;
   padding: 20px 8px 0 24px !important;
+
+  /* Laid out like the Unbundled title, so its fold arrow sits beside its
+     text (the text keeps its place); the row toggles the fold */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
 }
 
 body.inbox-reborn-label-sections-on .aAw::before,
@@ -3944,17 +3951,17 @@ body.inbox-reborn-label-sections-on .aAw::before {
   display: flex;
   align-items: center;
   margin: 13px 0 5px;
-  padding: 20px 8px 0 24px;
+  padding: 20px 8px 0 16px;
   transition: color 0.15s;
   cursor: pointer;
   user-select: none;
 }
 
-/* The arrow that folds Unbundled up, laid out like Gmail's More row: the
-   chevron centered at x=44 (a 24px box from x=32) and the text at x=70. It
-   is drawn in the title's own color (currentColor), so the light-mode gray
-   and the dark-mode secondary text both carry it; it turns to point right
-   while the section is folded. */
+/* The arrows that fold a section up, in the gutter left of each title's
+   text: a 24px box from the left menu's edge (x=0) to the text (x=24), so
+   the titles keep their place and font. Drawn in the title's own color
+   (currentcolor), so the light-mode gray and the dark-mode secondary text
+   both carry it; it turns to point right while the section is folded. */
 .inbox-reborn-section-arrow {
   display: flex;
   flex-shrink: 0;
@@ -3962,12 +3969,16 @@ body.inbox-reborn-label-sections-on .aAw::before {
   justify-content: center;
   width: 24px;
   height: 24px;
-  margin-right: 14px;
+  margin-left: -24px;
   border-radius: 50%;
-  color: inherit;
+  color: #757575;
   transition:
     transform 0.15s,
     background-color 0.15s;
+}
+
+.inbox-reborn-section-title .inbox-reborn-section-arrow {
+  color: inherit;
 }
 
 .inbox-reborn-section-arrow svg {
@@ -3975,22 +3986,30 @@ body.inbox-reborn-label-sections-on .aAw::before {
 }
 
 .inbox-reborn-section-title:hover .inbox-reborn-section-arrow,
+body.inbox-reborn-label-sections-on .aAw:hover .inbox-reborn-section-arrow,
 .inbox-reborn-section-arrow:focus-visible {
   background-color: rgb(0 0 0 / 8%);
   outline: none;
 }
 
+body.dark-mode .inbox-reborn-section-arrow {
+  color: var(--dm-text-secondary);
+}
+
 body.dark-mode .inbox-reborn-section-title:hover .inbox-reborn-section-arrow,
+body.dark-mode.inbox-reborn-label-sections-on .aAw:hover .inbox-reborn-section-arrow,
 body.dark-mode .inbox-reborn-section-arrow:focus-visible {
   background-color: rgb(255 255 255 / 12%);
 }
 
-.inbox-reborn-unbundled-collapsed > .inbox-reborn-section-title .inbox-reborn-section-arrow {
+.inbox-reborn-section-arrow[aria-expanded='false'] {
   transform: rotate(-90deg);
 }
 
-/* Folded: the unbundled labels and categories go, the title stays (still a
-   drop target for a label dragged down) */
+/* Folded: the section's rows go (and the how-to hint with Bundled's), the
+   titles stay (still drop targets for a label dragged up or down) */
+.inbox-reborn-bundled-collapsed
+  > :is(.inbox-reborn-category, [data-inbox-section='bundled'], .inbox-reborn-section-hint),
 .inbox-reborn-unbundled-collapsed > [data-inbox-section='unbundled'] {
   display: none !important;
 }
@@ -4058,7 +4077,7 @@ body.inbox-reborn-label-dragging .TK .TO:hover {
   pointer-events: none;
 }
 
-.aAw[data-drop-target='bundled'] .aAv,
+.aAw[data-drop-target='bundled'] :is(.aAv, .inbox-reborn-section-arrow),
 .inbox-reborn-label-sections[data-drop-target='unbundled'] > .inbox-reborn-section-title {
   color: #4285f4 !important;
 }
