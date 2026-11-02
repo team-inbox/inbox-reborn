@@ -34,7 +34,7 @@ settings worth changing on day one.
 | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | [Getting started](/getting-started)                              | install, pick the recommended Gmail settings, and know what happens to your mail on the first day            |
 | [The inbox](/the-inbox)                                          | learn the date groups, the hover actions, Sweep, the Pinned switch, reminders and dark mode                  |
-| [How bundles work](/bundles/how-bundles-work)                    | understand what a bundle is, how an email picks its bundle, and why starred mail stays out                   |
+| [How bundles work](/bundles/how-bundles-work)                    | understand what a bundle is, how an email picks its bundle, how a `Cruise` label joins Travel, and why starred mail stays out |
 | [Bundled in the inbox and Unbundled](/bundles/bundled-and-unbundled) | drag labels and categories between the two sections, and know exactly what moves when you do                 |
 | [Gmail's categories](/bundles/gmail-categories)                  | find out why new mail lands in Updates or Forums, and how to teach Gmail otherwise                           |
 | [Rules and custom bundles](/bundles/rules-and-custom-bundles)    | build your own bundles with labels and filters, Inbox's "rules"                                              |
