@@ -713,14 +713,18 @@ const getGmailCategoryRow = (name) =>
 /**
  * Draws the category rows at the top of the label list, in Inbox's order:
  * copies of Gmail's own rows (which the stylesheet hides while the sections
- * are on) plus Travel and Finance. Only adds what is missing.
+ * are on) plus Travel and Finance. Only adds what is missing. A category
+ * hidden from the label list in Gmail's settings stays hidden; Travel and
+ * Finance are drawn even when every category is, from a copy of a system
+ * row (getFallbackTemplateRow).
  * @param {Element} list - The label list
  */
 const placeCategoryRows = (list) => {
   const gmailRows = Object.fromEntries(
     CATEGORY_MENU_ORDER.map((name) => [name, getGmailCategoryRow(name)]),
   );
-  const template = CATEGORY_MENU_ORDER.map((name) => gmailRows[name]).find(Boolean);
+  const template =
+    CATEGORY_MENU_ORDER.map((name) => gmailRows[name]).find(Boolean) || getFallbackTemplateRow();
   if (!template) return;
 
   const copies = new Set(

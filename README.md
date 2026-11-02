@@ -185,12 +185,17 @@ colored icons. Every label of yours gets Inbox's stacked-envelopes bundle icon, 
 bundle and in the left menu, whatever it is called. Labels you've given a color in Gmail
 keep that color on their icon.
 
-**Travel-named labels also show up under Travel.** The Travel item in the left menu
-opens the mail Google files as travel, plus the mail in every label of yours with the
-whole word trip(s), travel, cruise(s), flight(s), vacation(s) or hotel(s) in its name
-(`Cruise`, `Trips/Japan`, `Summer Vacation`; not `Cruising`). Without such a label,
-Travel shows only Google's sorting. Gmail won't let you create a label named `Travel`
-(it's reserved), so use `Trips`, `Cruise`, `Flights` or `Vacation`.
+**Travel-named labels count as travel.** Google decides what goes under Travel and
+offers no way to add to it by hand (no Travel label, no drop target), so the extension
+takes your labels as the way in: every label of yours with the whole word trip(s),
+travel, cruise(s), flight(s), vacation(s) or hotel(s) in its name (`Cruise`,
+`Trips/Japan`, `Summer Vacation`; not `Cruising`) is treated as travel. The Travel item
+in the left menu opens the mail Google files as travel plus the mail in those labels
+(`{category:travel label:Cruise}`), the Travel bundle in the inbox is built from the
+same search, and clicking the bundle opens it. Without such a label, Travel shows only
+Google's sorting. Gmail won't let you create a label named `Travel` (it's reserved), so
+use `Trips`, `Cruise`, `Flights` or `Vacation`. A travel label dragged up to Bundled
+bundles its mail under its own name instead, since a label of your own beats a category.
 
 ### Bundling troubleshooting
 

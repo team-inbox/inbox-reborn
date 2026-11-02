@@ -83,8 +83,10 @@ const isCategoryBundle = (label) => label in CATEGORY_BUNDLES && isCategoryBundl
 
 /**
  * Tells the page script which category searches to run - none unless
- * bundling and at least one category switch are on. Only sends on change,
- * since options reload on every pass.
+ * bundling and at least one category switch are on. Travel's search also
+ * takes in the travel labels (travelSearch), so a Cruise email in the inbox
+ * bundles under Travel like the Travel row lists it. Only sends on change:
+ * when the options are applied and whenever the left menu changes.
  */
 const requestCategoryThreads = () => {
   const categories =
@@ -93,14 +95,24 @@ const requestCategoryThreads = () => {
           .filter(([name]) => isCategoryBundled(name))
           .map(([, key]) => key)
       : [];
-  const key = categories.join(',');
+  const queries = categories.includes('travel') ? { travel: travelSearch(getTravelLabels()) } : {};
+  const key = `${categories.join(',')} ${JSON.stringify(queries)}`;
   if (key === wantedCategoriesKey) return;
   wantedCategoriesKey = key;
   if (!categories.length) categoryThreads = new Map();
   window.postMessage(
-    { source: CATEGORIES_MESSAGE_SOURCE, type: 'want', categories },
+    { source: CATEGORIES_MESSAGE_SOURCE, type: 'want', categories, queries },
     location.origin,
   );
+};
+
+/**
+ * Sends the request again if what it asks for changed (a travel label came
+ * or went) - once the options have been applied, so the first request is
+ * the options' own
+ */
+const updateCategoryThreadsRequest = () => {
+  if (wantedCategoriesKey !== null) requestCategoryThreads();
 };
 
 /**
