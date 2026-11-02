@@ -8,8 +8,50 @@
 // UI CUSTOMIZATION
 // =============================================================================
 
+// The title shown over the Gmail logo for each view, as the key of its
+// message in _locales (Gmail's own hashes, plus #pinned, #travel, #finance
+// and #archive, which are ours)
+const PAGE_TITLE_KEYS = {
+  inbox: 'inbox',
+  settings: 'inbox',
+  pinned: 'pinned',
+  snoozed: 'snoozed',
+  archive: 'done',
+  starred: 'starred',
+  sent: 'sent',
+  drafts: 'drafts',
+  imp: 'important',
+  chat: 'chat',
+  onboarding: 'chat',
+  browse: 'chat',
+  calls: 'meet',
+  scheduled: 'scheduled',
+  all: 'allMail',
+  spam: 'spam',
+  trash: 'trash',
+  sub: 'subscriptions',
+  social: 'social',
+  updates: 'updates',
+  forums: 'forums',
+  promotions: 'promotions',
+  purchases: 'purchases',
+  travel: 'travel',
+  finance: 'finance',
+  labels: 'labels',
+};
+
 /**
- * Updates the Gmail top bar header to display the correct page title
+ * A page title in the user's language (the key itself if the messages are
+ * unavailable, which only happens outside an extension)
+ * @param {string} key - A value of PAGE_TITLE_KEYS
+ * @returns {string}
+ */
+const pageTitle = (key) => chrome.i18n?.getMessage?.(`title_${key}`) || key;
+
+/**
+ * Updates the Gmail top bar header to display the correct page title: the
+ * header's pageTitle attribute picks the bar's color, and the title text
+ * goes on the logo link as data-inbox-title, which the stylesheet draws
  */
 const handleHashChange = () => {
   if (!instanceActive()) return;
@@ -52,7 +94,7 @@ const handleHashChange = () => {
       if (headerElement && titleNode && titleNode.setAttribute) {
         headerElement.setAttribute('pageTitle', 'label');
         // Show just the last sub-label in the header
-        titleNode.setAttribute('data-label-title', leafLabel);
+        titleNode.setAttribute('data-inbox-title', leafLabel);
         // Provide the full label path as a tooltip
         titleNode.setAttribute('title', labelName);
         titleNode.href = '#label';
@@ -60,12 +102,9 @@ const handleHashChange = () => {
       return; // Skip the rest of the logic for label pages
     }
 
-    // Remove label-title attribute if not on a label page
+    // Remove the label tooltip if not on a label page
     const titleNode = select.titleNode();
-    if (titleNode && titleNode.removeAttribute) {
-      titleNode.removeAttribute('data-label-title');
-      titleNode.removeAttribute('title');
-    }
+    if (titleNode && titleNode.removeAttribute) titleNode.removeAttribute('title');
 
     hash = hash.split('/')[0].split('?')[0];
   }
@@ -75,7 +114,9 @@ const handleHashChange = () => {
 
   if (!titleNode || !headerElement) return;
 
-  headerElement.setAttribute('pageTitle', hash.replace('#', ''));
+  const view = hash.replace('#', '');
+  headerElement.setAttribute('pageTitle', view);
+  titleNode.setAttribute('data-inbox-title', pageTitle(PAGE_TITLE_KEYS[view] || 'search'));
   // #pinned, #travel and #finance are ours, not Gmail routes - the title
   // links to the page they stand for
   const titleLinks = {
