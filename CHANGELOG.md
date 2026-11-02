@@ -5,6 +5,49 @@ PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inb
 
 ## Unreleased
 
+- Robustness and performance pass, from a review of the whole extension:
+  - The options are read once per page load instead of being asked of the
+    service worker four times a second, and a tab left open across an
+    extension update stops its timers quietly instead of throwing
+    "Extension context invalidated" four times a second until reloaded.
+  - A label name with a double quote in it no longer breaks the list pass
+    (bundle lookups now escape the name), and a row Gmail takes out mid-pass
+    no longer aborts the pass with an `insertBefore` error.
+  - Two leaks are closed: a `hashchange` listener added every time the Done
+    row was rebuilt, and a new `ResizeObserver` on every side-panel click.
+  - The idle label-list and label-icon rewrites (twice a second, a needless
+    style invalidation) are gone.
+  - The Purchases/Travel/Finance searches time out instead of hanging
+    category refreshes for good, re-run when a list loads mid-refresh, and
+    back off after failures instead of retrying on every list load.
+  - The settings popup keeps its controls inert until the stored settings
+    are shown, so a slow answer from the service worker can no longer be
+    saved over the real settings as blank defaults, and "Saved" now waits
+    for the write to land.
+  - `src/style.css` lost 590 lines of rules that a later rule with the same
+    selector always overrode (five stacked rewrites of the theme-picker
+    dialog among them), nine empty blocks, unused custom properties and
+    no-op scrollbar transitions. Verified against computed-style snapshots
+    of the inbox, a bundle, an open conversation, compose and the theme
+    picker in both light and dark mode: no element's style changed.
+  - Chrome injects on `https://mail.google.com/mail/*` like Firefox (so the
+    sync-request patch stays off chat), declares the Chrome version that
+    understands main-world content scripts, and Firefox drops four host
+    permissions it never needed. The build skips dotfiles, reports the zip
+    only once it is written, and rewrites the stylesheet's URL scheme for
+    Firefox, which let 72 Firefox-only copies of Chrome rules go.
+  - The sidebar's styling is keyed on a `data-inbox-nav` attribute the
+    content script sets from what each row links to, instead of 109
+    selectors on English tooltips, so the icons hold in other Gmail
+    languages.
+  - The universal font rule no longer reaches into message bodies, and its
+    `font-size: 99.1%` is gone - a percentage on every element compounded
+    with nesting depth, so the same text came out anywhere from 14px to
+    12.3px. Text in Gmail's chrome is at its intended size again.
+  - The stylesheet's dark-mode rules sit in one DARK MODE section (the 33
+    whose place in the cascade matters stay put, with a note), the
+    Firefox-only overrides in a section after it, and the repeated colors
+    (`#e8eaed`, the two near-identical icon grays) are tokens.
 - An open email's message headers show Inbox's pin instead of Gmail's star,
   in both themes: gray until pinned, then the color of the star type in use,
   as on the list rows. Dark mode drew a star there; light mode left Gmail's.

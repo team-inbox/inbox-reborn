@@ -146,7 +146,7 @@
   // Listen for changes to options and toggle class dynamically
   chrome.storage?.onChanged.addListener((changes, area) => {
     if (area === 'local' && changes.options) {
-      applyDarkMode(changes.options.newValue.darkMode === 'enabled');
+      applyDarkMode(changes.options.newValue?.darkMode === 'enabled');
     }
   });
 })();
@@ -221,6 +221,7 @@ const avatarCache = new Map();
 const CSS_CLASSES = {
   REMINDER_EMAIL: 'reminder',
   CALENDAR_ATTACHMENT: 'calendar-attachment',
+  CALENDAR_EMAIL: 'calendar-email',
   BUNDLE_PAGE: 'bundle-page',
   BUNDLE_WRAPPER: 'bundle-wrapper',
   UNREAD_BUNDLE: 'contains-unread',
@@ -416,13 +417,38 @@ const menuNodes = {};
 // =============================================================================
 
 /**
- * Add remove method to Element prototype if not exists
+ * Whether the extension this script came from is still installed and
+ * running. After an update or reload, Chrome keeps the old content script
+ * alive in open tabs but every chrome.* call throws "Extension context
+ * invalidated" - the timers check this and stop instead of erroring
+ * four times a second until the tab is reloaded
+ * @returns {boolean} False once the context is gone
  */
-if (!Element.prototype.remove) {
-  Element.prototype.remove = function () {
-    this.parentElement.removeChild(this);
-  };
-}
+const extensionAlive = () => !!chrome.runtime?.id;
+
+/**
+ * The periodic timers, so they can all stop together once the extension
+ * context is gone
+ */
+const timers = [];
+
+/**
+ * setInterval that stops every timer when the extension context is gone
+ * @param {Function} fn - What to run
+ * @param {number} ms - How often
+ */
+const every = (fn, ms) => {
+  timers.push(
+    setInterval(() => {
+      if (!extensionAlive()) {
+        timers.forEach(clearInterval);
+        timers.length = 0;
+        return;
+      }
+      fn();
+    }, ms),
+  );
+};
 
 /**
  * Gets the current user's email address from the UI
@@ -822,6 +848,9 @@ const buildDateLabel = (date) => {
  * @param {string} label - The date label text
  */
 const addDateLabel = (email, label) => {
+  // Gmail may have taken the row out since the pass collected it
+  if (!email.parentElement) return;
+
   // Remove existing date label if it's different
   if (email.previousSibling && email.previousSibling.className === 'time-row') {
     if (email.previousSibling.querySelector('.time')?.innerText === label) return;
@@ -1336,7 +1365,7 @@ const addClassToEmail = (emailEl, klass) => emailEl.classList.add(klass);
  * @param {string} klass - The CSS class to add
  */
 const addClassToBundle = (label, klass) => {
-  const bundle = document.querySelector(`div[bundleLabel="${label}"]`);
+  const bundle = document.querySelector(`div[bundleLabel="${CSS.escape(label)}"]`);
   if (bundle && !bundle.classList.contains(klass)) {
     bundle.classList.add(klass);
   }
@@ -1348,7 +1377,7 @@ const addClassToBundle = (label, klass) => {
  * @param {string} klass - The CSS class to remove
  */
 const removeClassFromBundle = (label, klass) => {
-  const bundle = document.querySelector(`div[bundleLabel="${label}"]`);
+  const bundle = document.querySelector(`div[bundleLabel="${CSS.escape(label)}"]`);
   if (bundle && bundle.classList.contains(klass)) {
     bundle.classList.remove(klass);
   }
@@ -1360,7 +1389,7 @@ const removeClassFromBundle = (label, klass) => {
  * @param {number} count - The count to display
  */
 const addCountToBundle = (label, count) => {
-  const bundleLabel = document.querySelector(`div[bundleLabel="${label}"] .label-link`);
+  const bundleLabel = document.querySelector(`div[bundleLabel="${CSS.escape(label)}"] .label-link`);
   if (!bundleLabel) return;
 
   const countText = `(${count})`;
@@ -1385,7 +1414,9 @@ const addCountToBundle = (label, count) => {
  * @param {Array} senders - Array of sender objects with name and isUnread properties
  */
 const addSendersToBundle = (label, senders) => {
-  const bundleSenders = document.querySelector(`div[bundleLabel="${label}"] .bundle-senders`);
+  const bundleSenders = document.querySelector(
+    `div[bundleLabel="${CSS.escape(label)}"] .bundle-senders`,
+  );
   if (!bundleSenders) return;
 
   // Get unique senders, prioritizing unread status
@@ -1474,6 +1505,56 @@ const tagSidebarLabelIcons = () => {
     if (!row.querySelector('.aHS-bnr')) return;
     const kind = getBundleIconKind(row.getAttribute('data-tooltip'));
     if (row.dataset.inboxIcon !== kind) row.dataset.inboxIcon = kind;
+  });
+};
+
+/* The left menu's rows the stylesheet restyles (category rows, the
+   Categories group, AI Inbox, the label-list buttons), keyed by what they
+   link to rather than their English tooltip, so the stylesheet's
+   [data-inbox-nav] selectors hold in any Gmail language whose links are
+   recognizable. The tooltip is the fallback for rows without a link. */
+const NAV_BY_HASH = [
+  [/^#category\/social/, 'social'],
+  [/^#category\/updates/, 'updates'],
+  [/^#category\/forums/, 'forums'],
+  [/^#category\/promotions/, 'promotions'],
+  [/^#category\/purchases/, 'purchases'],
+  [/^#category\/travel/, 'travel'],
+  [/^#search\/category%3Afinance/, 'finance'],
+  [/^#settings\/labels/, 'manage-labels'],
+  [/^#subscriptions/, 'manage-subscriptions'],
+];
+const NAV_BY_TOOLTIP = {
+  Social: 'social',
+  Updates: 'updates',
+  Forums: 'forums',
+  Promotions: 'promotions',
+  Purchases: 'purchases',
+  Purchased: 'purchases',
+  Travel: 'travel',
+  Finance: 'finance',
+  Categories: 'categories',
+  'AI Inbox': 'ai-inbox',
+  'Manage labels': 'manage-labels',
+  'Manage subscriptions': 'manage-subscriptions',
+  'Create new label': 'create-label',
+};
+
+/**
+ * Tags the left menu's rows and buttons with data-inbox-nav (see above).
+ * Only writes when the value changes.
+ */
+const tagSidebarNav = () => {
+  const hashOf = (el) => {
+    const link = el.matches('a') ? el : el.querySelector('a[href*="#"]') || el.closest('a');
+    return link?.getAttribute('href')?.replace(/^[^#]*/, '') || '';
+  };
+  document.querySelectorAll('.aeN [data-tooltip], .aeN [aria-label]').forEach((el) => {
+    const hash = hashOf(el);
+    const nav =
+      NAV_BY_HASH.find(([pattern]) => pattern.test(hash))?.[1] ||
+      NAV_BY_TOOLTIP[el.getAttribute('data-tooltip') || el.getAttribute('aria-label')];
+    if (nav && el.dataset.inboxNav !== nav) el.dataset.inboxNav = nav;
   });
 };
 
@@ -1717,59 +1798,90 @@ const addEventAttachment = (email) => {
 // OPTIONS MANAGEMENT
 // =============================================================================
 
+// The service worker may still be starting when the page loads
+const OPTIONS_LOAD_RETRY_MS = 500;
+const OPTIONS_LOAD_TRIES = 20;
+
 /**
- * Reloads user options and applies them to the UI
+ * Asks the service worker for the stored options, once per page load (a
+ * change to the options reloads the page - see the storage listener below -
+ * and dark mode applies on its own in initDarkMode). Retries while the
+ * worker doesn't answer, and gives up quietly if the extension was
+ * reloaded under this tab.
+ * @param {number} triesLeft - Attempts left
  */
-const reloadOptions = () => {
-  // Get options from Chrome storage and apply them once the fresh values
-  // arrive, so toggles take effect without waiting an extra polling cycle
-  chrome.runtime.sendMessage({ method: 'getOptions' }, function (ops) {
-    options = ops;
-    markOptionsLoaded();
-    requestCategoryThreads();
-
-    // Apply avatar options
-    if (options.showAvatar === 'enabled') {
-      addClassToBody(CSS_CLASSES.AVATAR_OPTION);
-    } else if (options.showAvatar === 'disabled') {
-      removeClassFromBody(CSS_CLASSES.AVATAR_OPTION);
-      // Remove avatar elements
-      document
-        .querySelectorAll('.' + CSS_CLASSES.AVATAR_EMAIL)
-        .forEach((avatarEl) => avatarEl.classList.remove(CSS_CLASSES.AVATAR_EMAIL));
-      document.querySelectorAll('.' + CSS_CLASSES.AVATAR).forEach((avatarEl) => avatarEl.remove());
-    }
-
-    // Apply priority inbox options
-    if (options.priorityInbox === 'enabled') {
-      addClassToBody(CSS_CLASSES.PRIORITY_INBOX_OPTION);
+const loadOptions = (triesLeft = OPTIONS_LOAD_TRIES) => {
+  if (!extensionAlive()) return;
+  const retry = () => {
+    if (triesLeft > 0) {
+      setTimeout(() => loadOptions(triesLeft - 1), OPTIONS_LOAD_RETRY_MS);
     } else {
-      removeClassFromBody(CSS_CLASSES.PRIORITY_INBOX_OPTION);
+      console.warn('[Inbox Reborn] The options could not be loaded - using the defaults.');
     }
+  };
+  try {
+    chrome.runtime.sendMessage({ method: 'getOptions' }, (ops) => {
+      if (chrome.runtime.lastError || !ops) {
+        retry();
+        return;
+      }
+      applyOptions(ops);
+    });
+  } catch {
+    retry();
+  }
+};
 
-    // Hide: the date/time on list rows (Inbox showed none), Gmail's AI Inbox
-    // and All Mail menu rows, and the extension's Travel and Finance rows
-    toggleBodyClass(CSS_CLASSES.HIDE_DATE_TIME_OPTION, options.hideDateTime === 'enabled');
-    toggleBodyClass(CSS_CLASSES.HIDE_AI_INBOX_OPTION, options.hideAiInbox === 'enabled');
-    toggleBodyClass(CSS_CLASSES.HIDE_ALL_MAIL_OPTION, options.hideAllMail === 'enabled');
-    toggleBodyClass(CSS_CLASSES.HIDE_TRAVEL_OPTION, options.hideTravel === 'enabled');
-    toggleBodyClass(CSS_CLASSES.HIDE_FINANCE_OPTION, options.hideFinance === 'enabled');
+/**
+ * Applies the stored options to the page
+ * @param {Object} ops - The options, as background.js answers them
+ */
+const applyOptions = (ops) => {
+  options = ops;
+  markOptionsLoaded();
+  requestCategoryThreads();
 
-    // Apply email bundling options
-    if (options.emailBundling === 'enabled') {
-      addClassToBody(CSS_CLASSES.BUNDLING_OPTION);
-    } else if (options.emailBundling === 'disabled') {
-      removeClassFromBody(CSS_CLASSES.BUNDLING_OPTION);
-      // Unbundle emails
-      document
-        .querySelectorAll('.' + CSS_CLASSES.BUNDLED_EMAIL)
-        .forEach((emailEl) => emailEl.classList.remove(CSS_CLASSES.BUNDLED_EMAIL));
-      // Remove bundle wrapper rows
-      document
-        .querySelectorAll('.' + CSS_CLASSES.BUNDLE_WRAPPER)
-        .forEach((bundleEl) => bundleEl.remove());
-    }
-  });
+  // Apply avatar options
+  if (options.showAvatar === 'enabled') {
+    addClassToBody(CSS_CLASSES.AVATAR_OPTION);
+  } else if (options.showAvatar === 'disabled') {
+    removeClassFromBody(CSS_CLASSES.AVATAR_OPTION);
+    // Remove avatar elements
+    document
+      .querySelectorAll('.' + CSS_CLASSES.AVATAR_EMAIL)
+      .forEach((avatarEl) => avatarEl.classList.remove(CSS_CLASSES.AVATAR_EMAIL));
+    document.querySelectorAll('.' + CSS_CLASSES.AVATAR).forEach((avatarEl) => avatarEl.remove());
+  }
+
+  // Apply priority inbox options
+  if (options.priorityInbox === 'enabled') {
+    addClassToBody(CSS_CLASSES.PRIORITY_INBOX_OPTION);
+  } else {
+    removeClassFromBody(CSS_CLASSES.PRIORITY_INBOX_OPTION);
+  }
+
+  // Hide: the date/time on list rows (Inbox showed none), Gmail's AI Inbox
+  // and All Mail menu rows, and the extension's Travel and Finance rows
+  toggleBodyClass(CSS_CLASSES.HIDE_DATE_TIME_OPTION, options.hideDateTime === 'enabled');
+  toggleBodyClass(CSS_CLASSES.HIDE_AI_INBOX_OPTION, options.hideAiInbox === 'enabled');
+  toggleBodyClass(CSS_CLASSES.HIDE_ALL_MAIL_OPTION, options.hideAllMail === 'enabled');
+  toggleBodyClass(CSS_CLASSES.HIDE_TRAVEL_OPTION, options.hideTravel === 'enabled');
+  toggleBodyClass(CSS_CLASSES.HIDE_FINANCE_OPTION, options.hideFinance === 'enabled');
+
+  // Apply email bundling options
+  if (options.emailBundling === 'enabled') {
+    addClassToBody(CSS_CLASSES.BUNDLING_OPTION);
+  } else if (options.emailBundling === 'disabled') {
+    removeClassFromBody(CSS_CLASSES.BUNDLING_OPTION);
+    // Unbundle emails
+    document
+      .querySelectorAll('.' + CSS_CLASSES.BUNDLED_EMAIL)
+      .forEach((emailEl) => emailEl.classList.remove(CSS_CLASSES.BUNDLED_EMAIL));
+    // Remove bundle wrapper rows
+    document
+      .querySelectorAll('.' + CSS_CLASSES.BUNDLE_WRAPPER)
+      .forEach((bundleEl) => bundleEl.remove());
+  }
 };
 
 // Reload the page when options change in the popup, so every setting takes
@@ -1833,6 +1945,12 @@ const CATEGORIES_MESSAGE_SOURCE = 'inbox-reborn-categories';
 let categoryThreads = new Map(); // hex thread id -> bundle name
 let wantedCategoriesKey = null;
 
+/* The page script's messages come over window.postMessage, which any script
+   in Gmail's page can also send, so what is taken from them is bounded:
+   a search page is 100 threads, and the speed dial keeps 3 people */
+const MAX_CATEGORY_THREADS = 500;
+const MAX_SENT_RECIPIENTS = 50;
+
 /**
  * Gmail's thread id for a row, as hex (what the category search returns)
  * @param {Element} email - The email row
@@ -1891,7 +2009,7 @@ const applyCategoryThreads = (threads) => {
   const next = new Map();
   Object.entries(CATEGORY_BUNDLES).forEach(([name, key]) => {
     if (!isCategoryBundled(name)) return;
-    const ids = Array.isArray(threads?.[key]) ? threads[key] : [];
+    const ids = Array.isArray(threads?.[key]) ? threads[key].slice(0, MAX_CATEGORY_THREADS) : [];
     ids.forEach((id) => {
       if (typeof id === 'string' && /^[0-9a-f]{1,32}$/.test(id) && !next.has(id)) {
         next.set(id, name);
@@ -1921,6 +2039,7 @@ window.addEventListener('message', (e) => {
   // same order the Sent list re-sync uses
   if (e.data.type === 'sent' && Array.isArray(e.data.recipients)) {
     const recipients = e.data.recipients
+      .slice(0, MAX_SENT_RECIPIENTS)
       .filter((r) => typeof r?.email === 'string' && r.email.includes('@'))
       .map((r) => ({ email: r.email, name: typeof r.name === 'string' ? r.name : '' }));
     if (recipients.length) rememberRecentContacts(recipients, true);
@@ -2130,9 +2249,6 @@ const getEmails = () => {
  * Main function to update and process emails
  */
 const updateReminders = () => {
-  // Reload user options
-  reloadOptions();
-
   // Get processed emails and all labels
   const [emails, allLabels] = getEmails();
 
@@ -2153,9 +2269,24 @@ const updateReminders = () => {
   // Get current bundle state
   const emailBundles = getBundledLabels();
 
+  // With "bundle one" off, only labels on more than one email bundle
+  const labelsToBundle = [];
+  if (options.emailBundling === 'enabled' && !options.bundleOne) {
+    const labelCounts = {};
+    emails.forEach((email) =>
+      email.labels.forEach((label) => (labelCounts[label] = (labelCounts[label] || 0) + 1)),
+    );
+    for (const label in labelCounts) {
+      if (labelCounts[label] > 1) labelsToBundle.push(label);
+    }
+  }
+
   // Process each email
   for (const emailInfo of emails) {
     const emailEl = emailInfo.emailEl;
+
+    // Gmail may have taken the row out since getEmails collected it
+    if (!emailEl.isConnected) continue;
 
     // Process reminders
     if (emailInfo.isReminder && !emailInfo.reminderAlreadyProcessed()) {
@@ -2295,23 +2426,6 @@ const updateReminders = () => {
       if (emailInfo.isBundleWrapper() && !allLabels.has(emailEl.getAttribute('bundleLabel'))) {
         emailEl.remove();
         continue;
-      }
-
-      // Determine which labels should be bundled
-      const labelsToBundle = [];
-      if (!options.bundleOne) {
-        // Count emails per label to find labels with multiple emails
-        const labelCounts = emails.reduce((counts, email) => {
-          email.labels.forEach((label) => (counts[label] = (counts[label] || 0) + 1));
-          return counts;
-        }, {});
-
-        // Only bundle labels with more than one email
-        for (const label in labelCounts) {
-          if (labelCounts[label] > 1) {
-            labelsToBundle.push(label);
-          }
-        }
       }
 
       // Filter out tab labels and labels left in the left menu's Unbundled
@@ -2548,6 +2662,7 @@ const buildCategoryMenuItem = (template, name, href) => {
 
   const row = item.querySelector('.TO');
   row.setAttribute('data-tooltip', name);
+  row.dataset.inboxNav = name.toLowerCase();
   // Gmail's per-category marker (UV, aS6...) and selected state
   row.className = 'TO';
 
@@ -3387,7 +3502,11 @@ const layoutLabelSections = () => {
   toggleBodyClass(LABEL_SECTION_CLASSES.ON, on);
   if (!on) return;
 
-  list.classList.add(LABEL_SECTION_CLASSES.LIST);
+  // Only write a change: adding a class that is there still rewrites the
+  // attribute, which woke the label-color observer twice a second
+  if (!list.classList.contains(LABEL_SECTION_CLASSES.LIST)) {
+    list.classList.add(LABEL_SECTION_CLASSES.LIST);
+  }
   const title = select.labelListTitle();
   if (title && title.textContent !== BUNDLED_SECTION_TITLE) {
     title.textContent = BUNDLED_SECTION_TITLE;
@@ -3427,7 +3546,11 @@ const layoutLabelSections = () => {
     if (bundled) bundledCount++;
     tag(row, bundled);
   });
-  list.classList.toggle('has-bundled-labels', bundledCount > 0);
+  // classList.toggle(name, force) rewrites the attribute even when nothing
+  // changes (Chrome), so check first
+  if (list.classList.contains('has-bundled-labels') !== bundledCount > 0) {
+    list.classList.toggle('has-bundled-labels', bundledCount > 0);
+  }
 };
 
 /**
@@ -3564,12 +3687,7 @@ const insertDoneMenuItem = () => {
   doneTO.classList.add('inbox-reborn-done');
   doneTO.classList.remove('nZ'); // remove highlight
 
-  // Fix icon
-  const icon = doneTO.querySelector('.qj');
-  if (icon) {
-    icon.style.backgroundImage =
-      "url('chrome-extension://__MSG_@@extension_id__/images/ic_done_clr_24dp_r4_2x.png')";
-  }
+  // The icon is painted by style.css ("DONE MENU ROW")
 
   // Fix label and link
   const labelContainer = doneTO.querySelector('.nU');
@@ -3613,23 +3731,22 @@ const insertDoneMenuItem = () => {
 
   // Insert after Snoozed
   snoozedTO.parentNode.insertBefore(doneTO, snoozedTO.nextSibling);
-
-  // Highlight Done menu when active
-  function updateDoneHighlight() {
-    const doneMenu = document.querySelector('.TO.inbox-reborn-done');
-    if (!doneMenu) return;
-
-    if (getViewHash() === '#archive') {
-      doneMenu.classList.add('nZ');
-      snoozedTO.classList.remove('nZ');
-    } else {
-      doneMenu.classList.remove('nZ');
-    }
-  }
-
-  window.addEventListener('hashchange', updateDoneHighlight);
   updateDoneHighlight();
 };
+
+/**
+ * Highlights the Done row while its view is showing. Gmail rebuilds the
+ * menu now and then, so the row is looked up each time rather than kept.
+ */
+const updateDoneHighlight = () => {
+  const doneMenu = document.querySelector('.TO.inbox-reborn-done');
+  if (!doneMenu) return;
+  const active = getViewHash() === '#archive';
+  doneMenu.classList.toggle('nZ', active);
+  if (active) document.querySelector('.aHS-bu1')?.closest('.TO')?.classList.remove('nZ');
+};
+
+window.addEventListener('hashchange', updateDoneHighlight);
 
 /**
  * The Reminders row the extension adds to the left menu: starred inbox mail
@@ -3712,9 +3829,13 @@ window.addEventListener('hashchange', updateRemindersHighlight);
  * menu without it
  */
 const watchRemindersMenuItem = () => {
-  const tryInsert = () => {
+  // Gmail can take well over 10s to draw the menu on a slow load; pages
+  // without one (a popped-out compose window) stop the retries here
+  const tryInsert = (triesLeft = 300) => {
     insertRemindersMenuItem();
-    if (!document.querySelector(`.wT .${REMINDERS_CLASS}`)) setTimeout(tryInsert, 250);
+    if (!document.querySelector(`.wT .${REMINDERS_CLASS}`) && triesLeft > 0) {
+      setTimeout(() => tryInsert(triesLeft - 1), 250);
+    }
   };
   tryInsert();
   window.addEventListener('hashchange', insertRemindersMenuItem);
@@ -4009,12 +4130,10 @@ const updatePinnedToggle = () => {
 const fixLabelColors = () => {
   [...document.querySelectorAll('.qj.aEe')].forEach((el) => {
     const elStyle = el.getAttribute('style');
-    if (elStyle) {
-      el.setAttribute(
-        'style',
-        elStyle.replace(/(background-color:.*(?<!important));/g, '$1 !important;'),
-      );
-    }
+    if (!elStyle) return;
+    const fixed = elStyle.replace(/(background-color:.*(?<!important));/g, '$1 !important;');
+    // Only write a change - rewriting the same value still invalidates the style
+    if (fixed !== elStyle) el.setAttribute('style', fixed);
   });
 };
 
@@ -4089,6 +4208,7 @@ const openCompose = ({ from, to, subject } = {}) => {
  * Adds a reminder button to the UI
  */
 const addReminderButton = () => {
+  if (document.querySelector('.add-reminder')) return;
   const addReminder = document.createElement('div');
   addReminder.className = 'add-reminder';
   addReminder.dataset.label = 'Reminder';
@@ -4411,25 +4531,32 @@ const sidePanelHandler = () => {
   }
 };
 
+/** The one observer of the add-ons panel's width (sidePanelMutationHandler) */
+let sidePanelResizeObserver = null;
+
 /**
- * Sets up an observer for side panel size changes
+ * Watches the add-ons panel's width. Runs on every side-panel click, so it
+ * keeps a single observer and just points it at the current panel element.
  */
 const sidePanelMutationHandler = () => {
   waitForElement(ADDONS_FRAME_SELECTORS.join(', '), () => {
     const addOnsPanel = queryFirst(...ADDONS_FRAME_SELECTORS);
     if (!addOnsPanel) return;
 
-    const panelResized = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.contentRect.width > 100) {
-          moveFloatersLeft();
-        } else {
-          moveFloatersRight();
+    if (!sidePanelResizeObserver) {
+      sidePanelResizeObserver = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.contentRect.width > 100) {
+            moveFloatersLeft();
+          } else {
+            moveFloatersRight();
+          }
         }
-      }
-    });
-
-    panelResized.observe(addOnsPanel);
+      });
+    } else {
+      sidePanelResizeObserver.disconnect();
+    }
+    sidePanelResizeObserver.observe(addOnsPanel);
   });
 };
 
@@ -5011,25 +5138,29 @@ document.addEventListener('DOMContentLoaded', function () {
   loadLabelSections();
   watchLabelList();
   watchLabelSectionDrags();
-  setInterval(layoutLabelSections, 500);
+  every(layoutLabelSections, 500);
 
   // Set up label color observer (.FgKVne is Wiz build-hashed; .aeN .yJ is the
   // same label region anchored on the stable nav container)
   waitForElement('.aAw.FgKVne ~ .yJ, .aeN .yJ', watchLabelColorChanges);
 
+  // The options, once; the pass below applies them as soon as they arrive
+  loadOptions();
+
   // Set up periodic email updates
-  setInterval(updateReminders, 250);
-  setInterval(syncRecentContactsFromSent, 1000);
+  every(updateReminders, 250);
+  every(syncRecentContactsFromSent, 1000);
 
   // Learn sender photos from open conversations for the inbox avatars, and
   // give open conversations the inbox avatars in place of letter circles
   watchContactPhotos();
-  setInterval(syncConversationAvatars, 1000);
+  every(syncConversationAvatars, 1000);
 
   // Keep sidebar icons painted on Gmail's new SVG markup (sidebar rerenders
   // when labels expand/collapse, so this must re-run; no-op when normalized)
-  setInterval(normalizeSidebarIcons, 500);
-  setInterval(tagSidebarLabelIcons, 500);
+  every(normalizeSidebarIcons, 500);
+  every(tagSidebarLabelIcons, 500);
+  every(tagSidebarNav, 500);
 
   // Set up side panel handler - wait for any recognizable side-panel button
   // (old build-hashed markup or the new role-based markup)
