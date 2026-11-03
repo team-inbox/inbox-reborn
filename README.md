@@ -265,6 +265,39 @@ npm run build:firefox:unpacked   # unpacked folder on your Desktop: inbox-reborn
 npm run build                    # store-ready zips for both browsers
 ```
 
+### Reproduce a store package exactly
+
+For reviewers (Firefox Add-ons asks for this). The packages contain the
+repository's files as they are: no bundler, no transpiler, no minification,
+no generated code. The build script copies `_locales`, `icons`, `images`,
+`src` and `LICENSE`, renames `firefox.json` or `chrome.json` to
+`manifest.json`, and for Firefox replaces `chrome-extension://` with
+`moz-extension://` in `src/style.css`. That is the only difference between
+the repository and a package.
+
+Requirements:
+
+- Any operating system that runs Node.js (built on macOS; CI builds on
+  Ubuntu). No other tools are needed.
+- [Node.js](https://nodejs.org/) 22 or newer, with the npm it ships
+  (CI uses Node 22; the release packages were built with Node 26). Install
+  from nodejs.org or with a version manager such as nvm.
+
+Steps, for version 2.5.0:
+
+```sh
+git clone https://github.com/team-inbox/inbox-reborn.git
+cd inbox-reborn
+git checkout v2.5.0
+npm ci                      # the exact dependency versions from package-lock.json
+npm run build:firefox       # writes ~/Desktop/inbox-reborn-firefox.zip
+npm run build:chrome        # writes ~/Desktop/inbox-reborn-chrome.zip
+```
+
+Set `BUILD_OUTPUT_DIR` to write the zips somewhere other than the Desktop,
+e.g. `BUILD_OUTPUT_DIR=dist npm run build:firefox`. The zips contain the
+same files as the unpacked folders above.
+
 ### Load the unpacked extension
 
 - **Chrome/Edge:** go to `chrome://extensions/`, enable "Developer mode",
