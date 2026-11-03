@@ -3,7 +3,7 @@
 All notable changes to the Inbox Reborn theme for Gmail™, grouped by release era.
 PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inbox-reborn/pulls).
 
-## Unreleased
+## 2.5.0 — November 2026
 
 - An arrow beside each section title in the left menu (Bundled in the
   inbox, Unbundled) folds that section up and out again; the title toggles
