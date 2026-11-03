@@ -1,6 +1,6 @@
 {
   "name": "Inbox Reborn theme for Gmail™",
-  "version": "2.4.2",
+  "version": "2.5.0",
   "default_locale": "en",
   "manifest_version": 2,
   "permissions": ["storage"],
