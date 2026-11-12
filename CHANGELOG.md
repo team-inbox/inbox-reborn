@@ -3,6 +3,12 @@
 All notable changes to the Inbox Reborn theme for Gmail™, grouped by release era.
 PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inbox-reborn/pulls).
 
+## 2.5.1 — November 2026
+
+- Inbox stays at the top of the left menu. On some accounts Gmail puts the
+  Inbox row in the same list as Sent and Drafts, and it dropped to the
+  bottom, under All Mail (#142).
+
 ## 2.5.0 — November 2026
 
 - An arrow beside each section title in the left menu (Bundled in the
