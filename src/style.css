@@ -923,8 +923,8 @@ body.hide-all-mail .aim:has(.aHS-aHO) {
 
 /* =============================================================================
    SYSTEM MENU ORDER
-   Starred and Snoozed (with Done) first, then Drafts, Sent, Reminders, Trash,
-   Spam and All Mail. Done with CSS order rather than by moving rows - Gmail
+   Inbox, then Starred and Snoozed (with Done), then Drafts, Sent, Reminders,
+   Trash, Spam and All Mail. Done with CSS order rather than by moving rows - Gmail
    updates the menu by position and redraws rows that moved.
    ============================================================================= */
 .TK:has(> .aim .aHS-bnu) {
@@ -934,6 +934,12 @@ body.hide-all-mail .aim:has(.aHS-aHO) {
 
 .TK:has(> .aim .aHS-bnu) > * {
   order: 100;
+}
+
+/* Inbox shares this list with Sent on some accounts; without its own slot
+   it fell to the bottom, under All Mail */
+.TK:has(> .aim .aHS-bnu) > .aim:has(.aHS-bnt) {
+  order: 0;
 }
 
 .TK:has(> .aim .aHS-bnu) > .aim:has(.aHS-bnw) {
