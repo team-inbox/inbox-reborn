@@ -88,7 +88,7 @@ const openBundleMenu = async (wrapper, anchor) => {
 
 /**
  * Builds a bundle's hover actions: sweep (archive the whole bundle, pinned
- * emails stay) and ⋮ (Gmail's toolbar actions for the whole bundle)
+ * emails stay), trash (delete it, pinned emails stay) and ⋮ (Gmail's toolbar actions for the whole bundle)
  * @param {Element} wrapper - The bundle row
  * @returns {Element} The actions container
  */
@@ -109,6 +109,10 @@ const createBundleActions = (wrapper) => {
   return createEl('div', 'bundle-actions', {}, [
     button('bundle-sweep', 'Mark all as done (pinned emails stay)', [createSweepIcon()], () =>
       archiveUnpinned(wrapper.parentElement, getBundleEmails(wrapper)),
+    ),
+    // Shown only with the Trash button setting on
+    button('bundle-trash', 'Delete all (pinned emails stay)', [createTrashIcon()], () =>
+      trashUnpinned(wrapper.parentElement, getBundleEmails(wrapper)),
     ),
     button('bundle-more', 'More', [], (el) =>
       wrapper.classList.contains(BUNDLE_MENU_OPEN_CLASS)

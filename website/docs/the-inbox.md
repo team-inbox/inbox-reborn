@@ -1,7 +1,7 @@
 ---
 sidebar_position: 3
 title: The inbox
-description: Date groups, Sweep, the hover actions, the Pinned switch, reminders, avatars and dark mode.
+description: Date groups, Sweep, the trash button, the hover actions, the Pinned switch, reminders, avatars and dark mode.
 ---
 
 # The inbox
@@ -23,6 +23,13 @@ email in the group is archived, except pinned (starred) ones, which stay. Gmail 
 usual _Undo_ afterwards, so a sweep is never final until you let the Undo go.
 
 A bundle has a ✓ of its own when you hover it, which sweeps just that bundle.
+
+### Deleting a group
+
+Next to each ✓ is a trash can that **deletes the whole group** instead of archiving it. It
+works the same way: pinned emails stay, and Gmail's _Undo_ brings the rest back. Bundles have
+one too when you hover them. Don't want it? Turn **Trash button** off in the
+[settings](/settings).
 
 ## Hover actions
 

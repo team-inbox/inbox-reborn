@@ -32,6 +32,7 @@ browserAPI.runtime.onMessage.addListener(function (request, sender, sendResponse
       options.reminderTreatment = options.reminderTreatment || 'containing-word';
       options.emailBundling = options.emailBundling || 'enabled';
       options.showAvatar = options.showAvatar || 'enabled';
+      options.trashButton = options.trashButton || 'enabled';
       if (options.stockInbox === 'enabled') Object.assign(options, STOCK_INBOX);
 
       sendResponse(options);
