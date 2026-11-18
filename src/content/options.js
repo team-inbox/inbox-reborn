@@ -78,6 +78,9 @@ const applyOptions = (ops) => {
   toggleBodyClass(CSS_CLASSES.HIDE_TRAVEL_OPTION, options.hideTravel === 'enabled');
   toggleBodyClass(CSS_CLASSES.HIDE_FINANCE_OPTION, options.hideFinance === 'enabled');
 
+  // The trash can beside each sweep check mark
+  toggleBodyClass(CSS_CLASSES.TRASH_BUTTON_OPTION, options.trashButton === 'enabled');
+
   // Apply email bundling options
   if (options.emailBundling === 'enabled') {
     addClassToBody(CSS_CLASSES.BUNDLING_OPTION);

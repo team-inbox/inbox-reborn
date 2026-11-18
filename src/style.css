@@ -288,12 +288,15 @@ body
   flex: 1;
 }
 
-/* Sweep (archive the group) - only in lists where Archive applies */
-.sweep-button {
+/* Sweep (archive the group) and trash (delete it) - only in lists where
+   Archive applies. Trash also needs its setting on. */
+.sweep-button,
+.trash-button {
   display: none;
 }
 
-body.inbox-list .sweep-button {
+body.inbox-list .sweep-button,
+body.inbox-list.trash-button-enabled .trash-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -305,7 +308,18 @@ body.inbox-list .sweep-button {
   cursor: pointer;
 }
 
-body.inbox-list .sweep-button:hover {
+/* Sits just left of the sweep */
+body.inbox-list.trash-button-enabled .trash-button {
+  margin-right: 4px;
+}
+
+.trash-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+body.inbox-list .sweep-button:hover,
+body.inbox-list.trash-button-enabled .trash-button:hover {
   background: rgb(32 33 36 / 6%);
   color: #202124;
 }
@@ -2572,7 +2586,7 @@ div[aria-label='Hangouts'][role='complementary'] {
   color: gray;
 }
 
-/* Bundle hover actions - sweep (archive the bundle) and ⋮ (Gmail's toolbar
+/* Bundle hover actions - sweep (archive the bundle), trash (delete it) and ⋮ (Gmail's toolbar
    actions for every email in it), sized and spaced like an email's hover
    icons. Painted over the senders in the row's own background. */
 .bundle-actions {
@@ -2606,9 +2620,14 @@ div[aria-label='Hangouts'][role='complementary'] {
   color: #202124;
 }
 
-.bundle-sweep svg {
+.bundle-sweep svg,
+.bundle-trash svg {
   width: 20px;
   height: 20px;
+}
+
+body:not(.trash-button-enabled) .bundle-trash {
+  display: none;
 }
 
 .bundle-more::before {
@@ -4216,11 +4235,13 @@ body.inbox-reborn-label-dragging .TK .TO:hover {
    that follows is the one thing written to win over rules here.
    ============================================================================= */
 
-body.dark-mode.inbox-list .sweep-button {
+body.dark-mode.inbox-list .sweep-button,
+body.dark-mode.inbox-list .trash-button {
   color: var(--dm-text-muted);
 }
 
-body.dark-mode.inbox-list .sweep-button:hover {
+body.dark-mode.inbox-list .sweep-button:hover,
+body.dark-mode.inbox-list .trash-button:hover {
   background: var(--dm-hover);
   color: var(--dm-text);
 }

@@ -59,10 +59,11 @@ newest email instead.
   category, Gmail's category page (for Purchases, Travel and Finance, the search Gmail uses
   for them).
 - **Hover a bundle** for its ✓, which **sweeps the bundle**: every conversation in it is
-  archived, pinned ones excepted. The ⋮ next to it opens Gmail's menu for all of them at once
+  archived, pinned ones excepted. The trash can beside it deletes the bundle the same way,
+  if **Trash button** is on in the [settings](/settings). The ⋮ next to it opens Gmail's menu for all of them at once
   (mark as read, labels, mute and so on).
 
-![A bundle row on hover, with its sweep check and more menu](/img/bundle-hover.png)
+![A bundle row on hover, with its sweep check, trash can and more menu](/img/bundle-hover.png)
 
 ## Travel and your travel labels
 

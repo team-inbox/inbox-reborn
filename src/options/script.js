@@ -15,6 +15,7 @@ const SWITCHES = {
   stockInbox: 'stock-inbox-toggle',
   darkMode: 'dark-mode-toggle',
   gravatar: 'gravatar-toggle',
+  trashButton: 'trash-button-toggle',
   emailBundling: 'bundling-toggle',
   showAvatar: 'avatar-toggle',
   hideDateTime: 'hide-date-time-toggle',

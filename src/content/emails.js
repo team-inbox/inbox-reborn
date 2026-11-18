@@ -242,18 +242,37 @@ const addDateLabel = (email, label) => {
   time.className = 'time';
   time.innerText = label;
 
-  // Inbox's sweep button - archives everything in the group that isn't pinned
-  const sweep = document.createElement('div');
-  sweep.className = 'sweep-button';
-  sweep.setAttribute('role', 'button');
-  sweep.title = 'Mark all as done (pinned emails stay)';
-  sweep.appendChild(createSweepIcon());
-  sweep.addEventListener('click', (e) => {
-    e.stopPropagation();
-    sweepDateGroup(timeRow);
-  });
+  // Inbox's sweep button - archives everything in the group that isn't
+  // pinned - and the trash button beside it, which deletes it instead (shown
+  // only with the Trash button setting on)
+  const groupButton = (className, title, icon, act) => {
+    const button = document.createElement('div');
+    button.className = className;
+    button.setAttribute('role', 'button');
+    button.title = title;
+    button.appendChild(icon);
+    button.addEventListener('click', (e) => {
+      e.stopPropagation();
+      act(timeRow.parentElement, getDateGroupEmails(timeRow));
+    });
+    return button;
+  };
 
-  timeRow.append(time, sweep);
+  timeRow.append(
+    time,
+    groupButton(
+      'trash-button',
+      'Delete all (pinned emails stay)',
+      createTrashIcon(),
+      trashUnpinned,
+    ),
+    groupButton(
+      'sweep-button',
+      'Mark all as done (pinned emails stay)',
+      createSweepIcon(),
+      archiveUnpinned,
+    ),
+  );
   email.parentElement.insertBefore(timeRow, email);
 };
 
@@ -276,29 +295,27 @@ const selectOnlyEmails = (list, emails) => {
 };
 
 /**
- * Archives every email in a date group except pinned (starred) ones, like
- * Inbox's sweep. Selects the rows and presses Gmail's own Archive button, so
- * Gmail's "Undo" toast still works. A bundle in the group sweeps the bundled
- * emails behind it.
+ * Every email in a date group, for its sweep and trash buttons. A bundle in
+ * the group brings the bundled emails behind it.
  * @param {Element} timeRow - The date label row that starts the group
+ * @returns {Element[]} The group's email rows
  */
-const sweepDateGroup = (timeRow) => {
-  const list = timeRow.parentElement;
-  const toSweep = new Set();
+const getDateGroupEmails = (timeRow) => {
+  const emails = new Set();
 
   for (let row = timeRow.nextElementSibling; row; row = row.nextElementSibling) {
     if (row.classList.contains('time-row')) break;
     if (!row.classList.contains('zA')) continue;
 
     if (row.classList.contains(CSS_CLASSES.BUNDLE_WRAPPER)) {
-      getBundleEmails(row).forEach((email) => toSweep.add(email));
+      getBundleEmails(row).forEach((email) => emails.add(email));
     } else if (!row.classList.contains(CSS_CLASSES.BUNDLED_EMAIL)) {
       // Bundled rows are hidden; they go with their bundle, wherever it sits
-      toSweep.add(row);
+      emails.add(row);
     }
   }
 
-  archiveUnpinned(list, [...toSweep]);
+  return [...emails];
 };
 
 /**
@@ -314,25 +331,40 @@ const getBundleEmails = (wrapper) => {
 };
 
 /**
- * Archives emails except pinned (starred) ones. Selects the rows and presses
- * Gmail's own Archive button, so Gmail's "Undo" toast still works.
+ * Presses a Gmail toolbar button for these emails, leaving pinned (starred)
+ * ones out. Selects the rows and presses Gmail's own button, so Gmail's
+ * "Undo" toast still works.
  * @param {Element} list - The list the emails live in
- * @param {Element[]} candidates - Rows to archive
+ * @param {Element[]} candidates - Rows to act on
+ * @param {NodeList} buttons - The toolbar button, in each of Gmail's toolbars
  */
-const archiveUnpinned = (list, candidates) => {
+const actOnUnpinned = (list, candidates, buttons) => {
   const emails = candidates.filter((email) => !isStarred(email) && select.emailCheckbox(email));
   if (!emails.length) return;
 
-  // Start from an empty selection so only these get archived
+  // Start from an empty selection so only these get acted on
   selectOnlyEmails(list, emails);
 
-  // Gmail only shows Archive once something is selected
-  const archiveButton = Array.from(select.archiveButtons()).find(
-    (el) => el.getClientRects().length,
-  );
-  if (archiveButton) {
-    simulateClick(archiveButton);
+  // Gmail only shows the toolbar once something is selected
+  const button = Array.from(buttons).find((el) => el.getClientRects().length);
+  if (button) {
+    simulateClick(button);
   } else {
     emails.forEach((email) => simulateClick(select.emailCheckbox(email)));
   }
 };
+
+/**
+ * Archives emails except pinned (starred) ones, like Inbox's sweep
+ * @param {Element} list - The list the emails live in
+ * @param {Element[]} candidates - Rows to archive
+ */
+const archiveUnpinned = (list, candidates) =>
+  actOnUnpinned(list, candidates, select.archiveButtons());
+
+/**
+ * Deletes emails except pinned (starred) ones - the sweep's trash can twin
+ * @param {Element} list - The list the emails live in
+ * @param {Element[]} candidates - Rows to delete
+ */
+const trashUnpinned = (list, candidates) => actOnUnpinned(list, candidates, select.deleteButtons());

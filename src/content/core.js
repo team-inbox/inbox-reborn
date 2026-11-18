@@ -93,6 +93,7 @@ const CSS_CLASSES = {
   HIDE_ALL_MAIL_OPTION: 'hide-all-mail',
   HIDE_TRAVEL_OPTION: 'hide-travel',
   HIDE_FINANCE_OPTION: 'hide-finance',
+  TRASH_BUTTON_OPTION: 'trash-button-enabled',
   PINNED_VIEW: 'pinned-view',
   INBOX_LIST: 'inbox-list',
 };
@@ -104,31 +105,46 @@ const CSS_CLASSES = {
 const SWEEP_ICON_PATHS = ['M2.4 12.9l3.7 3.1 9.2-8.6', 'M17.6 10h3.6M14.4 13.1h3.6M11 16.2h3.6'];
 
 /**
- * Builds the sweep icon with DOM calls rather than innerHTML, which
+ * Icon for the trash button beside the sweep - Inbox's solid trash can, as
+ * on the left menu and the toolbar (images/inbox_delete_24dp.svg)
+ */
+const TRASH_ICON_PATH =
+  'M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z';
+
+/**
+ * Builds a 24px icon with DOM calls rather than innerHTML, which
  * addons.mozilla.org review flags
+ * @param {string[]} paths - The path data
+ * @param {Object} attributes - Extra attributes for the <svg> (fill, stroke...)
  * @returns {SVGElement} The icon
  */
-const createSweepIcon = () => {
+const createIcon = (paths, attributes) => {
   const SVG_NS = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(SVG_NS, 'svg');
-  Object.entries({
-    viewBox: '0 0 24 24',
-    width: '24',
-    height: '24',
-    fill: 'none',
-    stroke: 'currentColor',
-    'stroke-width': '2',
-    'stroke-linecap': 'round',
-    'stroke-linejoin': 'round',
-  }).forEach(([name, value]) => svg.setAttribute(name, value));
+  Object.entries({ viewBox: '0 0 24 24', width: '24', height: '24', ...attributes }).forEach(
+    ([name, value]) => svg.setAttribute(name, value),
+  );
 
-  SWEEP_ICON_PATHS.forEach((d) => {
+  paths.forEach((d) => {
     const path = document.createElementNS(SVG_NS, 'path');
     path.setAttribute('d', d);
     svg.appendChild(path);
   });
   return svg;
 };
+
+/** @returns {SVGElement} The sweep (check mark) icon */
+const createSweepIcon = () =>
+  createIcon(SWEEP_ICON_PATHS, {
+    fill: 'none',
+    stroke: 'currentColor',
+    'stroke-width': '2',
+    'stroke-linecap': 'round',
+    'stroke-linejoin': 'round',
+  });
+
+/** @returns {SVGElement} The trash can icon */
+const createTrashIcon = () => createIcon([TRASH_ICON_PATH], { fill: 'currentColor' });
 
 /**
  * Inbox's "Pinned" filter: starred inbox mail plus reminders, keyed by the
@@ -179,6 +195,7 @@ const select = {
   currentTab: () => document.querySelector('.aAy[aria-selected="true"]'),
   // Gmail keeps toolbars for other views in the DOM too; callers pick the visible one
   archiveButtons: () => document.querySelectorAll('.G-atb [act="7"]'),
+  deleteButtons: () => document.querySelectorAll('.G-atb [act="10"]'),
   labelsButtons: () => document.querySelectorAll('.G-atb [aria-label="Labels"]'),
   // The Labels menu; Gmail keeps it in the DOM with display: none when closed
   labelsMenu: () =>

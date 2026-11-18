@@ -46,9 +46,10 @@ settings worth changing on day one.
 ## A one-minute tour
 
 1. **Date groups.** Today, Yesterday, This week, then the months. Each heading has a ✓ on the
-   right: **Sweep**, which marks the whole group done. Pinned emails stay.
+   right: **Sweep**, which marks the whole group done, and a trash can beside it that deletes
+   the group instead. Pinned emails stay either way.
 2. **Bundles.** Rows like _Updates (12)_ or _Receipts (3)_ are bundles. They list who wrote,
-   and clicking one opens the mail inside. Hover a bundle for its own ✓.
+   and clicking one opens the mail inside. Hover a bundle for its own ✓ and trash can.
 3. **Hover an email** for Inbox's actions: **Pin**, **Snooze**, **Trash**, **Done**, and ⋮ for
    the rest of Gmail's menu.
 4. **The left menu.** Inbox, Snoozed and Done at the top. Then **Bundled in the inbox**
