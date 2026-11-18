@@ -3,6 +3,14 @@
 All notable changes to the Inbox Reborn theme for Gmail™, grouped by release era.
 PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inbox-reborn/pulls).
 
+## 2.6.0 — November 2026
+
+- A trash can beside the "Mark all as done" check mark, on each date
+  heading and on each bundle when you hover it. It deletes the whole group
+  or bundle instead of archiving it. Pinned emails stay, and Gmail's Undo
+  brings the rest back. Turn **Trash button** off in the settings if you
+  don't want it (#144).
+
 ## 2.5.1 — November 2026
 
 - Inbox stays at the top of the left menu. On some accounts Gmail puts the
