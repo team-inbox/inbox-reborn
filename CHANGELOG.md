@@ -3,6 +3,16 @@
 All notable changes to the Inbox Reborn theme for Gmail™, grouped by release era.
 PR numbers reference [pull requests on GitHub](https://github.com/team-inbox/inbox-reborn/pulls).
 
+## 2.6.1 — November 2026
+
+- On wide screens with the reading pane on the right, the top toolbar
+  (select all, refresh, paging) now fills the area instead of floating in
+  the middle as the window grows, and the select-all box lines up over
+  the rows' checkboxes.
+- The selected row stands out in light and dark mode: a tinted fill and a
+  thicker blue bar, so it no longer looks like a read or unread row
+  (#146).
+
 ## 2.6.0 — November 2026
 
 - A trash can beside the "Mark all as done" check mark, on each date
