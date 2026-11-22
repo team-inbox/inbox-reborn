@@ -131,6 +131,18 @@ header {
   max-width: 97%;
 }
 
+/* Side-by-side reading pane (Gmail's "right of inbox"): the toolbar belongs to
+   the pane it sits over, so it fills it instead of floating at 1200px centered */
+.bGI:has(.Nr .Nt) > .D.E.G-atb {
+  margin: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+
+  /* Line the select-all box up over the rows' checkboxes */
+  box-sizing: border-box;
+  padding-left: 37px;
+}
+
 /* Add box-shadow to open email + match toolbar width */
 .nH.a98.iY {
   margin: 2px 16px 0;
@@ -2229,6 +2241,17 @@ body.hide-date-time .zA > .yf {
 .zA {
   color: #040404;
   padding: 13px 12px 13px 10px !important;
+}
+
+/* The selected / open row: light blue fill plus a 4px bar, so it reads
+   differently from the plain white read and unread rows */
+tr.zA.btb,
+tr.zA.btb:hover {
+  background: #e3edfd !important;
+  box-shadow:
+    inset 4px 0 0 #1a73e8,
+    0 0 2px rgb(0 0 0 / 12%),
+    0 2px 4px rgb(0 0 0 / 24%) !important;
 }
 
 /* Email selected with keyboard shortcut (remove left padding so blue bar is still right against the left edge) */
@@ -4613,6 +4636,17 @@ body.dark-mode .PF.xY.PE {
 /* Email selected with keyboard shortcut - same padding adjustment as light mode */
 body.dark-mode .zA.btb {
   padding-left: 5px !important; /* Restore original - needed for blue bar positioning */
+}
+
+/* The selected / open row: a blue-tinted fill and a bright 4px bar so it
+   can't be mistaken for a read or unread row (both are plain grey) */
+body.dark-mode tr.zA.btb,
+body.dark-mode tr.zA.btb:hover {
+  background: color-mix(in srgb, var(--dm-accent) 22%, var(--dm-surface)) !important;
+  box-shadow:
+    inset 4px 0 0 var(--dm-accent),
+    0 0 2px rgb(0 0 0 / 12%),
+    0 2px 4px rgb(0 0 0 / 24%) !important;
 }
 
 /* Selection indicator within .btb emails - same as light mode */
